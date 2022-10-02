@@ -1,0 +1,25 @@
+.customind-tooltip {
+	cursor: pointer;
+
+	&:not(.is-without-arrow)::after {
+		border-color: #444444 ;
+	}
+
+	&:not(.is-without-arrow)::before {
+		border-width: 0;
+	}
+
+	.components-popover__content {
+		border-width: 0;
+		box-shadow: none;
+		background-color: #444444;
+		color: #fff;
+		padding: 5px;
+
+		.customize-control-description {
+			margin-bottom: 0;
+			font-style: initial;
+			cursor: initial;
+		}
+	}
+}

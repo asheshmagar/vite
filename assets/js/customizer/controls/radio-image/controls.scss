@@ -1,0 +1,22 @@
+.customind-radio-image-control {
+	.customind-control-body {
+		display: grid;
+		grid-template-columns: repeat( var( --customind-col, 1 ), 1fr );
+		grid-gap: 20px;
+	}
+
+	.customind-radio-image {
+		padding: 10px 10px 0 10px;
+		background-color: #ebebeb;
+		cursor: pointer;
+
+		&.active {
+			background-color: #0073aa;
+		}
+
+		img {
+			width: 100%;
+			height: 100%;
+		}
+	}
+}

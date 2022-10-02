@@ -1,0 +1,12 @@
+.customind-range {
+	display: flex;
+
+	> .components-base-control:first-child {
+		flex: 1;
+	}
+
+	> .components-base-control:last-child {
+		min-width: 54px;
+		max-width: 54px;
+	}
+}

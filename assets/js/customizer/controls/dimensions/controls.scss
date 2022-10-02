@@ -1,0 +1,72 @@
+.customind-dimensions-control .customind-control-body > ul {
+	.dashicons-admin-links {
+		color: #007cba;
+	}
+
+	li {
+		margin: 0;
+
+		input::-webkit-outer-spin-button,
+		input::-webkit-inner-spin-button{
+			-webkit-appearance: none;
+		}
+
+		input[type=number] {
+			-moz-appearance: textfield;
+		}
+
+		&[role="button"] {
+			max-width: 20px;
+			display: inline-flex;
+			align-items: center;
+			justify-content: center;
+		}
+
+		.components-base-control__field,
+		.components-base-control__label {
+			margin-bottom: 0;
+		}
+
+		> .dashicon {
+			font-size: 16px;
+		}
+	}
+}
+
+.customind-dimensions-control .customind-control-body > ul {
+	display: flex;
+
+	.dashicon {
+		font-size: 13px;
+		vertical-align: middle;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	li:not(:last-child) {
+		margin-right: 5px;
+	}
+
+	li:last-child  {
+		display: flex;
+		margin-left: 5px;
+		align-items: flex-end;
+
+		.components-button {
+			height: 30px;
+			width: 25px;
+			padding: 0;
+			box-shadow: none;
+			justify-content: center;
+			align-items: center;
+
+			&:not(.is-primary) {
+				background-color: #fff;
+			}
+		}
+		.customind-dimensions-units {
+			border-left: 1px solid #eee;
+		}
+	}
+}

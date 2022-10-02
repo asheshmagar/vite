@@ -23,3 +23,6 @@ node_modules/
 *.sqlite
 
 /vendor/
+
+assets/js/dist
+assets/js/build

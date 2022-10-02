@@ -1,0 +1,35 @@
+.customind-sortable-control {
+	li {
+		display: flex;
+		align-items: center;
+		padding: 5px 10px;
+		color: #aaaaaa;
+		border: 1px dashed #aaaaaa;
+
+		span:not(.dashicon) {
+			flex: 1;
+		}
+
+		> svg {
+			height: 20px;
+			width: 20px;
+		}
+
+		.components-button {
+			padding: 0;
+			max-height: 20px;
+			min-width: unset;
+			margin-right: 10px;
+		}
+
+		&.sortable-item {
+			cursor: move;
+			background-color: #fff;
+		}
+
+		&[data-visible] {
+			color: #000;
+			border-style: solid;
+		}
+	}
+}

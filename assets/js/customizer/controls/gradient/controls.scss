@@ -1,0 +1,40 @@
+.customind-gradient > .components-popover__content {
+	min-width: 300px;
+	min-height: 190px;
+	padding: 10px;
+
+	.components-custom-gradient-picker__gradient-bar {
+		width: unset;
+	}
+}
+
+.customize-control-customind-gradient {
+	position: relative;
+
+	.customind-control-head + .components-button {
+		background-color: #ebebeb;
+		border: 1px solid #ebebeb;
+
+		.component-color-indicator {
+			height: 24px;
+			width: 24px;
+			margin-right: 5px;
+		}
+	}
+
+	.customind-gradient-popover.open {
+		background-color: #ffffff;
+		border-radius: 5px;
+		box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+		left: 0;
+		position: absolute;
+		right: 0;
+		z-index: 9999;
+		top: 100%;
+		padding: 16px;
+
+		.components-custom-gradient-picker__gradient-bar {
+			width: unset;
+		}
+	}
+}

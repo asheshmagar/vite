@@ -1,0 +1,12 @@
+.customind-color .components-popover__content {
+	min-width: 300px;
+	min-height: 340px;
+	padding: 10px;
+
+	.react-colorful,
+	.components-color-picker,
+	.react-colorful__hue,
+	.react-colorful__alpha {
+		width: 100%;
+	}
+}

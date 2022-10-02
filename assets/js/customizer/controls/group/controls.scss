@@ -1,0 +1,85 @@
+.customind-group-control {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.customind-group-control {
+
+	.customind-control-head {
+		width: 100%;
+		justify-content: space-between;
+	}
+}
+
+.customize-control-customind-group {
+	position: relative;
+
+	.customind-group-popover.open {
+		background-color: #ffffff;
+		border-radius: 5px;
+		box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+		left: 0;
+		position: absolute;
+		right: 0;
+		z-index: 9999;
+		padding: 16px;
+
+		&:before {
+			border: 8px solid transparent;
+			border-bottom-color: #ffffff;
+			content: "";
+			pointer-events: none;
+			position: absolute;
+			right: 20px;
+			top: -15px;
+		}
+
+		.customind-control:not(:first-child) {
+			margin-top: 16px;
+		}
+	}
+
+	.customize-control {
+		padding: 16px;
+		margin-bottom: 0;
+	}
+
+	.customind-color-picker > div,
+	.customind-color-picker .react-colorful > div,
+	.customind-color-picker .react-colorful {
+		width: 100% !important;
+	}
+
+	.components-color-picker {
+		margin-top: 10px;
+	}
+}
+
+.customind-group-tabs {
+	.components-tab-panel__tabs {
+		margin-bottom: 16px;
+	}
+	.components-tab-panel__tabs-item {
+		flex: 1;
+		justify-content: center;
+		height: 35px;
+		border: 1px solid #eee;
+
+		&:focus,
+		&:active {
+			box-shadow: none !important;
+		}
+	}
+}
+
+.customind-group-popover-trigger {
+	background-color: #ebebeb;
+	border-radius: 100%;
+	color: rgba(68, 68, 68, 0.6);
+
+	&.active {
+		background-color: #007cba;
+		color: #fff;
+	}
+}
