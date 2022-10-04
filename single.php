@@ -6,11 +6,19 @@
  * @package Theme
  */
 
-namespace Theme;
-
 // Exit if accessed directly.
 defined( 'ABSPATH' ) || exit;
 
 get_header();
-do_action( 'theme_single' );
-get_footer();
+?>
+	<main id="primary" class="site-main">
+		<?php
+			do_action( 'theme_before_single' );
+			theme( 'core' )->the_loop();
+			do_action( 'theme_after_single' );
+		?>
+	</main>
+	<?php get_sidebar(); ?>
+	</div>
+	<?php
+	get_footer();
