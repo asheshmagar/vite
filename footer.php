@@ -12,10 +12,15 @@ namespace Theme;
 
 // Exit if accessed directly.
 defined( 'ABSPATH' ) || exit;
-
-do_action( 'theme_before_footer' );
-do_action( 'theme_footer' );
-do_action( 'theme_after_footer' );
 ?>
-	</body>
+		<?php do_action( 'theme_after_content' ); ?>
+			</div>
+		<?php
+		do_action( 'theme_before_footer' );
+		do_action( 'theme_footer' );
+		do_action( 'theme_after_footer' );
+		?>
+	</div>
+	<?php wp_footer(); ?>
+</body>
 </html>
