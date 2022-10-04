@@ -5,10 +5,11 @@
   "autoload": {
     "psr-4": {
       "Theme\\": "inc/",
-      "Theme\\Services\\": "inc/Services/"
+      "Theme\\ServiceProvider\\": "inc/ServiceProvider/"
     }
   },
   "require": {
-    "php": ">=7.2"
+    "php": ">=7.2",
+    "league/container": "^4.2"
   }
 }
