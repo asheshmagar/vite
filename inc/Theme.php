@@ -8,114 +8,49 @@
 
 namespace Theme;
 
-use BadMethodCallException;
-
 defined( 'ABSPATH' ) || exit;
 
 /**
  * Class Theme.
- *
- * @method Services\Comments comments()
- * @method Services\Breadcrumbs breadcrumbs()
- * @method Services\NavMenu is_primary_menu_active()
- * @method Services\NavMenu is_secondary_menu_active()
- * @method Services\NavMenu is_footer_menu_active()
- * @since x.x.x
  */
 class Theme {
 
 	/**
-	 * Services.
-	 *
-	 * @var array
-	 */
-	private $services = [];
-
-	/**
-	 * Singleton instance.
-	 *
-	 * @var null
-	 */
-	private static $instance = null;
-
-	/**
-	 * Un-serializing instances of the class is forbidden.
-	 */
-	public function __wakeUp() {}
-
-	/**
-	 * Cloning is forbidden.
-	 */
-	public function __clone() {}
-
-	/**
-	 * Initialize theme.
-	 *
-	 * @return Theme|null;
-	 */
-	public static function init(): ?Theme {
-		if ( null === self::$instance ) {
-			self::$instance = new self();
-		}
-		return self::$instance;
-	}
-
-	/**
 	 * Constructor.
 	 */
-	private function __construct() {
-		$this->init_services();
+	public function __construct() {
+		$this->init();
 	}
 
 	/**
-	 * Initialize services.
+	 * Init.
 	 *
 	 * @return void
 	 */
-	private function init_services() {
-		$services = [
-			'Theme\Services\Localization',
-			'Theme\Services\Support',
-			'Theme\Services\NavMenu',
-			'Theme\Services\Breadcrumbs',
-		];
-
-		$services = apply_filters( 'theme_services', $services );
-
-		if ( ! empty( $services ) ) {
-			foreach ( $services as $service ) {
-				if ( class_exists( $service ) ) {
-					$service_provider = new $service();
-					$service_provider->init();
-					$service_callbacks = $service_provider->services();
-					if ( ! empty( $service_callbacks ) ) {
-						foreach ( $service_callbacks  as $method => $cb ) {
-							if ( method_exists( $service_provider, $method ) && ! array_key_exists( $method, $this->services ) ) {
-								$this->services[ $method ] = $cb;
-							}
-						}
-					}
-				}
-			}
-		}
+	private function init() {
+		theme( 'supports' )->init();
+		theme( 'nav-menu' )->init();
+		theme( 'template-hooks' )->init();
+		theme( 'styles' )->init();
+		theme( 'scripts' )->init();
+		$this->init_hooks();
 	}
 
 	/**
-	 * Magic method to call methods.
+	 * Init hooks.
 	 *
-	 * Will call methods available from services.
-	 *
-	 * @param string $method Method name.
-	 * @param array  $args Arguments.
-	 * @return mixed
-	 * @throws BadMethodCallException Thrown if the method does not exist.
+	 * @return void
 	 */
-	public function __call( string $method, array $args ) {
-		if ( array_key_exists( $method, $this->services ) ) {
-			return call_user_func_array( $this->services[ $method ], $args );
-		}
+	private function init_hooks() {
+		add_action( 'after_setup_theme', [ $this, 'load_textdomain' ] );
+	}
 
-		/* Translators: 1: Method name. */
-		throw new BadMethodCallException( sprintf( __( 'Method %s does not exist.', 'theme' ), $method ) );
+	/**
+	 * Load text domain.
+	 *
+	 * @return void
+	 */
+	public function load_textdomain() {
+		load_theme_textdomain( 'theme', get_template_directory() . '/languages' );
 	}
 }
