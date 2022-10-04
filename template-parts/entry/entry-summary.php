@@ -1,11 +1,11 @@
 <?php
 /**
+ * Displays the post excerpt.
  *
+ * @package Theme
+ * @since 1.0.0
  */
 
 defined( 'ABSPATH' ) || exit;
-?>
 
-<div class="entry-summary">
-	<?php the_excerpt(); ?>
-</div>
+theme( 'entry-elements' )->render_entry_summary();
