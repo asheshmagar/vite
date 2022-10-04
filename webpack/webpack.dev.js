@@ -3,10 +3,16 @@ const WebpackBar = require( 'webpackbar' );
 const DependencyExtractionWebpackPlugin = require( '@wordpress/dependency-extraction-webpack-plugin' );
 const { resolve, basename, dirname } = require( 'path' );
 const MiniCSSExtractPlugin = require( 'mini-css-extract-plugin' );
+const FixStyleOnlyEntriesPlugin = require( 'webpack-fix-style-only-entries' );
 
 module.exports = () => ( {
 	entry: {
 		customizer: resolve( process.cwd(), 'assets/js/customizer', 'index.js' ),
+		normalize: resolve( process.cwd(), 'assets/scss', 'normalize.scss' ),
+		global: resolve( process.cwd(), 'assets/scss', 'global.scss' ),
+		header: resolve( process.cwd(), 'assets/scss', 'header.scss' ),
+		content: resolve( process.cwd(), 'assets/scss', 'content.scss' ),
+		'page-header': resolve( process.cwd(), 'assets/scss', 'page-header.scss' ),
 	},
 	output: {
 		filename: '[name].js',
@@ -86,6 +92,7 @@ module.exports = () => ( {
 		},
 	},
 	plugins: [
+		new FixStyleOnlyEntriesPlugin(),
 		new MiniCSSExtractPlugin( { filename: '[name].css' } ),
 		new DependencyExtractionWebpackPlugin(),
 		new EslintPlugin( {
