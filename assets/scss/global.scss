@@ -1,0 +1,21 @@
+:root {
+	--font--family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+	--font--size: 16px;
+	--line--height: 1.5;
+	--primary--color: #0ea5e9;
+	--base--color: #111827;
+	--border--color: #ebecf2;
+	--background--color: #fff;
+	--container--width: 1200px;
+	--container--narrow--width: 728px;
+	--container--padding--inline: 1rem;
+}
+
+body {
+	font-family: var(--font--family);
+	font-size: var(--font--size);
+	line-height: var(--line--height);
+	color: var(--base--color);
+	background-color: var(--background--color);
+}
+@import "layout/grid";
