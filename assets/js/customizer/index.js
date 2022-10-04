@@ -1,7 +1,7 @@
 import $ from 'jquery';
 import _ from 'lodash';
 import * as controls from './controls';
-import './style.scss';
+import './customizer.scss';
 
 const api = wp.customize;
 

@@ -4,9 +4,12 @@
   "license": "2.0",
   "autoload": {
     "psr-4": {
-      "Theme\\": "inc/",
-      "Theme\\ServiceProvider\\": "inc/ServiceProvider/"
-    }
+      "Vite\\": "inc/",
+      "Vite\\ServiceProvider\\": "inc/ServiceProvider/"
+    },
+    "files": [
+      "app/app.php"
+    ]
   },
   "require": {
     "php": ">=7.2",

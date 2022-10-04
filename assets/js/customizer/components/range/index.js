@@ -1,7 +1,7 @@
 import { RangeControl } from '@wordpress/components';
 import { memo } from '@wordpress/element';
 import { UnitPicker } from '../index';
-import './style.scss';
+import './customizer.scss';
 
 export default memo( ( props ) => {
 	const {

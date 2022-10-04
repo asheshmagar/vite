@@ -3,7 +3,7 @@
  * Template hooks.
  */
 
-namespace Theme;
+namespace Vite;
 
 /**
  * Template hooks.

@@ -2,10 +2,10 @@
 /**
  * Displays the post meta comments.
  *
- * @package Theme
+ * @package Vite
  * @since 1.0.0
  */
 
 defined( 'ABSPATH' ) || exit;
 
-theme( 'entry-elements' )->render_entry_meta_comments();
+vite( 'entry-elements' )->render_entry_meta_comments();

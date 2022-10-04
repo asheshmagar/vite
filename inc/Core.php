@@ -3,10 +3,10 @@
  * The loop.
  *
  * @since 1.0.0
- * @package Theme
+ * @package Vite
  */
 
-namespace Theme;
+namespace Vite;
 
 /**
  * Core.
@@ -77,13 +77,13 @@ class Core {
 	 */
 	public function static_strings( string $id, bool $should_return = false ) {
 		$strings = [
-			'no-posts'        => __( 'No posts found.', 'theme' ),
-			'skip-to-content' => __( 'Skip to content', 'theme' ),
-			'go-to-top'       => __( 'Go to top', 'theme' ),
-			'leave-a-comment' => __( 'Leave a comment', 'theme' ),
-			'primary-menu'    => __( 'Primary Menu', 'theme' ),
-			'secondary-menu'  => __( 'Secondary Menu', 'theme' ),
-			'footer-menu'     => __( 'Footer Menu', 'theme' ),
+			'no-posts'        => __( 'No posts found.', 'vite' ),
+			'skip-to-content' => __( 'Skip to content', 'vite' ),
+			'go-to-top'       => __( 'Go to top', 'vite' ),
+			'leave-a-comment' => __( 'Leave a comment', 'vite' ),
+			'primary-menu'    => __( 'Primary Menu', 'vite' ),
+			'secondary-menu'  => __( 'Secondary Menu', 'vite' ),
+			'footer-menu'     => __( 'Footer Menu', 'vite' ),
 
 		];
 

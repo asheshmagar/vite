@@ -7,7 +7,7 @@
  *
  * @link https://codex.wordpress.org/Template_Hierarchy
  * @since x.x.x
- * @package Theme
+ * @package Vite
  */
 
 defined( 'ABSPATH' ) || exit;

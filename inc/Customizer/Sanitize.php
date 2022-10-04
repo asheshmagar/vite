@@ -5,7 +5,7 @@
  * @package Customind
  */
 
-namespace Theme\Customizer;
+namespace Vite\Customizer;
 
 use WP_Customize_Setting;
 

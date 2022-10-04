@@ -3,7 +3,7 @@
  * SortableControl class.
  */
 
-namespace Theme\Customizer\Controls;
+namespace Vite\Customizer\Controls;
 
 defined( 'ABSPATH' ) || exit;
 

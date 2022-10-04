@@ -3,9 +3,9 @@
  * Template part for displaying header primary navigation.
  *
  * @since x.x.x
- * @package Theme
+ * @package Vite
  */
 
 defined( 'ABSPATH' ) || exit;
 
-theme( 'header' )->render_header_primary_navigation();
+vite( 'header' )->render_header_primary_navigation();

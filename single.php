@@ -3,7 +3,7 @@
  * The template for displaying single posts.
  *
  * @link https://developer.wordpress.org/themes/basics/template-hierarchy/
- * @package Theme
+ * @package Vite
  */
 
 // Exit if accessed directly.
@@ -14,7 +14,7 @@ get_header();
 	<main id="primary" class="site-main">
 		<?php
 			do_action( 'theme_before_single' );
-			theme( 'core' )->the_loop();
+			vite( 'core' )->the_loop();
 			do_action( 'theme_after_single' );
 		?>
 	</main>

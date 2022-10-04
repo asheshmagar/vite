@@ -2,11 +2,11 @@
 /**
  * Comments.
  *
- * @package Theme.
+ * @package Vite.
  * @since 1.0.0
  */
 
-namespace Theme;
+namespace Vite;
 
 /**
  * Class Comments.
@@ -66,7 +66,7 @@ class Comments {
 						'%1$s thoughts on &ldquo;%2$s&rdquo;',
 						$comments_count,
 						'comments title',
-						'theme'
+						'vite'
 					)
 				),
 				esc_html( number_format_i18n( $comments_count ) ),
@@ -89,7 +89,7 @@ class Comments {
 
 		if ( ! comments_open() ) {
 			?>
-			<p class="no-comments"><?php esc_html_e( 'Comments are closed.', 'theme' ); ?></p>
+			<p class="no-comments"><?php esc_html_e( 'Comments are closed.', 'vite' ); ?></p>
 			<?php
 		}
 

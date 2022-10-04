@@ -2,16 +2,16 @@
 /**
  * PageHeader service provider.
  *
- * @package Theme
+ * @package Vite
  * @since 1.0.0
  */
 
-namespace Theme\ServiceProvider;
+namespace Vite\ServiceProvider;
 
 defined( 'ABSPATH' ) || exit;
 
 use League\Container\ServiceProvider\AbstractServiceProvider;
-use Theme\PageHeader;
+use Vite\PageHeader;
 
 /**
  * PageHeader service provider.

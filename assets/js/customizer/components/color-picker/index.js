@@ -1,6 +1,6 @@
 import { Button, ColorIndicator, ColorPicker, Popover } from '@wordpress/components';
 import { useState, memo } from '@wordpress/element';
-import './style.scss';
+import './customizer.scss';
 
 export default memo( ( props ) => {
 	const {

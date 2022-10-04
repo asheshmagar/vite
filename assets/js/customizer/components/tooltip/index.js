@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from '@wordpress/element';
 import { Popover, Icon } from '@wordpress/components';
-import './style.scss';
+import './customizer.scss';
 
 export default ( { children, position = 'bottom center', width = 150, trigger = 'hover', ...props } ) => {
 	const [ isOpen, setIsOpen ] = useState( false );

@@ -3,7 +3,7 @@
  *
  */
 
-namespace Theme;
+namespace Vite;
 
 // Exit if accessed directly.
 defined( 'ABSPATH' ) || exit;

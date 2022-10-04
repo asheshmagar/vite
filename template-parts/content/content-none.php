@@ -4,14 +4,14 @@
  *
  * @link https://developer.wordpress.org/themes/basics/template-hierarchy/
  *
- * @package theme
+ * @package Vite
  * @since   1.0.0
  */
 
 // Exit if accessed directly.
 defined( 'ABSPATH' ) || exit;
 
-theme( 'styles' )->print_styles( 'theme-content' );
+vite( 'styles' )->print_styles( 'vite-content' );
 ?>
 
 <section class="no-results not-found">
@@ -21,7 +21,7 @@ theme( 'styles' )->print_styles( 'theme-content' );
 				<?php
 					$first_post_text = sprintf(
 						/* translators: %s: link to new post */
-						__( 'Ready to publish your first post? <a href="%s">Get started here</a>.', 'theme' ),
+						__( 'Ready to publish your first post? <a href="%s">Get started here</a>.', 'vite' ),
 						esc_url( admin_url( 'post-new.php' ) )
 					);
 
@@ -36,10 +36,10 @@ theme( 'styles' )->print_styles( 'theme-content' );
 				?>
 			</p>
 		<?php elseif ( is_search() ) : ?>
-			<p><?php esc_html_e( 'Sorry, but nothing matched your search terms. Please try again with some different keywords.', 'theme' ); ?></p>
+			<p><?php esc_html_e( 'Sorry, but nothing matched your search terms. Please try again with some different keywords.', 'vite' ); ?></p>
 			<?php get_search_form(); ?>
 		<?php else : ?>
-			<p><?php esc_html_e( 'It seems we can&rsquo;t find what you&rsquo;re looking for. Perhaps searching can help.', 'theme' ); ?></p>
+			<p><?php esc_html_e( 'It seems we can&rsquo;t find what you&rsquo;re looking for. Perhaps searching can help.', 'vite' ); ?></p>
 			<?php get_search_form(); ?>
 		<?php endif; ?>
 	</div>

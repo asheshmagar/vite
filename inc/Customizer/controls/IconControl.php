@@ -1,5 +1,5 @@
 <?php
-namespace Theme\Customizer\Controls;
+namespace Vite\Customizer\Controls;
 
 class IconControl extends Control {
 

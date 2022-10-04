@@ -1,17 +1,17 @@
 <?php
 /**
- * \Theme\NavMenu service provider.
+ * \Vite\NavMenu service provider.
  *
- * @package Theme
+ * @package Vite
  * @since 1.0.0
  */
 
-namespace Theme\ServiceProvider;
+namespace Vite\ServiceProvider;
 
 defined( 'ABSPATH' ) || exit;
 
 use League\Container\ServiceProvider\AbstractServiceProvider;
-use Theme\NavMenu;
+use Vite\NavMenu;
 
 /**
  * NavMenu service provider.

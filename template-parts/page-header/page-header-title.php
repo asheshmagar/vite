@@ -3,9 +3,9 @@
  * Template part for displaying page header title.
  *
  * @since x.x.x
- * @package Theme
+ * @package Vite
  */
 
 defined( 'ABSPATH' ) || exit;
 
-theme( 'page-header' )->render_page_header_title();
+vite( 'page-header' )->render_page_header_title();

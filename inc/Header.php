@@ -3,10 +3,10 @@
  * Class Header.
  *
  * @since x.x.x
- * @package Theme
+ * @package Vite
  */
 
-namespace Theme;
+namespace Vite;
 
 /**
  * Class Header.
@@ -105,12 +105,36 @@ class Header {
 		$args = [
 			'theme_location'  => 'primary',
 			'menu_id'         => 'primary-menu',
+			'menu_class'      => 'primary-menu menu',
 			'container_class' => 'primary-menu-container',
+			'fallback_cb'     => [ $this, 'primary_navigation_fallback_cb' ],
 		];
 		?>
 		<nav id="site-navigation" class="main-navigation">
 			<?php wp_nav_menu( $args ); ?>
 		</nav>
+		<?php
+	}
+
+	/**
+	 * Fallback for primary menu.
+	 *
+	 * @return void
+	 */
+	public function primary_navigation_fallback_cb() {
+		?>
+		<div id="primary-menu" class="primary-menu-container">
+			<ul class="primary-menu menu">
+				<?php
+				wp_list_pages(
+					[
+						'echo'     => true,
+						'title_li' => false,
+					]
+				);
+				?>
+			</ul>
+		</div>
 		<?php
 	}
 }

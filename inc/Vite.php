@@ -3,17 +3,17 @@
  * Class Theme.
  *
  * @since x.x.x
- * @package Theme
+ * @package Vite
  */
 
-namespace Theme;
+namespace Vite;
 
 defined( 'ABSPATH' ) || exit;
 
 /**
  * Class Theme.
  */
-class Theme {
+class Vite {
 
 	/**
 	 * Constructor.
@@ -28,11 +28,11 @@ class Theme {
 	 * @return void
 	 */
 	private function init() {
-		theme( 'supports' )->init();
-		theme( 'nav-menu' )->init();
-		theme( 'template-hooks' )->init();
-		theme( 'styles' )->init();
-		theme( 'scripts' )->init();
+		vite( 'supports' )->init();
+		vite( 'nav-menu' )->init();
+		vite( 'template-hooks' )->init();
+		vite( 'styles' )->init();
+		vite( 'scripts' )->init();
 		$this->init_hooks();
 	}
 
@@ -51,6 +51,6 @@ class Theme {
 	 * @return void
 	 */
 	public function load_textdomain() {
-		load_theme_textdomain( 'theme', get_template_directory() . '/languages' );
+		load_theme_textdomain( 'vite', get_template_directory() . '/languages' );
 	}
 }

@@ -4,10 +4,8 @@
  *
  * @link https://developer.wordpress.org/themes/basics/template-files/#template-partials
  *
- * @package Theme
+ * @package Vite
  */
-
-namespace Theme;
 
 // Exit if accessed directly.
 defined( 'ABSPATH' ) || exit;

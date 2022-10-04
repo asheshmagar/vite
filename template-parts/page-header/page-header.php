@@ -3,10 +3,10 @@
  * Template part for displaying page header.
  *
  * @since x.x.x
- * @package Theme
+ * @package Vite
  */
 
 defined( 'ABSPATH' ) || exit;
 
-theme( 'styles' )->print_styles( 'theme-page-header' );
-theme( 'page-header' )->render_page_header();
+vite( 'styles' )->print_styles( 'theme-page-header' );
+vite( 'page-header' )->render_page_header();

@@ -9,7 +9,7 @@
  *
  * @link https://developer.wordpress.org/themes/basics/template-hierarchy/
  *
- * @package Theme
+ * @package Vite
  * @since x.x.x
  */
 
@@ -20,9 +20,9 @@ get_header();
 ?>
 	<main id="primary" class="site-main">
 		<?php
-			do_action( 'theme_before_index' );
-			theme( 'core' )->the_loop();
-			do_action( 'theme_after_index' );
+			do_action( 'theme_before_archive' );
+			vite( 'core' )->the_loop();
+			do_action( 'theme_after_archive' );
 		?>
 	</main>
 	<?php

@@ -3,10 +3,10 @@
  * Template part for displaying header.
  *
  * @since x.x.x
- * @package Theme
+ * @package Vite
  */
 
 defined( 'ABSPATH' ) || exit;
 
-theme( 'styles' )->print_styles( 'theme-header' );
-theme( 'header' )->render_header();
+vite( 'styles' )->print_styles( 'vite-header' );
+vite( 'header' )->render_header();

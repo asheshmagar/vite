@@ -1,17 +1,17 @@
 <?php
 /**
- * \Theme\TemplateHooks service provider.
+ * \Vite\TemplateHooks service provider.
  *
- * @package Theme
+ * @package Vite
  * @since 1.0.0
  */
 
-namespace Theme\ServiceProvider;
+namespace Vite\ServiceProvider;
 
 defined( 'ABSPATH' ) || exit;
 
 use League\Container\ServiceProvider\AbstractServiceProvider;
-use Theme\TemplateHooks;
+use Vite\TemplateHooks;
 
 /**
  * TemplateHooks service provider.

@@ -3,9 +3,9 @@
  * Template part for displaying entry breadcrumbs.
  *
  * @since x.x.x
- * @package Theme
+ * @package Vite
  */
 
 defined( 'ABSPATH' ) || exit;
 
-theme( 'breadcrumbs' )->breadcrumbs();
+vite( 'breadcrumbs' )->breadcrumbs();

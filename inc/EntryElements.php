@@ -1,6 +1,6 @@
 <?php
 
-namespace Theme;
+namespace Vite;
 
 /**
  * Entry Elements.
@@ -148,7 +148,7 @@ class EntryElements {
 			if ( is_single() ) {
 				$sr_text = sprintf(
 					/* translators: %s: Post title. */
-					__( 'Continue reading %s', 'theme' ),
+					__( 'Continue reading %s', 'vite' ),
 					'<span class="screen-reader-text">' . get_the_title() . '</span>'
 				);
 				the_content( $sr_text );
@@ -158,7 +158,7 @@ class EntryElements {
 
 			wp_link_pages(
 				array(
-					'before' => '<div class="page-links">' . esc_html__( 'Pages:', 'theme' ),
+					'before' => '<div class="page-links">' . esc_html__( 'Pages:', 'vite' ),
 					'after'  => '</div>',
 				)
 			);
@@ -176,7 +176,7 @@ class EntryElements {
 		?>
 		<footer class="entry-footer">
 			<a href="<?php the_permalink(); ?>" class="ws-entry-cta">
-				<span class="read-more-text"><?php esc_html_e( 'Read More', 'theme' ); ?></span>
+				<span class="read-more-text"><?php esc_html_e( 'Read More', 'vite' ); ?></span>
 			</a>
 		</footer>
 		<?php

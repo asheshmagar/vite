@@ -1,6 +1,6 @@
 <?php
 
-namespace Theme\Customizer;
+namespace Vite\Customizer;
 
 class Customizer {
 }

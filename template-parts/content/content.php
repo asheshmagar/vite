@@ -4,14 +4,14 @@
  *
  * @link https://developer.wordpress.org/themes/basics/template-hierarchy/
  *
- * @package Theme
+ * @package Vite
  * @since   1.0.0
  */
 
 // Exit if accessed directly.
 defined( 'ABSPATH' ) || exit;
 
-theme( 'styles' )->print_styles( 'theme-content' );
+vite( 'styles' )->print_styles( 'vite-content' );
 
 $elements = apply_filters(
 	'theme_content_elements',
@@ -27,6 +27,6 @@ $elements = apply_filters(
 
 <article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
 	<div class="post-wrap">
-		<?php theme( 'entry-elements' )->render_entry_elements( $elements ); ?>
+		<?php vite( 'entry-elements' )->render_entry_elements( $elements ); ?>
 	</div>
 </article>

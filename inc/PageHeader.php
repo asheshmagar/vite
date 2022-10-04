@@ -2,11 +2,11 @@
 /**
  * Page header setup.
  *
- * @package Theme
+ * @package Vite
  * @since 1.0.0
  */
 
-namespace Theme;
+namespace Vite;
 
 /**
  * Page header setup.
@@ -77,9 +77,9 @@ class PageHeader {
 			$title = get_the_author();
 		} elseif ( is_search() ) {
 			/* Translators: %s: Search query */
-			$title = sprintf( __( 'Search Results for: %s', 'theme' ), get_search_query() );
+			$title = sprintf( __( 'Search Results for: %s', 'vite' ), get_search_query() );
 		} elseif ( is_404() ) {
-			$title = __( 'Oops! That page can&rsquo;t be found.', 'theme' );
+			$title = __( 'Oops! That page can&rsquo;t be found.', 'vite' );
 		} elseif ( is_archive() ) {
 			$title = get_the_archive_title();
 		}

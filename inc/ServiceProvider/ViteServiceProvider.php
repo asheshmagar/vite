@@ -2,21 +2,21 @@
 /**
  * Theme service provider.
  *
- * @package Theme
+ * @package Vite
  * @since 1.0.0
  */
 
-namespace Theme\ServiceProvider;
+namespace Vite\ServiceProvider;
 
 defined( 'ABSPATH' ) || exit;
 
 use League\Container\ServiceProvider\AbstractServiceProvider;
-use Theme\Theme;
+use Vite\Vite;
 
 /**
  * Theme service provider.
  */
-class ThemeServiceProvider extends AbstractServiceProvider {
+class ViteServiceProvider extends AbstractServiceProvider {
 
 	/**
 	 * {@inheritDoc}
@@ -26,7 +26,7 @@ class ThemeServiceProvider extends AbstractServiceProvider {
 	public function provides( string $id ): bool {
 		$services = [
 			'theme',
-			Theme::class,
+			Vite::class,
 		];
 
 		return in_array( $id, $services, true );
@@ -36,6 +36,6 @@ class ThemeServiceProvider extends AbstractServiceProvider {
 	 * {@inheritDoc}
 	 */
 	public function register(): void {
-		$this->getContainer()->addShared( 'theme', Theme::class );
+		$this->getContainer()->addShared( 'theme', Vite::class );
 	}
 }

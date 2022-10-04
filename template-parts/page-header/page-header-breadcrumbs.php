@@ -3,12 +3,12 @@
  * Template part for displaying page header breadcrumbs.
  *
  * @since x.x.x
- * @package Theme
+ * @package Vite
  */
 
 defined( 'ABSPATH' ) || exit;
 
-theme( 'breadcrumbs' )->breadcrumbs(
+vite( 'breadcrumbs' )->breadcrumbs(
 	[
 		'before' => '<div class="page-header-breadcrumbs">',
 		'after'  => '</div>',

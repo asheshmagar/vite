@@ -3,7 +3,7 @@
  *
  */
 
-namespace Theme;
+namespace Vite;
 
 /**
  * NavMenu.
@@ -28,9 +28,9 @@ class NavMenu {
 		$menu_locations = apply_filters(
 			'theme_menu_locations',
 			[
-				static::PRIMARY_MENU   => __( 'Primary Menu', 'theme' ),
-				static::SECONDARY_MENU => __( 'Secondary Menu', 'theme' ),
-				static::FOOTER_MENU    => __( 'Footer Menu', 'theme' ),
+				static::PRIMARY_MENU   => __( 'Primary Menu', 'vite' ),
+				static::SECONDARY_MENU => __( 'Secondary Menu', 'vite' ),
+				static::FOOTER_MENU    => __( 'Footer Menu', 'vite' ),
 			]
 		);
 		register_nav_menus( $menu_locations );

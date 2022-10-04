@@ -3,7 +3,7 @@
  * Customind base control class.
  */
 
-namespace Theme\Customizer\Controls;
+namespace Vite\Customizer\Controls;
 
 // Exit if accessed directly.
 defined( 'ABSPATH' ) || exit;

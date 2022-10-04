@@ -3,7 +3,7 @@
  * UpsellSection class.
  */
 
-namespace Theme\Customizer\Types;
+namespace Vite\Customizer\Types;
 
 defined( 'ABSPATH' ) || exit;
 
