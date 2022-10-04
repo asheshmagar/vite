@@ -24,5 +24,4 @@ node_modules/
 
 /vendor/
 
-assets/js/dist
-assets/js/build
+assets/dist
