@@ -3,14 +3,12 @@
  *
  */
 
-namespace Theme\Services;
-
-use Closure;
+namespace Theme;
 
 /**
  * Breadcrumbs.
  */
-class Breadcrumbs extends Service {
+class Breadcrumbs {
 
 	/**
 	 * Array of items belonging to the current breadcrumb trail.
@@ -49,11 +47,6 @@ class Breadcrumbs extends Service {
 	public function __toString() {
 		return $this->trail();
 	}
-
-	/**
-	 * {inheritdoc}
-	 */
-	public function init(): void {}
 
 	/**
 	 * Sets up the breadcrumb trail properties.  Calls the `Breadcrumb_Trail::add_items()` method
@@ -106,20 +99,11 @@ class Breadcrumbs extends Service {
 	}
 
 	/**
-	 * {@inheritDoc}
-	 */
-	public function services(): array {
-		return [
-			'breadcrumbs' => [ $this, 'breadcrumbs' ],
-		];
-	}
-
-	/**
 	 * Formats the HTML output for the breadcrumb trail.
 	 *
 	 * @return string|void
 	 */
-	public function trail() {
+	private function trail() {
 		// Set up variables that we'll need.
 		$breadcrumb    = '';
 		$item_count    = count( $this->items );
@@ -911,11 +895,11 @@ class Breadcrumbs extends Service {
 	 * Gets post types by slug.  This is needed because the get_post_types() function doesn't exactly
 	 * match the 'has_archive' argument when it's set as a string instead of a boolean.
 	 *
-	 * @param int $slug The post type archive slug to search for.
+	 * @param int|string $slug The post type archive slug to search for.
 	 *
 	 * @return array $return post type.
 	 */
-	private function get_post_types_by_slug( int $slug ): array {
+	private function get_post_types_by_slug( $slug ): array {
 		$return = [];
 
 		$post_types = get_post_types( [], 'objects' );

@@ -3,19 +3,19 @@
  *
  */
 
-namespace Theme\Services;
+namespace Theme;
 
 /**
  * NavMenu.
  */
-class NavMenu extends Service {
+class NavMenu {
 
 	public const PRIMARY_MENU   = 'primary';
 	public const SECONDARY_MENU = 'secondary';
 	public const FOOTER_MENU    = 'footer';
 
 	/**
-	 * {inheritdoc}
+	 * Init.
 	 */
 	public function init(): void {
 		add_action( 'after_setup_theme', [ $this, 'register_nav_menus' ] );
@@ -34,17 +34,6 @@ class NavMenu extends Service {
 			]
 		);
 		register_nav_menus( $menu_locations );
-	}
-
-	/**
-	 * {inheritdoc}
-	 */
-	public function services(): array {
-		return [
-			'is_primary_menu_active'   => [ $this, 'is_primary_menu_active' ],
-			'is_secondary_menu_active' => [ $this, 'is_secondary_menu_active' ],
-			'is_footer_menu_active'    => [ $this, 'is_footer_menu_active' ],
-		];
 	}
 
 	/**
