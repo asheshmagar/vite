@@ -8,7 +8,7 @@ export default ( type, Component ) => {
 				args = params || {};
 
 			args.params = args?.params || {};
-			args.params.type = args.params?.type ? args.params.type : 'customind';
+			args.params.type = args.params?.type ? args.params.type : 'vite';
 
 			wp.customize.Control.prototype.initialize.call( control, id, params );
 			control.container[ 0 ].classList.remove( 'customize-control' );
