@@ -3,7 +3,7 @@
  * SliderControl class.
  */
 
-namespace Vite\Customizer\Controls;
+namespace Vite\Customizer\Control;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -17,5 +17,5 @@ class SliderControl extends Control {
 	 *
 	 * @var string
 	 */
-	public $type = 'customind-slider';
+	public $type = 'vite-slider';
 }

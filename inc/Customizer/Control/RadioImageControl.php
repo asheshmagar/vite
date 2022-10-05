@@ -3,7 +3,7 @@
  * RadioImageControl class.
  */
 
-namespace Vite\Customizer\Controls;
+namespace Vite\Customizer\Control;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -17,5 +17,5 @@ class RadioImageControl extends Control {
 	 *
 	 * @var string
 	 */
-	public $type = 'customind-radio-image';
+	public $type = 'vite-radio-image';
 }

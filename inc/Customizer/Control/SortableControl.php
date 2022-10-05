@@ -3,7 +3,7 @@
  * SortableControl class.
  */
 
-namespace Vite\Customizer\Controls;
+namespace Vite\Customizer\Control;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -17,7 +17,7 @@ class SortableControl extends Control {
 	 *
 	 * @var string
 	 */
-	public $type = 'customind-sortable';
+	public $type = 'vite-sortable';
 
 	public $input_attrs = array(
 		'unsortable' => array(),

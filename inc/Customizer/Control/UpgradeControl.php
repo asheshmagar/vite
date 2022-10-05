@@ -3,7 +3,7 @@
  * UpgradeControl class.
  */
 
-namespace Vite\Customizer\Controls;
+namespace Vite\Customizer\Control;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -17,7 +17,7 @@ class UpgradeControl extends Control {
 	 *
 	 * @var string
 	 */
-	public $type = 'customind-update';
+	public $type = 'vite-update';
 
 	/**
 	 * URL.

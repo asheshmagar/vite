@@ -1,5 +1,5 @@
 <?php
-namespace Vite\Customizer\Controls;
+namespace Vite\Customizer\Control;
 
 class HiddenControl extends Control {
 
@@ -8,5 +8,5 @@ class HiddenControl extends Control {
 	 *
 	 * @var string
 	 */
-	public $type = 'customind-hidden';
+	public $type = 'vite-hidden';
 }

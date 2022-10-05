@@ -3,7 +3,7 @@
  * NavigateControl class.
  */
 
-namespace Vite\Customizer\Controls;
+namespace Vite\Customizer\Control;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -17,5 +17,5 @@ class NavigateControl extends Control {
 	 *
 	 * @var string
 	 */
-	public $type = 'customind-navigate';
+	public $type = 'vite-navigate';
 }

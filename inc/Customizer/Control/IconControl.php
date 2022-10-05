@@ -1,5 +1,5 @@
 <?php
-namespace Vite\Customizer\Controls;
+namespace Vite\Customizer\Control;
 
 class IconControl extends Control {
 
@@ -8,7 +8,7 @@ class IconControl extends Control {
 	 *
 	 * @var string
 	 */
-	public $type = 'customind-icon';
+	public $type = 'vite-icon';
 
 	/**
 	 * Control's nav info.
@@ -38,6 +38,6 @@ class IconControl extends Control {
 
 		}
 
-		return apply_filters( 'customind_icons', $icons );
+		return apply_filters( 'vite_icons', $icons );
 	}
 }

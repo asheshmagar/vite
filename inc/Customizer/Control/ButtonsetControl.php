@@ -3,7 +3,7 @@
  * ButtonsetControl class.
  */
 
-namespace Vite\Customizer\Controls;
+namespace Vite\Customizer\Control;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -17,5 +17,5 @@ class ButtonsetControl extends Control {
 	 *
 	 * @var string
 	 */
-	public $type = 'customind-buttonset';
+	public $type = 'vite-buttonset';
 }

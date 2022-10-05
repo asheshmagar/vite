@@ -1,9 +1,9 @@
 <?php
 /**
- * Customind base control class.
+ * Vite base control class.
  */
 
-namespace Vite\Customizer\Controls;
+namespace Vite\Customizer\Control;
 
 // Exit if accessed directly.
 defined( 'ABSPATH' ) || exit;

@@ -3,7 +3,7 @@
  * BuilderControl class.
  */
 
-namespace Vite\Customizer\Controls;
+namespace Vite\Customizer\Control;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -17,5 +17,5 @@ class BuilderControl extends Control {
 	 *
 	 * @var string
 	 */
-	public $type = 'customind-builder';
+	public $type = 'vite-builder';
 }

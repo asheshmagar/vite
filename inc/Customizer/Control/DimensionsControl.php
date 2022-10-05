@@ -3,7 +3,7 @@
  * DimensionsControl class.
  */
 
-namespace Vite\Customizer\Controls;
+namespace Vite\Customizer\Control;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -18,5 +18,5 @@ class DimensionsControl extends Control {
 	 *
 	 * @var string
 	 */
-	public $type = 'customind-dimensions';
+	public $type = 'vite-dimensions';
 }

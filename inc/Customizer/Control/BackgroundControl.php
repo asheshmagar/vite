@@ -3,7 +3,7 @@
  * BackgroundControl class.
  */
 
-namespace Vite\Customizer\Controls;
+namespace Vite\Customizer\Control;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -17,5 +17,5 @@ class BackgroundControl extends Control {
 	 *
 	 * @var string
 	 */
-	public $type = 'customind-background';
+	public $type = 'vite-background';
 }

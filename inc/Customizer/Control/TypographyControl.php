@@ -3,7 +3,7 @@
  * TypographyControl class.
  */
 
-namespace Vite\Customizer\Controls;
+namespace Vite\Customizer\Control;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -17,7 +17,7 @@ class TypographyControl extends Control {
 	 *
 	 * @var string
 	 */
-	public $type = 'customind-typography';
+	public $type = 'vite-typography';
 
 	public function to_json() {
 		parent::to_json();

@@ -3,7 +3,7 @@
  * DividerControl class.
  */
 
-namespace Vite\Customizer\Controls;
+namespace Vite\Customizer\Control;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -17,5 +17,5 @@ class DividerControl extends Control {
 	 *
 	 * @var string
 	 */
-	public $type = 'customind-divider';
+	public $type = 'vite-divider';
 }

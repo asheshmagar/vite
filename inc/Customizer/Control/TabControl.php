@@ -1,5 +1,5 @@
 <?php
-namespace Vite\Customizer\Controls;
+namespace Vite\Customizer\Control;
 
 class TabControl extends Control {
 
@@ -8,5 +8,5 @@ class TabControl extends Control {
 	 *
 	 * @var string
 	 */
-	public $type = 'customind-tab';
+	public $type = 'vite-tab';
 }

@@ -3,7 +3,7 @@
  * GroupControl class.
  */
 
-namespace Vite\Customizer\Controls;
+namespace Vite\Customizer\Control;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -17,7 +17,7 @@ class GroupControl extends Control {
 	 *
 	 * @var string
 	 */
-	public $type = 'customind-group';
+	public $type = 'vite-group';
 
 	/**
 	 * Refresh the parameters passed to the JavaScript via JSON.
@@ -25,20 +25,18 @@ class GroupControl extends Control {
 	 * @return void
 	 */
 	public function to_json() {
-		global $customind;
-
 		parent::to_json();
 		$config = array();
 		$id     = $this->id;
 
-		if ( isset( $customind->group_configs[ $id ]['tabs'] ) ) {
-			$tabs = array_keys( $customind->group_configs[ $id ]['tabs'] );
+		if ( isset( vite( 'customizer' )->group[ $id ]['tabs'] ) ) {
+			$tabs = array_keys( vite( 'customizer' )->group[ $id ]['tabs'] );
 			foreach ( $tabs as $tab ) {
-				$config['tabs'][ $tab ] = wp_list_sort( $customind->group_configs[ $id ]['tabs'][ $tab ], 'priority' );
+				$config['tabs'][ $tab ] = wp_list_sort( vite( 'customizer' )->group[ $id ]['tabs'][ $tab ], 'priority' );
 			}
 		} else {
-			if ( isset( $customind->group_configs[ $id ] ) ) {
-				$config = wp_list_sort( $customind->group_configs[ $id ], 'priority' );
+			if ( isset( vite( 'customizer' )->group[ $id ] ) ) {
+				$config = wp_list_sort( vite( 'customizer' )->group[ $id ], 'priority' );
 			}
 		}
 

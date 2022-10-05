@@ -3,7 +3,7 @@
  * ToggleControl class.
  */
 
-namespace Vite\Customizer\Controls;
+namespace Vite\Customizer\Control;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -17,5 +17,5 @@ class ToggleControl extends Control {
 	 *
 	 * @var string
 	 */
-	public $type = 'customind-toggle';
+	public $type = 'vite-toggle';
 }

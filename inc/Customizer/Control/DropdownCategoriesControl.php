@@ -3,7 +3,7 @@
  * DropdownCategoriesControl class.
  */
 
-namespace Vite\Customizer\Controls;
+namespace Vite\Customizer\Control;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -17,7 +17,7 @@ class DropdownCategoriesControl extends Control {
 	 *
 	 * @var string
 	 */
-	public $type = 'customind-dropdown-categories';
+	public $type = 'vite-dropdown-categories';
 
 	/**
 	 * Refresh the parameters passed to the JavaScript via JSON.

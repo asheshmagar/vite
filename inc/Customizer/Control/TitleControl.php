@@ -3,7 +3,7 @@
  * TitleControl class.
  */
 
-namespace Vite\Customizer\Controls;
+namespace Vite\Customizer\Control;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -17,5 +17,5 @@ class TitleControl extends Control {
 	 *
 	 * @var string
 	 */
-	public $type = 'customind-title';
+	public $type = 'vite-title';
 }

@@ -3,7 +3,7 @@
  * CustomControl class.
  */
 
-namespace Vite\Customizer\Controls;
+namespace Vite\Customizer\Control;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -17,5 +17,5 @@ class CustomControl extends Control {
 	 *
 	 * @var string
 	 */
-	public $type = 'customind-custom';
+	public $type = 'vite-custom';
 }

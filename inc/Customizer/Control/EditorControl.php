@@ -3,7 +3,7 @@
  * EditorControl class.
  */
 
-namespace Vite\Customizer\Controls;
+namespace Vite\Customizer\Control;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -17,5 +17,5 @@ class EditorControl extends Control {
 	 *
 	 * @var string
 	 */
-	public $type = 'customind-editor';
+	public $type = 'vite-editor';
 }

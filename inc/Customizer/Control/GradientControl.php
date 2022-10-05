@@ -3,7 +3,7 @@
  * GradientControl class.
  */
 
-namespace Vite\Customizer\Controls;
+namespace Vite\Customizer\Control;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -17,5 +17,5 @@ class GradientControl extends Control {
 	 *
 	 * @var string
 	 */
-	public $type = 'customind-gradient';
+	public $type = 'vite-gradient';
 }

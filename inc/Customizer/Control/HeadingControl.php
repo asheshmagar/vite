@@ -1,5 +1,5 @@
 <?php
-namespace Vite\Customizer\Controls;
+namespace Vite\Customizer\Control;
 
 class HeadingControl extends Control {
 
@@ -8,5 +8,5 @@ class HeadingControl extends Control {
 	 *
 	 * @var string
 	 */
-	public $type = 'customind-heading';
+	public $type = 'vite-heading';
 }

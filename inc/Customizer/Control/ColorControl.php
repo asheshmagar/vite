@@ -3,7 +3,7 @@
  * ColorControl class.
  */
 
-namespace Vite\Customizer\Controls;
+namespace Vite\Customizer\Control;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -17,5 +17,5 @@ class ColorControl extends Control {
 	 *
 	 * @var string
 	 */
-	public $type = 'customind-color';
+	public $type = 'vite-color';
 }
