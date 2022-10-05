@@ -32,12 +32,12 @@ class Styles {
 	 * @return void
 	 */
 	public function register() {
-		wp_register_style( 'vite-normalize', THEME_ASSETS_URI . 'dist/normalize.css', [], THEME_VERSION );
-		wp_register_style( 'vite-global', THEME_ASSETS_URI . 'dist/global.css', [ 'vite-normalize' ], THEME_VERSION );
-		wp_register_style( 'vite-header', THEME_ASSETS_URI . 'dist/header.css', [], THEME_VERSION );
-		wp_register_style( 'vite-page-header', THEME_ASSETS_URI . 'dist/page-header.css', [], THEME_VERSION );
-		wp_register_style( 'vite-content', THEME_ASSETS_URI . 'dist/content.css', [], THEME_VERSION );
-		wp_register_style( 'vite-footer', THEME_ASSETS_URI . 'dist/footer.css', [], THEME_VERSION );
+		wp_register_style( 'vite-normalize', VITE_ASSETS_URI . 'dist/normalize.css', [], VITE_VERSION );
+		wp_register_style( 'vite-global', VITE_ASSETS_URI . 'dist/global.css', [ 'vite-normalize' ], VITE_VERSION );
+		wp_register_style( 'vite-header', VITE_ASSETS_URI . 'dist/header.css', [], VITE_VERSION );
+		wp_register_style( 'vite-page-header', VITE_ASSETS_URI . 'dist/page-header.css', [], VITE_VERSION );
+		wp_register_style( 'vite-content', VITE_ASSETS_URI . 'dist/content.css', [], VITE_VERSION );
+		wp_register_style( 'vite-footer', VITE_ASSETS_URI . 'dist/footer.css', [], VITE_VERSION );
 	}
 
 	/**
