@@ -1,7 +1,7 @@
 import Sortable from './sortable';
 import { defineControls } from '../../utils';
-import './controls.scss';
+import './customizer.scss';
 
 export default () => {
-	defineControls( 'customind-sortable', Sortable );
+	defineControls( 'vite-sortable', Sortable );
 };

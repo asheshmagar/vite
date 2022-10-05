@@ -33,9 +33,9 @@ export default memo( ( props ) => {
 
 	return (
 		<>
-			<div className="customind-control customind-gradient-control">
+			<div className="vite-control vite-gradient-control">
 				{ label && (
-					<div className="customind-control-head">
+					<div className="vite-control-head">
 						<span className="customize-control-title">{ label }</span>
 						{ description && (
 							<Tooltip>1
@@ -49,10 +49,10 @@ export default memo( ( props ) => {
 					<span>Select color</span>
 				</Button>
 			</div>
-			<div className="customind-gradient-popover-wrap">
-				<div ref={ popover } className={ `customind-gradient-popover${ isOpen ? ' open' : '' }` }>
+			<div className="vite-gradient-popover-wrap">
+				<div ref={ popover } className={ `vite-gradient-popover${ isOpen ? ' open' : '' }` }>
 					{ isOpen && (
-						<GradientPicker className="customind-gradient-picker" value={ value } onChange={ val => {
+						<GradientPicker className="vite-gradient-picker" value={ value } onChange={ val => {
 							setValue( val );
 							setting.set( val );
 						} } />

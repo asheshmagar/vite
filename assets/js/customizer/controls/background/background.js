@@ -47,9 +47,9 @@ export default memo( ( props ) => {
 		{ label: __( 'Fixed' ), value: 'fixed' },
 	];
 	return (
-		<div className="customind-control customind-background-control">
+		<div className="vite-control vite-background-control">
 			{ label && (
-				<div className="customind-control-head">
+				<div className="vite-control-head">
 					<span className="customize-control-title">{ label }</span>
 					{
 						description && (
@@ -60,7 +60,7 @@ export default memo( ( props ) => {
 					}
 				</div>
 			) }
-			<div className="customind-control-body">
+			<div className="vite-control-body">
 				<CustomindColorPicker value={ value?.[ 'background-color' ] || '' } onChange={ color => {
 					const newVal = { ...value, 'background-color': color };
 					setValue( newVal );

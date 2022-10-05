@@ -82,20 +82,20 @@ export default memo( ( props ) => {
 	}, [ open ] );
 
 	return (
-		<div className="customind-control customind-builder-control" data-control-id={ id }>
+		<div className="vite-control vite-builder-control" data-control-id={ id }>
 			<Portal>
-				<div className={ `customind-builder${ open ? ' open' : '' }` } data-portal-for={ id }>
-					<div ref={ builderRef } className="customind-builder-rows-wrap">
-						<div className="customind-builder-rows">
+				<div className={ `vite-builder${ open ? ' open' : '' }` } data-portal-for={ id }>
+					<div ref={ builderRef } className="vite-builder-rows-wrap">
+						<div className="vite-builder-rows">
 							{ Object.keys( areas ).map( row => (
-								<div key={ row } className={ `customind-builder-row customind-builder-row-${ row }` }>
-									<Button className="customind-builder-row-action" icon="admin-generic" />
-									<div className="customind-builder-areas">
+								<div key={ row } className={ `vite-builder-row vite-builder-row-${ row }` }>
+									<Button className="vite-builder-row-action" icon="admin-generic" />
+									<div className="vite-builder-areas">
 										{ Object.keys( areas?.[ row ] || {} ).map( ( area ) => {
 											return (
 												<BuilderArea
 													key={ area }
-													className={ `customind-builder-area customind-builder-area-${ area }` }
+													className={ `vite-builder-area vite-builder-area-${ area }` }
 													remove={ ( item ) => remove( row, area, item ) }
 													areaItems={ getAreaItems( row, area ) }
 													value={ value }

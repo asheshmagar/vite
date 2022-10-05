@@ -25,9 +25,9 @@ export default memo( ( props ) => {
 	};
 
 	return (
-		<div className="customind-control customind-radio-image-control" data-control-id={ id }>
+		<div className="vite-control vite-radio-image-control" data-control-id={ id }>
 			{ label && (
-				<div className="customind-control-head">
+				<div className="vite-control-head">
 					<span className="customize-control-title">{ label }</span>
 					{ description && (
 						<Tooltip>
@@ -36,7 +36,7 @@ export default memo( ( props ) => {
 					) }
 				</div>
 			) }
-			<div className="customind-control-body" style={ { '--customind-col': imageCol } }>
+			<div className="vite-control-body" style={ { '--vite-col': imageCol } }>
 				{ Object.entries( choices ).map( ( [ k, v ] ) => (
 					<div
 						role="button"
@@ -49,7 +49,7 @@ export default memo( ( props ) => {
 						} }
 						key={ k }
 						data-id={ k }
-						className={ `customind-radio-image${ value === k ? ' active' : '' }` }
+						className={ `vite-radio-image${ value === k ? ' active' : '' }` }
 						data-label={ v?.label || null }
 					>
 						{ v?.url && (

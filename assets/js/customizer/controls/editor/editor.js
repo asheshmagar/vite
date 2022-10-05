@@ -17,10 +17,10 @@ export default memo( ( props ) => {
 	} = props;
 
 	useEffect( () => {
-		setValue( props.control.setting.get() );
+		setValue( props?.control.setting.get() );
 
 		const initialize = () => {
-			wp.editor.initialize( ( id ?? 'customind_editor' ), {
+			wp.editor.initialize( ( id ?? 'vite_editor' ), {
 				quicktags: true,
 				mediaButtons: true,
 				tinymce: {
@@ -48,7 +48,7 @@ export default memo( ( props ) => {
 				'DOMContentLoaded',
 				initialize
 			);
-			wp.editor.remove( ( id ?? 'customind_editor' ) );
+			wp.editor.remove( ( id ?? 'vite_editor' ) );
 		};
 	}, [] );
 
@@ -58,9 +58,9 @@ export default memo( ( props ) => {
 	};
 
 	return (
-		<div className="customind-control customind-editor-control" data-control-id={ id }>
+		<div className="vite-control vite-editor-control" data-control-id={ id }>
 			{ label && (
-				<div className="customind-control-head">
+				<div className="vite-control-head">
 					<span className="customize-control-title">{ label }</span>
 					{ description && (
 						<Tooltip>
@@ -71,7 +71,7 @@ export default memo( ( props ) => {
 			) }
 			<textarea
 				className="wp-editor-area"
-				id={ id || 'customind_editor' }
+				id={ id || 'vite_editor' }
 				value={ value }
 				onChange={ e => {
 					update( e.target.value );

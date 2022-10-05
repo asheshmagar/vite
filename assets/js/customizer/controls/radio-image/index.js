@@ -1,7 +1,7 @@
 import { defineControls } from '../../utils';
 import RadioImage from './radio-image';
-import './controls.scss';
+import './customizer.scss';
 
 export default () => {
-	defineControls( 'customind-radio-image', RadioImage );
+	defineControls( 'vite-radio-image', RadioImage );
 };

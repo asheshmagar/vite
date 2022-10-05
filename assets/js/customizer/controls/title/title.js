@@ -7,12 +7,12 @@ export default memo( ( props ) => {
 		link,
 	} = props.control.params;
 	return (
-		<div className="customind-control customind-title-control">
+		<div className="vite-control vite-title-control">
 			{ label && (
-				<span className="customize-control-title customind-control__label">{ label }</span>
+				<span className="customize-control-title vite-control__label">{ label }</span>
 			) }
 			{ description && (
-				<span className="customize-control-description customind-control__description">{ description }</span>
+				<span className="customize-control-description vite-control__description">{ description }</span>
 			) }
 			{ link && (
 				<div className="guide-tutorial">

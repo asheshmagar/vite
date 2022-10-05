@@ -1,4 +1,4 @@
-.customind-gradient > .components-popover__content {
+.vite-gradient > .components-popover__content {
 	min-width: 300px;
 	min-height: 190px;
 	padding: 10px;
@@ -8,10 +8,10 @@
 	}
 }
 
-.customize-control-customind-gradient {
+.customize-control-vite-gradient {
 	position: relative;
 
-	.customind-control-head + .components-button {
+	.vite-control-head + .components-button {
 		background-color: #ebebeb;
 		border: 1px solid #ebebeb;
 
@@ -22,7 +22,7 @@
 		}
 	}
 
-	.customind-gradient-popover.open {
+	.vite-gradient-popover.open {
 		background-color: #ffffff;
 		border-radius: 5px;
 		box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);

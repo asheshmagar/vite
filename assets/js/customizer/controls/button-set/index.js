@@ -1,7 +1,7 @@
 import ButtonSet from './button-set';
 import { defineControls } from '../../utils';
-import './controls.scss';
+import './customizer.scss';
 
 export default () => {
-	defineControls( 'customind-buttonset', ButtonSet );
+	defineControls( 'vite-buttonset', ButtonSet );
 };

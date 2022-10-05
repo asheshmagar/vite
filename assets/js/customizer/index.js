@@ -14,7 +14,7 @@ const api = wp.customize;
 			sections = [];
 
 		api.section.each( section => {
-			if ( 'customind-section' === section.params.type && !! section.params?.section ) {
+			if ( 'vite-section' === section.params.type && !! section.params?.section ) {
 				sections.push( section );
 			}
 		} );
@@ -27,7 +27,7 @@ const api = wp.customize;
 		} );
 
 		api.panel.each( panel => {
-			if ( 'customind-panel' === panel.params.type && !! panel.params?.panel ) {
+			if ( 'vite-panel' === panel.params.type && !! panel.params?.panel ) {
 				panels.push( panel );
 			}
 		} );
@@ -46,7 +46,7 @@ const api = wp.customize;
 
 	api.Panel = api.Panel.extend( {
 		attachEvents() {
-			if ( 'customind-panel' !== this.params.type || ! this.params?.panel ) {
+			if ( 'vite-panel' !== this.params.type || ! this.params?.panel ) {
 				panelAttachEvents.call( this );
 				return;
 			}
@@ -78,7 +78,7 @@ const api = wp.customize;
 				} );
 		},
 		embed() {
-			if ( 'customind-panel' !== this.params.type || ! this.params?.section ) {
+			if ( 'vite-panel' !== this.params.type || ! this.params?.section ) {
 				panelEmbed.call( this );
 				return;
 			}
@@ -91,7 +91,7 @@ const api = wp.customize;
 			parentContainer.append( panel.headContainer );
 		},
 		isContextuallyActive() {
-			if ( 'customind-panel' !== this.params.type ) {
+			if ( 'vite-panel' !== this.params.type ) {
 				return panelIsContextuallyActive.call( this );
 			}
 
@@ -124,7 +124,7 @@ const api = wp.customize;
 		attachEvents() {
 			const section = this;
 
-			if ( 'customind-section' !== section.params.type || ! section.params?.section ) {
+			if ( 'vite-section' !== section.params.type || ! section.params?.section ) {
 				sectionAttachEvents.call( this );
 				return;
 			}
@@ -154,7 +154,7 @@ const api = wp.customize;
 				} );
 		},
 		embed() {
-			if ( 'customind-section' !== this.params.type ) {
+			if ( 'vite-section' !== this.params.type ) {
 				sectionEmbed.call( this );
 				return;
 			}
@@ -167,7 +167,7 @@ const api = wp.customize;
 			parentContainer.append( section.headContainer );
 		},
 		isContextuallyActive() {
-			if ( 'customind-section' !== this.params.type || ! this.params?.section ) {
+			if ( 'vite-section' !== this.params.type || ! this.params?.section ) {
 				return sectionIsContextuallyActive.call( this );
 			}
 
@@ -207,9 +207,9 @@ const api = wp.customize;
 		api.control.each( control => {
 			if ( control.section() ) {
 				const section = api.section( control.section() );
-				if ( section?.panel() && 'customind-builder-section' === section.params?.type ) {
+				if ( section?.panel() && 'vite-builder-section' === section.params?.type ) {
 					const panel = api.panel( section.panel() );
-					if ( panel?.id && 'customind-builder-panel' === panel.params?.type ) {
+					if ( panel?.id && 'vite-builder-panel' === panel.params?.type ) {
 						builderPanelSection[ panel.id ] = [
 							...( builderPanelSection?.[ panel.id ] || [] ),
 							section.id,
@@ -237,7 +237,7 @@ const api = wp.customize;
 					const headContainer = section.headContainer;
 
 					selectors.push( `#sub-accordion-section-${ section.id }` );
-					headContainer.addClass( 'customind-hidden-section-navigator' );
+					headContainer.addClass( 'vite-hidden-section-navigator' );
 					contentContainer.find( '.section-meta' ).addClass( 'hidden' ).hide();
 
 					panel.expanded.bind( ( isExpanded ) => {
@@ -251,7 +251,7 @@ const api = wp.customize;
 						} );
 
 						if ( isExpanded ) {
-							$( `#sub-accordion-panel-${ panelId } li.control-section` ).addClass( 'customind-hidden-section-navigator' ).hide();
+							$( `#sub-accordion-panel-${ panelId } li.control-section` ).addClass( 'vite-hidden-section-navigator' ).hide();
 							$( 'body' ).addClass( newBodyClass );
 						} else {
 							$( 'body' ).removeClass( newBodyClass );
@@ -280,8 +280,8 @@ const api = wp.customize;
 
 {
 	api.bind( 'ready', () => {
-		api.state.create( 'customindTab' );
-		api.state( 'customindTab' ).set( 'general' );
+		api.state.create( 'viteTab' );
+		api.state( 'viteTab' ).set( 'general' );
 
 		const $controls = $( '#customize-theme-controls' );
 
@@ -289,32 +289,32 @@ const api = wp.customize;
 			const section = api.section( sectionId );
 			if ( section ) {
 				const container = section.contentContainer[ 0 ];
-				container.addClass( 'customind-prevent-transition' );
+				container.addClass( 'vite-prevent-transition' );
 				setTimeout( () => {
 					section.focus();
 				}, 10 );
 				setTimeout( () => {
-					container.removeClass( 'customind-prevent-transition' ).removeClass( 'busy' );
+					container.removeClass( 'vite-prevent-transition' ).removeClass( 'busy' );
 					container.css( 'top', '' );
 				}, 300 );
 			}
 		};
 
-		$controls.on( 'click', '.customind-tab', function( e ) {
+		$controls.on( 'click', '.vite-tab', function( e ) {
 			e.preventDefault();
 			const target = $( this ).attr( 'data-target' );
-			api.state( 'customindTab' ).set( $( this ).attr( 'data-tab' ) );
+			api.state( 'viteTab' ).set( $( this ).attr( 'data-tab' ) );
 			if ( target ) {
 				focusSection( target );
 			}
 		} );
 
-		api.state( 'customindTab' ).bind( () => {
-			const tab = api.state( 'customindTab' ).get();
-			$( '.customind-tab' ).removeClass( 'active' ).filter( `.customind-${ tab }-tab` ).addClass( 'active' );
+		api.state( 'viteTab' ).bind( () => {
+			const tab = api.state( 'viteTab' ).get();
+			$( '.vite-tab' ).removeClass( 'active' ).filter( `.vite-${ tab }-tab` ).addClass( 'active' );
 		} );
 
-		$controls.on( 'click', '.customize-section-back', () => api.state( 'customindTab' ).set( 'general' ) );
+		$controls.on( 'click', '.customize-section-back', () => api.state( 'viteTab' ).set( 'general' ) );
 	} );
 }
 

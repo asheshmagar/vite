@@ -1,4 +1,4 @@
-.customind-builder {
+.vite-builder {
 	position: relative;
 	z-index: 10;
 
@@ -19,7 +19,7 @@
 		}
 	}
 
-	&.open .customind-builder-rows-wrap {
+	&.open .vite-builder-rows-wrap {
 		transform: none;
 	}
 
@@ -31,7 +31,7 @@
 		flex-wrap: nowrap;
 		margin-bottom: 10px;
 
-		.customind-builder-row-action {
+		.vite-builder-row-action {
 			align-items: center;
 			border-right: 1px solid #d9d9d9;
 			display: flex;
@@ -43,19 +43,19 @@
 			width: 32px;
 		}
 
-		.customind-builder-areas {
+		.vite-builder-areas {
 			align-items: stretch;
 			display: flex;
 			width: 100%;
 		}
 
-		.customind-builder-area {
+		.vite-builder-area {
 			display: flex;
 			flex: 1;
 			position: relative;
 		}
 
-		.customind-builder-droppable {
+		.vite-builder-droppable {
 			align-items: center;
 			border-right: 1px dashed #cecece;
 			display: flex;
@@ -64,7 +64,7 @@
 			padding: 0 2px;
 		}
 
-		.customind-builder-popover-trigger {
+		.vite-builder-popover-trigger {
 			border-radius: 0;
 			bottom: 0;
 			height: unset;
@@ -78,7 +78,7 @@
 			width: 100%;
 			z-index: 0;
 		}
-		.customind-builder-item {
+		.vite-builder-item {
 			align-items: center;
 			background-color: #fff;
 			border: 1px solid #d9d9d9;
@@ -94,7 +94,7 @@
 			z-index: 1;
 			padding-left: 10px;
 
-			.customind-builder-item-handle {
+			.vite-builder-item-handle {
 				height: 15px;
 				width: 15px;
 				svg {
@@ -117,27 +117,27 @@
 				}
 			}
 
-			.customind-builder-item-title {
+			.vite-builder-item-title {
 				margin-right: 10px;
 			}
 		}
 	}
 }
 
-.customind-hidden-section-navigator {
+.vite-hidden-section-navigator {
 	display: none !important;
 }
 
-.customind-builder-components {
+.vite-builder-components {
 	padding: 20px;
-	> .customind-builder-components-group {
+	> .vite-builder-components-group {
 		width: 300px;
 		max-height: 300px;
 		display: grid;
 		grid-template-columns: repeat(3, 1fr);
 		grid-gap: 20px;
 
-		.customind-builder-component {
+		.vite-builder-component {
 			flex-direction: column;
 			border-radius: 4px;
 			align-items: center;

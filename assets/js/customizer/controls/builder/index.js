@@ -1,7 +1,7 @@
 import { defineControls } from '../../utils';
 import Builder from './builder';
-import './controls.scss';
+import './customizer.scss';
 
 export default () => {
-	defineControls( 'customind-builder', Builder );
+	defineControls( 'vite-builder', Builder );
 };

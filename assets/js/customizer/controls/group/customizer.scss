@@ -1,21 +1,21 @@
-.customind-group-control {
+.vite-group-control {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
 }
 
-.customind-group-control {
+.vite-group-control {
 
-	.customind-control-head {
+	.vite-control-head {
 		width: 100%;
 		justify-content: space-between;
 	}
 }
 
-.customize-control-customind-group {
+.customize-control-vite-group {
 	position: relative;
 
-	.customind-group-popover.open {
+	.vite-group-popover.open {
 		background-color: #ffffff;
 		border-radius: 5px;
 		box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
@@ -35,7 +35,7 @@
 			top: -15px;
 		}
 
-		.customind-control:not(:first-child) {
+		.vite-control:not(:first-child) {
 			margin-top: 16px;
 		}
 	}
@@ -45,9 +45,9 @@
 		margin-bottom: 0;
 	}
 
-	.customind-color-picker > div,
-	.customind-color-picker .react-colorful > div,
-	.customind-color-picker .react-colorful {
+	.vite-color-picker > div,
+	.vite-color-picker .react-colorful > div,
+	.vite-color-picker .react-colorful {
 		width: 100% !important;
 	}
 
@@ -56,7 +56,7 @@
 	}
 }
 
-.customind-group-tabs {
+.vite-group-tabs {
 	.components-tab-panel__tabs {
 		margin-bottom: 16px;
 	}
@@ -73,7 +73,7 @@
 	}
 }
 
-.customind-group-popover-trigger {
+.vite-group-popover-trigger {
 	background-color: #ebebeb;
 	border-radius: 100%;
 	color: rgba(68, 68, 68, 0.6);

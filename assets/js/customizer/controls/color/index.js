@@ -1,7 +1,7 @@
 import { defineControls } from '../../utils';
 import Color from './color';
-import './controls.scss';
+import './customizer.scss';
 
 export default () => {
-	defineControls( 'customind-color', Color );
+	defineControls( 'vite-color', Color );
 };

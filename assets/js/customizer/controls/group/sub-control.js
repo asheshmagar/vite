@@ -16,27 +16,27 @@ const SubControl = props => {
 	const control = customizer.control( name );
 	_.extend( control.params, otherProps );
 	switch ( type ) {
-		case 'customind-color':
+		case 'vite-color':
 			return <Color control={ control } customizer={ customizer } />;
-		case 'customind-background':
+		case 'vite-background':
 			return <Background control={ control } customizer={ customizer } />;
-		case 'customind-typography':
+		case 'vite-typography':
 			return <Typography control={ control } customizer={ customizer } />;
-		case 'customind-dimensions':
+		case 'vite-dimensions':
 			return <Dimensions control={ control } customizer={ customizer } />;
-		case 'customind-buttonset':
+		case 'vite-buttonset':
 			return <ButtonSet control={ control } customizer={ customizer } />;
-		case 'customind-custom':
+		case 'vite-custom':
 			return <Custom control={ control } customizer={ customizer } />;
-		case 'customind-navigate':
+		case 'vite-navigate':
 			return <Navigate control={ control } customizer={ customizer } />;
-		case 'customind-radio-image':
+		case 'vite-radio-image':
 			return <RadioImage control={ control } customizer={ customizer } />;
-		case 'customind-slider':
+		case 'vite-slider':
 			return <Slider control={ control } customizer={ customizer } />;
-		case 'customind-toggle':
+		case 'vite-toggle':
 			return <Toggle control={ control } customizer={ customizer } />;
-		case 'customind-gradient':
+		case 'vite-gradient':
 			return <Gradient control={ control } customizer={ customizer } />;
 		default:
 			return null;

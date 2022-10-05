@@ -1,11 +1,11 @@
-.customind-radio-image-control {
-	.customind-control-body {
+.vite-radio-image-control {
+	.vite-control-body {
 		display: grid;
-		grid-template-columns: repeat( var( --customind-col, 1 ), 1fr );
+		grid-template-columns: repeat( var( --vite-col, 1 ), 1fr );
 		grid-gap: 20px;
 	}
 
-	.customind-radio-image {
+	.vite-radio-image {
 		padding: 10px 10px 0 10px;
 		background-color: #ebebeb;
 		cursor: pointer;

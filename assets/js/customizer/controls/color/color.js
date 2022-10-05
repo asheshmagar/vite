@@ -15,9 +15,9 @@ export default memo( ( props ) => {
 	const [ value, setValue ] = useState( setting.get() );
 
 	return (
-		<div className="customind-control customind-color-control">
+		<div className="vite-control vite-color-control">
 			{ label && (
-				<div className="customind-control-head">
+				<div className="vite-control-head">
 					<span className="customize-control-title">{ label }</span>
 					{ description && (
 						<Tooltip>
@@ -26,7 +26,7 @@ export default memo( ( props ) => {
 					) }
 				</div>
 			) }
-			<div className="customind-control-body">
+			<div className="vite-control-body">
 				<CustomindColorPicker type={ type } value={ value } onChange={ ( color ) => {
 					setValue( color );
 					setting.set( color );

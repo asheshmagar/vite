@@ -22,10 +22,10 @@ export default memo( ( props ) => {
 	const { DeviceSelector } = useDeviceSelector();
 
 	return (
-		<div className="customind-control customind-button-set-control" data-multiple={ multiple }>
+		<div className="vite-control vite-button-set-control" data-multiple={ multiple }>
 			{ label && (
-				<div className="customind-control-head">
-					<div className="customind-control-title-wrap">
+				<div className="vite-control-head">
+					<div className="vite-control-title-wrap">
 						<span className="customize-control-title">{ label }</span>
 						{ responsive && <DeviceSelector /> }
 					</div>

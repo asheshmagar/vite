@@ -16,20 +16,20 @@ export default memo( ( props ) => {
 	} = props;
 
 	return (
-		<div className="customind-control customind-custom-control" data-control-id={ id }>
+		<div className="vite-control vite-custom-control" data-control-id={ id }>
 			{ label && (
-				<div className="customind-control-head">
+				<div className="vite-control-head">
 					<span className="customize-control-title">{ label }</span>
 				</div>
 			) }
-			<div className="customind-control-body">
+			<div className="vite-control-body">
 				{ info && (
 					<RawHTML>{ info }</RawHTML>
 				) }
 				{ links && (
-					<ul className="customind-links">
+					<ul className="vite-links">
 						{ links.map( ( l, idx ) => (
-							<li className="customind-link" key={ idx }>
+							<li className="vite-link" key={ idx }>
 								<Button variant="primary" href={ l?.url || null }>
 									{ l.text }
 								</Button>

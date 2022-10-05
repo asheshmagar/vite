@@ -1,7 +1,7 @@
 import Gradient from './gradient';
 import { defineControls } from '../../utils';
-import './controls.scss';
+import './customizer.scss';
 
 export default () => {
-	defineControls( 'customind-gradient', Gradient );
+	defineControls( 'vite-gradient', Gradient );
 };

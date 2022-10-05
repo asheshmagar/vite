@@ -1,7 +1,7 @@
 import { defineControls } from '../../utils';
 import Toggle from './toggle';
-import './controls.scss';
+import './customizer.scss';
 
 export default () => {
-	defineControls( 'customind-toggle', Toggle );
+	defineControls( 'vite-toggle', Toggle );
 };

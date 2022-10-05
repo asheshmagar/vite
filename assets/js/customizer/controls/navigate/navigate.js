@@ -21,9 +21,9 @@ export default memo( ( props ) => {
 	}
 
 	return (
-		<div className="customind-control customind-navigate-control">
+		<div className="vite-control vite-navigate-control">
 			{ label && (
-				<div className="customind-control-head">
+				<div className="vite-control-head">
 					<span className="customize-control-title">{ label }</span>
 					{
 						description && (
@@ -34,7 +34,7 @@ export default memo( ( props ) => {
 					}
 				</div>
 			) }
-			<div className="customind-control-body">
+			<div className="vite-control-body">
 				<Button onClick={ () => props.customizer?.section( targetId ) && props.customizer.section( targetId ).focus() }>
 					<span>{ targetLabel }</span>
 					<Dashicon icon="arrow-right-alt2" />

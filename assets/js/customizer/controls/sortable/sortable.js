@@ -62,9 +62,9 @@ export default memo( ( props ) => {
 	};
 
 	return (
-		<div className="customind-control customind-sortable-control" data-control-id={ id }>
+		<div className="vite-control vite-sortable-control" data-control-id={ id }>
 			{ label && (
-				<div className="customind-control-head">
+				<div className="vite-control-head">
 					<span className="customize-control-title">{ label }</span>
 					{ description && (
 						<Tooltip>
@@ -74,19 +74,19 @@ export default memo( ( props ) => {
 				</div>
 			) }
 			{ 0 < Object.keys( unsortable ?? {} ).length && (
-				<ul className="customind-unsortable" ref={ unsortableRef }>
+				<ul className="vite-unsortable" ref={ unsortableRef }>
 					{ /* eslint-disable-next-line no-shadow */ }
 					{ Object.entries( unsortable ).map( ( [ id, name ] ) => {
 						if ( ( value || [] ).some( v => v === id ) ) {
 							return (
-								<li key={ id } data-id={ id } data-visible={ true } className="customind-unsortable-item">
+								<li key={ id } data-id={ id } data-visible={ true } className="vite-unsortable-item">
 									<Button onClick={ handleVisibility } iconSize={ 20 } icon="visibility" />
 									<span>{ name }</span>
 								</li>
 							);
 						}
 						return (
-							<li key={ id } data-id={ id } className="customind-unsortable-item">
+							<li key={ id } data-id={ id } className="vite-unsortable-item">
 								<Button onClick={ handleVisibility } iconSize={ 20 } icon="visibility" />
 								<span>{ name }</span>
 							</li>
@@ -94,12 +94,12 @@ export default memo( ( props ) => {
 					} ) }
 				</ul>
 			) }
-			<ul className="customind-sortable" ref={ sortableRef }>
+			<ul className="vite-sortable" ref={ sortableRef }>
 				{ /* eslint-disable-next-line no-shadow */ }
 				{ ( value || [] ).map( id => {
 					if ( choices?.[ id ] ) {
 						return (
-							<li key={ id } data-id={ id } data-visible={ true } className="customind-sortable-item">
+							<li key={ id } data-id={ id } data-visible={ true } className="vite-sortable-item">
 								<Button onClick={ handleVisibility } iconSize={ 20 } icon="visibility" />
 								<span>{ choices[ id ] }</span>
 								<Icon
@@ -115,7 +115,7 @@ export default memo( ( props ) => {
 				{ Object.entries( choices || {} ).map( ( [ id, name ] ) => {
 					if ( -1 === ( value || [] ).indexOf( id ) ) {
 						return (
-							<li key={ id } data-id={ id } className="customind-sortable-item invisible">
+							<li key={ id } data-id={ id } className="vite-sortable-item invisible">
 								<Button onClick={ handleVisibility } iconSize={ 20 } icon="visibility" />
 								<span>{ name }</span>
 								<Icon

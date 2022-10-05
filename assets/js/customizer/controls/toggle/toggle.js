@@ -14,9 +14,9 @@ export default memo( ( props ) => {
 	} = props;
 	const [ value, setValue ] = useState( setting.get() );
 	return (
-		<div className="customind-control customind-toggle-control">
+		<div className="vite-control vite-toggle-control">
 			{ label && (
-				<div className="customind-control-head">
+				<div className="vite-control-head">
 					<span className="customize-control-title">{ label }</span>
 					{
 						description && (
