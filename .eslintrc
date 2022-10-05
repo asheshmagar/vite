@@ -41,6 +41,7 @@
 		}
 	},
 	"rules": {
+		"@wordpress/no-unsafe-wp-apis": 0,
 		"array-bracket-spacing": [
 			"error",
 			"always"
