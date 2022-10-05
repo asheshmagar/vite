@@ -17,6 +17,7 @@ $service_providers = [
 	Vite\ServiceProvider\BreadcrumbsServiceProvider::class,
 	Vite\ServiceProvider\SupportsServiceProvider::class,
 	Vite\ServiceProvider\NavMenuServiceProvider::class,
+	Vite\ServiceProvider\SidebarServiceProvider::class,
 	Vite\ServiceProvider\HeaderServiceProvider::class,
 	Vite\ServiceProvider\PageHeaderServiceProvider::class,
 	Vite\ServiceProvider\CommentsServiceProvider::class,
@@ -24,6 +25,9 @@ $service_providers = [
 	Vite\ServiceProvider\TemplateHooksServiceProvider::class,
 	Vite\ServiceProvider\ScriptsServiceProvider::class,
 	Vite\ServiceProvider\StylesServiceProvider::class,
+	Vite\ServiceProvider\DynamicCSSServiceProvider::class,
+	Vite\ServiceProvider\CustomizerControlServiceProvider::class,
+	Vite\ServiceProvider\CustomizerServiceProvider::class,
 	Vite\ServiceProvider\ViteServiceProvider::class,
 ];
 
