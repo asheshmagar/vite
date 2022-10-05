@@ -32,22 +32,6 @@ class Core {
 	}
 
 	/**
-	 * Sidebar title.
-	 *
-	 * @param string $id Sidebar id.
-	 * @return string|void
-	 */
-	public function render_sidebar_title( string $id ) {
-		global $wp_registered_sidebars;
-
-		if ( ! isset( $id ) || ! isset( $wp_registered_sidebars[ $id ]['name'] ) ) {
-			return '';
-		}
-
-		echo esc_html( $wp_registered_sidebars[ $id ]['name'] );
-	}
-
-	/**
 	 * Get the current post ID.
 	 *
 	 * @return int
