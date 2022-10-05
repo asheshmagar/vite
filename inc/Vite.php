@@ -30,9 +30,11 @@ class Vite {
 	private function init() {
 		vite( 'supports' )->init();
 		vite( 'nav-menu' )->init();
+		vite( 'sidebar' )->init();
 		vite( 'template-hooks' )->init();
 		vite( 'styles' )->init();
 		vite( 'scripts' )->init();
+		vite( 'customizer' )->init();
 		$this->init_hooks();
 	}
 
