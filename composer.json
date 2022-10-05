@@ -5,10 +5,13 @@
   "autoload": {
     "psr-4": {
       "Vite\\": "inc/",
-      "Vite\\ServiceProvider\\": "inc/ServiceProvider/"
+      "Vite\\ServiceProvider\\": "inc/ServiceProvider/",
+      "Vite\\Customizer\\": "inc/Customizer/",
+      "Vite\\Customizer\\Control\\": "inc/Customizer/Control/",
+      "Vite\\Customizer\\Type\\": "inc/Customizer/Type/"
     },
     "files": [
-      "app/app.php"
+      "bootstrap/bootstrap.php"
     ]
   },
   "require": {
