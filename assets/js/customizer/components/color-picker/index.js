@@ -6,20 +6,20 @@ export default memo( ( props ) => {
 	const {
 		value = '',
 		onChange = () => {},
-		type = 'customind-color',
+		type = 'vite-color',
 	} = props;
 	const [ isOpen, setIsOpen ] = useState( false );
 
 	return (
-		<div className="customind-color-picker">
+		<div className="vite-color-picker">
 			<Button onClick={ () => setIsOpen( ! isOpen ) }>
 				<ColorIndicator colorValue={ value } />
 				<span>Select color</span>
 			</Button>
 			{ isOpen && (
-				'customind-color' === type ? (
+				'vite-color' === type ? (
 					<Popover
-						className="customind-color"
+						className="vite-color"
 						position="bottom center"
 						onClose={ () => setIsOpen( false ) }
 						onFocusOutside={ () => setIsOpen( false ) }

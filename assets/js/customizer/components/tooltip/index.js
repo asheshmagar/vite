@@ -26,12 +26,12 @@ export default ( { children, position = 'bottom center', width = 150, trigger = 
 	}, [] );
 
 	return (
-		<span ref={ ref } { ...props } className="customind-tooltip" >
+		<span ref={ ref } { ...props } className="vite-tooltip" >
 			<Icon icon="info-outline" />
 			{ isOpen && (
 				<Popover
 					focusOnMount={ false }
-					className="customind-tooltip"
+					className="vite-tooltip"
 					position={ position }
 					onClose={ () => setIsOpen( false ) }
 					onFocusOutside={ () => setIsOpen( false ) }

@@ -17,7 +17,7 @@ export default memo( ( props ) => {
 	};
 
 	return (
-		<div className="customind-range">
+		<div className="vite-range">
 			<RangeControl
 				value={ value?.value || '' }
 				onChange={ val => update( val ) }

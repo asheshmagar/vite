@@ -5,7 +5,7 @@ export default memo( ( props ) => {
 	const { value, onChange, units = [] } = props;
 	return (
 		<Dropdown
-			className="customind-units"
+			className="vite-units"
 			position="bottom center"
 			renderToggle={ ( { isOpen, onToggle } ) => (
 				<Button onClick={ onToggle } aria-expanded={ isOpen }>
