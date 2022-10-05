@@ -1,0 +1,6 @@
+.vite-control-body {
+	> [role="region"],
+	> div > [role="region"] {
+		max-width: 100%;
+	}
+}
