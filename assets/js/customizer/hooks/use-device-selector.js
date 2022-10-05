@@ -20,7 +20,7 @@ export default () => {
 
 	const DeviceSelector = useMemo( () => {
 		return ( props ) => (
-			<div className="customind-device-selector" { ...props }>
+			<div className="vite-device-selector" { ...props }>
 				{ [ 'desktop', 'tablet', 'mobile' ].map( d => (
 					<Button
 						key={ d }
