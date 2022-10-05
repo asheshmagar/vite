@@ -94,7 +94,7 @@ class EntryElements {
 				<?php the_post_thumbnail( 'full' ); ?>
 			<?php else : ?>
 				<a class="entry-thumbnail-link" href="<?php the_permalink(); ?>" aria-hidden="true" tabindex="-1">
-					<?php the_post_thumbnail( 'theme_thumbnail' ); ?>
+					<?php the_post_thumbnail( 'Vite_thumbnail' ); ?>
 				</a>
 			<?php endif; ?>
 		</div>
