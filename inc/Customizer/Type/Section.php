@@ -3,7 +3,7 @@
  * Section class.
  */
 
-namespace Vite\Customizer\Types;
+namespace Vite\Customizer\Type;
 
 defined( 'ABSPATH' ) || exit;
 
