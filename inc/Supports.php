@@ -23,10 +23,15 @@ class Supports {
 		add_action( 'after_setup_theme', [ $this, 'add_image_sizes' ] );
 	}
 
+	/**
+	 * Add image sizes.
+	 *
+	 * @return void
+	 */
 	public function add_image_sizes() {
-		add_image_size( 'theme_single', 1584, 992, true );
-		add_image_size( 'theme_thumbnail', 540, 340, true );
-		add_image_size( 'theme_medium', 360, 224, true );
+		add_image_size( 'vite_single', 1584, 992, true );
+		add_image_size( 'Vite_thumbnail', 540, 340, true );
+		add_image_size( 'Vite_medium', 360, 224, true );
 	}
 
 	/**
@@ -58,7 +63,6 @@ class Supports {
 					'flex-height' => true,
 				]
 			),
-			'custom-header'                       => true,
 			'customize-selective-refresh-widgets' => true,
 		];
 		$features = apply_filters( 'theme_theme_supports', $features );
