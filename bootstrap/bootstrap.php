@@ -26,7 +26,6 @@ $service_providers = [
 	Vite\ServiceProvider\ScriptsServiceProvider::class,
 	Vite\ServiceProvider\StylesServiceProvider::class,
 	Vite\ServiceProvider\DynamicCSSServiceProvider::class,
-	Vite\ServiceProvider\CustomizerControlServiceProvider::class,
 	Vite\ServiceProvider\CustomizerServiceProvider::class,
 	Vite\ServiceProvider\ViteServiceProvider::class,
 ];
