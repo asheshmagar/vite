@@ -1,7 +1,5 @@
-import { memo, useState } from '@wordpress/element';
+import { memo, useState, RawHTML } from '@wordpress/element';
 import { ButtonGroup, Button } from '@wordpress/components';
-import { Tooltip } from '../../components';
-import { useDeviceSelector } from '../../hooks';
 
 export default memo( ( props ) => {
 	const {
@@ -13,13 +11,11 @@ export default memo( ( props ) => {
 				choices,
 				inputAttrs: {
 					multiple = false,
-					responsive = false,
 				},
 			},
 		},
 	} = props;
 	const [ value, setValue ] = useState( setting.get() );
-	const { DeviceSelector } = useDeviceSelector();
 
 	return (
 		<div className="vite-control vite-button-set-control" data-multiple={ multiple }>
@@ -27,49 +23,41 @@ export default memo( ( props ) => {
 				<div className="vite-control-head">
 					<div className="vite-control-title-wrap">
 						<span className="customize-control-title">{ label }</span>
-						{ responsive && <DeviceSelector /> }
 					</div>
-					{ description && (
-						<Tooltip>
-							<span className="customize-control-description">{ description }</span>
-						</Tooltip>
-					) }
 				</div>
 			) }
-			{ responsive ? (
-				[ 'desktop', 'tablet', 'mobile' ].map( d => (
-					<ButtonGroup key={ d }>
-						{ Object.entries( choices ).map( ( [ key, val ] ) => (
-							<Button
-								key={ key }
-								onClick={ () => {
-									setValue( key );
-									setting.set( key );
-								} }
-								variant={ key === value ? 'primary' : 'secondary' }
-								className={ key }
-							>
-								{ val }
-							</Button>
-						) ) }
-					</ButtonGroup>
-				) )
-			) : (
+			<div className="vite-control-body">
 				<ButtonGroup>
 					{ Object.entries( choices ).map( ( [ key, val ] ) => (
 						<Button
 							key={ key }
 							onClick={ () => {
-								setValue( key );
-								setting.set( key );
+								if ( multiple ) {
+									const temp = [ ...( value || [] ) ];
+									if ( temp.includes( key ) ) {
+										temp.splice( temp.indexOf( key ), 1 );
+									} else {
+										temp.push( key );
+									}
+									setValue( temp );
+									setting.set( temp );
+								} else {
+									setValue( key );
+									setting.set( key );
+								}
 							} }
-							variant={ key === value ? 'primary' : 'secondary' }
+							variant={ multiple ? ( value?.includes( key ) ? 'primary' : 'secondary' ) : ( value === key ? 'primary' : 'secondary' ) }
 							className={ key }
 						>
 							{ val }
 						</Button>
 					) ) }
 				</ButtonGroup>
+			</div>
+			{ description && (
+				<div className="customize-control-description">
+					<RawHTML>{ description }</RawHTML>
+				</div>
 			) }
 		</div>
 	);
