@@ -1,6 +1,6 @@
 import Editor from './editor';
-import { defineControls } from '../../utils';
+import { registerControl } from '../../utils';
 
 export default () => {
-	defineControls( 'vite-editor', Editor );
+	registerControl( 'vite-editor', Editor );
 };
