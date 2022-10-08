@@ -1,7 +1,7 @@
 .vite-radio-image-control {
 	.vite-control-body {
 		display: grid;
-		grid-template-columns: repeat( var( --vite-col, 1 ), 1fr );
+		grid-template-columns: repeat( var( --vite--col, 1 ), 1fr );
 		grid-gap: 20px;
 	}
 

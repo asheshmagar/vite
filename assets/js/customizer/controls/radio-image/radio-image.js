@@ -1,16 +1,56 @@
-import { memo, useState } from '@wordpress/element';
-import { Tooltip } from '../../components';
+import { memo, useState, RawHTML, useEffect } from '@wordpress/element';
+import { Popover } from '@wordpress/components';
+import { noop } from 'lodash';
+
+const Item = ( { onChange, url, label, ...props } ) => {
+	const [ anchor, setAnchor ] = useState( null );
+	const [ isOpen, setIsOpen ] = useState( false );
+
+	useEffect( () => {
+		if ( ! anchor || ! label ) return;
+
+		const listener = () => setIsOpen( prev => ! prev );
+
+		anchor.addEventListener( 'mouseenter', listener );
+		anchor.addEventListener( 'mouseleave', listener );
+		return () => {
+			anchor.removeEventListener( 'mouseenter', listener );
+			anchor.removeEventListener( 'mouseleave', listener );
+		};
+	}, [ anchor ] );
+
+	return (
+		<div className="vite-radio-image-item">
+			<div
+				role="button"
+				tabIndex={ -1 }
+				onClick={ onChange }
+				onKeyDown={ noop }
+				{ ...props }
+				ref={ setAnchor }
+			>
+				{ url && (
+					<img style={ { width: '100%' } } src={ url } alt={ label } />
+				) }
+			</div>
+			{ isOpen && (
+				<Popover className="vite-tooltip" anchor={ anchor } anchorRef={ anchor } position="top center">
+					{ label }
+				</Popover>
+			) }
+		</div>
+	);
+};
 
 export default memo( ( props ) => {
 	const {
 		control: {
-			id,
 			params: {
 				label,
 				choices,
 				description,
 				inputAttrs: {
-					image_col: imageCol = 2,
+					col = 2,
 				},
 			},
 			setting,
@@ -25,37 +65,26 @@ export default memo( ( props ) => {
 	};
 
 	return (
-		<div className="vite-control vite-radio-image-control" data-control-id={ id }>
+		<div className="vite-control vite-radio-image-control" style={ { '--vite--col': col } }>
 			{ label && (
 				<div className="vite-control-head">
 					<span className="customize-control-title">{ label }</span>
-					{ description && (
-						<Tooltip>
-							<span className="customize-control-description">{ description }</span>
-						</Tooltip>
-					) }
 				</div>
 			) }
-			<div className="vite-control-body" style={ { '--vite-col': imageCol } }>
+			{ description && (
+				<div className="customize-control-description">
+					<RawHTML>{ description }</RawHTML>
+				</div>
+			) }
+			<div className="vite-control-body">
 				{ Object.entries( choices ).map( ( [ k, v ] ) => (
-					<div
-						role="button"
-						tabIndex={ 0 }
-						onClick={ () => update( k ) }
-						onKeyDown={ e => {
-							if ( e.code === 'Enter' ) {
-								update( k );
-							}
-						} }
+					<Item
 						key={ k }
-						data-id={ k }
 						className={ `vite-radio-image${ value === k ? ' active' : '' }` }
-						data-label={ v?.label || null }
-					>
-						{ v?.url && (
-							<img style={ { width: '100%' } } src={ v.url } alt={ v?.label || k } />
-						) }
-					</div>
+						label={ v?.label ?? k }
+						url={ v?.image }
+						onChange={ () => update( k ) }
+					/>
 				) ) }
 			</div>
 		</div>
