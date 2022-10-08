@@ -1,0 +1,36 @@
+.vite-border-styles,
+.vite-border-colors {
+	display: grid;
+	grid-template-columns: auto auto;
+	align-items: center;
+}
+
+.vite-border-colors-inner {
+	display: flex;
+	gap: 10px;
+	justify-content: flex-end;
+	align-items: center;
+}
+
+.vite-border-styles,
+.vite-border-colors,
+.vite-border-width {
+	> span {
+		font-size: 12px;
+		font-weight: 500;
+	}
+}
+
+.vite-border-control {
+	.vite-control-body {
+		display: grid;
+		grid-gap: 10px;
+	}
+}
+
+.vite-border-styles {
+	> .rc-select {
+		width: 100px;
+		justify-self: end;
+	}
+}
