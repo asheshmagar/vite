@@ -7,11 +7,11 @@
       "Vite\\": "inc/",
       "Vite\\ServiceProvider\\": "inc/ServiceProvider/",
       "Vite\\Customizer\\": "inc/Customizer/",
-      "Vite\\Customizer\\Control\\": "inc/Customizer/Control/",
       "Vite\\Customizer\\Type\\": "inc/Customizer/Type/"
     },
     "files": [
-      "bootstrap/bootstrap.php"
+      "bootstrap/bootstrap.php",
+      "inc/Customizer/Functions.php"
     ]
   },
   "require": {
