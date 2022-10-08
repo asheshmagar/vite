@@ -1,6 +1,6 @@
-import { memo, useEffect, useState, useRef } from '@wordpress/element';
-import { GradientPicker, ColorIndicator, Button } from '@wordpress/components';
-import { Tooltip } from '../../components';
+import { memo, useState, RawHTML } from '@wordpress/element';
+import { GradientPicker, Popover } from '@wordpress/components';
+import { noop } from 'lodash';
 
 export default memo( ( props ) => {
 	const {
@@ -13,23 +13,8 @@ export default memo( ( props ) => {
 		},
 	} = props;
 	const [ value, setValue ] = useState( setting.get() );
+	const [ anchor, setAnchor ] = useState( null );
 	const [ isOpen, setIsOpen ] = useState( false );
-	const popover = useRef();
-	const trigger = useRef();
-
-	useEffect( () => {
-		const wrapper = document.querySelector( '.wp-full-overlay-sidebar-content' );
-		if ( ! popover.current || ! trigger.current || ! wrapper ) return;
-		const listener = ( e ) => {
-			if ( ! popover.current?.contains( e.target ) && ! trigger.current?.contains( e.target ) ) {
-				setIsOpen( false );
-			}
-		};
-		wrapper.addEventListener( 'click', listener );
-		return () => {
-			wrapper.removeEventListener( 'click', listener );
-		};
-	}, [] );
 
 	return (
 		<>
@@ -37,27 +22,51 @@ export default memo( ( props ) => {
 				{ label && (
 					<div className="vite-control-head">
 						<span className="customize-control-title">{ label }</span>
-						{ description && (
-							<Tooltip>1
-								<span className="customize-control-description">{ description }</span>
-							</Tooltip>
-						) }
 					</div>
 				) }
-				<Button ref={ trigger } onClick={ () => setIsOpen( ! isOpen ) }>
-					<ColorIndicator colorValue={ value } />
-					<span>Select color</span>
-				</Button>
-			</div>
-			<div className="vite-gradient-popover-wrap">
-				<div ref={ popover } className={ `vite-gradient-popover${ isOpen ? ' open' : '' }` }>
-					{ isOpen && (
-						<GradientPicker className="vite-gradient-picker" value={ value } onChange={ val => {
-							setValue( val );
-							setting.set( val );
-						} } />
-					) }
+				<div className="vite-control-body">
+					<div className="vite-gradient-picker">
+						<span
+							ref={ setAnchor }
+							style={ {
+								height: 24,
+								width: 24,
+								borderRadius: '50%',
+								boxShadow: 'inset 0 0 0 1px rgb(0 0 0 / 20%)',
+								display: 'inline-block',
+								background: value,
+								cursor: 'pointer',
+								justifySelf: 'end',
+							} }
+							onClick={ () => setIsOpen( prev => ! prev ) }
+							role="button"
+							onKeyDown={ noop }
+							tabIndex={ -1 }
+						/>
+						{ isOpen && (
+							<Popover
+								anchor={ anchor }
+								anchorRef={ anchor }
+								onFocusOutside={ () => setIsOpen( false ) }
+								className="vite-popover"
+								position="bottom center"
+							>
+								<GradientPicker
+									value={ value } onChange={ val => {
+										setValue( val );
+										setting.set( val );
+									} }
+								/>
+							</Popover>
+						) }
+
+					</div>
 				</div>
+				{ description && (
+					<div className="customize-control-description">
+						<RawHTML>{ description }</RawHTML>
+					</div>
+				) }
 			</div>
 		</>
 	);
