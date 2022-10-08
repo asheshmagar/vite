@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from '@wordpress/element';
-import { Button } from '@wordpress/components';
+import { Button, ButtonGroup, Dropdown } from '@wordpress/components';
 
 export default () => {
 	const [ device, setDevice ] = useState( wp?.customize?.previewedDevice() || 'desktop' );
@@ -21,18 +21,34 @@ export default () => {
 	const DeviceSelector = useMemo( () => {
 		return ( props ) => (
 			<div className="vite-device-selector" { ...props }>
-				{ [ 'desktop', 'tablet', 'mobile' ].map( d => (
-					<Button
-						key={ d }
-						className={ `${ d }${ device === d ? ' active' : '' }` }
-						onClick={ ( e ) => {
-							e.stopPropagation();
-							setDevice( d );
-							wp?.customize?.previewedDevice?.set( d );
-						} }
-						icon={ 'mobile' === d ? 'smartphone' : d }
-					/>
-				) ) }
+				<Dropdown
+					className="vite-devices"
+					position="top center"
+					renderToggle={ ( { isOpen, onToggle } ) => (
+						<Button
+							className="vite-device"
+							onClick={ onToggle }
+							aria-expanded={ isOpen }
+							icon={ 'mobile' === device ? 'smartphone' : device }
+						/>
+					) }
+					renderContent={ () => (
+						<ButtonGroup>
+							{ [ 'desktop', 'tablet', 'mobile' ].map( d => (
+								<Button
+									key={ d }
+									className={ `vite-device ${ d }${ device === d ? ' is-primary' : '' }` }
+									onClick={ ( e ) => {
+										e.stopPropagation();
+										setDevice( d );
+										wp?.customize?.previewedDevice?.set( d );
+									} }
+									icon={ 'mobile' === d ? 'smartphone' : d }
+								/>
+							) ) }
+						</ButtonGroup>
+					) }
+				/>
 			</div>
 		);
 	}, [ device ] );
