@@ -10,3 +10,18 @@
 		border: 1px solid #ebebeb;
 	}
 }
+
+
+.vite-popover {
+	.components-popover__content {
+		width: 280px;
+		padding: 10px;
+
+		.components-color-picker,
+		.react-colorful,
+		.react-colorful__hue,
+		.react-colorful__alpha {
+			width: 100%;
+		}
+	}
+}
