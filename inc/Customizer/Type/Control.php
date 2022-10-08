@@ -10,46 +10,34 @@ namespace Vite\Customizer\Type;
 
 defined( 'ABSPATH' ) || exit;
 
+use WP_Customize_Control;
+
 /**
  * Class Control.
  */
-class Control {
+class Control extends WP_Customize_Control {
 
 	/**
-	 * Controls.
-	 *
-	 * @var array $controls.
+	 * {@inheritDoc}
 	 */
-	private $controls;
-
-	/**
-	 * Set.
-	 *
-	 * @param string      $type Control name.
-	 * @param array|mixed $props Control attributes.
-	 * @return void
-	 */
-	public function set( string $type, ?array $props ) {
-		global $wp_customize;
-		$this->controls[ $type ] = $props;
-		isset( $props['callback'] ) && $wp_customize->register_control_type( $props['callback'] );
+	public function to_json() {
+		parent::to_json();
+		$this->json['default']     = $this->default ?? $this->setting->default;
+		$this->json['value']       = $this->value();
+		$this->json['link']        = $this->get_link();
+		$this->json['id']          = $this->id;
+		$this->json['label']       = esc_html( $this->label );
+		$this->json['description'] = $this->description;
+		$this->json['inputAttrs']  = $this->input_attrs;
+		$this->json['choices']     = $this->choices;
 	}
 
 	/**
-	 * Get.
+	 * {@inheritDoc}
 	 *
-	 * @param string      $type Control type.
-	 * @param string|null $prop Get control property empty|callback|sanitize_callback.
-	 * @return array|mixed
+	 * Content will be rendered via JS.
+	 *
+	 * @see WP_Customize_Control::render_content()
 	 */
-	public function get( string $type, ?string $prop = null ) {
-		if (
-			isset( $this->controls[ $type ] ) &&
-			isset( $prop ) &&
-			in_array( $prop, [ 'callback', 'sanitize_callback' ], true )
-		) {
-			return $this->controls[ $type ][ $prop ] ?? null;
-		}
-		return $this->controls[ $type ] ?? array();
-	}
+	public function render_content() {}
 }
