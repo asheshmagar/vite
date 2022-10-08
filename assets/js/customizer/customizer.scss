@@ -1,25 +1,76 @@
+#customize-controls h3,
+.customize-control-title,
+.customize-control-description {
+	font-size: 13px;
+}
+
+.control-section .accordion-section-title:after,
+.customize-pane-child .accordion-section-title:after {
+	font-size: 13px;
+	top: 50%;
+	translate: 0 -50%;
+}
+
 .vite-control-head {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
+
+	.vite-reset {
+		margin-right: auto;
+		margin-left: 10px;
+		cursor: pointer;
+		display: inline-flex;
+
+		> .dashicon {
+			font-size: 12px;
+			height: 12px;
+			width: 12px;
+		}
+	}
 }
 
 .vite-device-selector {
 	display: inline-flex;
 
-	.dashicon {
-		font-size: 16px;
+	.vite-devices {
+		.vite-device {
+			box-shadow: none !important;
+
+			.dashicon {
+				font-size: 16px;
+				height: 16px;
+				width: 16px;
+
+			}
+		}
 	}
 
 	.components-button {
-		height: 30px;
+		height: 24px;
 		padding-left: 0;
 		padding-right: 0;
-		min-width: 30px;
+		min-width: 14px;
+	}
+}
 
-		&.active {
-			color: #007cba;
+.vite-devices {
+	.vite-device {
+		box-shadow: none !important;
+
+		.dashicon {
+			font-size: 14px;
+			height: 14px;
+			width: 14px;
+
 		}
+	}
+}
+
+.vite-device,
+.vite-units {
+	.components-dropdown__content .components-popover__content > div {
+		padding: 5;
 	}
 }
 
@@ -28,7 +79,7 @@
 }
 
 .control-section {
-	.customize-control:has(+ .customize-control) {
+	.customize-control[id*="vite"]:has(+ .customize-control) {
 		margin-bottom: 0;
 
 		&:after {
@@ -227,7 +278,7 @@
 }
 
 .rc-select-focused .rc-select-selector {
-	border-color: blue !important;
+	border-color: var(--wp-admin-theme-color);
 }
 
 .rc-select-dropdown {
