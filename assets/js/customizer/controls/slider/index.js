@@ -1,7 +1,7 @@
 import Slider from './slider';
-import { defineControls } from '../../utils';
+import { registerControl } from '../../utils';
 import './customizer.scss';
 
 export default () => {
-	defineControls( 'vite-slider', Slider );
+	registerControl( 'vite-slider', Slider );
 };
