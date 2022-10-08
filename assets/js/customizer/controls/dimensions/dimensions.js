@@ -46,6 +46,7 @@ export default memo( ( props ) => {
 					DEVICES.map( ( d ) => (
 						<div key={ d } style={ { display: d === device ? 'block' : 'none' } }>
 							<BoxControl
+								allowReset={ false }
 								label=""
 								values={ value?.[ d ] ?? {} }
 								onChange={ ( val ) => {
@@ -60,6 +61,7 @@ export default memo( ( props ) => {
 					) )
 				) : (
 					<BoxControl
+						allowReset={ false }
 						label=""
 						values={ value ?? {} }
 						onChange={ ( val ) => {
