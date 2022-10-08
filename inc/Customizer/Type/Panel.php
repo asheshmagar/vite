@@ -1,6 +1,9 @@
 <?php
 /**
  * Panel class.
+ *
+ * @package vite
+ * @since 1.0.0
  */
 
 namespace Vite\Customizer\Type;
