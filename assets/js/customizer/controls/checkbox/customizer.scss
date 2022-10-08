@@ -1,0 +1,16 @@
+.vite-checkbox-control {
+	grid-template-columns: repeat(2, auto);
+
+	.vite-control-body {
+		display: flex;
+		justify-content: flex-end;
+	}
+
+	.components-checkbox-control__input-container {
+		margin-right: 0;
+	}
+
+	.customize-control-description {
+		grid-column: 1/-1;
+	}
+}
