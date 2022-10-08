@@ -1,6 +1,6 @@
-import { defineControls } from '../../utils';
+import { registerControl } from '../../utils';
 import Background from './background';
 
 export default () => {
-	defineControls( 'vite-background', Background );
+	registerControl( 'vite-background', Background );
 };

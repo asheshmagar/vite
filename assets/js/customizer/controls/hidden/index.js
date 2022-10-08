@@ -1,6 +1,6 @@
 import Hidden from './hidden';
-import { defineControls } from '../../utils';
+import { registerControl } from '../../utils';
 
 export default () => {
-	defineControls( 'vite-hidden', Hidden );
+	registerControl( 'vite-hidden', Hidden );
 };

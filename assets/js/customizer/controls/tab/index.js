@@ -1,6 +1,6 @@
 import Tab from './tab';
-import { defineControls } from '../../utils';
+import { registerControl } from '../../utils';
 
 export default () => {
-	defineControls( 'vite-tab', Tab );
+	registerControl( 'vite-tab', Tab );
 };

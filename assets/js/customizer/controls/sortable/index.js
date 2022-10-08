@@ -1,7 +1,7 @@
 import Sortable from './sortable';
-import { defineControls } from '../../utils';
+import { registerControl } from '../../utils';
 import './customizer.scss';
 
 export default () => {
-	defineControls( 'vite-sortable', Sortable );
+	registerControl( 'vite-sortable', Sortable );
 };

@@ -1,7 +1,7 @@
 import Group from './group';
-import { defineControls } from '../../utils';
+import { registerControl } from '../../utils';
 import './customizer.scss';
 
 export default () => {
-	defineControls( 'vite-group', Group );
+	registerControl( 'vite-group', Group );
 };
