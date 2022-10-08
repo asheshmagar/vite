@@ -1,6 +1,5 @@
 .vite-color .components-popover__content {
 	min-width: 300px;
-	min-height: 340px;
 	padding: 10px;
 
 	.react-colorful,
@@ -8,5 +7,13 @@
 	.react-colorful__hue,
 	.react-colorful__alpha {
 		width: 100%;
+	}
+}
+
+.vite-color-control {
+	.vite-control-body {
+		display: flex;
+		gap: 10px;
+		flex-wrap: wrap;
 	}
 }
