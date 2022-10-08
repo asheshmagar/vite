@@ -1,12 +1,50 @@
 .vite-range {
-	display: flex;
-
-	> .components-base-control:first-child {
-		flex: 1;
+	.components-base-control__field {
+		margin-bottom: 0;
 	}
 
-	> .components-base-control:last-child {
-		min-width: 54px;
-		max-width: 54px;
+	display: grid;
+	align-items: center;
+
+	&:has(.vite-units) {
+		grid-template-columns: 1fr 35px;
+	}
+
+	.vite-units {
+		display: flex;
+
+		.components-button {
+			padding: 0;
+			height: 30px;
+			width: 100%;
+			justify-content: center;
+			align-items: center;
+			border: 1px solid rgb(117, 117, 117);
+			border-radius: 2px;
+			background-color: #fff;
+			box-shadow: none;
+		}
+
+		.vite-unit {
+			border-width: 0;
+			font-size: 12px;
+			width: 25px;
+
+			&:focus {
+				box-shadow: none !important;
+			}
+
+			&.is-primary {
+				background: var(--wp-admin-theme-color);
+			}
+		}
+
+		.components-popover__content > div {
+			padding: 5px;
+		}
+	}
+
+	.components-range-control > .components-base-control__field {
+		display: flex;
 	}
 }
