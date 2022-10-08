@@ -1,14 +1,15 @@
 .vite-toggle-control {
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
+	grid-template-columns: repeat(2, auto);
 
-	.components-base-control__field {
-		margin: 0;
+	.vite-control-body {
+		display: flex;
+		justify-content: flex-end;
 	}
 
-	.customize-control-title {
-		margin-right: 5px;
-		margin-bottom: 0;
+	.components-form-toggle {
+		margin-right: 0 !important;
+	}
+	.customize-control-description {
+		grid-column: 1/-1;
 	}
 }

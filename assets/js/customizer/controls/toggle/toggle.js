@@ -1,6 +1,5 @@
 import { ToggleControl } from '@wordpress/components';
-import { useState, memo } from '@wordpress/element';
-import { Tooltip } from '../../components';
+import { useState, memo, RawHTML } from '@wordpress/element';
 
 export default memo( ( props ) => {
 	const {
@@ -18,22 +17,22 @@ export default memo( ( props ) => {
 			{ label && (
 				<div className="vite-control-head">
 					<span className="customize-control-title">{ label }</span>
-					{
-						description && (
-							<Tooltip>
-								<span className="customize-control-description">{ description }</span>
-							</Tooltip>
-						)
-					}
 				</div>
 			) }
-			<ToggleControl
-				checked={ !! value }
-				onChange={ () => {
-					setValue( ! value );
-					setting.set( ! value );
-				} }
-			/>
+			<div className="vite-control-body">
+				<ToggleControl
+					checked={ !! value }
+					onChange={ () => {
+						setValue( ! value );
+						setting.set( ! value );
+					} }
+				/>
+			</div>
+			{ description && (
+				<div className="customize-control-description">
+					<RawHTML>{ description }</RawHTML>
+				</div>
+			) }
 		</div>
 	);
 } );
