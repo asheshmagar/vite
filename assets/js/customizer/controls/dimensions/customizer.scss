@@ -1,10 +1,53 @@
-.vite-control-body {
-	> [role="region"],
-	> div > [role="region"] {
-		max-width: 100%;
+.vite-dimensions {
+	display: grid;
+	grid-template-columns: repeat(4, 1fr) 30px;
+	grid-gap: 5px;
+
+	.vite-dimension {
+
+		.vite-dimension-label {
+			font-size: 11px;
+		}
+
+		input {
+			appearance: none;
+			-moz-appearance: textfield;
+			display: block;
+			width: 100%;
+
+			&::-webkit-outer-spin-button,
+			&::-webkit-inner-spin-button {
+				-webkit-appearance: none;
+				margin: 0;
+			}
+		}
 	}
 
-	.component-box-control__header {
-		display: none;
+	.vite-dimension-sync {
+		display: grid;
+		place-items: center;
+		height: 30px;
+		cursor: pointer;
+		.dashicon {
+			font-size: 14px;
+			width: 14px;
+			height: 14px;
+		}
 	}
 }
+
+.vite-dimensions-control {
+	.vite-device-selector {
+		margin-left: auto;
+	}
+
+	.vite-units {
+		.components-button {
+			height: 24px;
+			width: 24px;
+			font-size: 10px;
+			padding-inline: 12px;
+		}
+	}
+}
+
