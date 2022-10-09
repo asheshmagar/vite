@@ -20,6 +20,7 @@ export default memo( ( props ) => {
 
 	let [ val = '', unit = '' ] = splitUnit( value );
 	unit = unit || defaultUnit;
+	val = parseFloat( val );
 
 	max = [ 'em', 'rem' ].includes( unit ) ? 20 : ( [ 'vh', '%' ].includes( unit ) ? 100 : max );
 	step = [ 'em', 'rem' ].includes( unit ) ? 0.01 : step;
@@ -27,7 +28,7 @@ export default memo( ( props ) => {
 	return (
 		<div className="vite-range">
 			<RangeControl
-				value={ parseFloat( val ) }
+				value={ ! isNaN( val ) ? val : undefined }
 				onChange={ v => onChange( v + ( ! noUnits ? ( '-' === unit ? '' : unit ) : '' ) ) }
 				min={ min }
 				max={ max }
