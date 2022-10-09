@@ -1,9 +1,34 @@
-import { memo, useState } from '@wordpress/element';
-// eslint-disable-next-line import/named
+import { memo, useState, RawHTML } from '@wordpress/element';
 import { MediaUpload } from '@wordpress/block-editor';
 import { __ } from '@wordpress/i18n';
-import { Tooltip, CustomindColorPicker } from '../../components';
-import { SelectControl } from '@wordpress/components';
+import { CustomindColorPicker } from '../../components';
+import { ButtonGroup, Button, FocalPointPicker } from '@wordpress/components';
+import { useDeviceSelector } from '../../hooks';
+import Select, { Option } from 'rc-select';
+
+const TABS = [
+	{ label: 'Color', value: 'color', icon: 'admin-customizer' },
+	{ label: 'Gradient', value: 'gradient', icon: 'art' },
+	{ label: 'Image', value: 'image', icon: 'format-image' },
+];
+
+const REPEATS = [
+	{ label: 'No Repeat', value: 'no-repeat' },
+	{ label: 'Repeat', value: 'repeat' },
+	{ label: 'Repeat X', value: 'repeat-x' },
+	{ label: 'Repeat Y', value: 'repeat-y' },
+];
+
+const SIZES = [
+	{ label: 'Auto', value: 'auto' },
+	{ label: 'Cover', value: 'cover' },
+	{ label: 'Contain', value: 'contain' },
+];
+
+const ATTACHMENTS = [
+	{ label: 'Scroll', value: 'scroll' },
+	{ label: 'Fixed', value: 'fixed' },
+];
 
 export default memo( ( props ) => {
 	const {
@@ -16,140 +41,198 @@ export default memo( ( props ) => {
 		},
 	} = props;
 	const [ value, setValue ] = useState( setting.get() );
+	const { device, DeviceSelector } = useDeviceSelector();
 
-	const repeatOptions = [
-		{ label: __( 'No Repeat' ), value: 'no-repeat' },
-		{ label: __( 'Repeat All' ), value: 'repeat' },
-		{ label: __( 'Repeat Horizontally' ), value: 'repeat-x' },
-		{ label: __( 'Repeat Vertically' ), value: 'repeat-y' },
-	];
+	let position = {
+		x: 0.5,
+		y: 0.5,
+	};
 
-	const positionOptions = [
-		{ label: __( 'Left Top' ), value: 'left top' },
-		{ label: __( 'Left Center' ), value: 'left center' },
-		{ label: __( 'Left Bottom' ), value: 'left bottom' },
-		{ label: __( 'Right Top' ), value: 'right top' },
-		{ label: __( 'Right Center' ), value: 'right center' },
-		{ label: __( 'Right Bottom' ), value: 'right bottom' },
-		{ label: __( 'Center Top' ), value: 'center top' },
-		{ label: __( 'Center Center' ), value: 'center center' },
-		{ label: __( 'Center Bottom' ), value: 'center bottom' },
-	];
+	if ( value?.position?.[ device ] ) {
+		const temp = value.position[ device ].replaceAll( '%', '' ).split( ' ' );
+		position = {
+			x: parseFloat( ( parseFloat( temp[ 0 ] ) / 100 ).toString() ),
+			y: parseFloat( ( parseFloat( temp[ 1 ] ) / 100 ).toString() ),
+		};
+	}
 
-	const sizeOptions = [
-		{ label: __( 'Cover' ), value: 'cover' },
-		{ label: __( 'Contain' ), value: 'contain' },
-		{ label: __( 'Auto' ), value: 'auto' },
-	];
-
-	const attachmentOptions = [
-		{ label: __( 'Scroll' ), value: 'scroll' },
-		{ label: __( 'Fixed' ), value: 'fixed' },
-	];
 	return (
 		<div className="vite-control vite-background-control">
 			{ label && (
 				<div className="vite-control-head">
 					<span className="customize-control-title">{ label }</span>
-					{
-						description && (
-							<Tooltip>
-								<span className="customize-control-description">{ description }</span>
-							</Tooltip>
-						)
-					}
 				</div>
 			) }
+			<ButtonGroup className="vite-background-tabs">
+				{ TABS.map( tab => (
+					<Button
+						key={ tab.value }
+						className={ value?.type === tab.value || ( ! value?.type && 'color' === tab.value ) ? 'is-primary' : '' }
+						onClick={ () => {
+							const temp = { ...( value || {} ) };
+							temp.type = tab.value;
+							setting.set( temp );
+							setValue( temp );
+						} }
+						icon={ tab.icon }
+					/>
+				) ) }
+			</ButtonGroup>
 			<div className="vite-control-body">
-				<CustomindColorPicker value={ value?.[ 'background-color' ] || '' } onChange={ color => {
-					const newVal = { ...value, 'background-color': color };
-					setValue( newVal );
-					setting.set( newVal );
-				} } />
-				<MediaUpload
-					onSelect={ imgData => {
-						const newVal = { ...value, 'background-image': imgData.url };
-						setValue( newVal );
-						setting.set( newVal );
-					} }
-					allowedTypes={ [ 'image' ] }
-					render={ ( { open } ) => (
-						<div className="attachment-media-view">
-							{ value?.[ 'background-image' ] ? (
-								<div role="button" tabIndex={ 0 } onClick={ open } onKeyDown={ e => e.code === 'Enter' && open() } className="thumbnail thumbnail-image">
-									<img src={ value[ 'background-image' ] } alt="Preview" />
-								</div>
-							) : (
-								<button type="button" onClick={ open } className="upload-button button-add-media">
-									{ __( 'Select Image' ) }
-								</button>
-							) }
+				{ ( ! value?.type || value?.type === 'color' ) && (
+					<CustomindColorPicker
+						value={ value?.color || '' }
+						onChange={ val => {
+							const temp = {
+								...( value || {} ),
+								color: val,
+							};
+							setting.set( temp );
+							setValue( temp );
+						} }
+					/>
+				) }
+				{ value?.type === 'gradient' && (
+					<CustomindColorPicker
+						value={ value?.gradient || '' }
+						onChange={ val => {
+							const temp = { ...( value || {} ), gradient: val };
+							setting.set( temp );
+							setValue( temp );
+						} }
+						type="gradient"
+					/>
+				) }
 
-							{ value?.[ 'background-image' ] && (
-								<div className="actions">
-									<button onClick={ open } className="button">
-										{ __( 'Change Image' ) }
+				{ value?.type === 'image' && (
+					<MediaUpload
+						onSelect={ imgData => {
+							const newVal = { ...value, image: imgData.url };
+							setValue( newVal );
+							setting.set( newVal );
+						} }
+						allowedTypes={ [ 'image' ] }
+						render={ ( { open } ) => (
+							<div className="attachment-media-view">
+								{ value?.image ? (
+									<>
+										<DeviceSelector />
+										<FocalPointPicker
+											url={ value.image }
+											value={ position }
+											onChange={ ( { x, y } ) => {
+												const temp = {
+													...( value || {} ),
+													position: {
+														...( value?.position || {} ),
+														[ device ]: `${ ( parseFloat( x.toString() ) * 100 ).toFixed( 2 ) }% ${ ( parseFloat( y.toString() ) * 100 ).toFixed( 2 ) }%`,
+													},
+												};
+												setting.set( temp );
+												setValue( temp );
+											} }
+										/>
+										<div className="actions">
+											<button onClick={ e => {
+												e.preventDefault();
+												open();
+											} } className="button">
+												{ __( 'Change Image' ) }
+											</button>
+											<button
+												onClick={ ( e ) => {
+													e.preventDefault();
+													const newVal = { ...value, image: undefined };
+													setValue( newVal );
+													setting.set( newVal );
+												} }
+												className="button"
+											>
+												{ __( 'Remove Image' ) }
+											</button>
+										</div>
+										<div className="vite-background-repeat">
+											<span>{ __( 'Background Repeat' ) }</span>
+											<DeviceSelector />
+											<Select
+												onChange={ val => {
+													const temp = {
+														...( value || {} ),
+														repeat: {
+															...( value?.repeat || {} ),
+															[ device ]: val,
+														},
+													};
+													setting.set( temp );
+													setValue( temp );
+												} }
+												value={ value?.repeat?.[ device ] ?? 'repeat' }
+											>
+												{ REPEATS.map( repeat => (
+													<Option value={ repeat.value } key={ repeat.value }>{ repeat.label }</Option>
+												) ) }
+											</Select>
+										</div>
+										<div className="vite-background-size">
+											<span>{ __( 'Background Size' ) }</span>
+											<DeviceSelector />
+											<Select
+												onChange={ val => {
+													const temp = {
+														...( value || {} ),
+														size: {
+															...( value?.size || {} ),
+															[ device ]: val,
+														},
+													};
+													setting.set( temp );
+													setValue( temp );
+												} }
+												value={ value?.size?.[ device ] ?? 'auto' }
+											>
+												{ SIZES.map( size => (
+													<Option value={ size.value } key={ size.value }>{ size.label }</Option>
+												) ) }
+											</Select>
+										</div>
+										<div className="vite-background-attachment">
+											<span>{ __( 'Background Attachment' ) }</span>
+											<DeviceSelector />
+											<Select
+												onChange={ val => {
+													const temp = {
+														...( value || {} ),
+														attachment: {
+															...( value?.attachment || {} ),
+															[ device ]: val,
+														},
+													};
+													setting.set( temp );
+													setValue( temp );
+												} }
+												value={ value?.attachment?.[ device ] ?? 'scroll' }
+											>
+												{ ATTACHMENTS.map( attachment => (
+													<Option value={ attachment.value } key={ attachment.value }>{ attachment.label }</Option>
+												) ) }
+											</Select>
+										</div>
+									</>
+								) : (
+									<button type="button" onClick={ open } className="upload-button button-add-media">
+										{ __( 'Select Image' ) }
 									</button>
-									<button
-										onClick={ () => {
-											const newVal = { ...value, 'background-image': '' };
-											setValue( newVal );
-											setting.set( newVal );
-										} }
-										className="button"
-									>
-										{ __( 'Remove Image' ) }
-									</button>
-								</div>
-							) }
-						</div>
-					) }
-				/>
-				{ value?.[ 'background-image' ] && (
-					<>
-						<SelectControl
-							value={ value?.[ 'background-repeat' ] || 'repeat' }
-							onChange={ val => {
-								const newVal = { ...value, 'background-repeat': val };
-								setValue( newVal );
-								setting.set( newVal );
-							} }
-							label={ __( 'Background Repeat' ) }
-							options={ repeatOptions }
-						/>
-						<SelectControl
-							value={ value?.[ 'background-position' ] || 'ce' }
-							onChange={ val => {
-								const newVal = { ...value, 'background-repeat': val };
-								setValue( newVal );
-								setting.set( newVal );
-							} }
-							label={ __( 'Background Position' ) }
-							options={ positionOptions }
-						/>
-						<SelectControl
-							value={ value?.[ 'background-size' ] || 'auto' }
-							onChange={ val => {
-								const newVal = { ...value, 'background-size': val };
-								setValue( newVal );
-								setting.set( newVal );
-							} }
-							label={ __( 'Background Size' ) }
-							options={ sizeOptions }
-						/>
-						<SelectControl
-							value={ value?.[ 'background-attachment' ] || 'scroll' }
-							onChange={ val => {
-								const newVal = { ...value, 'background-attachment': val };
-								setValue( newVal );
-								setting.set( newVal );
-							} }
-							label={ __( 'Background Attachment' ) }
-							options={ attachmentOptions }
-						/>
-					</>
+								) }
+							</div>
+						) }
+					/>
 				) }
 			</div>
+			{ description && (
+				<div className="customize-control-description">
+					<RawHTML>{ description }</RawHTML>
+				</div>
+			) }
 		</div>
 	);
 } );
