@@ -1,5 +1,5 @@
 import { useState, memo, RawHTML } from '@wordpress/element';
-import { CustomindRange, Tooltip } from '../../components';
+import { CustomindRange } from '../../components';
 import { useDeviceSelector } from '../../hooks';
 import { DEVICES } from '../../constants';
 
