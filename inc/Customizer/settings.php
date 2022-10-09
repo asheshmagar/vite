@@ -276,7 +276,7 @@ $control_settings = [
 		],
 	],
 	[
-		'name'        => 'vite[slider-dimensions]',
+		'name'        => 'vite[dimensions]',
 		'type'        => 'control',
 		'control'     => 'vite-dimensions',
 		'section'     => 'vite[section]',
@@ -284,7 +284,7 @@ $control_settings = [
 		'description' => __( 'An example of dimensions control.', 'vite' ),
 	],
 	[
-		'name'        => 'vite[slider-dimensions-responsive]',
+		'name'        => 'vite[dimensions-responsive]',
 		'type'        => 'control',
 		'control'     => 'vite-dimensions',
 		'section'     => 'vite[section]',
@@ -295,7 +295,7 @@ $control_settings = [
 		],
 	],
 	[
-		'name'        => 'vite[slider-background]',
+		'name'        => 'vite[background]',
 		'type'        => 'control',
 		'control'     => 'vite-background',
 		'section'     => 'vite[section]',
@@ -306,7 +306,7 @@ $control_settings = [
 		],
 	],
 	[
-		'name'        => 'vite[slider-sortable]',
+		'name'        => 'vite[sortable]',
 		'type'        => 'control',
 		'control'     => 'vite-sortable',
 		'section'     => 'vite[section]',
@@ -316,6 +316,22 @@ $control_settings = [
 			'one'   => 'One',
 			'two'   => 'Two',
 			'three' => 'Three',
+		],
+	],
+	[
+		'name'        => 'vite[unsortable]',
+		'type'        => 'control',
+		'control'     => 'vite-sortable',
+		'section'     => 'vite[section]',
+		'label'       => __( 'Background', 'vite' ),
+		'description' => __( 'An example of unsortable control.', 'vite' ),
+		'choices'     => [
+			'one'   => 'One',
+			'two'   => 'Two',
+			'three' => 'Three',
+		],
+		'input_attrs' => [
+			'sort' => false,
 		],
 	],
 ];
