@@ -1,6 +1,5 @@
-import { memo, useState, useEffect, useRef, useCallback, RawHTML } from '@wordpress/element';
+import { memo, useState, RawHTML } from '@wordpress/element';
 import { Button } from '@wordpress/components';
-import { Sortable } from 'sortablejs';
 import { ReactSortable } from 'react-sortablejs';
 
 export default memo( ( props ) => {
