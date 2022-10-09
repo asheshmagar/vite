@@ -275,6 +275,49 @@ $control_settings = [
 			'responsive' => true,
 		],
 	],
+	[
+		'name'        => 'vite[slider-dimensions]',
+		'type'        => 'control',
+		'control'     => 'vite-dimensions',
+		'section'     => 'vite[section]',
+		'label'       => __( 'Dimensions', 'vite' ),
+		'description' => __( 'An example of dimensions control.', 'vite' ),
+	],
+	[
+		'name'        => 'vite[slider-dimensions-responsive]',
+		'type'        => 'control',
+		'control'     => 'vite-dimensions',
+		'section'     => 'vite[section]',
+		'label'       => __( 'Dimensions', 'vite' ),
+		'description' => __( 'An example of dimensions responsive control.', 'vite' ),
+		'input_attrs' => [
+			'responsive' => true,
+		],
+	],
+	[
+		'name'        => 'vite[slider-background]',
+		'type'        => 'control',
+		'control'     => 'vite-background',
+		'section'     => 'vite[section]',
+		'label'       => __( 'Background', 'vite' ),
+		'description' => __( 'An example of background responsive control.', 'vite' ),
+		'input_attrs' => [
+			'responsive' => true,
+		],
+	],
+	[
+		'name'        => 'vite[slider-sortable]',
+		'type'        => 'control',
+		'control'     => 'vite-sortable',
+		'section'     => 'vite[section]',
+		'label'       => __( 'Background', 'vite' ),
+		'description' => __( 'An example of sortable control.', 'vite' ),
+		'choices'     => [
+			'one'   => 'One',
+			'two'   => 'Two',
+			'three' => 'Three',
+		],
+	],
 ];
 
 $settings = apply_filters( 'vite_customizer_control_settings', array_merge( $panel_settings, $section_settings, $control_settings ) );
