@@ -1,0 +1,63 @@
+.vite-background-control {
+	grid-template-columns: auto auto;
+
+	.vite-background-tabs {
+		display: flex;
+		justify-content: end;
+		align-items: center;
+
+		.components-button {
+			padding: 0;
+			box-shadow: none;
+			border: 1px solid rgb(117, 117, 117);
+			height: 24px;
+			min-width: 24px;
+		}
+		.dashicon {
+			font-size: 14px;
+			width: 14px;
+			height: 14px;
+		}
+	}
+
+	.vite-control-body,
+	.customize-control-description {
+		grid-column: 1/-1;
+	}
+
+	.actions {
+		display: grid;
+		grid-template-columns: auto auto;
+		gap: 10px;
+
+		.button {
+			margin-top: 0 !important;
+		}
+	}
+
+	.focal-point-picker__controls {
+		padding-bottom: 0 !important;
+
+		.components-input-control__label {
+			margin-bottom: 0 !important;
+		}
+	}
+
+	.attachment-media-view {
+		display: grid;
+		grid-gap: 13px;
+
+		> [class^="vite-background-"] {
+			display: grid;
+			grid-template-columns: auto auto;
+
+			.rc-select {
+				grid-column: 1/-1;
+			}
+		}
+
+		.vite-device-selector {
+			justify-self: end;
+		}
+	}
+}
