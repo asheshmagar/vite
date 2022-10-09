@@ -57,9 +57,10 @@ export default memo( ( props ) => {
 					forceFallback={ true }
 					fallbackClass="vite-sortable-fallback"
 					sort={ !! sort }
+					disabled={ ! sort }
 					animation={ 150 }
 					tag="ul"
-					className="vite-sortable"
+					className={ `vite-sortable` }
 					list={ value }
 					setList={ v => {
 						if ( JSON.stringify( value ) !== JSON.stringify( v ) ) {
@@ -69,7 +70,7 @@ export default memo( ( props ) => {
 					} }
 				>
 					{ value.map( ( item, idx, arr ) => (
-						<li key={ item.id } className="vite-sortable-item">
+						<li key={ item.id } className="vite-sortable-item" data-sort-disabled={ sort ? undefined : true }>
 							<Button
 								onClick={ () => {
 									const temp = [ ...arr ];

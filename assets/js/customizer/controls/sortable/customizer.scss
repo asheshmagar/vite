@@ -32,6 +32,10 @@
 		&.vite-sortable-item {
 			cursor: move;
 			background-color: #fff;
+
+			&[data-sort-disabled="true"] {
+				cursor: initial;
+			}
 		}
 	}
 }
