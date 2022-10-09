@@ -1,7 +1,7 @@
-import { memo, useState, useEffect, useRef, useCallback } from '@wordpress/element';
-import { Tooltip } from '../../components';
-import { Button, Icon } from '@wordpress/components';
+import { memo, useState, useEffect, useRef, useCallback, RawHTML } from '@wordpress/element';
+import { Button } from '@wordpress/components';
 import { Sortable } from 'sortablejs';
+import { ReactSortable } from 'react-sortablejs';
 
 export default memo( ( props ) => {
 	const {
@@ -12,122 +12,87 @@ export default memo( ( props ) => {
 				description,
 				choices,
 				inputAttrs: {
-					unsortable = [],
+					sort = true,
 				},
 			},
 			setting,
 		},
 	} = props;
 
-	const sortableRef = useRef();
-	const unsortableRef = useRef();
-	const [ value ] = useState( setting.get() );
-
-	const update = useCallback( () => {
-		const sortableValue = [];
-		const unsortableValue = [];
-		const items = Array.from( sortableRef.current?.children || [] );
-		for ( const item of items ) {
-			if ( undefined !== item.dataset.visible ) {
-				sortableValue.push( item.dataset.id );
-			}
+	const [ value, setValue ] = useState( () => {
+		const val = setting.get();
+		if ( ! val?.length ) {
+			return Object.entries( choices ).map( ( [ key, v ] ) => ( {
+				id: key,
+				label: v,
+				visible: false,
+			} ) );
 		}
-		if ( unsortableRef.current ) {
-			const unsortableItems = Array.from( unsortableRef.current?.children || [] );
-			for ( const unsortableItem of unsortableItems ) {
-				if ( undefined !== unsortableItem.dataset.visible ) {
-					unsortableValue.push( unsortableItem.dataset.id );
-				}
-			}
-		}
-		const newValue = unsortableValue.concat( sortableValue );
-		setting.set( newValue );
-	}, [ unsortableRef.current, sortableRef.current ] );
 
-	useEffect( () => {
-		if ( ! sortableRef.current ) {
-			return;
+		if ( val.some( v => ! v?.id ) ) {
+			return val.map( v => ( {
+				id: v,
+				label: choices[ v ],
+				visible: true,
+			} ) );
 		}
-		Sortable.create( sortableRef.current, {
-			animation: 100,
-			onEnd() {
-				update();
-			},
-		} );
-	}, [] );
 
-	const handleVisibility = ( e ) => {
-		e.target.closest( 'li' ).toggleAttribute( 'data-visible' );
-		update();
-	};
+		return val;
+	} );
 
 	return (
 		<div className="vite-control vite-sortable-control" data-control-id={ id }>
 			{ label && (
 				<div className="vite-control-head">
 					<span className="customize-control-title">{ label }</span>
-					{ description && (
-						<Tooltip>
-							<span className="customize-control-description">{ description }</span>
-						</Tooltip>
-					) }
 				</div>
 			) }
-			{ 0 < Object.keys( unsortable ?? {} ).length && (
-				<ul className="vite-unsortable" ref={ unsortableRef }>
-					{ /* eslint-disable-next-line no-shadow */ }
-					{ Object.entries( unsortable ).map( ( [ id, name ] ) => {
-						if ( ( value || [] ).some( v => v === id ) ) {
-							return (
-								<li key={ id } data-id={ id } data-visible={ true } className="vite-unsortable-item">
-									<Button onClick={ handleVisibility } iconSize={ 20 } icon="visibility" />
-									<span>{ name }</span>
-								</li>
-							);
-						}
-						return (
-							<li key={ id } data-id={ id } className="vite-unsortable-item">
-								<Button onClick={ handleVisibility } iconSize={ 20 } icon="visibility" />
-								<span>{ name }</span>
-							</li>
-						);
-					} ) }
-				</ul>
+			{ description && (
+				<div className="customize-control-description">
+					<RawHTML>{ description }</RawHTML>
+				</div>
 			) }
-			<ul className="vite-sortable" ref={ sortableRef }>
-				{ /* eslint-disable-next-line no-shadow */ }
-				{ ( value || [] ).map( id => {
-					if ( choices?.[ id ] ) {
-						return (
-							<li key={ id } data-id={ id } data-visible={ true } className="vite-sortable-item">
-								<Button onClick={ handleVisibility } iconSize={ 20 } icon="visibility" />
-								<span>{ choices[ id ] }</span>
-								<Icon
-									icon="menu"
-									size={ 20 }
-								/>
-							</li>
-						);
-					}
-					return null;
-				} ) }
-				{ /* eslint-disable-next-line no-shadow */ }
-				{ Object.entries( choices || {} ).map( ( [ id, name ] ) => {
-					if ( -1 === ( value || [] ).indexOf( id ) ) {
-						return (
-							<li key={ id } data-id={ id } className="vite-sortable-item invisible">
-								<Button onClick={ handleVisibility } iconSize={ 20 } icon="visibility" />
-								<span>{ name }</span>
-								<Icon
-									icon="menu"
-									size={ 20 }
-								/>
-							</li>
-						);
-					}
-					return null;
-				} ) }
-			</ul>
+			<div className="vite-control-body">
+				<ReactSortable
+					forceFallback={ true }
+					fallbackClass="vite-sortable-fallback"
+					sort={ !! sort }
+					animation={ 150 }
+					tag="ul"
+					className="vite-sortable"
+					list={ value }
+					setList={ v => {
+						if ( JSON.stringify( value ) !== JSON.stringify( v ) ) {
+							setting.set( v );
+							setValue( v );
+						}
+					} }
+				>
+					{ value.map( ( item, idx, arr ) => (
+						<li key={ item.id } className="vite-sortable-item">
+							<Button
+								onClick={ () => {
+									const temp = [ ...arr ];
+									temp[ idx ] = {
+										...temp[ idx ],
+										visible: ! temp[ idx ].visible,
+									};
+									setValue( temp );
+									setting.set( temp );
+								} }
+								iconSize={ 20 }
+								icon={ item?.visible ? 'visibility' : 'hidden' }
+							/>
+							<span>{ item.label }</span>
+							{ !! sort && (
+								<svg width="24" height="24" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+									<path d="M8 7h2V5H8v2zm0 6h2v-2H8v2zm0 6h2v-2H8v2zm6-14v2h2V5h-2zm0 8h2v-2h-2v2zm0 6h2v-2h-2v2z" />
+								</svg>
+							) }
+						</li>
+					) ) }
+				</ReactSortable>
+			</div>
 		</div>
 	);
 } );
