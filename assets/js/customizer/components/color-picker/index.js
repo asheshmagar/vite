@@ -1,4 +1,4 @@
-import { ColorPicker, Popover } from '@wordpress/components';
+import { ColorPicker, Popover, GradientPicker } from '@wordpress/components';
 import { useState, memo, useEffect } from '@wordpress/element';
 import './customizer.scss';
 import { noop } from 'lodash';
@@ -8,6 +8,7 @@ export default memo( ( props ) => {
 		value = '',
 		onChange = noop,
 		label,
+		type = 'color',
 	} = props;
 	const [ isOpen, setIsOpen ] = useState( false );
 	const [ tooltip, setTooltip ] = useState( false );
@@ -25,6 +26,29 @@ export default memo( ( props ) => {
 			anchor.removeEventListener( 'mouseleave', listener );
 		};
 	}, [ anchor ] );
+
+	const Picker = 'color' === type ? ColorPicker : GradientPicker;
+
+	let pickerProps = {
+		color: value,
+		onChangeComplete: val => {
+			const { hex, rgb } = val;
+			let newColor = hex;
+			if ( rgb.a !== 1 ) {
+				newColor = `rgba(${ rgb.r },${ rgb.g },${ rgb.b },${ rgb.a })`;
+			}
+			onChange( newColor );
+		},
+		enableAlpha: true,
+		copyFormat: [ 'hex' ],
+	};
+
+	if ( 'color' !== type ) {
+		pickerProps = {
+			value,
+			onChange,
+		};
+	}
 
 	return (
 		<div className="vite-color-picker">
@@ -57,18 +81,8 @@ export default memo( ( props ) => {
 					className="vite-popover"
 					position="bottom center"
 				>
-					<ColorPicker
-						color={ value }
-						onChangeComplete={ val => {
-							const { hex, rgb } = val;
-							let newColor = hex;
-							if ( rgb.a !== 1 ) {
-								newColor = `rgba(${ rgb.r },${ rgb.g },${ rgb.b },${ rgb.a })`;
-							}
-							onChange( newColor );
-						} }
-						enableAlpha
-						copyFormat={ [ 'hex' ] }
+					<Picker
+						{ ...pickerProps }
 					/>
 				</Popover>
 			) }
