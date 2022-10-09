@@ -3,8 +3,9 @@
 		display: flex;
 		align-items: center;
 		padding: 5px 10px;
-		color: #aaaaaa;
-		border: 1px dashed #aaaaaa;
+		color: #50575e;
+		border: 1px solid #8c8f94;
+		min-height: 25px;
 
 		span:not(.dashicon) {
 			flex: 1;
@@ -20,16 +21,21 @@
 			max-height: 20px;
 			min-width: unset;
 			margin-right: 10px;
+
+			.dashicon {
+				font-size: 14px;
+				height: 14px;
+				width: 14px;
+			}
 		}
 
-		&.sortable-item {
+		&.vite-sortable-item {
 			cursor: move;
 			background-color: #fff;
 		}
-
-		&[data-visible] {
-			color: #000;
-			border-style: solid;
-		}
 	}
+}
+
+.vite-sortable-fallback {
+	opacity: 1 !important;
 }
