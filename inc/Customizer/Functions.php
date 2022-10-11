@@ -65,16 +65,6 @@ function sanitize_color( $input, WP_Customize_Setting $setting ) {
 
 	if ( is_array( $input ) ) {
 		$keys = array_keys( $input );
-		error_log( print_r( array_reduce(
-			$keys,
-			function( $acc, $curr ) use ( $sanitize, $input ) {
-				if ( isset( $input[ $curr ] ) ) {
-					$acc[ $curr ] = $sanitize( $input[ $curr ] );
-				}
-				return $acc;
-			},
-			[]
-		), true ) );
 		return array_reduce(
 			$keys,
 			function( $acc, $curr ) use ( $sanitize, $input ) {
@@ -113,6 +103,10 @@ function sanitize_input( string $input, WP_Customize_Setting $setting ): string 
 	}
 }
 
+function sanitize_slider( $input ) {
+	return $input;
+}
+
 /**
  * Sanitize buttonset.
  *
@@ -126,7 +120,14 @@ function sanitize_buttonset( $input ) {
 	return sanitize_text_field( $input );
 }
 
-function sanitize_border( $input ) {
+/**
+ * Sanitize border.
+ *
+ * @param array                $input Input.
+ * @param WP_Customize_Setting $setting Settings.
+ * @return array
+ */
+function sanitize_border( array $input, WP_Customize_Setting $setting ): array {
 	$border_styles = [
 		'none',
 		'solid',
@@ -138,7 +139,52 @@ function sanitize_border( $input ) {
 		'inset',
 		'outset',
 	];
+
 	if ( isset( $input['style'] ) && in_array( $input['style'], $border_styles, true ) ) {
 		$input['style'] = sanitize_text_field( $input['style'] );
+	} else {
+		$input['style'] = 'none';
 	}
+	if ( isset( $input['color'] ) ) {
+		$input['color'] = sanitize_color( $input['color'], $setting );
+	}
+	if ( isset( $input['width'] ) ) {
+		$input['width'] = sanitize_slider( $input['width'] );
+	}
+	if ( isset( $input['radius'] ) ) {
+		$input['width'] = sanitize_slider( $input['width'] );
+	}
+
+	return $input;
+}
+
+/**
+ * Sanitize background.
+ *
+ * @param array                $input Input.
+ * @param WP_Customize_Setting $setting Settings.
+ * @return array
+ */
+function sanitize_background( array $input, WP_Customize_Setting $setting ): array {
+	if ( isset( $input['type'] ) && in_array( $input['type'], [ 'color', 'gradient', 'image' ], true ) ) {
+		$input['type'] = sanitize_text_field( $input['type'] );
+	} else {
+		$input['type'] = 'color';
+	}
+	if ( isset( $input['color'] ) ) {
+		$input['color'] = sanitize_color( $input['color'], $setting );
+	}
+	if ( isset( $input['gradient'] ) ) {
+		$input['gradient'] = sanitize_color( $input['gradient'], $setting );
+	}
+	if ( isset( $input['image'] ) ) {
+		$input['image'] = esc_url_raw( $input['image'] );
+	}
+	foreach ( [ 'position', 'repeat', 'size', 'attachment' ] as $prop ) {
+		if ( isset( $input[ $prop ] ) && is_array( $input[ $prop ] ) ) {
+			$input[ $prop ] = array_map( 'sanitize_text_field', $input[ $prop ] );
+		}
+	}
+
+	return $input;
 }
