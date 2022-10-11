@@ -1,0 +1,39 @@
+.vite-typography-control {
+	.vite-typography-popover > .components-popover__content {
+		min-width: 330px;
+		min-height: 340px;
+		padding: 10px
+	}
+
+	.vite-device-selector .vite-devices .vite-device .dashicon {
+		font-size: 14px;
+		height: 14px;
+		width: 14px;
+	}
+
+	.vite-typography {
+		display: grid;
+		grid-gap: 10px;
+
+		> div {
+			display: grid;
+			grid-template-columns: 150px auto;
+
+			.vite-device-selector {
+				justify-self: end;
+			}
+			> span,
+			.vite-device-selector {
+				margin-bottom: 5px;
+			}
+
+			.vite-range {
+				grid-column: 1/-1;
+			}
+		}
+
+		.vite-range {
+			grid-template-columns: 1fr 60px;
+		}
+	}
+}
