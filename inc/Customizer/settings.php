@@ -32,6 +32,8 @@ $control_settings = [
 		'section'     => 'vite[section]',
 		'label'       => __( 'Color', 'vite' ),
 		'description' => __( 'An example of color control.', 'vite' ),
+		'selectors'   => [ '.vite-color' ],
+		'properties'  => [ 'color' ],
 	],
 	[
 		'name'        => 'vite[colors]',
@@ -52,6 +54,8 @@ $control_settings = [
 				],
 			],
 		],
+		'selectors'   => [ '.vite-colors' ],
+		'properties'  => [ 'color' ],
 	],
 	[
 		'name'        => 'vite[buttonset]',
@@ -195,6 +199,8 @@ $control_settings = [
 		'section'     => 'vite[section]',
 		'label'       => __( 'Gradient', 'vite' ),
 		'description' => __( 'An example of gradient control.', 'vite' ),
+		'selectors'   => [ '.vite-gradient', '.vite-gradient:hover' ],
+		'properties'  => [ 'background' ],
 	],
 	[
 		'name'        => 'vite[textarea]',
@@ -214,6 +220,7 @@ $control_settings = [
 		'section'     => 'vite[section]',
 		'label'       => __( 'Border', 'vite' ),
 		'description' => __( 'An example of border control.', 'vite' ),
+		'selectors'   => [ '.vite-border' ],
 	],
 	[
 		'name'        => 'vite[slider]',
@@ -227,6 +234,8 @@ $control_settings = [
 			'max'  => 100,
 			'step' => 1,
 		],
+		'selectors'   => [ '.vite-slider', '.vite-slider:hover' ],
+		'properties'  => [ 'width', 'min-width' ],
 	],
 	[
 		'name'        => 'vite[slider-responsive]',
@@ -241,6 +250,8 @@ $control_settings = [
 			'step'       => 1,
 			'responsive' => true,
 		],
+		'selectors'   => [ '.vite-responsive-slider', '.vite-responsive-slider:hover' ],
+		'properties'  => [ 'width', 'min-width' ],
 	],
 	[
 		'name'        => 'vite[slider-units]',
@@ -257,6 +268,8 @@ $control_settings = [
 				'rem',
 			],
 		],
+		'selectors'   => [ '.vite-units-slider', '.vite-units-slider:hover' ],
+		'properties'  => [ 'width', 'min-width' ],
 	],
 	[
 		'name'        => 'vite[slider-units-responsive]',
@@ -274,6 +287,8 @@ $control_settings = [
 			],
 			'responsive' => true,
 		],
+		'selectors'   => [ '.vite-responsive-units-slider', '.vite-responsive-units-slider:hover' ],
+		'properties'  => [ 'width', 'min-width' ],
 	],
 	[
 		'name'        => 'vite[dimensions]',
@@ -282,6 +297,8 @@ $control_settings = [
 		'section'     => 'vite[section]',
 		'label'       => __( 'Dimensions', 'vite' ),
 		'description' => __( 'An example of dimensions control.', 'vite' ),
+		'selectors'   => [ '.vite-dimensions', '.vite-dimensions:hover' ],
+		'properties'  => [ 'padding' ],
 	],
 	[
 		'name'        => 'vite[dimensions-responsive]',
@@ -293,6 +310,8 @@ $control_settings = [
 		'input_attrs' => [
 			'responsive' => true,
 		],
+		'selectors'   => [ '.vite-responsive-dimensions', '.vite-responsive-dimensions:hover' ],
+		'properties'  => [ 'margin' ],
 	],
 	[
 		'name'        => 'vite[background]',
@@ -304,13 +323,14 @@ $control_settings = [
 		'input_attrs' => [
 			'responsive' => true,
 		],
+		'selectors'   => [ '.vite-background', '.vite-background:hover' ],
 	],
 	[
 		'name'        => 'vite[sortable]',
 		'type'        => 'control',
 		'control'     => 'vite-sortable',
 		'section'     => 'vite[section]',
-		'label'       => __( 'Background', 'vite' ),
+		'label'       => __( 'Sortable', 'vite' ),
 		'description' => __( 'An example of sortable control.', 'vite' ),
 		'choices'     => [
 			'one'   => 'One',
@@ -323,7 +343,7 @@ $control_settings = [
 		'type'        => 'control',
 		'control'     => 'vite-sortable',
 		'section'     => 'vite[section]',
-		'label'       => __( 'Background', 'vite' ),
+		'label'       => __( 'Unsortable', 'vite' ),
 		'description' => __( 'An example of unsortable control.', 'vite' ),
 		'choices'     => [
 			'one'   => 'One',
@@ -333,6 +353,15 @@ $control_settings = [
 		'input_attrs' => [
 			'sort' => false,
 		],
+	],
+	[
+		'name'        => 'vite[typography]',
+		'type'        => 'control',
+		'control'     => 'vite-typography',
+		'section'     => 'vite[section]',
+		'label'       => __( 'Typography', 'vite' ),
+		'description' => __( 'An example of typography control.', 'vite' ),
+		'selectors'   => [ '.vite-typography', '.vite-typography:hover' ],
 	],
 ];
 
