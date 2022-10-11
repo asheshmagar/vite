@@ -1,5 +1,6 @@
 import { memo, useState, RawHTML } from '@wordpress/element';
 import Select, { Option } from 'rc-select';
+import { dropdownIcon } from '../../utils';
 
 export default memo( ( props ) => {
 	const {
@@ -22,6 +23,7 @@ export default memo( ( props ) => {
 			) }
 			<div className="vite-control-body">
 				<Select
+					inputIcon={ dropdownIcon() }
 					value={ choices?.[ value ] ?? '' }
 					onChange={ ( val ) => {
 						setValue( val );

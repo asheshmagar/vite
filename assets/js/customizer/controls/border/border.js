@@ -2,6 +2,7 @@ import { RawHTML, memo, useState } from '@wordpress/element';
 import { CustomindColorPicker, CustomindRange, Reset } from '../../components';
 import Select, { Option } from 'rc-select';
 import { isEqual } from 'lodash';
+import { dropdownIcon } from '../../utils';
 
 const COLOR_STATES = [
 	{ label: 'Normal', value: 'normal' },
@@ -54,6 +55,7 @@ export default memo( ( props ) => {
 				<div className="vite-border-styles">
 					<span>Style</span>
 					<Select
+						inputIcon={ dropdownIcon() }
 						placeholder="Select"
 						value={ value?.style ?? '' }
 						onChange={ val => {
