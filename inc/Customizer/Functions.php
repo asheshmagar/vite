@@ -44,9 +44,9 @@ function sanitize_radio( string $input, WP_Customize_Setting $setting ): string 
  *
  * @param string|array         $input Input.
  * @param WP_Customize_Setting $setting Settings.
- * @return string
+ * @return string|array
  */
-function sanitize_color( $input, WP_Customize_Setting $setting ): string {
+function sanitize_color( $input, WP_Customize_Setting $setting ) {
 	$sanitize = function( $color ) use ( $setting ) {
 		$color = sanitize_text_field( $color );
 
@@ -64,11 +64,26 @@ function sanitize_color( $input, WP_Customize_Setting $setting ): string {
 	};
 
 	if ( is_array( $input ) ) {
-		return array_walk(
-			$input,
-			function( &$key, $value ) use ( $sanitize ) {
-				$key = $sanitize( $value );
-			}
+		$keys = array_keys( $input );
+		error_log( print_r( array_reduce(
+			$keys,
+			function( $acc, $curr ) use ( $sanitize, $input ) {
+				if ( isset( $input[ $curr ] ) ) {
+					$acc[ $curr ] = $sanitize( $input[ $curr ] );
+				}
+				return $acc;
+			},
+			[]
+		), true ) );
+		return array_reduce(
+			$keys,
+			function( $acc, $curr ) use ( $sanitize, $input ) {
+				if ( isset( $input[ $curr ] ) ) {
+					$acc[ $curr ] = $sanitize( $input[ $curr ] );
+				}
+				return $acc;
+			},
+			[]
 		);
 	}
 
