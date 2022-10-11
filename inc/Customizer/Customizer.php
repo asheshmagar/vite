@@ -37,6 +37,13 @@ class Customizer {
 	public $context = [];
 
 	/**
+	 * Holds instance of dynamic CSS.
+	 *
+	 * @var DynamicCSS $css
+	 */
+	public $css;
+
+	/**
 	 * Init.
 	 *
 	 * @return void
@@ -46,6 +53,21 @@ class Customizer {
 		add_action( 'customize_register', [ $this, 'override_controls' ] );
 		add_action( 'customize_controls_enqueue_scripts', [ $this, 'enqueue_control_script' ] );
 		add_action( 'customize_save_after', [ $this, 'save_dynamic_css' ] );
+	}
+
+	/**
+	 * Get setting.
+	 *
+	 * @param string $key Setting key.
+	 * @param mixed  $default Default.
+	 * @return mixed|string
+	 */
+	public function get_setting( string $key = '', $default = false ) {
+		$settings = get_theme_mod( 'vite' );
+		if ( isset( $settings[ $key ] ) ) {
+			return $settings[ $key ];
+		}
+		return $default;
 	}
 
 	/**
@@ -65,7 +87,11 @@ class Customizer {
 	 * @return void
 	 */
 	public function save_dynamic_css() {
-		// vite( 'dynamic-css' )->make()->save();
+		if ( ! empty( $this->css->css_data ) ) {
+			try {
+				$this->css->make()->save();
+			} catch ( \Exception $e ) {} // phpcs:ignore
+		}
 	}
 
 	/**
@@ -84,7 +110,31 @@ class Customizer {
 		wp_enqueue_editor();
 		wp_enqueue_script( 'vite-customizer', VITE_ASSETS_URI . 'dist/customizer.js', $asset['dependencies'], $asset['version'], true );
 		wp_enqueue_style( 'vite-customizer', VITE_ASSETS_URI . 'dist/customizer.css', [ 'wp-components' ], $asset['version'] );
+		wp_localize_script(
+			'vite-customizer',
+			'_VITE_CUSTOMIZER_',
+			[
+				'googleFonts' => $this->google_fonts(),
+			]
+		);
 		wp_set_script_translations( 'vite-customizer', 'vite', get_template_directory() . '/languages' );
+	}
+
+	/**
+	 * Get google fonts.
+	 *
+	 * @return mixed|void
+	 */
+	public function google_fonts() {
+		$fonts = [];
+		$file  = VITE_ASSETS_DIR . 'json/google-fonts.json';
+		if ( file_exists( $file ) ) {
+			ob_start();
+			include $file;
+			$fonts = json_decode( ob_get_clean(), true );
+		}
+
+		return apply_filters( 'vite_google_fonts', $fonts );
 	}
 
 	/**
@@ -94,6 +144,8 @@ class Customizer {
 	 * @return void
 	 */
 	public function customize_register( WP_Customize_Manager $wp_customize ) {
+		$this->css = new DynamicCSS();
+
 		require_once __DIR__ . '/settings.php';
 		$this->register( $wp_customize );
 		$this->add( $wp_customize );
@@ -233,6 +285,10 @@ class Customizer {
 		$config['type'] = $config['control'];
 		$config         = $this->additional_config( $config );
 
+		if ( isset( $config['selectors'] ) ) {
+			$this->css->add( $config );
+		}
+
 		$wp_customize->add_control( new Control( $wp_customize, $name, $config ) );
 
 		$selective_refresh = isset( $config['partial'] );
@@ -298,6 +354,10 @@ class Customizer {
 		$wp_customize->add_setting( $name, $config );
 
 		$config['type'] = $config['control'];
+
+		if ( isset( $config['selectors'] ) ) {
+			$this->css->add( $config );
+		}
 
 		$wp_customize->add_control( new Control( $wp_customize, $name, $config ) );
 	}
