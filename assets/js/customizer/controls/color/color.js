@@ -8,7 +8,6 @@ export default memo( ( props ) => {
 			params: {
 				label,
 				description,
-				type,
 				inputAttrs,
 			},
 		},
@@ -29,7 +28,6 @@ export default memo( ( props ) => {
 					inputAttrs.colors.map( c => (
 						<CustomindColorPicker
 							key={ c?.id }
-							type={ type }
 							value={ value?.[ c?.id ] ?? '' }
 							onChange={ ( color ) => {
 								const temp = { ...( value || {} ) };
@@ -41,7 +39,7 @@ export default memo( ( props ) => {
 						/>
 					) )
 				) : (
-					<CustomindColorPicker type={ type } value={ value } onChange={ ( color ) => {
+					<CustomindColorPicker value={ value } onChange={ ( color ) => {
 						setValue( color );
 						setting.set( color );
 					} } />
