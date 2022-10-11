@@ -25,7 +25,7 @@ $service_providers = [
 	Vite\ServiceProvider\TemplateHooksServiceProvider::class,
 	Vite\ServiceProvider\ScriptsServiceProvider::class,
 	Vite\ServiceProvider\StylesServiceProvider::class,
-	Vite\ServiceProvider\DynamicCSSServiceProvider::class,
+	Vite\ServiceProvider\WebFontLoaderServerProvider::class,
 	Vite\ServiceProvider\CustomizerServiceProvider::class,
 	Vite\ServiceProvider\ViteServiceProvider::class,
 ];
