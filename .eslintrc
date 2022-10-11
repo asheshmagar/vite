@@ -26,8 +26,7 @@
 		"wpApiSettings": true,
 		"window": true,
 		"document": true,
-		"_BLOCKART_": true,
-		"_BLOCKART_ADMIN_": true,
+		"_VITE_CUSTOMIZER_": true,
 		"FormData": true
 	},
 	"plugins": [
