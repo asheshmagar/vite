@@ -5,6 +5,7 @@ import { CustomindColorPicker } from '../../components';
 import { ButtonGroup, Button, FocalPointPicker } from '@wordpress/components';
 import { useDeviceSelector } from '../../hooks';
 import Select, { Option } from 'rc-select';
+import { dropdownIcon } from '../../utils';
 
 const TABS = [
 	{ label: 'Color', value: 'color', icon: 'admin-customizer' },
@@ -155,6 +156,7 @@ export default memo( ( props ) => {
 											<span>{ __( 'Background Repeat' ) }</span>
 											<DeviceSelector />
 											<Select
+												inputIcon={ dropdownIcon() }
 												onChange={ val => {
 													const temp = {
 														...( value || {} ),
@@ -177,6 +179,7 @@ export default memo( ( props ) => {
 											<span>{ __( 'Background Size' ) }</span>
 											<DeviceSelector />
 											<Select
+												inputIcon={ dropdownIcon() }
 												onChange={ val => {
 													const temp = {
 														...( value || {} ),
@@ -199,6 +202,7 @@ export default memo( ( props ) => {
 											<span>{ __( 'Background Attachment' ) }</span>
 											<DeviceSelector />
 											<Select
+												inputIcon={ dropdownIcon() }
 												onChange={ val => {
 													const temp = {
 														...( value || {} ),
