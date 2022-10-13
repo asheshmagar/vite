@@ -1,5 +1,5 @@
 import { memo, useState, RawHTML } from '@wordpress/element';
-import { CustomindColorPicker } from '../../components';
+import { ViteColorPicker } from '../../components';
 
 export default memo( ( props ) => {
 	const {
@@ -26,7 +26,7 @@ export default memo( ( props ) => {
 			<div className="vite-control-body">
 				{ multiple ? (
 					inputAttrs.colors.map( c => (
-						<CustomindColorPicker
+						<ViteColorPicker
 							key={ c?.id }
 							value={ value?.[ c?.id ] ?? '' }
 							onChange={ ( color ) => {
@@ -39,7 +39,7 @@ export default memo( ( props ) => {
 						/>
 					) )
 				) : (
-					<CustomindColorPicker value={ value } onChange={ ( color ) => {
+					<ViteColorPicker value={ value } onChange={ ( color ) => {
 						setValue( color );
 						setting.set( color );
 					} } />
