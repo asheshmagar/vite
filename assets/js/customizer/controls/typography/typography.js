@@ -1,18 +1,19 @@
 import { memo, useState, useMemo, RawHTML } from '@wordpress/element';
-import { Popover } from '@wordpress/components';
+import { Popover, SelectControl } from '@wordpress/components';
 import { useDeviceSelector } from '../../hooks';
-import { CustomindRange } from '../../components';
+import { ViteRange } from '../../components';
 import { __ } from '@wordpress/i18n';
-import Select, { Option } from 'rc-select';
 import { VARIANTS } from '../../constants';
-import { dropdownIcon } from '../../utils';
 import { noop } from 'lodash';
+import Select from 'react-select';
 
-const GOOGLE_FONTS = _VITE_CUSTOMIZER_.googleFonts;
+const GOOGLE_FONTS = ( _VITE_CUSTOMIZER_.googleFonts ).map( g => ( { ...g, label: g.family, value: g.family } ) );
 
 GOOGLE_FONTS.unshift( {
 	id: 'default',
 	family: 'System Default',
+	label: 'System Default',
+	value: 'System Default',
 	variants: [ 'regular', '100', '200', '300', '400', '500', '600', '700', '800', '900' ],
 	defVariant: 'regular',
 } );
@@ -47,7 +48,7 @@ export default memo( ( props ) => {
 
 	const currentFont = useMemo( () => {
 		const family = value?.family ?? 'System Default';
-		return GOOGLE_FONTS.filter( g => g.family === family )?.[ 0 ] || {};
+		return GOOGLE_FONTS.find( g => g.family === family ) || {};
 	}, [ value ] );
 
 	const toWeight = ( variant = '' ) => {
@@ -81,15 +82,15 @@ export default memo( ( props ) => {
 			) }
 			<div className="vite-control-body">
 				{ isOpen && (
-					<Popover className="vite-typography-popover" anchorRef={ anchor } anchor={ anchor } position="bottom right" onFocusOutside={ () => setIsOpen( false ) }>
+					<Popover className="vite-typography-popover" anchorRef={ anchor } anchor={ anchor } position="top right" onFocusOutside={ () => setIsOpen( false ) }>
 						<div className="vite-typography">
 							<div className="font-family">
 								<span>{ __( 'Font Family' ) }</span>
 								<Select
-									value={ value?.family || 'System Default' }
+									value={ GOOGLE_FONTS.find( g => g.value === ( value?.family ?? 'System Default' ) ) }
 									onChange={ val => {
-										const temp = { ...value, family: val };
-										const variants = ( GOOGLE_FONTS.find( g => g.family === val )?.variants ?? [] ).map( v => toWeight( v ) );
+										const temp = { ...value, family: val.value };
+										const variants = ( GOOGLE_FONTS.find( g => g.family === val.value )?.variants ?? [] ).map( v => toWeight( v ) );
 										if ( value?.weight ) {
 											if ( ! variants.includes( value.weight ) ) {
 												if ( variants.includes( 400 ) ) {
@@ -102,18 +103,23 @@ export default memo( ( props ) => {
 										setValue( temp );
 										setting.set( temp );
 									} }
-									inputIcon={ dropdownIcon }
-									showSearch={ true }
-								>
-									{ ( GOOGLE_FONTS || [] ).map( g => (
-										<Option key={ g.id } value={ g.family }>{ g.family }</Option>
-									) ) }
-								</Select>
+									isSearchable={ true }
+									options={ GOOGLE_FONTS }
+									classNamePrefix="vite-select"
+									className="vite-select"
+									components={ {
+										IndicatorSeparator: () => null,
+										DropdownIndicator: ( { size = 10 } ) => (
+											<svg height={ size } width={ size } viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+												<path d="M21.707,8.707l-9,9a1,1,0,0,1-1.414,0l-9-9A1,1,0,1,1,3.707,7.293L12,15.586l8.293-8.293a1,1,0,1,1,1.414,1.414Z" />
+											</svg>
+										) } }
+								/>
 							</div>
 							{ currentFont?.variants && (
 								<div className="font-variant">
 									<span>{ __( 'Variants' ) }</span>
-									<Select
+									<SelectControl
 										onChange={ val => {
 											const temp = {
 												...value,
@@ -123,28 +129,23 @@ export default memo( ( props ) => {
 											setting.set( temp );
 										} }
 										value={ VARIANTS?.[ value?.weight ?? toWeight( currentFont?.defVariant ) ] || '' }
-										inputIcon={ dropdownIcon }
-										showSearch={ false }
-										showArrow={ true }
-									>
-										{ currentFont.variants
-											.filter( v => -1 === v.indexOf( 'italic' ) )
-											.map( v => toWeight( v ) )
-											.filter( ( v, i, a ) => a.indexOf( v ) === i )
-											.map( v => {
-												return (
-													<Option key={ v } value={ v }>
-														{ VARIANTS[ v ] }
-													</Option>
-												);
-											} ) }
-									</Select>
+										options={
+											currentFont.variants
+												.filter( v => -1 === v.indexOf( 'italic' ) )
+												.map( v => toWeight( v ) )
+												.filter( ( v, i, a ) => a.indexOf( v ) === i )
+												.map( v => ( {
+													label: VARIANTS[ v ],
+													value: v,
+												} ) )
+										}
+									/>
 								</div>
 							) }
 							<div className="font-size">
 								<span>{ __( 'Size' ) }</span>
 								<DeviceSelector dropdown={ false } />
-								<CustomindRange
+								<ViteRange
 									unitPicker="select"
 									value={ value?.size?.[ device ] || '' }
 									onChange={ val => {
@@ -166,7 +167,7 @@ export default memo( ( props ) => {
 							<div className="line-height">
 								<span>{ __( 'Line Height' ) }</span>
 								<DeviceSelector dropdown={ false } />
-								<CustomindRange
+								<ViteRange
 									unitPicker="select"
 									value={ value?.lineHeight?.[ device ] || '' }
 									onChange={ val => {
@@ -188,7 +189,7 @@ export default memo( ( props ) => {
 							<div className="letter-spacing">
 								<span>{ __( 'Letter Spacing' ) }</span>
 								<DeviceSelector dropdown={ false } />
-								<CustomindRange
+								<ViteRange
 									unitPicker="select"
 									value={ value?.letterSpacing?.[ device ] || '' }
 									onChange={ val => {
@@ -209,8 +210,7 @@ export default memo( ( props ) => {
 							</div>
 							<div className="font-style">
 								<span>{ __( 'Style' ) }</span>
-								<Select
-									inputIcon={ dropdownIcon }
+								<SelectControl
 									onChange={ val => {
 										const temp = {
 											...( value || {} ),
@@ -220,16 +220,12 @@ export default memo( ( props ) => {
 										setValue( temp );
 									} }
 									value={ value?.style || 'normal' }
-								>
-									{ FONT_STYLES.map( s => (
-										<Option key={ s.value } value={ s.value }>{ s.label }</Option>
-									) ) }
-								</Select>
+									options={ FONT_STYLES }
+								/>
 							</div>
 							<div className="text-transform">
 								<span>{ __( 'Transform' ) }</span>
-								<Select
-									inputIcon={ dropdownIcon }
+								<SelectControl
 									value={ value?.transform || 'none' }
 									onChange={ val => {
 										const temp = {
@@ -239,11 +235,8 @@ export default memo( ( props ) => {
 										setting.set( temp );
 										setValue( temp );
 									} }
-								>
-									{ TEXT_TRANSFORMS.map( t => (
-										<Option key={ t.value } value={ t.value }>{ t.label }</Option>
-									) ) }
-								</Select>
+									options={ TEXT_TRANSFORMS }
+								/>
 							</div>
 
 						</div>
