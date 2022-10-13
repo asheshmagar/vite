@@ -1,5 +1,5 @@
 import { useState, memo, RawHTML } from '@wordpress/element';
-import { CustomindRange } from '../../components';
+import { ViteRange } from '../../components';
 import { useDeviceSelector } from '../../hooks';
 import { DEVICES } from '../../constants';
 
@@ -37,7 +37,7 @@ export default memo( ( props ) => {
 				{ responsive ? (
 					DEVICES.map( ( d ) => (
 						device === d && (
-							<CustomindRange
+							<ViteRange
 								key={ d }
 								value={ value?.[ d ] ?? '' }
 								onChange={ val => {
@@ -56,7 +56,7 @@ export default memo( ( props ) => {
 						)
 					) )
 				) : (
-					<CustomindRange
+					<ViteRange
 						value={ value ?? '' }
 						onChange={ val => {
 							setValue( val );
