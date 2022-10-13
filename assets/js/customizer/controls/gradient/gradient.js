@@ -1,6 +1,5 @@
 import { memo, useState, RawHTML } from '@wordpress/element';
-import { GradientPicker, Popover } from '@wordpress/components';
-import { noop } from 'lodash';
+import { ViteColorPicker } from '../../components';
 
 export default memo( ( props ) => {
 	const {
@@ -13,8 +12,6 @@ export default memo( ( props ) => {
 		},
 	} = props;
 	const [ value, setValue ] = useState( setting.get() );
-	const [ anchor, setAnchor ] = useState( null );
-	const [ isOpen, setIsOpen ] = useState( false );
 
 	return (
 		<>
@@ -26,40 +23,14 @@ export default memo( ( props ) => {
 				) }
 				<div className="vite-control-body">
 					<div className="vite-gradient-picker">
-						<span
-							ref={ setAnchor }
-							style={ {
-								height: 24,
-								width: 24,
-								borderRadius: '50%',
-								boxShadow: 'inset 0 0 0 1px rgb(0 0 0 / 20%)',
-								display: 'inline-block',
-								background: value,
-								cursor: 'pointer',
-								justifySelf: 'end',
+						<ViteColorPicker
+							value={ value }
+							onChange={ val => {
+								setting.set( val );
+								setValue( val );
 							} }
-							onClick={ () => setIsOpen( prev => ! prev ) }
-							role="button"
-							onKeyDown={ noop }
-							tabIndex={ -1 }
+							type="gradient"
 						/>
-						{ isOpen && (
-							<Popover
-								anchor={ anchor }
-								anchorRef={ anchor }
-								onFocusOutside={ () => setIsOpen( false ) }
-								className="vite-popover"
-								position="bottom center"
-							>
-								<GradientPicker
-									value={ value } onChange={ val => {
-										setValue( val );
-										setting.set( val );
-									} }
-								/>
-							</Popover>
-						) }
-
 					</div>
 				</div>
 				{ description && (
