@@ -1,0 +1,42 @@
+.vite-popup {
+	position: absolute;
+	left: -9999px;
+	top: -9999px;
+	z-index: 999999;
+	background-color: #fff;
+	box-shadow: 0 0 0 1px hsl(0deg 0% 0% / 10%), 0 4px 11px hsl(0deg 0% 0% / 10%);
+	min-width: 280px;
+	max-width: 600px;
+	padding: 10px;
+	border-radius: 3px;
+}
+
+.vite-popup-hidden {
+	display: none;
+}
+
+.vite-popup-mask {
+	position: fixed;
+	top: 0;
+	right: 0;
+	left: 0;
+	bottom: 0;
+	background-color: #373737;
+	background-color: rgba(55, 55, 55, 0.6);
+	height: 100%;
+	filter: alpha(opacity=50);
+	z-index: 1050;
+}
+
+.vite-popup-mask-hidden {
+	display: none;
+}
+
+.vite-popup-mobile {
+	transition: all 0.3s;
+	position: fixed;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	top: auto;
+}

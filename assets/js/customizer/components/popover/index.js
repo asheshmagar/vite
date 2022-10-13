@@ -1,33 +1,52 @@
-import { Popover } from '@wordpress/components';
-import { useEffect, useState } from '@wordpress/element';
-import { noop } from 'lodash';
+import Trigger from 'rc-trigger';
+import './customizer.scss';
+import { useState, useEffect } from '@wordpress/element';
 
-export default ( { shouldRender = false, onClose = noop, anchor = null, children } ) => {
-	const [ popover, setPopover ] = useState( null );
+export default ( {
+	action = [ 'click' ],
+	popupClassName,
+	popup = () => null,
+	children,
+} ) => {
+	const [ visible, setVisible ] = useState( false );
+
 	useEffect( () => {
-		const wrap = document.querySelector( '.wp-full-overlay-sidebar-content' );
-		if ( ! anchor || ! wrap ) return;
-		const listener = ( e ) => {
-			if ( ! anchor?.contains( e.target ) && ! popover?.contains( e.target ) ) {
-				if ( shouldRender ) {
-					anchor?.click();
-					onClose();
-				}
-			}
-		};
-		wrap.addEventListener( 'click', listener );
-		return () => {
-			wrap.removeEventListener( 'click', listener );
-		};
-	}, [ shouldRender, popover ] );
+		const section = document.querySelector( '.wp-full-overlay-sidebar-content .accordion-section.open' );
 
-	if ( ! shouldRender ) {
-		return null;
-	}
+		if ( ! section || ! visible ) return;
+
+		const listener = () => setVisible( false );
+
+		section.addEventListener( 'scroll', listener );
+
+		return () => {
+			section.removeEventListener( 'scroll', listener );
+		};
+	}, [ visible ] );
 
 	return (
-		<Popover ref={ setPopover } focusOnMount={ false } anchor={ anchor } anchorRef={ anchor } className="vite-popover">
+		<Trigger
+			popupClassName={ popupClassName }
+			action={ action }
+			prefixCls={ 'vite-popup' }
+			getPopupContainer={ () => document.querySelector( '.wp-full-overlay-sidebar' ) }
+			popup={ popup }
+			zIndex={ 999999 }
+			popupAlign={ {
+				points: [ 'tl', 'bl' ],
+				offset: [ 1, 1 ],
+				overflow: {
+					adjustX: 1,
+					adjustY: 1,
+				},
+				alwaysByViewport: true,
+			} }
+			popupVisible={ visible }
+			onPopupVisibleChange={ ( a ) => {
+				setVisible( a );
+			} }
+		>
 			{ children }
-		</Popover>
+		</Trigger>
 	);
 };
