@@ -1,8 +1,7 @@
 import { RawHTML, memo, useState } from '@wordpress/element';
-import { CustomindColorPicker, CustomindRange, Reset } from '../../components';
-import Select, { Option } from 'rc-select';
+import { ViteColorPicker, ViteRange, Reset } from '../../components';
 import { isEqual } from 'lodash';
-import { dropdownIcon } from '../../utils';
+import { SelectControl } from '@wordpress/components';
 
 const COLOR_STATES = [
 	{ label: 'Normal', value: 'normal' },
@@ -54,20 +53,16 @@ export default memo( ( props ) => {
 			<div className="vite-control-body">
 				<div className="vite-border-styles">
 					<span>Style</span>
-					<Select
-						inputIcon={ dropdownIcon() }
-						placeholder="Select"
+					<SelectControl
 						value={ value?.style ?? '' }
 						onChange={ val => {
 							const temp = { ...( value || {} ) };
 							temp.style = val;
 							setValue( temp );
 							setting.set( temp );
-						} }>
-						{ BORDER_STYLES.map( ( b ) => (
-							<Option key={ b.value } value={ b.value }>{ b.label }</Option>
-						) ) }
-					</Select>
+						} }
+						options={ BORDER_STYLES }
+					/>
 				</div>
 				{ value?.style && 'none' !== value?.style && (
 					<>
@@ -75,7 +70,7 @@ export default memo( ( props ) => {
 							<span>Color</span>
 							<div className="vite-border-colors-inner">
 								{ COLOR_STATES.map( s => (
-									<CustomindColorPicker
+									<ViteColorPicker
 										key={ s?.value }
 										value={ value?.color?.[ s.value ] ?? '' }
 										onChange={ ( color ) => {
@@ -94,7 +89,7 @@ export default memo( ( props ) => {
 						</div>
 						<div className="vite-border-width">
 							<span>Width</span>
-							<CustomindRange
+							<ViteRange
 								onChange={ val => {
 									const temp = { ...( value || {} ) };
 									temp.width = val;
@@ -110,7 +105,7 @@ export default memo( ( props ) => {
 				) }
 				<div className="vite-border-radius">
 					<span>Radius</span>
-					<CustomindRange
+					<ViteRange
 						onChange={ val => {
 							const temp = { ...( value || {} ) };
 							temp.radius = val;
