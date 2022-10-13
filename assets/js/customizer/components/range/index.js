@@ -1,8 +1,6 @@
-import { Button, ButtonGroup, Dropdown, RangeControl } from '@wordpress/components';
+import { Button, ButtonGroup, Dropdown, RangeControl, SelectControl } from '@wordpress/components';
 import { memo } from '@wordpress/element';
 import './customizer.scss';
-import Select, { Option } from 'rc-select';
-import { dropdownIcon } from '../../utils';
 
 const UNITS = [ '-', 'px', 'em', 'rem', '%' ];
 
@@ -69,18 +67,14 @@ export default memo( ( props ) => {
 							) }
 						/>
 					) : (
-						<Select inputIcon={ dropdownIcon() } className="vite-units" value={ value?.unit ?? defaultUnit } onChange={ u => {
-							onChange( { ...( value || {} ), unit: u } );
-						} }>
-							{ units.map( u => (
-								<Option
-									className={ `vite-unit${ ( value?.unit ?? defaultUnit ) === u ? ' is-primary' : '' }` }
-									key={ u }
-								>
-									{ u }
-								</Option>
-							) ) }
-						</Select>
+						<SelectControl
+							className="vite-units"
+							value={ value?.unit ?? defaultUnit }
+							onChange={ u => {
+								onChange( { ...( value || {} ), unit: u } );
+							} }
+							options={ units.map( u => ( { value: u, label: u } ) ) }
+						/>
 					) }
 				</>
 			) }
