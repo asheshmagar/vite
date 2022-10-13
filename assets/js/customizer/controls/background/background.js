@@ -1,11 +1,10 @@
 import { memo, useState, RawHTML } from '@wordpress/element';
 import { MediaUpload } from '@wordpress/block-editor';
 import { __ } from '@wordpress/i18n';
-import { CustomindColorPicker } from '../../components';
-import { ButtonGroup, Button, FocalPointPicker } from '@wordpress/components';
+import { ViteColorPicker } from '../../components';
+import { ButtonGroup, FocalPointPicker, SelectControl } from '@wordpress/components';
 import { useDeviceSelector } from '../../hooks';
-import Select, { Option } from 'rc-select';
-import { dropdownIcon } from '../../utils';
+import Tab from './tab';
 
 const TABS = [
 	{ label: 'Color', value: 'color', icon: 'admin-customizer' },
@@ -66,9 +65,9 @@ export default memo( ( props ) => {
 			) }
 			<ButtonGroup className="vite-background-tabs">
 				{ TABS.map( tab => (
-					<Button
+					<Tab
 						key={ tab.value }
-						className={ value?.type === tab.value || ( ! value?.type && 'color' === tab.value ) ? 'is-primary' : '' }
+						className={ `vite-${ tab.value }${ value?.type === tab.value || ( ! value?.type && 'color' === tab.value ) ? ' is-primary' : '' }` }
 						onClick={ () => {
 							const temp = { ...( value || {} ) };
 							temp.type = tab.value;
@@ -76,12 +75,13 @@ export default memo( ( props ) => {
 							setValue( temp );
 						} }
 						icon={ tab.icon }
+						label={ tab.label }
 					/>
 				) ) }
 			</ButtonGroup>
 			<div className="vite-control-body">
 				{ ( ! value?.type || value?.type === 'color' ) && (
-					<CustomindColorPicker
+					<ViteColorPicker
 						value={ value?.color || '' }
 						onChange={ val => {
 							const temp = {
@@ -94,7 +94,7 @@ export default memo( ( props ) => {
 					/>
 				) }
 				{ value?.type === 'gradient' && (
-					<CustomindColorPicker
+					<ViteColorPicker
 						value={ value?.gradient || '' }
 						onChange={ val => {
 							const temp = { ...( value || {} ), gradient: val };
@@ -155,8 +155,8 @@ export default memo( ( props ) => {
 										<div className="vite-background-repeat">
 											<span>{ __( 'Background Repeat' ) }</span>
 											<DeviceSelector />
-											<Select
-												inputIcon={ dropdownIcon() }
+											<SelectControl
+												className="vite-select"
 												onChange={ val => {
 													const temp = {
 														...( value || {} ),
@@ -169,17 +169,14 @@ export default memo( ( props ) => {
 													setValue( temp );
 												} }
 												value={ value?.repeat?.[ device ] ?? 'repeat' }
-											>
-												{ REPEATS.map( repeat => (
-													<Option value={ repeat.value } key={ repeat.value }>{ repeat.label }</Option>
-												) ) }
-											</Select>
+												options={ REPEATS }
+											/>
 										</div>
 										<div className="vite-background-size">
 											<span>{ __( 'Background Size' ) }</span>
 											<DeviceSelector />
-											<Select
-												inputIcon={ dropdownIcon() }
+											<SelectControl
+												className="vite-select"
 												onChange={ val => {
 													const temp = {
 														...( value || {} ),
@@ -192,17 +189,14 @@ export default memo( ( props ) => {
 													setValue( temp );
 												} }
 												value={ value?.size?.[ device ] ?? 'auto' }
-											>
-												{ SIZES.map( size => (
-													<Option value={ size.value } key={ size.value }>{ size.label }</Option>
-												) ) }
-											</Select>
+												options={ SIZES }
+											/>
 										</div>
 										<div className="vite-background-attachment">
 											<span>{ __( 'Background Attachment' ) }</span>
 											<DeviceSelector />
-											<Select
-												inputIcon={ dropdownIcon() }
+											<SelectControl
+												className="vite-select"
 												onChange={ val => {
 													const temp = {
 														...( value || {} ),
@@ -215,11 +209,8 @@ export default memo( ( props ) => {
 													setValue( temp );
 												} }
 												value={ value?.attachment?.[ device ] ?? 'scroll' }
-											>
-												{ ATTACHMENTS.map( attachment => (
-													<Option value={ attachment.value } key={ attachment.value }>{ attachment.label }</Option>
-												) ) }
-											</Select>
+												options={ ATTACHMENTS }
+											/>
 										</div>
 									</>
 								) : (
