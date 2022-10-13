@@ -1,6 +1,7 @@
-import { ColorPicker, Popover, GradientPicker } from '@wordpress/components';
-import { useState, memo, useEffect } from '@wordpress/element';
+import { ColorPicker, Popover as Tooltip, GradientPicker } from '@wordpress/components';
+import { useState, memo } from '@wordpress/element';
 import './customizer.scss';
+import { Popover } from '../../components';
 import { noop } from 'lodash';
 
 export default memo( ( props ) => {
@@ -10,22 +11,7 @@ export default memo( ( props ) => {
 		label,
 		type = 'color',
 	} = props;
-	const [ isOpen, setIsOpen ] = useState( false );
 	const [ tooltip, setTooltip ] = useState( false );
-	const [ anchor, setAnchor ] = useState( null );
-
-	useEffect( () => {
-		if ( ! anchor || ! label ) return;
-
-		const listener = () => setTooltip( prev => ! prev );
-
-		anchor.addEventListener( 'mouseenter', listener );
-		anchor.addEventListener( 'mouseleave', listener );
-		return () => {
-			anchor.removeEventListener( 'mouseenter', listener );
-			anchor.removeEventListener( 'mouseleave', listener );
-		};
-	}, [ anchor ] );
 
 	const Picker = 'color' === type ? ColorPicker : GradientPicker;
 
@@ -46,46 +32,47 @@ export default memo( ( props ) => {
 	if ( 'color' !== type ) {
 		pickerProps = {
 			value,
-			onChange,
+			onChange: val => {
+				onChange( val );
+			},
 		};
 	}
 
 	return (
 		<div className="vite-color-picker">
-			<span
-				ref={ setAnchor }
-				style={ {
-					height: 24,
-					width: 24,
-					borderRadius: '50%',
-					boxShadow: 'inset 0 0 0 1px rgb(0 0 0 / 20%)',
-					display: 'inline-block',
-					background: value,
-					cursor: 'pointer',
-				} }
-				onClick={ () => setIsOpen( prev => ! prev ) }
-				role="button"
-				onKeyDown={ noop }
-				tabIndex={ -1 }
-			/>
-			{ ( label && tooltip ) && (
-				<Popover focusOnMount={ false } className="vite-tooltip" position="top center">
-					{ label }
-				</Popover>
-			) }
-			{ isOpen && (
-				<Popover
-					anchor={ anchor }
-					anchorRef={ anchor }
-					onFocusOutside={ () => setIsOpen( false ) }
-					className="vite-popover"
-					position="bottom center"
-				>
+			<Popover
+				popupClassName={ 'vite-color-picker-popup' }
+				action={ [ 'click' ] }
+				popup={
 					<Picker
 						{ ...pickerProps }
 					/>
-				</Popover>
-			) }
+				}
+			>
+				<span>
+					<span
+						style={ {
+							height: 24,
+							width: 24,
+							borderRadius: '50%',
+							boxShadow: 'inset 0 0 0 1px rgb(0 0 0 / 20%)',
+							display: 'inline-block',
+							background: value,
+							cursor: 'pointer',
+						} }
+						role="button"
+						onKeyDown={ noop }
+						tabIndex={ -1 }
+						onMouseEnter={ () => setTooltip( true ) }
+						onMouseLeave={ () => setTooltip( false ) }
+					/>
+					{ ( label && tooltip ) && (
+						<Tooltip focusOnMount={ false } className="vite-tooltip" position="top center">
+							{ label }
+						</Tooltip>
+					) }
+				</span>
+			</Popover>
 		</div>
 	);
 } );

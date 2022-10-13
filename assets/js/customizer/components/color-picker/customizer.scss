@@ -11,17 +11,22 @@
 	}
 }
 
+.vite-popup.vite-color-picker-popup {
 
-.vite-popover {
+	.components-color-picker,
+	.react-colorful,
+	.react-colorful__hue,
+	.react-colorful__alpha {
+		width: 100%;
+	}
+
+	.components-custom-gradient-picker__gradient-bar {
+		width: calc(100% - 16px);
+	}
+
 	.components-popover__content {
-		width: 280px;
+		min-width: 280px;
+		box-shadow: 0 0 0 1px hsl(0deg 0% 0% / 10%), 0 4px 11px hsl(0deg 0% 0% / 10%);
 		padding: 10px;
-
-		.components-color-picker,
-		.react-colorful,
-		.react-colorful__hue,
-		.react-colorful__alpha {
-			width: 100%;
-		}
 	}
 }
