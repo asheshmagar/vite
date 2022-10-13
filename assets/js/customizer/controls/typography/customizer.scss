@@ -2,7 +2,7 @@
 	.vite-typography-popover > .components-popover__content {
 		min-width: 330px;
 		min-height: 340px;
-		padding: 10px
+		padding: 15px
 	}
 
 	.vite-device-selector .vite-devices .vite-device .dashicon {
@@ -13,7 +13,7 @@
 
 	.vite-typography {
 		display: grid;
-		grid-gap: 10px;
+		grid-gap: 15px;
 
 		> div {
 			display: grid;
@@ -27,6 +27,10 @@
 				margin-bottom: 5px;
 			}
 
+			> span {
+				font-weight: 500;
+			}
+
 			.vite-range {
 				grid-column: 1/-1;
 			}
@@ -35,5 +39,39 @@
 		.vite-range {
 			grid-template-columns: 1fr 60px;
 		}
+	}
+}
+
+.vite-select {
+	.vite-select__control {
+		border: 1px solid #757575;
+		border-radius: 2px;
+		min-height: 30px;
+		max-height: 30px;
+	}
+
+	.vite-select__indicators {
+		> svg {
+			margin-right: 8px;
+			margin-left: 8px;
+		}
+	}
+
+	.vite-select__option {
+		padding: 5px 12px;
+
+		&.vite-select__option--is-selected {
+			background-color: var(--wp-admin-theme-color);
+		}
+	}
+
+	.vite-select__input {
+		min-height: 18px !important;
+		max-height: 18px !important;
+	}
+
+	.vite-select__menu {
+		z-index: 2;
+		box-shadow: 0 0 0 1px hsl(0deg 0% 0% / 10%), 0 4px 11px hsl(0deg 0% 0% / 10%);
 	}
 }
