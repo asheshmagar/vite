@@ -435,7 +435,10 @@ class Customizer {
 	private function get_control_configs(): array {
 		return [
 			'vite-background'  => [ 'Vite\Customizer\Sanitize', 'sanitize_background' ],
+			'vite-typography'  => [ 'Vite\Customizer\Sanitize', 'sanitize_typography' ],
+			'vite-dimensions'  => [ 'Vite\Customizer\Sanitize', 'sanitize_dimensions' ],
 			'vite-buttonset'   => [ 'Vite\Customizer\Sanitize', 'sanitize_buttonset' ],
+			'vite-sortable'    => [ 'Vite\Customizer\Sanitize', 'sanitize_sortable' ],
 			'vite-checkbox'    => [ 'Vite\Customizer\Sanitize', 'sanitize_checkbox' ],
 			'vite-toggle'      => [ 'Vite\Customizer\Sanitize', 'sanitize_checkbox' ],
 			'vite-slider'      => [ 'Vite\Customizer\Sanitize', 'sanitize_slider' ],
@@ -455,12 +458,9 @@ class Customizer {
 			'email'            => 'sanitize_email',
 			'url'              => 'esc_url_raw',
 			'vite-editor'      => 'wp_kses_post',
-			'vite-typography'  => null,
 			'vite-hidden'      => null,
-			'vite-sortable'    => null,
 			'vite-group'       => null,
 			'vite-title'       => null,
-			'vite-dimensions'  => null,
 			'vite-builder'     => null,
 			'vite-heading'     => null,
 			'vite-navigate'    => null,
