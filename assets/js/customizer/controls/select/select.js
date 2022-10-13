@@ -1,9 +1,8 @@
 import { memo, useState, RawHTML } from '@wordpress/element';
-import Select, { Option } from 'rc-select';
-import { dropdownIcon } from '../../utils';
+import { SelectControl } from '@wordpress/components';
 
 export default memo( ( props ) => {
-	const {
+	let {
 		control: {
 			setting,
 			params: {
@@ -14,6 +13,16 @@ export default memo( ( props ) => {
 		},
 	} = props;
 	const [ value, setValue ] = useState( setting.get() );
+
+	if ( ! Object.keys( choices )?.length ) {
+		return null;
+	}
+
+	choices = Object.keys( choices ).map( c => ( {
+		value: c,
+		label: choices[ c ],
+	} ) );
+
 	return (
 		<div className="vite-control vite-select-control">
 			{ label && (
@@ -22,18 +31,15 @@ export default memo( ( props ) => {
 				</div>
 			) }
 			<div className="vite-control-body">
-				<Select
-					inputIcon={ dropdownIcon() }
-					value={ choices?.[ value ] ?? '' }
+				<SelectControl
+					value={ value }
 					onChange={ ( val ) => {
 						setValue( val );
 						setting.set( val );
 					} }
-				>
-					{ Object.entries( choices ).map( ( [ key, val ] ) => (
-						<Option key={ key } value={ key }>{ val }</Option>
-					) ) }
-				</Select>
+					options={ choices }
+					className="vite-select"
+				/>
 			</div>
 			{ description && (
 				<div className="customize-control-description">
