@@ -7,17 +7,6 @@ import { VARIANTS } from '../../constants';
 import { noop } from 'lodash';
 import Select from 'react-select';
 
-const GOOGLE_FONTS = ( _VITE_CUSTOMIZER_.googleFonts ).map( g => ( { ...g, label: g.family, value: g.family } ) );
-
-GOOGLE_FONTS.unshift( {
-	id: 'default',
-	family: 'System Default',
-	label: 'System Default',
-	value: 'System Default',
-	variants: [ 'regular', '100', '200', '300', '400', '500', '600', '700', '800', '900' ],
-	defVariant: 'regular',
-} );
-
 const TEXT_TRANSFORMS = [
 	{ label: __( 'None', 'vite' ), value: 'none' },
 	{ label: __( 'Capitalize', 'vite' ), value: 'capitalize' },
@@ -38,6 +27,7 @@ export default memo( ( props ) => {
 			params: {
 				label,
 				description,
+				fonts,
 			},
 		},
 	} = props;
@@ -46,9 +36,23 @@ export default memo( ( props ) => {
 	const [ anchor, setAnchor ] = useState( null );
 	const [ isOpen, setIsOpen ] = useState( false );
 
+	const googleFonts = useMemo( () => {
+		return [
+			{
+				id: 'default',
+				family: 'System Default',
+				label: 'System Default',
+				value: 'System Default',
+				variants: [ 'regular', '100', '200', '300', '400', '500', '600', '700', '800', '900' ],
+				defVariant: 'regular',
+			},
+			...( ( fonts ).map( g => ( { ...g, label: g.family, value: g.family } ) ) ),
+		];
+	}, [] );
+
 	const currentFont = useMemo( () => {
 		const family = value?.family ?? 'System Default';
-		return GOOGLE_FONTS.find( g => g.family === family ) || {};
+		return googleFonts.find( g => g.family === family ) || {};
 	}, [ value ] );
 
 	const toWeight = ( variant = '' ) => {
@@ -87,10 +91,10 @@ export default memo( ( props ) => {
 							<div className="font-family">
 								<span>{ __( 'Font Family' ) }</span>
 								<Select
-									value={ GOOGLE_FONTS.find( g => g.value === ( value?.family ?? 'System Default' ) ) }
+									value={ googleFonts.find( g => g.value === ( value?.family ?? 'System Default' ) ) }
 									onChange={ val => {
 										const temp = { ...value, family: val.value };
-										const variants = ( GOOGLE_FONTS.find( g => g.family === val.value )?.variants ?? [] ).map( v => toWeight( v ) );
+										const variants = ( googleFonts.find( g => g.family === val.value )?.variants ?? [] ).map( v => toWeight( v ) );
 										if ( value?.weight ) {
 											if ( ! variants.includes( value.weight ) ) {
 												if ( variants.includes( 400 ) ) {
@@ -104,7 +108,7 @@ export default memo( ( props ) => {
 										setting.set( temp );
 									} }
 									isSearchable={ true }
-									options={ GOOGLE_FONTS }
+									options={ googleFonts }
 									classNamePrefix="vite-select"
 									className="vite-select"
 									components={ {
