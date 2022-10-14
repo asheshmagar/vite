@@ -43,6 +43,8 @@ class Customizer {
 	 */
 	public $css;
 
+	private $print_css = false;
+
 	/**
 	 * Init.
 	 *
@@ -53,6 +55,44 @@ class Customizer {
 		add_action( 'customize_register', [ $this, 'override_controls' ] );
 		add_action( 'customize_controls_enqueue_scripts', [ $this, 'enqueue_control_script' ] );
 		add_action( 'customize_save_after', [ $this, 'save_dynamic_css' ] );
+		add_filter( 'customize_render_partials_response', [ $this, 'partial_response' ] );
+		add_action( 'wp_print_scripts', [ $this, 'print_dynamic_css' ] );
+		add_action( 'customize_preview_init', [ $this, 'enqueue_preview_script' ] );
+	}
+
+	/**
+	 * Register customizer settings.
+	 *
+	 * @param array $response Response.
+	 * @return array
+	 */
+	public function partial_response( array $response ): array {
+		if ( ! empty( $this->css->css_data ) ) {
+			try {
+				$response['viteDynamicCSS'] = $this->css->make()->get();
+			} catch ( \Exception $e ) {} // phpcs:ignore
+		}
+		return $response;
+	}
+
+	/**
+	 * Print dynamic CSS.
+	 *
+	 * @return void
+	 */
+	public function print_dynamic_css() {
+		if ( ! is_admin() || $this->print_css ) {
+			return;
+		}
+
+		$this->print_css = true;
+
+		if ( ! empty( $this->css->css_data ) ) {
+			try {
+				$css = $this->css->make()->get();
+//				echo '<style id="vite-dynamic-css">' . $css . '</style>'; // phpcs:ignore
+			} catch ( \Exception $e ) {} // phpcs:ignore
+		}
 	}
 
 	/**
@@ -95,46 +135,50 @@ class Customizer {
 	}
 
 	/**
+	 * Get asset from file.
+	 *
+	 * @param string $file_name Filename.
+	 * @return array
+	 */
+	private function get_asset( string $file_name ): array {
+		$file = VITE_ASSETS_DIR . "dist/$file_name.asset.php";
+		return file_exists( $file ) ? require $file : [
+			'dependencies' => [],
+			'version'      => VITE_VERSION,
+		];
+	}
+
+	/**
 	 * Enqueue control script.
 	 *
 	 * @return void
 	 */
 	public function enqueue_control_script() {
-		$asset_file = VITE_ASSETS_DIR . 'dist/customizer.asset.php';
-		$asset      = file_exists( $asset_file ) ? require $asset_file : [
-			'dependencies' => [],
-			'version'      => VITE_VERSION,
-		];
+		$asset = $this->get_asset( 'customizer' );
 
 		wp_enqueue_media();
 		wp_enqueue_editor();
 		wp_enqueue_script( 'vite-customizer', VITE_ASSETS_URI . 'dist/customizer.js', $asset['dependencies'], $asset['version'], true );
 		wp_enqueue_style( 'vite-customizer', VITE_ASSETS_URI . 'dist/customizer.css', [ 'wp-components' ], $asset['version'] );
-		wp_localize_script(
-			'vite-customizer',
-			'_VITE_CUSTOMIZER_',
-			[
-				'googleFonts' => $this->google_fonts(),
-			]
-		);
 		wp_set_script_translations( 'vite-customizer', 'vite', get_template_directory() . '/languages' );
 	}
 
 	/**
-	 * Get google fonts.
+	 * Enqueue preview script.
 	 *
-	 * @return mixed|void
+	 * @return void
 	 */
-	public function google_fonts() {
-		$fonts = [];
-		$file  = VITE_ASSETS_DIR . 'json/google-fonts.json';
-		if ( file_exists( $file ) ) {
-			ob_start();
-			include $file;
-			$fonts = json_decode( ob_get_clean(), true );
-		}
+	public function enqueue_preview_script() {
+		$asset = $this->get_asset( 'customizer-preview' );
 
-		return apply_filters( 'vite_google_fonts', $fonts );
+		wp_enqueue_script( 'vite-customizer-preview', VITE_ASSETS_URI . 'dist/customizer-preview.js', array_merge( $asset['dependencies'], [ 'customize-preview' ] ), $asset['version'], true );
+		wp_localize_script(
+			'vite-customizer-preview',
+			'_VITE_CUSTOMIZER_PREVIEW_',
+			[
+				'settings' => $this->settings,
+			]
+		);
 	}
 
 	/**
@@ -386,7 +430,7 @@ class Customizer {
 					}
 				}
 
-				$config['input_attrs']['field'] = $group;
+				$config['field'] = $group;
 				break;
 			case 'vite-typography':
 				$fonts_json = VITE_ASSETS_DIR . 'json/google-fonts.json';
@@ -395,32 +439,6 @@ class Customizer {
 					include_once $fonts_json;
 					$config['fonts'] = json_decode( ob_get_clean(), true );
 				}
-				break;
-			case 'vite-sortable':
-				if ( ! isset( $config['input_attrs']['unsortable'] ) ) {
-					$config['input_attrs']['unsortable'] = [];
-				}
-				$choices                             = $config['choices'];
-				$config['choices']                   = array_reduce(
-					array_keys( $choices ),
-					function( $acc, $curr ) use ( $choices, $config ) {
-						if ( ! in_array( $curr, $config['input_attrs']['unsortable'], true ) ) {
-							$acc[ $curr ] = $choices[ $curr ];
-						}
-						return $acc;
-					},
-					[]
-				);
-				$config['input_attrs']['unsortable'] = array_reduce(
-					$config['input_attrs']['unsortable'],
-					function( $acc, $curr ) use ( $choices, $config ) {
-						if ( in_array( $curr, $config['input_attrs']['unsortable'], true ) ) {
-							$acc[ $curr ] = $choices[ $curr ];
-						}
-						return $acc;
-					},
-					[]
-				);
 				break;
 		}
 
