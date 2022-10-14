@@ -1,6 +1,5 @@
 import { RawHTML, memo, useState } from '@wordpress/element';
-import { ViteColorPicker, ViteRange, Reset } from '../../components';
-import { isEqual } from 'lodash';
+import { ViteColorPicker, ViteRange } from '../../components';
 import { SelectControl } from '@wordpress/components';
 
 const COLOR_STATES = [
@@ -28,7 +27,6 @@ export default memo( ( props ) => {
 			params: {
 				label,
 				description,
-				default: defaultValue,
 			},
 		},
 	} = props;
@@ -40,14 +38,6 @@ export default memo( ( props ) => {
 			{ label && (
 				<div className="vite-control-head">
 					<span className="customize-control-title">{ label }</span>
-					{ ! isEqual( value, defaultValue ) && (
-						<Reset
-							onClick={ () => {
-								setting.set( defaultValue );
-								setValue( defaultValue );
-							} }
-						/>
-					) }
 				</div>
 			) }
 			<div className="vite-control-body">
@@ -56,8 +46,9 @@ export default memo( ( props ) => {
 					<SelectControl
 						value={ value?.style ?? '' }
 						onChange={ val => {
-							const temp = { ...( value || {} ) };
-							temp.style = val;
+							const temp = { ...( value || {} ),
+								style: val,
+							};
 							setValue( temp );
 							setting.set( temp );
 						} }
@@ -74,11 +65,13 @@ export default memo( ( props ) => {
 										key={ s?.value }
 										value={ value?.color?.[ s.value ] ?? '' }
 										onChange={ ( color ) => {
-											const temp = { ...( value || {} ) };
-											if ( ! temp?.color ) {
-												temp.color = {};
-											}
-											temp.color[ s.value ] = color;
+											const temp = {
+												...( value || {} ),
+												color: {
+													...( value?.color || {} ),
+													[ s.value ]: color,
+												},
+											};
 											setValue( temp );
 											setting.set( temp );
 										} }
@@ -91,8 +84,7 @@ export default memo( ( props ) => {
 							<span>Width</span>
 							<ViteRange
 								onChange={ val => {
-									const temp = { ...( value || {} ) };
-									temp.width = val;
+									const temp = { ...( value || {} ), width: val };
 									setValue( temp );
 									setting.set( temp );
 								} }
@@ -107,8 +99,7 @@ export default memo( ( props ) => {
 					<span>Radius</span>
 					<ViteRange
 						onChange={ val => {
-							const temp = { ...( value || {} ) };
-							temp.radius = val;
+							const temp = { ...( value || {} ), radius: val };
 							setValue( temp );
 							setting.set( temp );
 						} }
