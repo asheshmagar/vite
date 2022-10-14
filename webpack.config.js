@@ -1,14 +1,15 @@
 const EslintPlugin = require( 'eslint-webpack-plugin' );
 const WebpackBar = require( 'webpackbar' );
 const DependencyExtractionWebpackPlugin = require( '@wordpress/dependency-extraction-webpack-plugin' );
+const { resolve, basename, dirname } = require( 'path' );
 const MiniCSSExtractPlugin = require( 'mini-css-extract-plugin' );
-const { dirname, basename, resolve } = require( 'path' );
-const CSSMinimizerPlugin = require( 'css-minimizer-webpack-plugin' );
-const FixStyleOnlyEntriesPlugin = require( 'webpack-fix-style-only-entries' );
+const RemoveEmptyScriptsPlugin = require( 'webpack-remove-empty-scripts' );
 
-module.exports = () => ( {
+// eslint-disable-next-line no-unused-vars
+module.exports = ( _, args ) => ( {
 	entry: {
 		customizer: resolve( process.cwd(), 'assets/js/customizer', 'index.js' ),
+		'customizer-preview': resolve( process.cwd(), 'assets/js/customizer/preview', 'index.js' ),
 		normalize: resolve( process.cwd(), 'assets/scss', 'normalize.scss' ),
 		global: resolve( process.cwd(), 'assets/scss', 'global.scss' ),
 		header: resolve( process.cwd(), 'assets/scss', 'header.scss' ),
@@ -42,6 +43,20 @@ module.exports = () => ( {
 					},
 				],
 			},
+			{
+				test: /\.less$/i,
+				use: [
+					{
+						loader: MiniCSSExtractPlugin.loader,
+					},
+					{
+						loader: 'css-loader',
+					},
+					{
+						loader: 'less-loader',
+					},
+				],
+			},
 
 			{
 				test: /\.scss$/i,
@@ -60,7 +75,6 @@ module.exports = () => ( {
 		],
 	},
 	optimization: {
-		minimize: true,
 		splitChunks: {
 			cacheGroups: {
 				style: {
@@ -78,18 +92,13 @@ module.exports = () => ( {
 				default: false,
 			},
 		},
-		minimizer: [
-			new CSSMinimizerPlugin(),
-		],
 	},
 	plugins: [
-		new FixStyleOnlyEntriesPlugin(),
+		new RemoveEmptyScriptsPlugin(),
 		new MiniCSSExtractPlugin( { filename: '[name].css' } ),
 		new DependencyExtractionWebpackPlugin(),
-		new EslintPlugin( {
-			extensions: [ 'js', 'jsx', 'ts', 'tsx' ],
-		} ),
 		new WebpackBar(),
+		args.mode === 'development' ? new EslintPlugin( { extensions: [ 'js', 'jsx', 'ts', 'tsx' ] } ) : false,
 	].filter( Boolean ),
 	devtool: false,
 } );
