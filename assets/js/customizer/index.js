@@ -318,6 +318,17 @@ const api = wp.customize;
 	} );
 }
 
+{
+	api.bind( 'preview-ready', () => {
+		api.selectiveRefresh.bind( 'render-partials-response', res => {
+			console.log( res );
+			if ( ! res?.viteDynamicCSS ) return;
+			const $style = $( '#vite-dynamic-css' );
+			$style.html( res.viteDynamicCSS );
+		} );
+	} );
+}
+
 for ( const control in controls ) {
 	controls[ control ]();
 }
