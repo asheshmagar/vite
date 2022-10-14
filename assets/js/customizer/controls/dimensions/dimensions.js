@@ -30,7 +30,7 @@ export default memo( ( props ) => {
 			},
 		},
 	} = props;
-	const [ value, setValue ] = useState( setting.get() );
+	const [ value, setValue ] = useState( setting.get() ?? {} );
 	const { device, DeviceSelector } = useDeviceSelector();
 
 	const unit = responsive ? ( value?.[ device ]?.unit || defaultUnit ) : ( value?.unit || defaultUnit );
@@ -56,17 +56,22 @@ export default memo( ( props ) => {
 							onClick={ ( e ) => {
 								e.stopPropagation();
 								onToggle();
-								const temp = { ...( value || {} ) };
-								if ( responsive ) {
-									if ( ! temp?.[ device ] ) {
-										temp[ device ] = {};
-									}
-									temp[ device ].unit = u;
-								} else {
-									temp.unit = u;
-								}
-								setting.set( temp );
-								setValue( temp );
+								const val = {
+									...( value || {} ),
+									...(
+										responsive ?
+											{
+												[ device ]: {
+													...value?.[ device ],
+													unit: u,
+												},
+											} : {
+												unit: u,
+											}
+									),
+								};
+								setting.set( val );
+								setValue( val );
 							} }
 						>
 							{ u }
@@ -96,17 +101,22 @@ export default memo( ( props ) => {
 										type="number"
 										value={ value?.[ d ]?.[ side.value ] ?? '' }
 										onChange={ ( e ) => {
-											const val = { ...value };
-											if ( ! val?.[ d ] ) {
-												val[ d ] = {};
-											}
-											if ( val?.[ d ]?.sync ) {
-												SIDES.forEach( ( s ) => {
-													val[ d ][ s.value ] = e.target.value;
-												} );
-											} else {
-												val[ d ][ side.value ] = e.target.value;
-											}
+											const val = { ...value,
+												[ d ]: {
+													...value?.[ d ],
+													...(
+														value?.[ d ]?.sync ?
+															{
+																top: e.target.value,
+																right: e.target.value,
+																bottom: e.target.value,
+																left: e.target.value,
+															} : {
+																[ side.value ]: e.target.value,
+															}
+													),
+												},
+											};
 											setValue( val );
 											setting.set( val );
 										} }
@@ -140,14 +150,20 @@ export default memo( ( props ) => {
 									type="number"
 									value={ value?.[ side.value ] ?? '' }
 									onChange={ ( e ) => {
-										const val = { ...value };
-										if ( value?.sync ) {
-											SIDES.forEach( ( s ) => {
-												val[ s.value ] = e.target.value;
-											} );
-										} else {
-											val[ side.value ] = e.target.value;
-										}
+										const val = {
+											...value,
+											...(
+												value?.sync ?
+													{
+														top: e.target.value,
+														right: e.target.value,
+														bottom: e.target.value,
+														left: e.target.value,
+													} : {
+														[ side.value ]: e.target.value,
+													}
+											),
+										};
 										setValue( val );
 										setting.set( value );
 									} }
@@ -159,6 +175,13 @@ export default memo( ( props ) => {
 							</span>
 						) ) }
 						<span className="vite-dimension-sync" onClick={ () => {
+							const maxSide = Object.entries( value ?? {} )
+								.filter( ( [ k ] ) => ! [ 'unit', 'sync' ].includes( k ) )
+								.reduce( ( acc, [ , v = '' ] ) => {
+									v = isNaN( v ) ? 0 : parseFloat( v );
+									return v > acc ? v : acc;
+								} );
+							console.log( maxSide );
 							const val = {
 								...( value || {} ),
 								sync: ! value?.sync,
