@@ -41,7 +41,7 @@ class Header {
 		);
 
 		?>
-		<header id="mast-head" class="site-header">
+		<header id="mast-head" class="site-header vite-site-header">
 			<div class="container">
 			<?php
 			foreach ( $header_configs as $row => $cols ) {
@@ -56,7 +56,7 @@ class Header {
 					continue;
 				}
 				?>
-				<div class="site-header-row" data-row="<?php echo esc_attr( $row ); ?>">
+				<div class="site-header-row vite-header-row" data-row="<?php echo esc_attr( $row ); ?>">
 					<?php foreach ( $cols as $col => $elements ) : ?>
 						<?php if ( ! empty( $elements ) ) : ?>
 							<div class="site-header-col" data-col="<?php echo esc_attr( $col ); ?>">
@@ -82,15 +82,15 @@ class Header {
 	 */
 	public function render_header_logo() {
 		?>
-		<div class="site-branding">
+		<div class="site-branding vite-site-branding">
 			<?php the_custom_logo(); ?>
 			<?php if ( is_front_page() && is_home() ) : ?>
-				<h1 class="site-title"><a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home"><?php bloginfo( 'name' ); ?></a></h1>
+				<h1 class="site-title vite-site-title"><a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home"><?php bloginfo( 'name' ); ?></a></h1>
 			<?php else : ?>
-				<p class="site-title"><a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home"><?php bloginfo( 'name' ); ?></a></p>
+				<p class="site-title vite-site-title"><a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home"><?php bloginfo( 'name' ); ?></a></p>
 			<?php endif; ?>
 			<?php if ( get_bloginfo( 'description', 'display' ) || is_customize_preview() ) : ?>
-				<p class="site-description"><?php bloginfo( 'description' ); ?></p>
+				<p class="site-description vite-site-description"><?php bloginfo( 'description' ); ?></p>
 			<?php endif; ?>
 		</div>
 		<?php
