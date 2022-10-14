@@ -1,13 +1,27 @@
 <?php
 
-	namespace Vite;
+namespace Vite;
 
-	class Footer {
+class Footer {
 
-		/**
-		 * @inheritDoc
-		 */
-		public function init(): void {
-			// TODO: Implement init() method.
-		}
+	/**
+	 * Print footer.
+	 *
+	 * @return void
+	 */
+	public function render_footer_bar() {
+		$content = vite( 'customizer' )->get_setting( 'footer-bar-html', '' );
+		$content = vite( 'core' )->parse_smart_tags( $content );
+		?>
+
+		<?php
 	}
+
+	public function render_footer() {
+		?>
+		<footer class="site-footer vite-site-footer">
+
+		</footer>
+		<?php
+	}
+}
