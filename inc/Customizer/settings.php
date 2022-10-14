@@ -28,16 +28,18 @@ $control_settings = [
 	[
 		'name'        => 'vite[color]',
 		'type'        => 'control',
+		'transport'   => 'postMessage',
 		'control'     => 'vite-color',
 		'section'     => 'vite[section]',
 		'label'       => __( 'Color', 'vite' ),
 		'description' => __( 'An example of color control.', 'vite' ),
-		'selectors'   => [ '.vite-color' ],
-		'properties'  => [ 'color' ],
+		'selectors'   => [ '.site-header' ],
+		'properties'  => [ 'background-color' ],
 	],
 	[
 		'name'        => 'vite[colors]',
 		'type'        => 'control',
+		'transport'   => 'postMessage',
 		'control'     => 'vite-color',
 		'section'     => 'vite[section]',
 		'label'       => __( 'Colors', 'vite' ),
@@ -54,12 +56,13 @@ $control_settings = [
 				],
 			],
 		],
-		'selectors'   => [ '.vite-colors' ],
+		'selectors'   => [ '.site-title > a' ],
 		'properties'  => [ 'color' ],
 	],
 	[
 		'name'        => 'vite[buttonset]',
 		'type'        => 'control',
+		'transport'   => 'postMessage',
 		'control'     => 'vite-buttonset',
 		'section'     => 'vite[section]',
 		'label'       => __( 'Button set', 'vite' ),
@@ -72,6 +75,7 @@ $control_settings = [
 	[
 		'name'        => 'vite[buttonset-multiple]',
 		'type'        => 'control',
+		'transport'   => 'postMessage',
 		'control'     => 'vite-buttonset',
 		'section'     => 'vite[section]',
 		'label'       => __( 'Button set multiple', 'vite' ),
@@ -88,6 +92,7 @@ $control_settings = [
 	[
 		'name'        => 'vite[editor]',
 		'type'        => 'control',
+		'transport'   => 'postMessage',
 		'control'     => 'vite-editor',
 		'section'     => 'vite[section]',
 		'label'       => __( 'Editor', 'vite' ),
@@ -96,6 +101,7 @@ $control_settings = [
 	[
 		'name'        => 'vite[toggle]',
 		'type'        => 'control',
+		'transport'   => 'postMessage',
 		'control'     => 'vite-toggle',
 		'section'     => 'vite[section]',
 		'label'       => __( 'Toggle/Switch', 'vite' ),
@@ -104,6 +110,7 @@ $control_settings = [
 	[
 		'name'        => 'vite[checkbox]',
 		'type'        => 'control',
+		'transport'   => 'postMessage',
 		'control'     => 'vite-checkbox',
 		'section'     => 'vite[section]',
 		'label'       => __( 'Checkbox', 'vite' ),
@@ -112,6 +119,7 @@ $control_settings = [
 	[
 		'name'        => 'vite[select]',
 		'type'        => 'control',
+		'transport'   => 'postMessage',
 		'control'     => 'vite-select',
 		'section'     => 'vite[section]',
 		'label'       => __( 'Select', 'vite' ),
@@ -124,6 +132,7 @@ $control_settings = [
 	[
 		'name'        => 'vite[text]',
 		'type'        => 'control',
+		'transport'   => 'postMessage',
 		'control'     => 'vite-input',
 		'section'     => 'vite[section]',
 		'label'       => __( 'Input text', 'vite' ),
@@ -132,6 +141,7 @@ $control_settings = [
 	[
 		'name'        => 'vite[number]',
 		'type'        => 'control',
+		'transport'   => 'postMessage',
 		'control'     => 'vite-input',
 		'section'     => 'vite[section]',
 		'label'       => __( 'Input number', 'vite' ),
@@ -143,6 +153,7 @@ $control_settings = [
 	[
 		'name'        => 'vite[url]',
 		'type'        => 'control',
+		'transport'   => 'postMessage',
 		'control'     => 'vite-input',
 		'section'     => 'vite[section]',
 		'label'       => __( 'Input url', 'vite' ),
@@ -154,6 +165,7 @@ $control_settings = [
 	[
 		'name'        => 'vite[email]',
 		'type'        => 'control',
+		'transport'   => 'postMessage',
 		'control'     => 'vite-input',
 		'section'     => 'vite[section]',
 		'label'       => __( 'Input email', 'vite' ),
@@ -165,6 +177,7 @@ $control_settings = [
 	[
 		'name'        => 'vite[radio]',
 		'type'        => 'control',
+		'transport'   => 'postMessage',
 		'control'     => 'vite-radio',
 		'section'     => 'vite[section]',
 		'label'       => __( 'Radio', 'vite' ),
@@ -177,6 +190,7 @@ $control_settings = [
 	[
 		'name'        => 'vite[radio-image]',
 		'type'        => 'control',
+		'transport'   => 'postMessage',
 		'control'     => 'vite-radio-image',
 		'section'     => 'vite[section]',
 		'label'       => __( 'Radio Image', 'vite' ),
@@ -195,6 +209,7 @@ $control_settings = [
 	[
 		'name'        => 'vite[gradient]',
 		'type'        => 'control',
+		'transport'   => 'postMessage',
 		'control'     => 'vite-gradient',
 		'section'     => 'vite[section]',
 		'label'       => __( 'Gradient', 'vite' ),
@@ -205,6 +220,7 @@ $control_settings = [
 	[
 		'name'        => 'vite[textarea]',
 		'type'        => 'control',
+		'transport'   => 'postMessage',
 		'control'     => 'vite-textarea',
 		'section'     => 'vite[section]',
 		'label'       => __( 'Textarea', 'vite' ),
@@ -216,6 +232,7 @@ $control_settings = [
 			'style' => 'none',
 		],
 		'type'        => 'control',
+		'transport'   => 'postMessage',
 		'control'     => 'vite-border',
 		'section'     => 'vite[section]',
 		'label'       => __( 'Border', 'vite' ),
@@ -225,6 +242,7 @@ $control_settings = [
 	[
 		'name'        => 'vite[slider]',
 		'type'        => 'control',
+		'transport'   => 'postMessage',
 		'control'     => 'vite-slider',
 		'section'     => 'vite[section]',
 		'label'       => __( 'Slider', 'vite' ),
@@ -240,6 +258,7 @@ $control_settings = [
 	[
 		'name'        => 'vite[slider-responsive]',
 		'type'        => 'control',
+		'transport'   => 'postMessage',
 		'control'     => 'vite-slider',
 		'section'     => 'vite[section]',
 		'label'       => __( 'Slider Responsive', 'vite' ),
@@ -256,6 +275,7 @@ $control_settings = [
 	[
 		'name'        => 'vite[slider-units]',
 		'type'        => 'control',
+		'transport'   => 'postMessage',
 		'control'     => 'vite-slider',
 		'section'     => 'vite[section]',
 		'label'       => __( 'Slider with units', 'vite' ),
@@ -274,6 +294,7 @@ $control_settings = [
 	[
 		'name'        => 'vite[slider-units-responsive]',
 		'type'        => 'control',
+		'transport'   => 'postMessage',
 		'control'     => 'vite-slider',
 		'section'     => 'vite[section]',
 		'label'       => __( 'Slider with units and responsive', 'vite' ),
@@ -293,6 +314,7 @@ $control_settings = [
 	[
 		'name'        => 'vite[dimensions]',
 		'type'        => 'control',
+		'transport'   => 'postMessage',
 		'control'     => 'vite-dimensions',
 		'section'     => 'vite[section]',
 		'label'       => __( 'Dimensions', 'vite' ),
@@ -303,6 +325,7 @@ $control_settings = [
 	[
 		'name'        => 'vite[dimensions-responsive]',
 		'type'        => 'control',
+		'transport'   => 'postMessage',
 		'control'     => 'vite-dimensions',
 		'section'     => 'vite[section]',
 		'label'       => __( 'Dimensions', 'vite' ),
@@ -316,6 +339,7 @@ $control_settings = [
 	[
 		'name'        => 'vite[background]',
 		'type'        => 'control',
+		'transport'   => 'postMessage',
 		'control'     => 'vite-background',
 		'section'     => 'vite[section]',
 		'label'       => __( 'Background', 'vite' ),
@@ -323,11 +347,12 @@ $control_settings = [
 		'input_attrs' => [
 			'responsive' => true,
 		],
-		'selectors'   => [ '.vite-background', '.vite-background:hover' ],
+		'selectors'   => [ 'body' ],
 	],
 	[
 		'name'        => 'vite[sortable]',
 		'type'        => 'control',
+		'transport'   => 'postMessage',
 		'control'     => 'vite-sortable',
 		'section'     => 'vite[section]',
 		'label'       => __( 'Sortable', 'vite' ),
@@ -341,6 +366,7 @@ $control_settings = [
 	[
 		'name'        => 'vite[unsortable]',
 		'type'        => 'control',
+		'transport'   => 'postMessage',
 		'control'     => 'vite-sortable',
 		'section'     => 'vite[section]',
 		'label'       => __( 'Unsortable', 'vite' ),
@@ -357,11 +383,12 @@ $control_settings = [
 	[
 		'name'        => 'vite[typography]',
 		'type'        => 'control',
+		'transport'   => 'postMessage',
 		'control'     => 'vite-typography',
 		'section'     => 'vite[section]',
 		'label'       => __( 'Typography', 'vite' ),
 		'description' => __( 'An example of typography control.', 'vite' ),
-		'selectors'   => [ '.vite-typography', '.vite-typography:hover' ],
+		'selectors'   => [ 'body' ],
 	],
 ];
 
