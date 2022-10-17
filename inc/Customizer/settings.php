@@ -12,6 +12,12 @@ $panel_settings = [
 		'title'    => __( 'Vite Panel', 'vite' ),
 		'priority' => 10,
 	],
+	[
+		'name'     => 'vite[header]',
+		'type'     => 'vite-builder-panel',
+		'title'    => __( 'Header', 'vite' ),
+		'priority' => 10,
+	],
 ];
 
 $section_settings = [
@@ -22,6 +28,13 @@ $section_settings = [
 		'panel'    => 'vite[panel]',
 		'priority' => 10,
 	],
+	array(
+		'name'     => 'vite[header-builder]',
+		'type'     => 'vite-builder-section',
+		'panel'    => 'vite[header]',
+		'title'    => esc_html__( 'Header builder', 'customind' ),
+		'priority' => 10,
+	),
 ];
 
 $control_settings = [
@@ -390,10 +403,88 @@ $control_settings = [
 		'description' => __( 'An example of typography control.', 'vite' ),
 		'selectors'   => [ 'body' ],
 	],
+	array(
+		'name'        => 'vite[header-builder]',
+		'type'        => 'control',
+		'default'     => [
+			'top'    => [
+				'left'   => [],
+				'center' => [],
+				'right'  => [],
+			],
+			'main'   => [
+				'left'   => [ 'logo' ],
+				'center' => [],
+				'right'  => [ 'primary-navigation', 'search' ],
+			],
+			'bottom' => [
+				'left'   => [],
+				'center' => [],
+				'right'  => [],
+			],
+		],
+		'control'     => 'vite-builder',
+		'label'       => esc_html__( 'Header builder', 'vite' ),
+		'section'     => 'vite[header-builder]',
+		'priority'    => 30,
+		'choices'     => [
+			'logo'                 => [
+				'name'    => esc_html__( 'Logo', 'vite' ),
+				'section' => 'title_tagline',
+			],
+			'primary-navigation'   => [
+				'name'    => esc_html__( 'Primary Navigation', 'vite' ),
+				'section' => 'vite_primary_navigation',
+			],
+			'secondary-navigation' => [
+				'name'    => esc_html__( 'Secondary Navigation', 'vite' ),
+				'section' => 'vite_secondary_navigation',
+			],
+			'search'               => [
+				'name'    => esc_html__( 'Search', 'vite' ),
+				'section' => 'vite_header_search',
+			],
+			'button'               => [
+				'name'    => esc_html__( 'Button', 'vite' ),
+				'section' => 'vite_header_button',
+			],
+			'social'               => [
+				'name'    => esc_html__( 'Social', 'vite' ),
+				'section' => 'vite_header_social',
+			],
+			'html'                 => [
+				'name'    => esc_html__( 'HTML', 'vite' ),
+				'section' => 'vite_header_html',
+			],
+		],
+		'input_attrs' => [
+			'areas' => [
+				'top'    => [
+					'left'   => 'Top Left',
+					'center' => 'Top Center',
+					'right'  => 'Top Right',
+				],
+				'main'   => [
+					'left'   => 'Main Left',
+					'center' => 'Main center',
+					'right'  => 'Main Right',
+				],
+				'bottom' => [
+					'left'   => 'Bottom Left',
+					'center' => 'Bottom Center',
+					'right'  => 'Bottom Right',
+				],
+			],
+		],
+		'transport'   => 'postMessage',
+		'partial'     => [
+			'selector'            => '.site-header',
+			'container_inclusive' => true,
+			'render_callback'     => function() {
+				get_template_part( 'template-parts/header/header', '' );
+			},
+		],
+	),
 ];
 
-$settings = apply_filters( 'vite_customizer_control_settings', array_merge( $panel_settings, $section_settings, $control_settings ) );
-
-vite( 'customizer' )->add_settings( $settings );
-
-
+return array_merge( $panel_settings, $section_settings, $control_settings );
