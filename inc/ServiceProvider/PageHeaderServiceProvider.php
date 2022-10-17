@@ -10,13 +10,12 @@ namespace Vite\ServiceProvider;
 
 defined( 'ABSPATH' ) || exit;
 
-use League\Container\ServiceProvider\AbstractServiceProvider;
 use Vite\PageHeader;
 
 /**
  * PageHeader service provider.
  */
-class PageHeaderServiceProvider extends AbstractServiceProvider {
+class PageHeaderServiceProvider extends ViteAbstractServiceProvider {
 
 	/**
 	 * {@inheritDoc}

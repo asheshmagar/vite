@@ -10,13 +10,12 @@ namespace Vite\ServiceProvider;
 
 defined( 'ABSPATH' ) || exit;
 
-use League\Container\ServiceProvider\AbstractServiceProvider;
 use Vite\Core;
 
 /**
  * Core service provider.
  */
-class CoreServiceProvider extends AbstractServiceProvider {
+class CoreServiceProvider extends ViteAbstractServiceProvider {
 
 	/**
 	 * {@inheritDoc}

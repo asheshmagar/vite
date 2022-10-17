@@ -10,13 +10,12 @@ namespace Vite\ServiceProvider;
 
 defined( 'ABSPATH' ) || exit;
 
-use League\Container\ServiceProvider\AbstractServiceProvider;
 use Vite\Customizer\Customizer;
 
 /**
  * Core service provider.
  */
-class CustomizerServiceProvider extends AbstractServiceProvider {
+class CustomizerServiceProvider extends ViteAbstractServiceProvider {
 
 	/**
 	 * {@inheritDoc}

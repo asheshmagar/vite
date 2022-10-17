@@ -10,13 +10,12 @@ namespace Vite\ServiceProvider;
 
 defined( 'ABSPATH' ) || exit;
 
-use League\Container\ServiceProvider\AbstractServiceProvider;
 use Vite\Breadcrumbs;
 
 /**
  * Breadcrumbs service provider.
  */
-class BreadcrumbsServiceProvider extends AbstractServiceProvider {
+class BreadcrumbsServiceProvider extends ViteAbstractServiceProvider {
 
 	/**
 	 * {@inheritDoc}

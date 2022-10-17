@@ -10,13 +10,12 @@ namespace Vite\ServiceProvider;
 
 defined( 'ABSPATH' ) || exit;
 
-use League\Container\ServiceProvider\AbstractServiceProvider;
 use Vite\Scripts;
 
 /**
  * Scripts service provider.
  */
-class ScriptsServiceProvider extends AbstractServiceProvider {
+class ScriptsServiceProvider extends ViteAbstractServiceProvider {
 
 	/**
 	 * {@inheritDoc}

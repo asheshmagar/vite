@@ -10,13 +10,12 @@ namespace Vite\ServiceProvider;
 
 defined( 'ABSPATH' ) || exit;
 
-use League\Container\ServiceProvider\AbstractServiceProvider;
 use Vite\TemplateHooks;
 
 /**
  * TemplateHooks service provider.
  */
-class TemplateHooksServiceProvider extends AbstractServiceProvider {
+class TemplateHooksServiceProvider extends ViteAbstractServiceProvider {
 
 	/**
 	 * {@inheritDoc}

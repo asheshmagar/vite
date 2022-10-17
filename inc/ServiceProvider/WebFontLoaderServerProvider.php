@@ -10,13 +10,12 @@ namespace Vite\ServiceProvider;
 
 defined( 'ABSPATH' ) || exit;
 
-use League\Container\ServiceProvider\AbstractServiceProvider;
 use Vite\Customizer\WebFontLoader;
 
 /**
  * Theme service provider.
  */
-class WebFontLoaderServerProvider extends AbstractServiceProvider {
+class WebFontLoaderServerProvider extends ViteAbstractServiceProvider {
 
 	/**
 	 * {@inheritDoc}

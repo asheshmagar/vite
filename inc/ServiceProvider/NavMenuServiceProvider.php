@@ -10,13 +10,12 @@ namespace Vite\ServiceProvider;
 
 defined( 'ABSPATH' ) || exit;
 
-use League\Container\ServiceProvider\AbstractServiceProvider;
 use Vite\NavMenu;
 
 /**
  * NavMenu service provider.
  */
-class NavMenuServiceProvider extends AbstractServiceProvider {
+class NavMenuServiceProvider extends ViteAbstractServiceProvider {
 
 	/**
 	 * {@inheritDoc}
