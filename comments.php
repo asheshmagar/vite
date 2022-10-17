@@ -18,8 +18,8 @@ if ( post_password_required() ) {
 ?>
 <div id="comments" class="comments-area">
 <?php
-	do_action( 'theme_before_comments' );
-	do_action( 'theme_comments' );
-	do_action( 'theme_after_comments' );
+	do_action( 'vite_before_comments' );
+	do_action( 'vite_comments' );
+	do_action( 'vite_after_comments' );
 ?>
 </div><!-- #comments -->

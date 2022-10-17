@@ -10,5 +10,5 @@
 defined( 'ABSPATH' ) || exit;
 
 get_header();
-do_action( 'theme_404' );
+do_action( 'vite_404' );
 get_footer();

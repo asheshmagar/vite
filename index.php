@@ -20,9 +20,9 @@ get_header();
 ?>
 	<main id="primary" class="site-main">
 		<?php
-			do_action( 'theme_before_archive' );
+			do_action( 'vite_before_archive' );
 			vite( 'core' )->the_loop();
-			do_action( 'theme_after_archive' );
+			do_action( 'vite_after_archive' );
 		?>
 	</main>
 	<?php

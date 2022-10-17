@@ -23,10 +23,10 @@ defined( 'ABSPATH' ) || exit;
 		<?php wp_body_open(); ?>
 		<div id="page" class="site wp-site-blocks">
 			<?php
-			do_action( 'theme_before_header' );
-			do_action( 'theme_header' );
-			do_action( 'theme_after_header' );
+			do_action( 'vite_before_header' );
+			do_action( 'vite_header' );
+			do_action( 'vite_after_header' );
 			?>
 			<div id="content" class="site-content">
-				<div class="container">
-				<?php do_action( 'theme_before_content' ); ?>
+				<div class=vite-container>
+				<?php do_action( 'vite_before_content' ); ?>
