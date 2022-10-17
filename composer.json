@@ -10,8 +10,7 @@
       "Vite\\Customizer\\Type\\": "inc/Customizer/Type/"
     },
     "files": [
-      "bootstrap/bootstrap.php",
-      "inc/Customizer/Functions.php"
+      "bootstrap/bootstrap.php"
     ]
   },
   "require": {
