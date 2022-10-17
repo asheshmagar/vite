@@ -30,7 +30,7 @@ class EntryElements {
 	 */
 	public function render_entry_meta() {
 		$meta_elements = apply_filters(
-			'theme_entry_meta_elements',
+			'vite_entry_meta_elements',
 			[
 				'author',
 				'date',

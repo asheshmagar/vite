@@ -32,12 +32,12 @@ class Styles {
 	 * @return void
 	 */
 	public function register() {
-		wp_register_style( 'vite-normalize', VITE_ASSETS_URI . 'dist/normalize.css', [], VITE_VERSION );
-		wp_register_style( 'vite-global', VITE_ASSETS_URI . 'dist/global.css', [ 'vite-normalize' ], VITE_VERSION );
-		wp_register_style( 'vite-header', VITE_ASSETS_URI . 'dist/header.css', [], VITE_VERSION );
-		wp_register_style( 'vite-page-header', VITE_ASSETS_URI . 'dist/page-header.css', [], VITE_VERSION );
-		wp_register_style( 'vite-content', VITE_ASSETS_URI . 'dist/content.css', [], VITE_VERSION );
-		wp_register_style( 'vite-footer', VITE_ASSETS_URI . 'dist/footer.css', [], VITE_VERSION );
+		wp_register_style( 'vite-style', VITE_ASSETS_URI . 'dist/style.css', [], VITE_VERSION );
+		// wp_register_style( 'vite-global', VITE_ASSETS_URI . 'dist/global.css', [ 'vite-normalize' ], VITE_VERSION );
+		// wp_register_style( 'vite-header', VITE_ASSETS_URI . 'dist/header.css', [], VITE_VERSION );
+		// wp_register_style( 'vite-page-header', VITE_ASSETS_URI . 'dist/page-header.css', [], VITE_VERSION );
+		// wp_register_style( 'vite-content', VITE_ASSETS_URI . 'dist/content.css', [], VITE_VERSION );
+		// wp_register_style( 'vite-footer', VITE_ASSETS_URI . 'dist/footer.css', [], VITE_VERSION );
 	}
 
 	/**
@@ -46,7 +46,22 @@ class Styles {
 	 * @return void
 	 */
 	public function enqueue() {
-		wp_enqueue_style( 'vite-global' );
+		$dynamic_css = vite( 'dynamic-css' )->init();
+		wp_enqueue_style( 'vite-style' );
+		wp_add_inline_style( 'vite-style', $dynamic_css->make()->get() );
+//		$dynamic_css = $upload_dir['basedir'] . '/vite/vite-dynamic.css';
+//		if ( file_exists( $dynamic_css ) ) {
+////			wp_enqueue_style( 'vite-dynamic', "{$upload_dir['baseurl']}/vite/vite-dynamic.css", [ 'vite-style' ], VITE_VERSION );
+//		}
+		// wp_enqueue_style( 'vite-header' );
+		// wp_enqueue_style( 'vite-page-header' );
+		// wp_enqueue_style( 'vite-content' );
+		// wp_enqueue_style( 'vite-footer' );
+	}
+
+	private function get_dynamic_css() {
+		$css = vite('customizer')->css->make()->get();
+		error_log( print_r( $css, true ) );
 	}
 
 	/**

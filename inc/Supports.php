@@ -55,7 +55,7 @@ class Supports {
 //			'editor-font-sizes'                   => true,
 //			'editor-color-palette'                => true,
 			'custom-logo'                         => apply_filters(
-				'theme_custom_logo_args',
+				'vite_custom_logo_args',
 				[
 					'width'       => 150,
 					'height'      => 75,
@@ -65,7 +65,7 @@ class Supports {
 			),
 			'customize-selective-refresh-widgets' => true,
 		];
-		$features = apply_filters( 'theme_theme_supports', $features );
+		$features = apply_filters( 'vite_vite_supports', $features );
 		foreach ( $features as $feature => $args ) {
 			if ( $args && is_array( $args ) ) {
 				add_theme_support( $feature, $args );

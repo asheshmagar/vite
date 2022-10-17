@@ -26,7 +26,7 @@ class NavMenu {
 	 */
 	public function register_nav_menus() {
 		$menu_locations = apply_filters(
-			'theme_menu_locations',
+			'vite_menu_locations',
 			[
 				static::PRIMARY_MENU   => __( 'Primary Menu', 'vite' ),
 				static::SECONDARY_MENU => __( 'Secondary Menu', 'vite' ),

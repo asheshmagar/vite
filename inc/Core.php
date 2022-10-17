@@ -19,16 +19,16 @@ class Core {
 	 * @return void
 	 */
 	public function the_loop() {
-		do_action( 'theme_before_the_loop' );
+		do_action( 'vite_before_the_loop' );
 		if ( have_posts() ) {
 			while ( have_posts() ) {
 				the_post();
-				do_action( 'theme_the_loop' );
+				do_action( 'vite_the_loop' );
 			}
 		} else {
-			do_action( 'theme_no_posts' );
+			do_action( 'vite_no_posts' );
 		}
-		do_action( 'theme_after_the_loop' );
+		do_action( 'vite_after_the_loop' );
 	}
 
 	/**
@@ -116,6 +116,7 @@ class Core {
 			'{{date}}'       => gmdate( 'Y-m-d' ),
 			'{{time}}'       => gmdate( 'H:i:s' ),
 			'{{datetime}}'   => gmdate( 'Y-m-d H:i:s' ),
+			'{{copyright}}'  => '&copy;',
 		];
 
 		foreach ( $smart_tags as $tag => $value ) {

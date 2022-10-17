@@ -18,7 +18,7 @@ class Comments {
 	 */
 	public function init(): void {
 		add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_comments_reply_script' ] );
-		add_action( 'theme_comments', [ $this, 'comments_list' ] );
+		add_action( 'vite_comments', [ $this, 'comments_list' ] );
 	}
 
 	/**
@@ -41,9 +41,9 @@ class Comments {
 		if ( ! have_comments() ) {
 			return;
 		}
-		do_action( 'theme_before_comments_list' );
+		do_action( 'vite_before_comments_list' );
 		$this->comments_list_markup();
-		do_action( 'theme_after_comments_list' );
+		do_action( 'vite_after_comments_list' );
 	}
 
 	/**

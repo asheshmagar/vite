@@ -86,7 +86,7 @@ class Breadcrumbs {
 		];
 
 		// Parse the arguments with the defaults.
-		$this->args = apply_filters( 'theme_breadcrumb_trail_args', wp_parse_args( $args, $defaults ) );
+		$this->args = apply_filters( 'vite_breadcrumb_trail_args', wp_parse_args( $args, $defaults ) );
 
 		// Set the labels and post taxonomy properties.
 		$this->set_labels();
@@ -178,7 +178,7 @@ class Breadcrumbs {
 		}
 
 		// Allow developers to filter the breadcrumb trail HTML.
-		$breadcrumb = apply_filters( 'theme_breadcrumb_trail', $breadcrumb, $this->args );
+		$breadcrumb = apply_filters( 'vite_breadcrumb_trail', $breadcrumb, $this->args );
 
 		if ( false === $this->args['echo'] ) {
 			return $breadcrumb;
@@ -218,7 +218,7 @@ class Breadcrumbs {
 			'archive_year'        => '%s',
 		];
 
-		$this->labels = apply_filters( 'theme_breadcrumb_trail_labels', wp_parse_args( $this->args['labels'], $defaults ) );
+		$this->labels = apply_filters( 'vite_breadcrumb_trail_labels', wp_parse_args( $this->args['labels'], $defaults ) );
 	}
 
 	/**
@@ -235,7 +235,7 @@ class Breadcrumbs {
 			$defaults['post'] = 'category';
 		}
 
-		$this->post_taxonomy = apply_filters( 'theme_breadcrumb_trail_post_taxonomy', wp_parse_args( $this->args['post_taxonomy'], $defaults ) );
+		$this->post_taxonomy = apply_filters( 'vite_breadcrumb_trail_post_taxonomy', wp_parse_args( $this->args['post_taxonomy'], $defaults ) );
 	}
 
 	/**
@@ -295,7 +295,7 @@ class Breadcrumbs {
 		$this->add_paged_items();
 
 		// Allow developers to overwrite the items for the breadcrumb trail.
-		$this->items = array_unique( apply_filters( 'theme_breadcrumb_trail_items', $this->items, $this->args ) );
+		$this->items = array_unique( apply_filters( 'vite_breadcrumb_trail_items', $this->items, $this->args ) );
 	}
 
 	/**
@@ -489,7 +489,7 @@ class Breadcrumbs {
 							$label = ! empty( $post_type_object->labels->archive_title ) ? $post_type_object->labels->archive_title : $post_type_object->labels->name;
 
 							// Core filter hook.
-							$label = apply_filters( 'theme_post_type_archive_title', $label, $post_type_object->name );
+							$label = apply_filters( 'vite_post_type_archive_title', $label, $post_type_object->name );
 
 							// Add the post type archive link to the trail.
 							$this->items[] = sprintf( '<a href="%s">%s</a>', esc_url( get_post_type_archive_link( $post_type_object->name ) ), $label );
@@ -522,7 +522,7 @@ class Breadcrumbs {
 				$label = ! empty( $post_type_object->labels->archive_title ) ? $post_type_object->labels->archive_title : $post_type_object->labels->name;
 
 				// Core filter hook.
-				$label = apply_filters( 'theme_post_type_archive_title', $label, $post_type_object->name );
+				$label = apply_filters( 'vite_post_type_archive_title', $label, $post_type_object->name );
 
 				$this->items[] = sprintf( '<a href="%s">%s</a>', esc_url( get_post_type_archive_link( $post_type_object->name ) ), $label );
 			}
@@ -880,7 +880,7 @@ class Breadcrumbs {
 			$label = ! empty( $post_type_object->labels->archive_title ) ? $post_type_object->labels->archive_title : $post_type_object->labels->name;
 
 			// Core filter hook.
-			$label = apply_filters( 'theme_post_type_archive_title', $label, $post_type_object->name );
+			$label = apply_filters( 'vite_post_type_archive_title', $label, $post_type_object->name );
 
 			$this->items[] = sprintf( '<a href="%s">%s</a>', esc_url( get_post_type_archive_link( $post_type ) ), $label );
 		}

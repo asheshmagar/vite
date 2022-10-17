@@ -20,7 +20,7 @@ class PageHeader {
 	 */
 	public function render_page_header() {
 		$page_header_elements = apply_filters(
-			'theme_page_header_elements',
+			'vite_page_header_elements',
 			[
 				'title',
 				'breadcrumbs',
@@ -29,7 +29,7 @@ class PageHeader {
 		?>
 		<div class="page-header-wrap">
 			<header class="page-header">
-				<div class="container">
+				<div class=vite-container>
 					<?php
 					foreach ( $page_header_elements as $page_header_element ) {
 						get_template_part( 'template-parts/page-header/page-header', $page_header_element );
