@@ -43,6 +43,11 @@ class Customizer {
 	 */
 	public $css;
 
+	/**
+	 * Print css.
+	 *
+	 * @var bool $print_css
+	 */
 	private $print_css = false;
 
 	/**
@@ -76,6 +81,18 @@ class Customizer {
 	}
 
 	/**
+	 * Get settings defaults.
+	 *
+	 * @return mixed|void
+	 */
+	public function get_setting_defaults() {
+		$defaults = [
+			'footer-html' => '{{copyright}} {{year}} {{site-title}}',
+		];
+		return apply_filters( 'vite_setting_defaults', $defaults );
+	}
+
+	/**
 	 * Print dynamic CSS.
 	 *
 	 * @return void
@@ -90,7 +107,7 @@ class Customizer {
 		if ( ! empty( $this->css->css_data ) ) {
 			try {
 				$css = $this->css->make()->get();
-//				echo '<style id="vite-dynamic-css">' . $css . '</style>'; // phpcs:ignore
+				// echo '<style id="vite-dynamic-css">' . $css . '</style>'; // phpcs:ignore
 			} catch ( \Exception $e ) {} // phpcs:ignore
 		}
 	}
@@ -129,7 +146,7 @@ class Customizer {
 	public function save_dynamic_css() {
 		if ( ! empty( $this->css->css_data ) ) {
 			try {
-				$this->css->make()->save();
+//				$this->css->make()->save();
 			} catch ( \Exception $e ) {} // phpcs:ignore
 		}
 	}
@@ -188,9 +205,8 @@ class Customizer {
 	 * @return void
 	 */
 	public function customize_register( WP_Customize_Manager $wp_customize ) {
-		$this->css = new DynamicCSS();
-
-		require_once __DIR__ . '/settings.php';
+		$this->css = vite( 'dynamic-css' )->init();
+		$this->add_settings( apply_filters( 'vite_customizer_settings', require __DIR__ . '/settings.php' ) );
 		$this->register( $wp_customize );
 		$this->add( $wp_customize );
 	}
@@ -329,22 +345,20 @@ class Customizer {
 		$config['type'] = $config['control'];
 		$config         = $this->additional_config( $config );
 
-		if ( isset( $config['selectors'] ) ) {
-			$this->css->add( $config );
-		}
-
 		$wp_customize->add_control( new Control( $wp_customize, $name, $config ) );
 
-		$selective_refresh = isset( $config['partial'] );
-		$render_callback   = $config['partial']['render_callback'] ?? '';
+		$selective_refresh   = isset( $config['partial'] );
+		$render_callback     = $config['partial']['render_callback'] ?? '';
+		$container_inclusive = $config['partial']['container_inclusive'] ?? false;
 
 		if ( $selective_refresh ) {
 			if ( isset( $wp_customize->selective_refresh ) ) {
 				$wp_customize->selective_refresh->add_partial(
 					$name,
 					[
-						'selector'        => $config['partial']['selector'],
-						'render_callback' => $render_callback,
+						'selector'            => $config['partial']['selector'],
+						'render_callback'     => $render_callback,
+						'container_inclusive' => $container_inclusive,
 					]
 				);
 			}
@@ -398,10 +412,6 @@ class Customizer {
 		$wp_customize->add_setting( $name, $config );
 
 		$config['type'] = $config['control'];
-
-		if ( isset( $config['selectors'] ) ) {
-			$this->css->add( $config );
-		}
 
 		$wp_customize->add_control( new Control( $wp_customize, $name, $config ) );
 	}
