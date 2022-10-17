@@ -80,7 +80,7 @@ class Sanitize {
 			case 'email':
 				return sanitize_email( $input );
 			case 'number':
-				return sanitize_int( $input, $setting );
+				return static::sanitize_int( $input, $setting );
 			default:
 				return sanitize_text_field( $input );
 		}
@@ -135,13 +135,13 @@ class Sanitize {
 			$input['style'] = 'none';
 		}
 		if ( isset( $input['color'] ) ) {
-			$input['color'] = sanitize_color( $input['color'], $setting );
+			$input['color'] = static::sanitize_color( $input['color'], $setting );
 		}
 		if ( isset( $input['width'] ) ) {
-			$input['width'] = sanitize_slider( $input['width'] );
+			$input['width'] = static::sanitize_slider( $input['width'] );
 		}
 		if ( isset( $input['radius'] ) ) {
-			$input['width'] = sanitize_slider( $input['width'] );
+			$input['width'] = static::sanitize_slider( $input['width'] );
 		}
 
 		return $input;
@@ -161,7 +161,7 @@ class Sanitize {
 			$input['type'] = 'color';
 		}
 		if ( isset( $input['color'] ) ) {
-			$input['color'] = sanitize_color( $input['color'], $setting );
+			$input['color'] = static::sanitize_color( $input['color'], $setting );
 		}
 		if ( isset( $input['gradient'] ) ) {
 			$input['gradient'] = sanitize_text_field( $input['gradient'] );
