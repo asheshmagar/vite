@@ -52,6 +52,34 @@ class DynamicCSS {
 	];
 
 	/**
+	 * Init.
+	 *
+	 * @return $this
+	 */
+	public function init(): DynamicCSS {
+		$settings = apply_filters( 'vite_customizer_settings', require __DIR__ . '/settings.php' );
+
+		foreach ( $settings as $setting ) {
+			if (
+				isset( $setting['type'] ) &&
+				'control' === $setting['type'] &&
+				isset( $setting['selectors'] )
+			) {
+				$this->css_data[] = [
+					'name'       => $setting['name'],
+					'control'    => $setting['control'] ?? null,
+					'selectors'  => $setting['selectors'] ?? [],
+					'properties' => $setting['properties'] ?? [],
+					'context'    => $setting['context'] ?? null,
+					'extra'      => $setting['input_attrs'] ?? null,
+				];
+			}
+		}
+
+		return $this;
+	}
+
+	/**
 	 * Get CSS.
 	 *
 	 * @return string
@@ -103,18 +131,26 @@ class DynamicCSS {
 	/**
 	 * Add.
 	 *
-	 * @param array $data Data.
+	 * @param array[] $data Data.
 	 * @return void
 	 */
 	public function add( array $data = [] ) {
-		$this->css_data[] = [
-			'name'       => $data['name'],
-			'control'    => $data['control'] ?? null,
-			'selectors'  => $data['selectors'] ?? [],
-			'properties' => $data['properties'] ?? [],
-			'context'    => $data['context'] ?? null,
-			'extra'      => $data['input_attrs'] ?? null,
-		];
+		foreach ( $data as $datum ) {
+			if (
+				isset( $datum['type'] ) &&
+				'control' === $datum['type'] &&
+				isset( $datum['selectors'] )
+			) {
+				$this->css_data[] = [
+					'name'       => $datum['name'],
+					'control'    => $datum['control'] ?? null,
+					'selectors'  => $datum['selectors'] ?? [],
+					'properties' => $datum['properties'] ?? [],
+					'context'    => $datum['context'] ?? null,
+					'extra'      => $datum['input_attrs'] ?? null,
+				];
+			}
+		}
 	}
 
 	/**
