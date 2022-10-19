@@ -1,7 +1,7 @@
 const EslintPlugin = require( 'eslint-webpack-plugin' );
 const WebpackBar = require( 'webpackbar' );
 const DependencyExtractionWebpackPlugin = require( '@wordpress/dependency-extraction-webpack-plugin' );
-const { resolve, basename, dirname } = require( 'path' );
+const { resolve } = require( 'path' );
 const MiniCSSExtractPlugin = require( 'mini-css-extract-plugin' );
 const RemoveEmptyScriptsPlugin = require( 'webpack-remove-empty-scripts' );
 
@@ -10,11 +10,7 @@ module.exports = ( _, args ) => ( {
 	entry: {
 		customizer: resolve( process.cwd(), 'assets/js/customizer', 'index.js' ),
 		'customizer-preview': resolve( process.cwd(), 'assets/js/customizer/preview', 'index.js' ),
-		normalize: resolve( process.cwd(), 'assets/scss', 'normalize.scss' ),
-		global: resolve( process.cwd(), 'assets/scss', 'global.scss' ),
-		header: resolve( process.cwd(), 'assets/scss', 'header.scss' ),
-		content: resolve( process.cwd(), 'assets/scss', 'content.scss' ),
-		'page-header': resolve( process.cwd(), 'assets/scss', 'page-header.scss' ),
+		style: resolve( process.cwd(), 'assets/scss', 'style.scss' ),
 	},
 	output: {
 		filename: '[name].js',
@@ -68,6 +64,9 @@ module.exports = ( _, args ) => ( {
 						loader: 'css-loader',
 					},
 					{
+						loader: 'postcss-loader',
+					},
+					{
 						loader: 'sass-loader',
 					},
 				],
@@ -75,23 +74,23 @@ module.exports = ( _, args ) => ( {
 		],
 	},
 	optimization: {
-		splitChunks: {
-			cacheGroups: {
-				style: {
-					type: 'css/mini-extract',
-					test: /[\\/]style(\.module)?\.(sc|sa|c)ss$/,
-					chunks: 'all',
-					enforce: true,
-					name( _, chunks, cacheGroupKey ) {
-						const chunkName = chunks[ 0 ].name;
-						return `${ dirname(
-							chunkName
-						) }/${ cacheGroupKey }-${ basename( chunkName ) }`;
-					},
-				},
-				default: false,
-			},
-		},
+		// splitChunks: {
+		// 	cacheGroups: {
+		// 		style: {
+		// 			type: 'css/mini-extract',
+		// 			test: /[\\/]style(\.module)?\.(sc|sa|c)ss$/,
+		// 			chunks: 'all',
+		// 			enforce: true,
+		// 			name( _, chunks, cacheGroupKey ) {
+		// 				const chunkName = chunks[ 0 ].name;
+		// 				return `${ dirname(
+		// 					chunkName
+		// 				) }/${ cacheGroupKey }-${ basename( chunkName ) }`;
+		// 			},
+		// 		},
+		// 		default: false,
+		// 	},
+		// },
 	},
 	plugins: [
 		new RemoveEmptyScriptsPlugin(),
