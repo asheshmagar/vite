@@ -56,22 +56,24 @@ export default memo( ( props ) => {
 							onClick={ ( e ) => {
 								e.stopPropagation();
 								onToggle();
-								const val = {
-									...( value || {} ),
-									...(
-										responsive ?
-											{
-												[ device ]: {
-													...value?.[ device ],
+								setValue( prev => {
+									prev = {
+										...( prev || {} ),
+										...(
+											responsive ?
+												{
+													[ device ]: {
+														...prev?.[ device ],
+														unit: u,
+													},
+												} : {
 													unit: u,
-												},
-											} : {
-												unit: u,
-											}
-									),
-								};
-								setting.set( val );
-								setValue( val );
+												}
+										),
+									};
+									setting.set( prev );
+									return prev;
+								} );
 							} }
 						>
 							{ u }
@@ -101,24 +103,26 @@ export default memo( ( props ) => {
 										type="number"
 										value={ value?.[ d ]?.[ side.value ] ?? '' }
 										onChange={ ( e ) => {
-											const val = { ...value,
-												[ d ]: {
-													...value?.[ d ],
-													...(
-														value?.[ d ]?.sync ?
-															{
-																top: e.target.value,
-																right: e.target.value,
-																bottom: e.target.value,
-																left: e.target.value,
-															} : {
-																[ side.value ]: e.target.value,
-															}
-													),
-												},
-											};
-											setValue( val );
-											setting.set( val );
+											setValue( prev => {
+												prev = { ...prev,
+													[ d ]: {
+														...( prev?.[ d ] || {} ),
+														...(
+															prev?.[ d ]?.sync ?
+																{
+																	top: e.target.value,
+																	right: e.target.value,
+																	bottom: e.target.value,
+																	left: e.target.value,
+																} : {
+																	[ side.value ]: e.target.value,
+																}
+														),
+													},
+												};
+												setting.set( prev );
+												return prev;
+											} );
 										} }
 										max={ max }
 										min={ min }
@@ -128,15 +132,16 @@ export default memo( ( props ) => {
 								</span>
 							) ) }
 							<span className="vite-dimension-sync" onClick={ () => {
-								const val = {
-									...( value || {} ),
-									[ d ]: {
-										...( value[ d ] || {} ),
-										sync: ! value?.[ d ]?.sync,
-									},
-								};
-								setValue( val );
-								setting.set( val );
+								setValue( prev => {
+									prev = { ...( prev || {} ),
+										[ d ]: {
+											...prev?.[ d ],
+											sync: ! prev?.[ d ]?.sync,
+										},
+									};
+									setting.set( prev );
+									return prev;
+								} );
 							} }>
 								<Dashicon icon={ value?.[ d ]?.sync ? 'lock' : 'unlock' } />
 							</span>
@@ -150,22 +155,24 @@ export default memo( ( props ) => {
 									type="number"
 									value={ value?.[ side.value ] ?? '' }
 									onChange={ ( e ) => {
-										const val = {
-											...value,
-											...(
-												value?.sync ?
-													{
-														top: e.target.value,
-														right: e.target.value,
-														bottom: e.target.value,
-														left: e.target.value,
-													} : {
-														[ side.value ]: e.target.value,
-													}
-											),
-										};
-										setValue( val );
-										setting.set( value );
+										setValue( prev => {
+											prev = {
+												...prev,
+												...(
+													prev?.sync ?
+														{
+															top: e.target.value,
+															right: e.target.value,
+															bottom: e.target.value,
+															left: e.target.value,
+														} : {
+															[ side.value ]: e.target.value,
+														}
+												),
+											};
+											setting.set( prev );
+											return prev;
+										} );
 									} }
 									max={ max }
 									min={ min }
@@ -181,13 +188,14 @@ export default memo( ( props ) => {
 									v = isNaN( v ) ? 0 : parseFloat( v );
 									return v > acc ? v : acc;
 								} );
-							console.log( maxSide );
-							const val = {
-								...( value || {} ),
-								sync: ! value?.sync,
-							};
-							setValue( val );
-							setting.set( val );
+							setValue( prev => {
+								prev = {
+									...( prev || {} ),
+									sync: ! prev?.sync,
+								};
+								setting.set( prev );
+								return prev;
+							} );
 						} }>
 							<Dashicon icon={ value?.sync ? 'lock' : 'unlock' } />
 						</span>

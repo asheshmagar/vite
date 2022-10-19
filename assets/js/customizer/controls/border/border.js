@@ -46,11 +46,11 @@ export default memo( ( props ) => {
 					<SelectControl
 						value={ value?.style ?? '' }
 						onChange={ val => {
-							const temp = { ...( value || {} ),
-								style: val,
-							};
-							setValue( temp );
-							setting.set( temp );
+							setValue( prev => {
+								prev = { ...( prev || {} ), style: val };
+								setting.set( prev );
+								return prev;
+							} );
 						} }
 						options={ BORDER_STYLES }
 					/>
@@ -65,15 +65,15 @@ export default memo( ( props ) => {
 										key={ s?.value }
 										value={ value?.color?.[ s.value ] ?? '' }
 										onChange={ ( color ) => {
-											const temp = {
-												...( value || {} ),
-												color: {
-													...( value?.color || {} ),
-													[ s.value ]: color,
-												},
-											};
-											setValue( temp );
-											setting.set( temp );
+											setValue( prev => {
+												prev = { ...( prev || {} ),
+													color: {
+														...( prev?.color || {} ),
+														[ s.value ]: color,
+													} };
+												setting.set( prev );
+												return prev;
+											} );
 										} }
 										label={ s.label }
 									/>
@@ -84,9 +84,11 @@ export default memo( ( props ) => {
 							<span>Width</span>
 							<ViteRange
 								onChange={ val => {
-									const temp = { ...( value || {} ), width: val };
-									setValue( temp );
-									setting.set( temp );
+									setValue( prev => {
+										prev = { ...( prev || {} ), width: val };
+										setting.set( prev );
+										return prev;
+									} );
 								} }
 								value={ value?.width ?? '' }
 								units={ [ 'px', 'em', 'rem' ] }
@@ -99,9 +101,10 @@ export default memo( ( props ) => {
 					<span>Radius</span>
 					<ViteRange
 						onChange={ val => {
-							const temp = { ...( value || {} ), radius: val };
-							setValue( temp );
-							setting.set( temp );
+							setValue( prev => {
+								prev = { ...( prev || {} ), radius: val };
+								setting.set( prev );
+							} );
 						} }
 						value={ value?.radius ?? '' }
 						units={ [ 'px', 'em', 'rem', '%' ] }
