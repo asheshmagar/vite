@@ -22,7 +22,7 @@ export default memo( ( props ) => {
 	const [ value, setValue ] = useState( setting.get() || {} );
 	const [ open, setOpen ] = useState( false );
 	const builderRef = useRef();
-	const Portal = usePortal( document.getElementById( 'customize-controls' ) );
+	const Portal = usePortal( document.querySelector( '.wp-full-overlay' ) );
 
 	const update = ( row, area, items ) => {
 		const newValue = cloneDeep( value );
@@ -87,11 +87,11 @@ export default memo( ( props ) => {
 				<div className={ `vite-builder${ open ? ' open' : '' }` } data-portal-for={ id }>
 					<div ref={ builderRef } className="vite-builder-rows-wrap">
 						<div className="vite-builder-rows">
-							{ Object.keys( areas ).map( row => (
+							{ Object.entries( areas ).map( ( [ row, columns = {} ] ) => (
 								<div key={ row } className={ `vite-builder-row vite-builder-row-${ row }` }>
 									<Button className="vite-builder-row-action" icon="admin-generic" />
 									<div className="vite-builder-areas">
-										{ Object.keys( areas?.[ row ] || {} ).map( ( area ) => {
+										{ Object.entries( columns ).map( ( [ area ] ) => {
 											return (
 												<BuilderArea
 													key={ area }
