@@ -2,15 +2,19 @@
 	padding-block: 4rem;
 }
 
-.site-main:has(>.post) {
+:is( .blog, .archive ) .site-main {
 	display: grid;
 	grid-template-columns: repeat(3, minmax(0, 1fr));
 	grid-gap: 2em;
 
 	> .post {
-		padding: 0 15px 15px;
+		padding: 20px;
 		border: 1px solid var(--border--color);
 		border-radius: 2px;
+
+		&.vite-has-post-thumbnail {
+			padding-top: 0;
+		}
 
 		a {
 			text-decoration: none;
