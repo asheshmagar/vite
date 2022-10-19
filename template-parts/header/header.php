@@ -8,5 +8,4 @@
 
 defined( 'ABSPATH' ) || exit;
 
-vite( 'styles' )->print_styles( 'vite-header' );
 vite( 'header' )->render_header();
