@@ -16,10 +16,8 @@
 		color: #fff;
 		padding: 5px;
 
-		.customize-control-description {
-			margin-bottom: 0;
-			font-style: initial;
-			cursor: initial;
+		> div {
+			white-space: nowrap;
 		}
 	}
 }
