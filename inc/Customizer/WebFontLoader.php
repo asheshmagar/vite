@@ -110,7 +110,7 @@ class WebFontLoader {
 	public function __construct() {
 		// Add a cleanup routine.
 		$this->schedule_cleanup();
-		add_action( 'delete_fonts_folder', array( $this, 'delete_fonts_folder' ) );
+		add_action( 'vite_delete_fonts_folder', array( $this, 'delete_fonts_folder' ) );
 	}
 
 	/**
@@ -119,12 +119,12 @@ class WebFontLoader {
 	 * @since 1.1.0
 	 * @param string $url The remote URL.
 	 * @param string $format Font format.
-	 * @return $this
+	 * @return string
 	 */
-	public function get( string $url = '', string $format = 'woff2' ): WebFontLoader {
+	public function get( string $url = '', string $format = 'woff2' ): string {
 		$this->remote_url = $url;
 		$this->set_font_format( $format );
-		return $this;
+		return $this->url();
 	}
 
 	/**
@@ -154,14 +154,14 @@ class WebFontLoader {
 	/**
 	 * Get styles with fonts downloaded locally.
 	 *
+	 * @return void
 	 * @since 1.0.0
-	 * @return string
 	 */
-	private function styles(): string {
+	private function styles(): void {
 		// If we already have the local file, return its contents.
 		$local_stylesheet_contents = $this->get_local_stylesheet_contents();
 		if ( $local_stylesheet_contents ) {
-			return $local_stylesheet_contents;
+			return;
 		}
 
 		// Get the remote URL contents.
@@ -187,7 +187,6 @@ class WebFontLoader {
 
 		$this->write_stylesheet();
 
-		return $this->css;
 	}
 
 
@@ -574,8 +573,8 @@ class WebFontLoader {
 	 */
 	private function schedule_cleanup() {
 		if ( ! is_multisite() || ( is_multisite() && is_main_site() ) ) {
-			if ( ! wp_next_scheduled( 'delete_fonts_folder' ) && ! wp_installing() ) {
-				wp_schedule_event( time(), self::CLEANUP_FREQUENCY, 'delete_fonts_folder' );
+			if ( ! wp_next_scheduled( 'vite_delete_fonts_folder' ) && ! wp_installing() ) {
+				wp_schedule_event( time(), self::CLEANUP_FREQUENCY, 'vite_delete_fonts_folder' );
 			}
 		}
 	}
