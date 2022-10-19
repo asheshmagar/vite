@@ -252,9 +252,9 @@ const api = wp.customize;
 
 						if ( isExpanded ) {
 							$( `#sub-accordion-panel-${ panelId } li.control-section` ).addClass( 'vite-hidden-section-navigator' ).hide();
-							$( 'body' ).addClass( newBodyClass );
+							$( 'body' ).attr( 'data-builder', 'active' );
 						} else {
-							$( 'body' ).removeClass( newBodyClass );
+							$( 'body' ).removeAttr( 'data-builder' );
 						}
 					} );
 				}
@@ -321,7 +321,6 @@ const api = wp.customize;
 {
 	api.bind( 'preview-ready', () => {
 		api.selectiveRefresh.bind( 'render-partials-response', res => {
-			console.log( res );
 			if ( ! res?.viteDynamicCSS ) return;
 			const $style = $( '#vite-dynamic-css' );
 			$style.html( res.viteDynamicCSS );
