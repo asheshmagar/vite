@@ -32,8 +32,7 @@ class Vite {
 		vite( 'nav-menu' )->init();
 		vite( 'sidebar' )->init();
 		vite( 'template-hooks' )->init();
-		vite( 'styles' )->init();
-		vite( 'scripts' )->init();
+		vite( 'scripts-styles' )->init();
 		vite( 'customizer' )->init();
 		$this->init_hooks();
 	}
