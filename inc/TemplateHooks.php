@@ -32,8 +32,8 @@ class TemplateHooks {
 	 * @return string[]
 	 */
 	public function post_class( array $classes, array $class, int $post_id ): array {
-		if ( ! has_post_thumbnail( $post_id ) ) {
-			$classes[] = 'vite-post-no-thumbnail';
+		if ( has_post_thumbnail( $post_id ) ) {
+			$classes[] = 'vite-has-post-thumbnail';
 		}
 		$classes[] = 'vite-post';
 		return $classes;
