@@ -11,7 +11,8 @@
 // Exit if accessed directly.
 defined( 'ABSPATH' ) || exit;
 ?>
-		<?php do_action( 'vite_after_content' ); ?>
+					</div>
+				<?php do_action( 'vite_after_content' ); ?>
 			</div>
 		<?php
 		do_action( 'vite_before_footer' );

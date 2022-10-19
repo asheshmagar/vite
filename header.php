@@ -21,12 +21,13 @@ defined( 'ABSPATH' ) || exit;
 	</head>
 	<body <?php body_class(); ?>>
 		<?php wp_body_open(); ?>
-		<div id="page" class="site wp-site-blocks">
+		<div id="page" class="hfeed site wp-site-blocks">
 			<?php
 			do_action( 'vite_before_header' );
 			do_action( 'vite_header' );
 			do_action( 'vite_after_header' );
 			?>
 			<div id="content" class="site-content">
-				<div class=vite-container>
-				<?php do_action( 'vite_before_content' ); ?>
+				<div class="container">
+					<div id="primary" class="content-area">
+						<?php do_action( 'vite_before_content' ); ?>

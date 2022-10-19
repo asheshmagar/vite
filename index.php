@@ -18,7 +18,7 @@ defined( 'ABSPATH' ) || exit;
 
 get_header();
 ?>
-	<main id="primary" class="site-main">
+	<main id="main" class="site-main">
 		<?php
 			do_action( 'vite_before_archive' );
 			vite( 'core' )->the_loop();
