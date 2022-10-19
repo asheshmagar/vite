@@ -36,23 +36,9 @@ export default memo( ( props ) => {
 	const [ anchor, setAnchor ] = useState( null );
 	const [ isOpen, setIsOpen ] = useState( false );
 
-	const googleFonts = useMemo( () => {
-		return [
-			{
-				id: 'default',
-				family: 'System Default',
-				label: 'System Default',
-				value: 'System Default',
-				variants: [ 'regular', '100', '200', '300', '400', '500', '600', '700', '800', '900' ],
-				defVariant: 'regular',
-			},
-			...( ( fonts ).map( g => ( { ...g, label: g.family, value: g.family } ) ) ),
-		];
-	}, [] );
-
 	const currentFont = useMemo( () => {
 		const family = value?.family ?? 'System Default';
-		return googleFonts.find( g => g.family === family ) || {};
+		return fonts.find( g => g.family === family ) || {};
 	}, [ value ] );
 
 	const toWeight = ( variant = '' ) => {
@@ -91,10 +77,10 @@ export default memo( ( props ) => {
 							<div className="font-family">
 								<span>{ __( 'Font Family' ) }</span>
 								<Select
-									value={ googleFonts.find( g => g.value === ( value?.family ?? 'System Default' ) ) }
+									value={ fonts.find( g => g.value === ( value?.family ?? 'default' ) ) }
 									onChange={ val => {
 										const temp = { ...value, family: val.value };
-										const variants = ( googleFonts.find( g => g.family === val.value )?.variants ?? [] ).map( v => toWeight( v ) );
+										const variants = ( fonts.find( g => g.family === val.value )?.variants ?? [] ).map( v => toWeight( v ) );
 										if ( value?.weight ) {
 											if ( ! variants.includes( value.weight ) ) {
 												if ( variants.includes( 400 ) ) {
@@ -108,7 +94,7 @@ export default memo( ( props ) => {
 										setting.set( temp );
 									} }
 									isSearchable={ true }
-									options={ googleFonts }
+									options={ fonts }
 									classNamePrefix="vite-select"
 									className="vite-select"
 									components={ {
@@ -132,14 +118,14 @@ export default memo( ( props ) => {
 											setValue( temp );
 											setting.set( temp );
 										} }
-										value={ VARIANTS?.[ value?.weight ?? toWeight( currentFont?.defVariant ) ] || '' }
+										value={ value?.weight ?? toWeight( currentFont?.defVariant ) ?? '' }
 										options={
 											currentFont.variants
 												.filter( v => -1 === v.indexOf( 'italic' ) )
 												.map( v => toWeight( v ) )
 												.filter( ( v, i, a ) => a.indexOf( v ) === i )
 												.map( v => ( {
-													label: VARIANTS[ v ],
+													label: VARIANTS[ parseInt( v ) ],
 													value: v,
 												} ) )
 										}
