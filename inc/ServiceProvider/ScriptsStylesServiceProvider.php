@@ -1,6 +1,6 @@
 <?php
 /**
- * \Vite\Styles service provider.
+ * ScriptsStyles service provider.
  *
  * @package Vite
  * @since 1.0.0
@@ -10,12 +10,12 @@ namespace Vite\ServiceProvider;
 
 defined( 'ABSPATH' ) || exit;
 
-use Vite\Styles;
+use Vite\ScriptsStyles;
 
 /**
- * Styles service provider.
+ * ScriptsStyles service provider.
  */
-class StylesServiceProvider extends ViteAbstractServiceProvider {
+class ScriptsStylesServiceProvider extends ViteAbstractServiceProvider {
 
 	/**
 	 * {@inheritDoc}
@@ -24,8 +24,8 @@ class StylesServiceProvider extends ViteAbstractServiceProvider {
 	 */
 	public function provides( string $id ): bool {
 		$services = [
-			'styles',
-			Styles::class,
+			'scripts-styles',
+			ScriptsStyles::class,
 		];
 
 		return in_array( $id, $services, true );
@@ -35,6 +35,6 @@ class StylesServiceProvider extends ViteAbstractServiceProvider {
 	 * {@inheritDoc}
 	 */
 	public function register(): void {
-		$this->getContainer()->addShared( 'styles', Styles::class );
+		$this->getContainer()->addShared( 'scripts-styles', ScriptsStyles::class );
 	}
 }
