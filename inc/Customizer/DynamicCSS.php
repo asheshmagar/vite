@@ -52,6 +52,13 @@ class DynamicCSS {
 	];
 
 	/**
+	 * Holds fonts.
+	 *
+	 * @var array
+	 */
+	private $fonts = [];
+
+	/**
 	 * Init.
 	 *
 	 * @return $this
@@ -126,6 +133,73 @@ class DynamicCSS {
 		);
 
 		return $css;
+	}
+
+	/**
+	 * Get font url.
+	 *
+	 * @return string
+	 */
+	public function font_url(): string {
+		if ( ! empty( $this->fonts ) ) {
+			$families  = array_keys( $this->fonts );
+			$fonts     = $this->fonts;
+			$fonts_url = add_query_arg(
+				[
+					'family'  => implode(
+						'|',
+						array_map(
+							function( $f ) use ( $fonts ) {
+								return $f . ':' . implode( ',', $fonts[ $f ] );
+							},
+							$families
+						)
+					),
+					'display' => 'swap',
+				],
+				'https://fonts.googleapis.com/css'
+			);
+
+			return vite( 'font' )->get( $fonts_url );
+		}
+
+		return '';
+	}
+
+	/**
+	 * Enqueue dynamic CSS and font styles.
+	 *
+	 * @return void
+	 */
+	public function enqueue() {
+		$this->init();
+		$this->make();
+		$css = $this->get();
+
+		if ( ! empty( $this->fonts ) ) {
+			$families  = array_keys( $this->fonts );
+			$fonts     = $this->fonts;
+			$fonts_url = add_query_arg(
+				[
+					'family'  => implode(
+						'|',
+						array_map(
+							function( $f ) use ( $fonts ) {
+								return $f . ':' . implode( ',', $fonts[ $f ] );
+							},
+							$families
+						)
+					),
+					'display' => 'swap',
+				],
+				'https://fonts.googleapis.com/css'
+			);
+			wp_enqueue_style( 'vite-font', vite( 'font' )->get( $fonts_url ), [], VITE_VERSION );
+		}
+
+		if ( ! empty( $css ) ) {
+			wp_add_inline_style( 'vite-style', $css );
+		}
 	}
 
 	/**
@@ -354,6 +428,14 @@ class DynamicCSS {
 										);
 									}
 								}
+								if ( ':root' === $d['selectors'][0] ) {
+									$css = "{$d['selectors'][0]} {";
+									foreach ( $value as $k => $v ) {
+										$css .= "$k: $v;";
+									}
+									$css                  .= '}';
+									$this->css['desktop'] .= $css;
+								}
 							} else {
 								$this->css['desktop'] .= $this->make_css( $d['selectors'], $d['properties'], (string) $value );
 							}
@@ -450,8 +532,27 @@ class DynamicCSS {
 	private function typography_css( array $value = [] ):string {
 		$css = '';
 		if ( ! empty( $value['family'] ) ) {
-			$css .= "font-family: {$value['family']};";
+			if ( 'System Default' === $value['family'] ) {
+				$css .= 'font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;';
+			} else {
+				$css .= "font-family: {$value['family']};";
+
+				if ( ! isset( $this->fonts[ $value['family'] ] ) ) {
+					$this->fonts[ $value['family'] ] = [];
+				}
+
+				$weight = $value['weight'] ?? '400';
+
+				if ( ! in_array( $weight, $this->fonts[ $value['family'] ], true ) ) {
+					$this->fonts[ $value['family'] ][] = "$weight";
+				}
+			}
 		}
+
+		if ( ! empty( $value['weight'] ) ) {
+			$css .= "font-weight: {$value['weight']};";
+		}
+
 		if ( ! empty( $value['size'] ) ) {
 			$size = $value['size'];
 			if ( ! empty( $size['value'] ) ) {
@@ -459,14 +560,14 @@ class DynamicCSS {
 				$css         .= "font-size: {$size['value']}{$size['unit']};";
 			}
 		}
-		if ( ! empty( $value['weight'] ) ) {
-			$css .= "font-weight: {$value['weight']};";
-		}
+
 		if ( ! empty( $value['style'] ) ) {
 			$css .= "font-style: {$value['style']};";
 		}
+
 		if ( ! empty( $value['lineHeight'] ) ) {
 			$line_height = $value['lineHeight'];
+
 			if ( ! empty( $line_height['value'] ) ) {
 				$line_height['unit'] = $line_height['unit'] ?? '';
 				$line_height['unit'] = '-' === $line_height['unit'] ? '' : $line_height['unit'];
