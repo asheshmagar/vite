@@ -51,6 +51,13 @@ class Customizer {
 	private $print_css = false;
 
 	/**
+	 * Holds google fonts.
+	 *
+	 * @var array
+	 */
+	private $google_fonts = [];
+
+	/**
 	 * Init.
 	 *
 	 * @return void
@@ -85,10 +92,8 @@ class Customizer {
 	 *
 	 * @return mixed|void
 	 */
-	public function get_setting_defaults() {
-		$defaults = [
-			'footer-html' => '{{copyright}} {{year}} {{site-title}}',
-		];
+	public function get_defaults() {
+		$defaults = require __DIR__ . '/defaults.php';
 		return apply_filters( 'vite_setting_defaults', $defaults );
 	}
 
@@ -146,7 +151,7 @@ class Customizer {
 	public function save_dynamic_css() {
 		if ( ! empty( $this->css->css_data ) ) {
 			try {
-//				$this->css->make()->save();
+				// $this->css->make()->save();
 			} catch ( \Exception $e ) {} // phpcs:ignore
 		}
 	}
@@ -196,6 +201,10 @@ class Customizer {
 				'settings' => $this->settings,
 			]
 		);
+
+		wp_register_style( 'vite-customizer-preview', false, false, '1.0.0' );
+		wp_enqueue_style( 'vite-customizer-preview' );
+		wp_add_inline_style( 'vite-customizer-preview', 'html, body, .site { height: 100% } ' );
 	}
 
 	/**
@@ -289,27 +298,21 @@ class Customizer {
 				vite( 'dynamic-css' )->add( $config );
 			}
 
+			$config['title'] = $config['title'] ?? $config['label'];
+
 			switch ( $config['type'] ) {
 				case 'panel':
 				case 'vite-builder-panel':
-					if ( 'panel' === $config['type'] ) {
-						unset( $config['type'] );
-					}
 					$wp_customize->add_panel( new Panel( $wp_customize, $config['name'], $config ) );
 					break;
 				case 'section':
 				case 'vite-builder-section':
-					if ( 'section' === $config['type'] ) {
-						unset( $config['type'] );
-					}
 					$wp_customize->add_section( new Section( $wp_customize, $config['name'], $config ) );
 					break;
 				case 'sub-control':
-					unset( $config['type'] );
 					$this->add_sub_control( $config, $wp_customize );
 					break;
 				case 'control':
-					unset( $config['type'] );
 					$this->add_control( $config, $wp_customize );
 					break;
 			}
@@ -443,16 +446,76 @@ class Customizer {
 				$config['field'] = $group;
 				break;
 			case 'vite-typography':
-				$fonts_json = VITE_ASSETS_DIR . 'json/google-fonts.json';
-				if ( file_exists( $fonts_json ) ) {
-					ob_start();
-					include_once $fonts_json;
-					$config['fonts'] = json_decode( ob_get_clean(), true );
-				}
+				$config['fonts'] = $this->get_google_fonts();
 				break;
 		}
 
 		return $config;
+	}
+
+	/**
+	 * Get google fonts.
+	 *
+	 * @return array|mixed
+	 */
+	private function get_google_fonts() {
+		$fonts_json = VITE_ASSETS_DIR . 'json/google-fonts.json';
+		if ( file_exists( $fonts_json ) && empty( $this->google_fonts ) ) {
+			ob_start();
+			include_once $fonts_json;
+			$this->google_fonts = array_merge(
+				[
+					[
+						'family'     => 'Default',
+						'variants'   => [
+							'regular',
+							'100',
+							'200',
+							'300',
+							'400',
+							'500',
+							'600',
+							'700',
+							'800',
+							'900',
+						],
+						'value'      => 'default',
+						'defVariant' => 'regular',
+						'id'         => 'default',
+						'label'      => 'Default',
+					],
+					[
+						'family'     => 'Inherit',
+						'variants'   => [
+							'regular',
+							'100',
+							'200',
+							'300',
+							'400',
+							'500',
+							'600',
+							'700',
+							'800',
+							'900',
+						],
+						'value'      => 'inherit',
+						'defVariant' => 'regular',
+						'id'         => 'inherit',
+						'label'      => 'Inherit',
+					],
+				],
+				array_map(
+					function( $font ) {
+						$font['label'] = $font['family'];
+						$font['value'] = $font['family'];
+						return $font;
+
+					},
+					json_decode( ob_get_clean(), true )
+				)
+			);
+		}
+		return $this->google_fonts;
 	}
 
 	/**
