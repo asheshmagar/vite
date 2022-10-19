@@ -11,10 +11,8 @@
 // Exit if accessed directly.
 defined( 'ABSPATH' ) || exit;
 
-vite( 'styles' )->print_styles( 'vite-content' );
-
 $elements = apply_filters(
-	'theme_content_page_elements',
+	'vite_content_page_elements',
 	[
 		'thumbnail',
 		'header',

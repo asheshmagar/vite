@@ -10,8 +10,6 @@
 
 // Exit if accessed directly.
 defined( 'ABSPATH' ) || exit;
-
-vite( 'styles' )->print_styles( 'vite-content' );
 ?>
 
 <section class="no-results not-found">
