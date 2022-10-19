@@ -1,8 +1,7 @@
 import $ from 'jquery';
 {
 	const SETTINGS = ( window._VITE_CUSTOMIZER_PREVIEW_?.settings || [] )
-		.filter( s => s.type === 'control' )
-		.filter( s => s.selectors );
+		.filter( s => s.type === 'control' && s.selectors );
 
 	const STATES = [
 		'hover',
@@ -77,24 +76,26 @@ import $ from 'jquery';
 	const typographyCSS = ( value = [] ) => {
 		let css = '';
 		if ( value?.family ) {
-			if ( value?.family !== 'System Font' ) {
-				css += `font-family: ${ value?.family };`;
+			if ( value.family !== 'System Default' ) {
+				css += `font-family: ${ value.family };`;
+			} else {
+				css += 'font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;';
 			}
 		}
 		if ( value?.weight ) {
-			css += `font-weight: ${ value?.weight };`;
+			css += `font-weight: ${ value.weight };`;
 		}
 		if ( value?.style ) {
-			css += `font-style: ${ value?.style };`;
+			css += `font-style: ${ value.style };`;
 		}
 		if ( value?.size ) {
 			const size = value?.size;
 			if ( size?.value ) {
-				css += `font-size: ${ size?.value }${ size?.unit ?? 'px' };`;
+				css += `font-size: ${ size.value }${ size?.unit ?? 'px' };`;
 			}
 		}
 		if ( value?.lineHeight ) {
-			const lineHeight = value?.lineHeight;
+			const lineHeight = value.lineHeight;
 			lineHeight.unit = lineHeight.unit ?? '';
 			lineHeight.unit = '-' === lineHeight.unit ? '' : lineHeight.unit;
 			if ( lineHeight?.value ) {
@@ -151,7 +152,10 @@ import $ from 'jquery';
 					tablet: '',
 					mobile: '',
 				};
+
 				let keys;
+
+				let font = '';
 
 				switch ( control ) {
 					case 'vite-dimensions':
@@ -255,6 +259,13 @@ import $ from 'jquery';
 						if ( Object.keys( deviceArray.mobile ).length ) {
 							css.mobile += makeCSS( selectors, [], typographyCSS( deviceArray.mobile ) );
 						}
+
+						if ( newValue?.family ) {
+							if ( ! [ 'System Default', 'Inherit' ].includes( newValue.family ) ) {
+								const weight = newValue?.weight ?? '400';
+								font += 'family=' + newValue.family + ':' + weight;
+							}
+						}
 						break;
 					case 'vite-border':
 						if ( newValue?.color?.hover ) {
@@ -281,6 +292,16 @@ import $ from 'jquery';
 										return `${ s }:${ k }`;
 									} ), properties, v );
 								}
+							} else {
+								for ( const [ k, v ] of Object.entries( newValue ) ) {
+									css.desktop += makeCSS(
+										selectors,
+										properties.map( s => {
+											return `${ s }${ k }`;
+										} ),
+										v
+									);
+								}
 							}
 						} else {
 							css.desktop += makeCSS( selectors, properties, ( newValue ).toString() );
@@ -288,6 +309,12 @@ import $ from 'jquery';
 				}
 
 				name = name.replace( /[\[\]']+/g, '-' );
+				const $head = $( 'head' );
+
+				if ( font.length !== 0 ) {
+					$( `link#${ name }-font` ).remove();
+					$head.append( `<link id="${ name }-font" href="https://fonts.googleapis.com/css?${ font }" rel="stylesheet">` );
+				}
 
 				$( `style#${ name }` ).remove();
 
@@ -301,7 +328,7 @@ import $ from 'jquery';
 					$style.append( `@media (max-width: 321px){ ${ css.mobile } }` );
 				}
 
-				$( 'head' ).append( $style );
+				$head.append( $style );
 			} );
 		} );
 	}
