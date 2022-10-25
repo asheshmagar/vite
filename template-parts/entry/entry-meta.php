@@ -8,4 +8,6 @@
 
 defined( 'ABSPATH' ) || exit;
 
-vite( 'entry-elements' )->render_entry_meta();
+$meta_elements = $args['meta-elements'] ?? [];
+
+vite( 'entry-elements' )->render_entry_meta( $meta_elements );
