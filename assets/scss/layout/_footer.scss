@@ -1,0 +1,7 @@
+.site-footer {
+	background-color: var(--global--color--8);
+
+	[data-row="bottom"] > .container {
+		padding-block: var(--container--spacing, 1.5625rem);
+	}
+}
