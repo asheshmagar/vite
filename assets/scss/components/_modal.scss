@@ -1,0 +1,55 @@
+[data-modal] {
+	position: fixed;
+	top: var(--admin--bar--height, 0);
+	left: 0;
+	right: 0;
+	bottom: 0;
+	z-index: 999999;
+	background-color: var(--global--color--8);
+	opacity: 0;
+	visibility: hidden;
+	pointer-events: none;
+	display: flex;
+	flex-direction: column;
+
+	* {
+		color: var(--global--color--4);
+	}
+
+	&,
+	&[data-modal-open] {
+		transition-property: visibility, opacity;
+		transition-duration: 300ms;
+		transition-timing-function: ease-in-out;
+	}
+
+	&[data-modal-open] {
+		opacity: 1;
+		visibility: visible;
+		pointer-events: auto;
+	}
+
+	[data-modal-actions] {
+		display: flex;
+		gap: 1em;
+		align-items: center;
+		justify-content: flex-end;
+	}
+
+	[data-modal-content] {
+		width: 100%;
+		max-width: 80%;
+		overflow: auto;
+		flex: 1;
+		display: grid;
+		place-items: center;
+		margin-inline: auto;
+	}
+
+	[data-modal-trigger] {
+		display: inline-grid;
+		place-items: center;
+		width: 32px;
+		height: 32px;
+	}
+}
