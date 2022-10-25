@@ -11,16 +11,7 @@
 // Exit if accessed directly.
 defined( 'ABSPATH' ) || exit;
 
-$elements = apply_filters(
-	'vite_content_elements',
-	[
-		'thumbnail',
-		'meta',
-		'header',
-		'summary',
-		'footer',
-	]
-);
+$elements = vite( 'customizer' )->get_setting( 'archive-elements' );
 ?>
 
 <article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
