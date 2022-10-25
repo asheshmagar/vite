@@ -11,18 +11,29 @@
 // Exit if accessed directly.
 defined( 'ABSPATH' ) || exit;
 
-$elements = apply_filters(
-	'vite_content_single_elements',
-	[
-		'thumbnail',
-		'header',
-		'meta',
-		'breadcrumbs',
-		'content',
-	]
-);
+$elements = vite( 'customizer' )->get_setting( 'single-header-elements' );
 ?>
 
 <article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
-	<?php vite( 'entry-elements' )->render_entry_elements( $elements ); ?>
+	<header class="entry-header">
+		<?php vite( 'entry-elements' )->render_entry_elements( $elements ); ?>
+	</header>
+	<div class="entry-content">
+		<?php
+		the_content(
+			sprintf(
+				wp_kses(
+					/* translators: %s: Name of current post. Only visible to screen readers */
+					__( 'Continue reading<span class="screen-reader-text"> "%s"</span>', 'vite' ),
+					array(
+						'span' => array(
+							'class' => array(),
+						),
+					)
+				),
+				get_the_title()
+			)
+		);
+		?>
+	</div>
 </article>
