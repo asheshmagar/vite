@@ -4,6 +4,7 @@ const DependencyExtractionWebpackPlugin = require( '@wordpress/dependency-extrac
 const { resolve } = require( 'path' );
 const MiniCSSExtractPlugin = require( 'mini-css-extract-plugin' );
 const RemoveEmptyScriptsPlugin = require( 'webpack-remove-empty-scripts' );
+const CompressionPlugin = require( 'compression-webpack-plugin' );
 
 // eslint-disable-next-line no-unused-vars
 module.exports = ( _, args ) => ( {
@@ -11,6 +12,7 @@ module.exports = ( _, args ) => ( {
 		customizer: resolve( process.cwd(), 'assets/js/customizer', 'index.js' ),
 		'customizer-preview': resolve( process.cwd(), 'assets/js/customizer/preview', 'index.js' ),
 		style: resolve( process.cwd(), 'assets/scss', 'style.scss' ),
+		frontend: resolve( process.cwd(), 'assets/js/frontend', 'index.js' ),
 	},
 	output: {
 		filename: '[name].js',
@@ -98,6 +100,7 @@ module.exports = ( _, args ) => ( {
 		new DependencyExtractionWebpackPlugin(),
 		new WebpackBar(),
 		args.mode === 'development' ? new EslintPlugin( { extensions: [ 'js', 'jsx', 'ts', 'tsx' ] } ) : false,
+		args.mode === 'production' ? new CompressionPlugin() : false,
 	].filter( Boolean ),
-	devtool: false,
+	devtool: 'source-map',
 } );
