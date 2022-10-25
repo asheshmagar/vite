@@ -2,40 +2,23 @@
 	padding-block: 4rem;
 }
 
-:is( .blog, .archive ) .site-main {
+.vite-posts {
 	display: grid;
 	grid-template-columns: repeat(3, minmax(0, 1fr));
 	grid-gap: 2em;
 
-	> .post {
-		padding: 20px;
-		border: 1px solid var(--border--color);
-		border-radius: 2px;
-
+	.vite-post {
 		&.vite-has-post-thumbnail {
 			padding-top: 0;
 		}
 
-		a {
-			text-decoration: none;
-			color: var(--base--color);
-
-			&[class*="cta"] {
-				text-decoration: underline;
-			}
-
-			&:hover,
-			&:focus,
-			&:active {
-				color: var(--primary--color);
-			}
-		}
-
 		.entry-thumbnail {
 			margin-inline: -15px;
+
 			img {
 				width: 100%;
-			} }
+			}
+		}
 
 		.post-wrap {
 			display: flex;
