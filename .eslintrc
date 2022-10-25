@@ -9,7 +9,7 @@
 		"plugin:@wordpress/eslint-plugin/recommended"
 	],
 	"env": {
-		"browser": false,
+		"browser": true,
 		"es6": true,
 		"node": true,
 		"mocha": true,
@@ -27,6 +27,7 @@
 		"window": true,
 		"document": true,
 		"_VITE_CUSTOMIZER_": true,
+		"_VITE_CUSTOMIZER_PREVIEW_": true,
 		"FormData": true
 	},
 	"plugins": [
@@ -40,6 +41,7 @@
 		}
 	},
 	"rules": {
+		"@wordpress/valid-sprintf": "off",
 		"@wordpress/no-unsafe-wp-apis": 0,
 		"array-bracket-spacing": [
 			"error",
@@ -258,6 +260,7 @@
 		"valid-typeof": "error",
 		"yoda": "off",
 		"prettier/prettier": 0,
-		"quotes": [2, "single", { "avoidEscape": true, "allowTemplateLiterals": true }]
+		"quotes": [2, "single", { "avoidEscape": true, "allowTemplateLiterals": true }],
+		"@wordpress/no-global-active-element": "off"
 	}
 }
