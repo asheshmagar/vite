@@ -83,6 +83,7 @@ class Breadcrumbs {
 			'labels'            => [],
 			'post_taxonomy'     => [],
 			'echo'              => true,
+			'separator'         => '/',
 		];
 
 		// Parse the arguments with the defaults.
@@ -113,7 +114,7 @@ class Breadcrumbs {
 		if ( 0 < $item_count ) {
 			// Open the unordered list.
 			$breadcrumb .= sprintf(
-				'<%s class="theme-breadcrumbs-items" itemscope itemtype="http://schema.org/BreadcrumbList">',
+				'<%s class="vite-breadcrumbs-items" itemscope itemtype="http://schema.org/BreadcrumbList">',
 				tag_escape( $this->args['list_tag'] )
 			);
 
@@ -134,7 +135,7 @@ class Breadcrumbs {
 				$item = ! empty( $matches ) ? sprintf( '%s<span itemprop="name">%s</span>%s', $matches[1], $matches[2], $matches[3] ) : sprintf( '<span>%s</span>', $item );
 
 				// Add list item classes.
-				$item_class = 'theme-breadcrumb-item';
+				$item_class = 'vite-breadcrumb-item';
 
 				// Create list item attributes.
 				$attributes = 'itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem" class="' . $item_class . '"';
@@ -142,10 +143,10 @@ class Breadcrumbs {
 				$meta       = sprintf( '<meta itemprop="position" content="%s" />', absint( $item_position ) );
 
 				if ( 1 === $item_position && 1 < $item_count ) {
-					$item_class .= ' theme-breadcrumbs-item-first';
+					$item_class .= ' vite-breadcrumbs-item-first';
 					// Build the meta position HTML.
 				} elseif ( $item_count === $item_position ) {
-					$item_class .= ' theme-breadcrumbs-item-last';
+					$item_class .= ' vite-breadcrumbs-item-last';
 
 					if ( is_404() || false === $this->args['link_current_item'] ) {
 						$attributes = 'class="' . $item_class . '"';
@@ -161,6 +162,10 @@ class Breadcrumbs {
 
 				// Build the list item.
 				$breadcrumb .= sprintf( '<%1$s %2$s>%3$s%4$s</%1$s>', tag_escape( $this->args['item_tag'] ), $attributes, $item, $meta );
+
+				if ( $item_position < $item_count ) {
+					$breadcrumb .= sprintf( '<span class="vite-breadcrumbs-separator">%s</span>', $this->args['separator'] );
+				}
 			}
 
 			// Close the unordered list.
@@ -168,7 +173,7 @@ class Breadcrumbs {
 
 			// Wrap the breadcrumb trail.
 			$breadcrumb = sprintf(
-				'<%1$s role="navigation" aria-label="%2$s" class="theme-breadcrumbs" itemprop="breadcrumb">%3$s%4$s%5$s</%1$s>',
+				'<%1$s role="navigation" aria-label="%2$s" class="vite-breadcrumbs" itemprop="breadcrumb">%3$s%4$s%5$s</%1$s>',
 				tag_escape( $this->args['container'] ),
 				esc_attr( $this->labels['aria_label'] ),
 				$this->args['before'],
