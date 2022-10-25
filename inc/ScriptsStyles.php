@@ -34,6 +34,7 @@ class ScriptsStyles {
 	 */
 	public function register() {
 		wp_register_style( 'vite-style', VITE_ASSETS_URI . 'dist/style.css', [], VITE_VERSION );
+		wp_register_script( 'vite-script', VITE_ASSETS_URI . 'dist/frontend.js', [], VITE_VERSION, true );
 	}
 
 	/**
@@ -42,6 +43,7 @@ class ScriptsStyles {
 	 * @return void
 	 */
 	public function enqueue() {
+		wp_enqueue_script( 'vite-script' );
 		wp_enqueue_style( 'vite-style' );
 		vite( 'dynamic-css' )->enqueue();
 	}
