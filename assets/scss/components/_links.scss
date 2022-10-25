@@ -1,0 +1,40 @@
+a {
+	text-decoration: none;
+	color: var(--link--color);
+	transition: all 200ms ease-in-out;
+
+	&:hover {
+		color: var(--link--hover--color);
+	}
+}
+
+.button,
+input[type="submit"],
+input[type="button"],
+input[type="reset"],
+.wp-block-button .wp-block-button__link {
+	padding: var(--button--padding);
+	border-radius: var(--button--border--radius);
+	background-color: var(--button--background--color);
+	color: var(--button--color);
+	border-width: 0;
+	cursor: pointer;
+	transition: all 200ms ease-in-out;
+
+	&:hover {
+		background-color: var(--button--hover--background--color);
+		color: var(--button--hover--color);
+	}
+}
+
+a,
+.search-submit {
+	&:focus,
+	&:active{
+		outline: none;
+	}
+
+	&:focus-visible {
+		outline: thin dotted currentColor;
+	}
+}
