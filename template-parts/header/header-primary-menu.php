@@ -8,4 +8,4 @@
 
 defined( 'ABSPATH' ) || exit;
 
-vite( 'header' )->render_header_primary_navigation();
+vite( 'nav-menu' )->render_menu( 'primary' );
