@@ -207,7 +207,7 @@ class Sanitize {
 	 */
 	public static function sanitize_sortable( array $input ): array {
 		foreach ( $input as $i => $val ) {
-			foreach ( $val  as $k => $v ) {
+			foreach ( $val as $k => $v ) {
 				switch ( $k ) {
 					case 'id':
 					case 'label':
