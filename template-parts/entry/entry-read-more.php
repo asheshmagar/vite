@@ -8,4 +8,4 @@
 
 defined( 'ABSPATH' ) || exit;
 
-vite( 'entry-elements' )->render_entry_footer();
+vite( 'entry-elements' )->render_entry_button();
