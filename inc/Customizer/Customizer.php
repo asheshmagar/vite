@@ -58,6 +58,13 @@ class Customizer {
 	private $google_fonts = [];
 
 	/**
+	 * Holds setting defaults.
+	 *
+	 * @var array
+	 */
+	private $defaults;
+
+	/**
 	 * Init.
 	 *
 	 * @return void
@@ -93,8 +100,10 @@ class Customizer {
 	 * @return mixed|void
 	 */
 	public function get_defaults() {
-		$defaults = require __DIR__ . '/defaults.php';
-		return apply_filters( 'vite_setting_defaults', $defaults );
+		if ( ! isset( $this->defaults ) ) {
+			$this->defaults = require __DIR__ . '/defaults.php';
+		}
+		return apply_filters( 'vite_setting_defaults', $this->defaults );
 	}
 
 	/**
@@ -126,9 +135,15 @@ class Customizer {
 	 */
 	public function get_setting( string $key = '', $default = false ) {
 		$settings = get_theme_mod( 'vite' );
+		$defaults = $this->get_defaults();
 		if ( isset( $settings[ $key ] ) ) {
 			return $settings[ $key ];
 		}
+
+		if ( isset( $defaults[ $key ] ) ) {
+			return $defaults[ $key ];
+		}
+
 		return $default;
 	}
 
@@ -182,6 +197,13 @@ class Customizer {
 		wp_enqueue_editor();
 		wp_enqueue_script( 'vite-customizer', VITE_ASSETS_URI . 'dist/customizer.js', $asset['dependencies'], $asset['version'], true );
 		wp_enqueue_style( 'vite-customizer', VITE_ASSETS_URI . 'dist/customizer.css', [ 'wp-components' ], $asset['version'] );
+		wp_localize_script(
+			'vite-customizer',
+			'_VITE_CUSTOMIZER_',
+			[
+				'icons' => vite( 'icon' )->get_icons(),
+			]
+		);
 		wp_set_script_translations( 'vite-customizer', 'vite', get_template_directory() . '/languages' );
 	}
 
