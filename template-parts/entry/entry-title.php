@@ -1,3 +1,4 @@
+
 <?php
 /**
  * Displays the post header.
@@ -8,4 +9,4 @@
 
 defined( 'ABSPATH' ) || exit;
 
-vite( 'entry-elements' )->render_entry_header();
+vite( 'entry-elements' )->render_entry_title();
