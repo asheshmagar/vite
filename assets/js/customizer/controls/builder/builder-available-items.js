@@ -1,18 +1,24 @@
 import { useMemo, memo, useState } from '@wordpress/element';
 import { ReactSortable } from 'react-sortablejs';
-import { getObjectValues } from '../utils';
+import { getObjectValues } from '../../utils';
 import { __ } from '@wordpress/i18n';
 
 export default memo( ( props ) => {
 	const {
-		choices = {},
-	} = props.control.params;
+		control,
+		control: {
+			params: {
+				choices = {},
+			},
+		},
+		value,
+	} = props;
 	const [ availableItems ] = useState( Object.keys( choices ) );
 
 	const currentAvailableItems = useMemo( () => {
-		const savedItems = getObjectValues( props.value ) || [];
+		const savedItems = getObjectValues( value ) || [];
 		return availableItems.filter( i => -1 === savedItems.indexOf( i ) ).map( i => ( { id: i } ) );
-	}, [ props.value ] );
+	}, [ value ] );
 
 	return (
 		<>
@@ -20,6 +26,8 @@ export default memo( ( props ) => {
 			<div className="vite-builder-available-items">
 				{ currentAvailableItems.map( ( item ) => (
 					<ReactSortable
+						forceFallback={ true }
+						fallbackClass="vite-builder-item-fallback"
 						ghostClass="vite-builder-item-placeholder"
 						chosenClass="vite-builder-item-chosen"
 						dragClass="vite-builder-item-dragging"
@@ -28,7 +36,7 @@ export default memo( ( props ) => {
 						list={ [ item ] }
 						setList={ () => {} }
 						tag="div"
-						group={ { name: `vite-builder-group-${ props.control.id }`, put: 'clone' } }
+						group={ { name: `vite-builder-group-${ control.id }`, put: 'clone' } }
 					>
 						<div className="vite-available-item">
 							<span className="vite-builder-item-handle">

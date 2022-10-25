@@ -18,6 +18,7 @@ export default memo( ( props ) => {
 		},
 		remove,
 		className,
+		col,
 	} = props;
 
 	const sortableList = useMemo( () => areaItems.map( v => ( { id: v } ) ), [ areaItems ] );
@@ -29,8 +30,10 @@ export default memo( ( props ) => {
 
 	return (
 		<>
-			<div className={ className }>
+			<div className={ className } data-col={ col }>
 				<ReactSortable
+					forceFallback={ true }
+					fallbackClass="vite-builder-item-fallback"
 					ghostClass="vite-builder-item-placeholder"
 					chosenClass="vite-builder-item-chosen"
 					dragClass="vite-builder-item-dragging"

@@ -2,7 +2,7 @@
 	position: relative;
 	z-index: 10;
 
-	&-rows-wrap {
+	.vite-builder-inner {
 		background-color: #ededed;
 		border-top: 1px solid #d9d9d9;
 		bottom: 0;
@@ -11,7 +11,7 @@
 		padding: 20px;
 		position: fixed;
 		right: 0;
-		transition: all .18s;
+		transition: transform .2s ease-in-out 0.1s;
 		transform: translatey(100%);
 
 		@media (min-width: 1667px) {
@@ -19,40 +19,72 @@
 		}
 	}
 
-	&.open .vite-builder-rows-wrap {
+	&[data-open="true"] .vite-builder-inner {
 		transform: none;
 	}
 
-	&-row {
+	.vite-builder-rows {
+		flex-direction: column;
+		gap: 10px;
+		display: flex;
+	}
+
+	.vite-builder-row {
 		background-color: #fff;
-		border: 1px solid #d9d9d9;
+		border: 1px dashed #d9d9d9;
 		border-radius: 3px;
 		display: flex;
 		flex-wrap: nowrap;
-		margin-bottom: 10px;
+		position: relative;
+
+		&:hover {
+			.vite-builder-row-action {
+				display: inline-flex;
+			}
+			outline: 2px solid var(--wp-admin-theme-color);
+			border-top-left-radius: 0px;
+		}
 
 		.vite-builder-row-action {
 			align-items: center;
-			border-right: 1px solid #d9d9d9;
-			display: flex;
 			flex-grow: 1;
-			height: auto;
 			justify-content: center;
 			min-width: unset;
 			padding: 0 2px;
 			width: 32px;
+			position: absolute;
+			left: -3px;
+			top: -25px;
+			background-color: var(--wp-admin-theme-color);
+			color: #fff;
+			height: 24px;
+			display: none;
+			border-width: 0;
+			z-index: 99;
+
+			.dashicon {
+				font-size: 14px;
+				height: 14px;
+				width: 14px;
+			}
 		}
 
-		.vite-builder-areas {
+		.vite-builder-cols {
 			align-items: stretch;
 			display: flex;
 			width: 100%;
 		}
 
-		.vite-builder-area {
+		.vite-builder-col {
 			display: flex;
 			flex: 1;
 			position: relative;
+
+			&:hover {
+				.vite-builder-popover-trigger {
+					opacity: .3;
+				}
+			}
 		}
 
 		.vite-builder-droppable {
@@ -78,6 +110,7 @@
 			width: 100%;
 			z-index: 0;
 		}
+
 		.vite-builder-item {
 			align-items: center;
 			background-color: #fff;
@@ -93,6 +126,13 @@
 			white-space: nowrap;
 			z-index: 1;
 			padding-left: 10px;
+
+			&.vite-builder-item-placeholder {
+				background-color: rgba(34,113,177, 0.2);
+				* {
+					opacity: 0;
+				}
+			}
 
 			.vite-builder-item-handle {
 				height: 15px;
@@ -124,7 +164,7 @@
 	}
 }
 
-.vite-hidden-section-navigator {
+[data-navigator-hidden] {
 	display: none !important;
 }
 
@@ -158,6 +198,26 @@
 				color: #191e23;
 				box-shadow: inset 0 0 0 1px #555d66, inset 0 0 0 2px #ffffff;
 				background: transparent;
+			}
+		}
+	}
+}
+
+.vite-builder[data-portal-for="vite[header]"] {
+	.vite-builder-row .vite-builder-cols {
+		[data-col="center"] {
+			min-width: 80px;
+			flex: unset;
+		}
+
+		[data-col="left"],
+		[data-col="right"] {
+			flex: 1;
+		}
+
+		[data-col="right"] {
+			.vite-builder-droppable {
+				justify-content: flex-end;
 			}
 		}
 	}
