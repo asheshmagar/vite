@@ -29,9 +29,8 @@ class Supports {
 	 * @return void
 	 */
 	public function add_image_sizes() {
-		add_image_size( 'vite_single', 1584, 992, true );
-		add_image_size( 'Vite_thumbnail', 540, 340, true );
-		add_image_size( 'Vite_medium', 360, 224, true );
+		add_image_size( 'vite-featured-image-large', 1584, 992, true );
+		add_image_size( 'vite-featured-image', 540, 340, true );
 	}
 
 	/**
