@@ -27,6 +27,15 @@ class Icon {
 	}
 
 	/**
+	 * Get icons.
+	 *
+	 * @return mixed
+	 */
+	public function get_icons() {
+		return $this->icons;
+	}
+
+	/**
 	 * Get icon.
 	 *
 	 * @param string $icon Icon name.
