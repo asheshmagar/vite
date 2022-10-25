@@ -21,6 +21,42 @@ class TemplateHooks {
 		add_action( 'vite_after_header', [ $this, 'page_header' ] );
 		add_action( 'vite_footer', [ $this, 'footer' ] );
 		add_filter( 'post_class', [ $this, 'post_class' ], 10, 3 );
+		add_action( 'vite_before_the_loop', [ $this, 'archive_wrapper_open' ] );
+		add_action( 'vite_after_the_loop', [ $this, 'archive_wrapper_close' ] );
+		add_action( 'vite_after_the_loop', [ $this, 'comments_template' ] );
+	}
+
+	/**
+	 * Comments template.
+	 *
+	 * @return void
+	 */
+	public function comments_template() {
+		if ( is_single() || is_page() ) {
+			comments_template();
+		}
+	}
+
+	/**
+	 * Wrapper open.
+	 *
+	 * @return void
+	 */
+	public function archive_wrapper_open() {
+		if ( is_archive() || is_search() || is_home() ) {
+			echo '<div class="vite-posts">';
+		}
+	}
+
+	/**
+	 * Wrapper close.
+	 *
+	 * @return void
+	 */
+	public function archive_wrapper_close() {
+		if ( is_archive() || is_search() || is_home() ) {
+			echo '</div>';
+		}
 	}
 
 	/**
@@ -35,6 +71,11 @@ class TemplateHooks {
 		if ( has_post_thumbnail( $post_id ) ) {
 			$classes[] = 'vite-has-post-thumbnail';
 		}
+
+		if ( is_single() ) {
+			$classes[] = 'vite-single';
+		}
+
 		$classes[] = 'vite-post';
 		return $classes;
 	}
