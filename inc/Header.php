@@ -19,11 +19,26 @@ class Header {
 	 * @return void
 	 */
 	public function render_header() {
-		$default        = vite( 'customizer' )->get_defaults()['header'];
-		$header_configs = vite( 'customizer' )->get_setting( 'header', $default );
-
 		?>
 		<header id="mast-head" class="site-header">
+			<?php $this->render_desktop_header(); ?>
+			<?php $this->render_mobile_header(); ?>
+		</header>
+		<?php
+	}
+
+	/**
+	 * Render mobile header.
+	 *
+	 * @return void
+	 */
+	private function render_mobile_header() {
+		$default        = vite( 'customizer' )->get_defaults()['header'];
+		$header_configs = vite( 'customizer' )->get_setting( 'header', $default )['mobile'];
+
+		do_action( 'vite_before_desktop_header' );
+		?>
+		<div data-device-mobile>
 			<?php
 			foreach ( $header_configs as $row => $cols ) {
 				$cols_with_content = array_filter(
@@ -41,11 +56,11 @@ class Header {
 				$col_count = count( $col_keys );
 				$cols_attr = $col_count . ':' . implode( ':', $col_keys );
 
-				do_action( 'vite_before_header_row', $row, $cols_with_content );
+				do_action( 'vite_before_mobile_header_row', $row, $cols_with_content );
 				?>
 					<div data-cols="<?php echo esc_attr( $cols_attr ); ?>" data-row="<?php echo esc_attr( $row ); ?>">
 						<div class="container">
-							<?php foreach ( $cols as $col => $elements ) : ?>
+						<?php foreach ( $cols as $col => $elements ) : ?>
 								<?php
 								if ( empty( $elements ) && (
 										( 1 === $col_count && in_array( 'center', $col_keys, true ) ) ||
@@ -66,11 +81,74 @@ class Header {
 						</div>
 					</div>
 					<?php
-					do_action( 'vite_after_header_row', $row, $cols_with_content );
+					do_action( 'vite_after_mobile_header_row', $row, $cols_with_content );
 			}
 			?>
-		</header>
+		</div>
 		<?php
+		do_action( 'vite_after_mobile_header' );
+	}
+
+	/**
+	 * Render desktop header.
+	 *
+	 * @return void
+	 */
+	private function render_desktop_header() {
+		$default        = vite( 'customizer' )->get_defaults()['header'];
+		$header_configs = vite( 'customizer' )->get_setting( 'header', $default )['desktop'];
+
+		do_action( 'vite_before_desktop_header' );
+		?>
+		<div data-device-desktop>
+		<?php
+		foreach ( $header_configs as $row => $cols ) {
+			$cols_with_content = array_filter(
+				$cols,
+				function( $col ) {
+					return ! empty( $col );
+				}
+			);
+
+			if ( empty( $cols_with_content ) ) {
+				continue;
+			}
+
+			$col_keys  = array_keys( $cols_with_content );
+			$col_count = count( $col_keys );
+			$cols_attr = $col_count . ':' . implode( ':', $col_keys );
+
+			do_action( 'vite_before_desktop_header_row', $row, $cols_with_content );
+			?>
+			<div data-cols="<?php echo esc_attr( $cols_attr ); ?>" data-row="<?php echo esc_attr( $row ); ?>">
+				<div class="container">
+					<?php foreach ( $cols as $col => $elements ) : ?>
+						<?php
+						if ( empty( $elements ) && (
+								( 1 === $col_count && in_array( 'center', $col_keys, true ) ) ||
+								( 2 === $col_count && ! in_array( 'center', $col_keys, true ) )
+							)
+						) {
+							continue;
+						}
+						?>
+						<div data-col="<?php echo esc_attr( $col ); ?>">
+							<?php foreach ( $elements as $element ) : ?>
+								<div data-element="header-<?php echo esc_attr( $element ); ?>">
+									<?php get_template_part( 'template-parts/header/header', $element ); ?>
+								</div>
+							<?php endforeach; ?>
+						</div>
+					<?php endforeach; ?>
+				</div>
+			</div>
+			<?php
+			do_action( 'vite_after_desktop_header_row', $row, $cols_with_content );
+		}
+		?>
+		</div>
+		<?php
+		do_action( 'vite_after_desktop_header' );
 	}
 
 	/**
@@ -87,51 +165,22 @@ class Header {
 			<?php else : ?>
 				<p class="site-title vite-site-title"><a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home"><?php bloginfo( 'name' ); ?></a></p>
 			<?php endif; ?>
-			<?php if ( get_bloginfo( 'description', 'display' ) || is_customize_preview() ) : ?>
-				<p class="site-description vite-site-description"><?php bloginfo( 'description' ); ?></p>
-			<?php endif; ?>
+<!--			--><?php //if ( get_bloginfo( 'description', 'display' ) || is_customize_preview() ) : ?>
+<!--				<p class="site-description vite-site-description">--><?php //bloginfo( 'description' ); ?><!--</p>-->
+<!--			--><?php //endif; ?>
 		</div>
 		<?php
 	}
 
 	/**
-	 * Primary Menu.
+	 * Render header menu.
 	 *
 	 * @return void
 	 */
-	public function render_header_primary_navigation() {
-		$args = [
-			'vite_location'   => 'primary',
-			'menu_id'         => 'primary-menu',
-			'menu_class'      => 'primary-menu menu',
-			'container_class' => 'primary-menu-container',
-			'fallback_cb'     => [ $this, 'primary_navigation_fallback_cb' ],
-		];
+	public function render_header_social() {
 		?>
-		<nav data-element="header-primary-navigation" id="site-navigation" class="main-navigation">
-			<?php wp_nav_menu( $args ); ?>
-		</nav>
-		<?php
-	}
-
-	/**
-	 * Fallback for primary menu.
-	 *
-	 * @return void
-	 */
-	public function primary_navigation_fallback_cb() {
-		?>
-		<div id="primary-menu" class="primary-menu-container">
-			<ul class="primary-menu menu">
-				<?php
-				wp_list_pages(
-					[
-						'echo'     => true,
-						'title_li' => false,
-					]
-				);
-				?>
-			</ul>
+		<div class="header-social">
+			Facebook
 		</div>
 		<?php
 	}
@@ -143,8 +192,38 @@ class Header {
 	 */
 	public function render_header_search() {
 		?>
-		<div class="header-search">
-			<?php vite( 'icon' )->get_icon( 'magnifying-glass', [ 'echo' => true ] ); ?>
+		<div class="search-modal-trigger">
+			<a href="#" class="search-modal-open" data-modal-trigger>
+				<?php vite( 'icon' )->get_icon( 'magnifying-glass', [ 'echo' => true ] ); ?>
+			</a>
+		</div>
+		<?php
+		add_action( 'wp_footer', [ $this, 'render_search_modal' ] );
+	}
+
+	/**
+	 * Search modal.
+	 *
+	 * @return void
+	 */
+	public function render_search_modal() {
+		?>
+		<div data-modal class="search-modal">
+			<div data-modal-actions class="search-modal-actions">
+				<a href="#" data-modal-trigger class="search-modal-close">
+					<?php
+						vite( 'icon' )->get_icon(
+							'xmark',
+							[
+								'echo' => true,
+							]
+						)
+					?>
+				</a>
+			</div>
+			<div data-modal-content class="search-modal-content">
+				<?php get_template_part( 'template-parts/header/header', 'search-form' ); ?>
+			</div>
 		</div>
 		<?php
 	}
@@ -176,6 +255,44 @@ class Header {
 		?>
 		<div class="header-button">
 			<a href="<?php echo esc_url( $button_url ); ?>" class="button"><?php echo esc_html( $button_text ); ?></a>
+		</div>
+		<?php
+	}
+
+	/**
+	 * Render header mobile menu trigger.
+	 *
+	 * @return void
+	 */
+	public function render_header_mobile_menu_trigger() {
+		?>
+		<div class="mobile-menu-trigger">
+			<a href="#" data-modal-trigger class="mobile-menu-offset-open">
+				<?php vite( 'icon' )->get_icon( 'bars', [ 'echo' => true ] ); ?>
+			</a>
+		</div>
+		<?php
+		add_action( 'wp_footer', [ $this, 'render_mobile_menu_offset' ] );
+	}
+
+	/**
+	 * Render mobile menu offset.
+	 *
+	 * @return void
+	 */
+	public function render_mobile_menu_offset() {
+		?>
+		<div data-modal class="mobile-menu-offset">
+			<div class="mobile-menu-offset-inner">
+				<div data-modal-actions class="mobile-menu-offset-actions">
+					<a href="#" data-modal-trigger class="mobile-menu-offset-close" aria-label="<?php esc_html_e( 'Close search modal', 'vite' ); ?>">
+						<?php vite( 'icon' )->get_icon( 'xmark', [ 'echo' => true ] ); ?>
+					</a>
+				</div>
+				<div data-modal-content class="mobile-menu-offset-content">
+					<?php vite( 'nav-menu' )->render_menu( 'mobile' ); ?>
+				</div>
+			</div>
 		</div>
 		<?php
 	}
