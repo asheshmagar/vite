@@ -19,35 +19,52 @@ class EntryElements {
 		}
 
 		foreach ( $elements as $element ) {
-			get_template_part( 'template-parts/entry/entry', $element );
+			if ( $element['visible'] ) {
+				if ( 'meta' === substr( $element['id'], 0, 4 ) ) {
+					get_template_part( 'template-parts/entry/entry', 'meta', [ 'meta-elements' => $element['items'] ?? [] ] );
+				} else {
+					get_template_part( 'template-parts/entry/entry', $element['id'] );
+				}
+			}
 		}
 	}
 
 	/**
 	 * Entry meta.
 	 *
+	 * @param array $meta_elements Meta elements.
 	 * @return void
 	 */
-	public function render_entry_meta() {
-		$meta_elements = apply_filters(
-			'vite_entry_meta_elements',
-			[
-				'author',
-				'date',
-				'comments',
-				'categories',
-				'tags',
-			]
-		);
+	public function render_entry_meta( array $meta_elements = [] ) {
+		$should_render = false;
 
-		if ( is_archive() || is_home() ) {
-			$meta_elements = [ 'categories' ];
+		foreach ( $meta_elements as $meta_element ) {
+			if ( $meta_element['visible'] ) {
+				$should_render = true;
+				break;
+			}
+		}
+
+		if ( ! $should_render ) {
+			return;
 		}
 		?>
 		<div class="entry-meta">
 			<?php
+			$meta_elements = array_filter(
+				$meta_elements,
+				function( $meta_element ) {
+					return $meta_element['visible'];
+				}
+			);
+			$i             = 0;
+			$meta_count    = count( $meta_elements );
 			foreach ( $meta_elements as $meta_element ) {
-				get_template_part( 'template-parts/entry/entry', "meta-$meta_element" );
+				++$i;
+				get_template_part( 'template-parts/entry/entry', "meta-{$meta_element['id']}" );
+				if ( $i < $meta_count ) {
+					echo '<span class="entry-meta-separator">/</span>';
+				}
 			}
 			?>
 		</div>
@@ -60,20 +77,20 @@ class EntryElements {
 	 *
 	 * @return void
 	 */
-	public function render_entry_summary() {
+	public function render_entry_excerpt() {
 		?>
-		<div class="entry-summary">
+		<div class="entry-excerpt">
 			<?php the_excerpt(); ?>
 		</div>
 		<?php
 	}
 
 	/**
-	 * Entry thumbnail.
+	 * Entry featured image.
 	 *
 	 * @return void
 	 */
-	public function render_entry_thumbnail() {
+	public function render_entry_featured_image() {
 		$post_type = get_post_type();
 		$type      = $post_type;
 
@@ -94,7 +111,7 @@ class EntryElements {
 				<?php the_post_thumbnail( 'full' ); ?>
 			<?php else : ?>
 				<a class="entry-thumbnail-link" href="<?php the_permalink(); ?>" aria-hidden="true" tabindex="-1">
-					<?php the_post_thumbnail( 'Vite_thumbnail' ); ?>
+					<?php the_post_thumbnail( 'vite_thumbnail' ); ?>
 				</a>
 			<?php endif; ?>
 		</div>
@@ -111,8 +128,19 @@ class EntryElements {
 			return;
 		}
 		?>
-		<div class="entry-comments">
-			<?php comments_popup_link( '0', '1', '%' ); ?>
+		<div class="entry-meta-comments">
+			<a href="<?php echo esc_url( get_comments_link() ); ?>" tabindex="-1">
+				<?php
+				vite( 'icon' )->get_icon(
+					'comment',
+					[
+						'echo' => true,
+						'size' => 11,
+					]
+				);
+				?>
+			</a>
+			<?php comments_popup_link( __( 'Leave a comment', 'vite' ), __( '1 Comment', 'vite' ), __( '% Comments', 'vite' ) ); ?>
 		</div>
 		<?php
 	}
@@ -122,9 +150,9 @@ class EntryElements {
 	 *
 	 * @return void
 	 */
-	public function render_entry_header() {
+	public function render_entry_title() {
 		?>
-		<header class="entry-header">
+		<div class="entry-title">
 			<?php
 			if ( is_singular() ) {
 				the_title( '<h1 class="entry-title">', '</h1>' );
@@ -132,7 +160,7 @@ class EntryElements {
 				the_title( '<h2 class="entry-title"><a href="' . get_the_permalink() . '" rel="bookmark">', '</a></h2>' );
 			}
 			?>
-		</header>
+		</div>
 		<?php
 	}
 
@@ -172,38 +200,62 @@ class EntryElements {
 	 *
 	 * @return void
 	 */
-	public function render_entry_footer() {
+	public function render_entry_button() {
 		?>
-		<footer class="entry-footer">
-			<a href="<?php the_permalink(); ?>" class="ws-entry-cta">
-				<span class="read-more-text"><?php esc_html_e( 'Read More', 'vite' ); ?></span>
-			</a>
-		</footer>
+		<a href="<?php the_permalink(); ?>" class="entry-button">
+			<span class="entry-button-text"><?php esc_html_e( 'Read More', 'vite' ); ?></span>
+			<span class="entry-button-icon">
+				<?php
+				vite( 'icon' )->get_icon(
+					'arrow-right-long',
+					[
+						'echo' => true,
+						'size' => 13,
+					]
+				);
+				?>
+			</span>
+		</a>
 		<?php
 	}
 
 	/**
-	 * Entry meta date.
+	 * Render entry date.
 	 *
+	 * @param string $type Published or updated.
 	 * @return void
 	 */
-	public function render_entry_meta_date() {
+	public function render_entry_date( string $type = 'published' ) {
+		if ( ! in_array( $type, [ 'published', 'updated' ], true ) ) {
+			return;
+		}
+
+		$time_string = '<time class="%1$s" datetime="%2$s">%3$s</time>';
+		$data_func   = 'published' === $type ? 'get_the_date' : 'get_the_modified_date';
+
+		$time_string = sprintf(
+			$time_string,
+			"entry-$type-time",
+			esc_attr( call_user_func( $data_func, DATE_W3C ) ),
+			esc_html( call_user_func( $data_func ) )
+		);
+
 		?>
-		<span class="posted-on">
+		<div class="entry-meta-date">
+			<a href="<?php echo esc_url( get_permalink() ); ?>" tabindex="-1">
+				<?php
+				vite( 'icon' )->get_icon(
+					'calendar',
+					[
+						'echo' => true,
+						'size' => 11,
+					]
+				);
+				?>
+			</a>
 			<?php
-			$time_string = '<time class="entry-date published updated" datetime="%1$s">%2$s</time>';
-			if ( get_the_time( 'U' ) !== get_the_modified_time( 'U' ) ) {
-				$time_string = '<time class="entry-date published" datetime="%1$s">%2$s</time><time class="updated" datetime="%3$s">%4$s</time>';
-			}
-			$time_string = sprintf(
-				$time_string,
-				esc_attr( get_the_date( DATE_W3C ) ),
-				esc_html( get_the_date() ),
-				esc_attr( get_the_modified_date( DATE_W3C ) ),
-				esc_html( get_the_modified_date() )
-			);
 			printf(
-			/* translators: %1$s: post link. %2$s: Modified or Updated post time */
+				/* translators: %1$s: post link. %2$s: Modified or Updated post date */
 				'<a href="%1$s" rel="bookmark">%2$s</a>',
 				esc_url( get_permalink() ),
 				wp_kses(
@@ -217,7 +269,7 @@ class EntryElements {
 				)
 			);
 			?>
-		</span>
+		</div>
 		<?php
 	}
 
@@ -228,7 +280,17 @@ class EntryElements {
 	 */
 	public function render_entry_meta_author() {
 		?>
-		<span class="byline">
+		<div class="entry-meta-author">
+			<a href="<?php echo esc_url( get_author_posts_url( get_the_author_meta( 'ID' ) ) ); ?>" tabindex="-1">
+				<?php
+				vite( 'icon' )->get_icon(
+					'user',
+					[
+						'echo' => true,
+						'size' => 11,
+					]
+				);
+				?>
 			<?php
 			printf(
 				/* translators: %1$s: post link. %2$s: post author */
@@ -237,7 +299,7 @@ class EntryElements {
 				esc_html( get_the_author() )
 			);
 			?>
-		</span>
+		</div>
 		<?php
 	}
 
@@ -253,27 +315,21 @@ class EntryElements {
 		if ( empty( $list ) ) {
 			return;
 		}
-		?>
-		<span class="<?php echo esc_attr( $type ); ?>-links">
-			<?php
-			printf(
-				/* translators: %1$s: post link. %2$s: post categories */
-				'<span class="%1$s-links">%2$s</span>',
-				esc_attr( $type ),
-				wp_kses(
-					$list,
-					[
-						'a' => [
-							'href'  => true,
-							'rel'   => true,
-							'class' => true,
-						],
-					]
-				)
-			);
-			?>
-		</span>
-		<?php
+		printf(
+			/* translators: %1$s: post link. %2$s: post categories */
+			'<span class="%1$s-links">%2$s</span>',
+			esc_attr( $type ),
+			wp_kses(
+				$list,
+				[
+					'a' => [
+						'href'  => true,
+						'rel'   => true,
+						'class' => true,
+					],
+				]
+			)
+		);
 	}
 
 	/**
