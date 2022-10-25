@@ -1,41 +1,42 @@
 .vite-sortable-control {
-	li {
+
+	.vite-sortable-item {
+		background-color: #fff;
+		cursor: move;
+
+		&[data-sort-disabled="true"] {
+			cursor: initial;
+		}
+	}
+
+	.vite-sortable-item-inner {
+		padding: 10px;
+		border-width: 0 1px 1px 1px;
+		border-style: solid;
+		border-color: #8c8f94;
+	}
+
+	.vite-sortable-item-actions {
 		display: flex;
 		align-items: center;
-		padding: 5px 10px;
 		color: #50575e;
 		border: 1px solid #8c8f94;
-		min-height: 25px;
+		min-height: 35px;
 
-		span:not(.dashicon) {
+		> div {
+			align-self: stretch;
+			display: flex;
+			align-items: center;
+			min-width: 35px;
+
+			&:not(.vite-label) {
+				justify-content: center;
+				cursor: pointer;
+			}
+		}
+
+		.vite-label {
 			flex: 1;
-		}
-
-		> svg {
-			height: 20px;
-			width: 20px;
-		}
-
-		.components-button {
-			padding: 0;
-			max-height: 20px;
-			min-width: unset;
-			margin-right: 10px;
-
-			.dashicon {
-				font-size: 14px;
-				height: 14px;
-				width: 14px;
-			}
-		}
-
-		&.vite-sortable-item {
-			cursor: move;
-			background-color: #fff;
-
-			&[data-sort-disabled="true"] {
-				cursor: initial;
-			}
 		}
 	}
 }
