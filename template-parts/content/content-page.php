@@ -11,18 +11,22 @@
 // Exit if accessed directly.
 defined( 'ABSPATH' ) || exit;
 
-$elements = apply_filters(
-	'vite_content_page_elements',
-	[
-		'thumbnail',
-		'header',
-		'meta',
-		'breadcrumbs',
-		'content',
-	]
-);
+$elements = vite( 'customizer' )->get_setting( 'page-header-elements' );
 ?>
 
 <article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
+	<div class="entry-header">
 	<?php vite( 'entry-elements' )->render_entry_elements( $elements ); ?>
+	</div>
+	<div class="entry-content">
+		<?php
+		the_content();
+		wp_link_pages(
+			array(
+				'before' => '<div class="page-links">' . __( 'Pages:', 'vite' ),
+				'after'  => '</div>',
+			)
+		);
+		?>
+	</div>
 </article>
