@@ -8,4 +8,4 @@
 
 defined( 'ABSPATH' ) || exit;
 
-vite( 'entry-elements' )->render_entry_thumbnail();
+vite( 'entry-elements' )->render_entry_featured_image();
