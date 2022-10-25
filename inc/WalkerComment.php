@@ -32,7 +32,7 @@ class WalkerComment extends Walker_Comment {
 		$tag = ( 'div' === $args['style'] ) ? 'div' : 'li';
 		?>
 		<<?php echo $tag; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?> id="comment-<?php comment_ID(); ?>" <?php comment_class( $this->has_children ? 'parent' : '', $comment ); ?>>
-			<article id="comment-<?php comment_ID(); ?>" class="comment">
+			<article id="comment-<?php comment_ID(); ?>" class="comment-inner">
 				<header class="comment-header">
 					<div class="comment-avatar">
 						<?php
@@ -47,31 +47,37 @@ class WalkerComment extends Walker_Comment {
 						if ( 0 !== $args['avatar_size'] ) {
 							if ( ! empty( $comment_author_url ) ) {
 								printf( '<a href="%s" rel="external nofollow" class="url">%s</a>', $comment_author_url, esc_html( $comment_author ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped --Escaped in https://developer.wordpress.org/reference/functions/get_comment_author_url/
+							} else {
+								printf( '<span class="url">%s</span>', esc_html( $comment_author ) );
 							}
 						}
 						/* translators: 1: Comment date, 2: Comment time. */
 						$comment_timestamp = sprintf( __( '%1$s at %2$s', 'vite' ), get_comment_date( '', $comment ), get_comment_time() );
 						?>
-						<a href="<?php echo esc_url( get_comment_link( $comment, $args ) ); ?>">
-							<time datetime="<?php comment_time( 'c' ); ?>" title="<?php echo esc_attr( $comment_timestamp ); ?>">
-								<?php echo esc_html( $comment_timestamp ); ?>
-							</time>
-						</a>
+						<div class="comment-meta-wrap">
+							<?php
+							printf(
+								'<a href="%s" class="comment-timestamp">%s</a>',
+								esc_url( get_comment_link( $comment, $args ) ),
+								esc_html( $comment_timestamp )
+							);
+							?>
+							<?php
+							edit_comment_link( __( 'Edit', 'vite' ), '<span class="edit-link">', '</span>' );
+							?>
+						</div>
 					</div>
-					<?php
-					if ( '0' === $comment->comment_approved ) {
-						?>
-						<p class="comment-awaiting-moderation"><?php esc_html_e( 'Your comment is awaiting moderation.', 'vite' ); ?></p>
-						<?php
-					}
-					?>
 				</header>
 				<div class="comment-content">
-					<?php comment_text(); ?>
+					<?php
+					comment_text();
+					if ( '0' === $comment->comment_approved ) {
+						printf( '<em class="comment-awaiting-moderation">%s</em>', esc_html__( 'Your comment is awaiting moderation.', 'vite' ) );
+					}
+					?>
 				</div>
 				<footer class="comment-footer">
 					<?php
-					edit_comment_link( __( 'Edit', 'vite' ) );
 					comment_reply_link(
 						array_merge(
 							$args,
