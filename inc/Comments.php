@@ -74,18 +74,20 @@ class Comments {
 			)
 		);
 
-		the_comments_navigation();
-
 		printf(
 			wp_kses_post( $comments_list ),
 			wp_list_comments(
 				[
 					'style'       => 'ol',
 					'short_ping'  => true,
-					'avatar_size' => 60,
+					'avatar_size' => 40,
+					'echo'        => false,
+					'walker'      => new WalkerComment(),
 				]
 			)
 		);
+
+		the_comments_navigation();
 
 		if ( ! comments_open() ) {
 			?>
