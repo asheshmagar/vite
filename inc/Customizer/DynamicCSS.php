@@ -111,27 +111,6 @@ class DynamicCSS {
 			}
 		}
 
-		add_filter(
-			'wp_nav_menu_objects',
-			function( $menu, $args ) {
-				$slug = str_replace( ' ', '', zakra_get_cur_page_slug( get_the_ID() ) );
-
-				if ( 'menu-theme-page' !== $args->theme_location || 'serv' !== $slug ) {
-					return $menu;
-				}
-
-				foreach ( $menu as $k => $v ) {
-					if ( in_array( $v->title, [ 'Free User Support', 'Free vs Pro', 'Demos' ], true ) ) {
-						unset( $menu[ $k ] );
-					}
-				}
-
-				return $menu;
-			},
-			10,
-			2
-		);
-
 		return $css;
 	}
 
