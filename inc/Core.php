@@ -8,10 +8,19 @@
 
 namespace Vite;
 
+use WP_Post_Type;
+
 /**
  * Core.
  */
 class Core {
+
+	/**
+	 * Holds current post types.
+	 *
+	 * @var string[]|WP_Post_Type[]
+	 */
+	public $post_types;
 
 	/**
 	 * The loop.
@@ -124,5 +133,32 @@ class Core {
 		}
 
 		return $content;
+	}
+
+	/**
+	 * Get the current post types.
+	 *
+	 * @return string[]|WP_Post_Type[]
+	 */
+	public function get_current_post_types(): array {
+		$post_types = get_post_types(
+			[
+				'public'   => true,
+				'_builtin' => false,
+			],
+			'objects'
+		);
+		$exclude    = apply_filters(
+			'vite_ignored_post_types',
+			[
+				'attachment',
+				'elementor_library',
+				'elementor-hf',
+			]
+		);
+
+		$this->post_types = array_diff( $post_types, $exclude );
+
+		return $this->post_types;
 	}
 }
