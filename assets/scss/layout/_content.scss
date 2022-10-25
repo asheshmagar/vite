@@ -1,0 +1,61 @@
+.site {
+	display: flex;
+	flex-direction: column;
+	min-height: calc(100vh - var(--admin--bar--height, 0));
+
+	&-content {
+		flex: 1;
+	}
+}
+
+.vite-post {
+	padding: var(--post--padding, 20px);
+	border-radius: 2px;
+	background-color: var(--global--color--8);
+}
+
+.single .vite-post {
+	--post--padding: 40px;
+}
+
+
+.entry-meta,
+.entry-button,
+.vite-breadcrumbs-items {
+	text-transform: uppercase;
+	font-size: 12px;
+	font-weight: 500;
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	--link--color: var(--global--color--4);
+}
+
+.entry-meta,
+.vite-breadcrumbs-items {
+	[class$="-separator"] {
+		margin-inline: 3px;
+	}
+}
+
+.entry-button {
+	gap: 5px;
+	text-decoration: underline;
+	align-self: flex-start;
+
+	.entry-button-icon {
+		display: flex;
+	}
+}
+
+.entry-meta {
+	> div {
+		display: flex;
+		align-items: center;
+		gap: 4px;
+
+		> a {
+			display: inline-flex;
+		}
+	}
+}
