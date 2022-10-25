@@ -1,9 +1,0 @@
-.site {
-	display: flex;
-	flex-direction: column;
-	min-height: calc(100vh - var(--admin--bar--height, 0));
-
-	&-content {
-		flex: 1;
-	}
-}
