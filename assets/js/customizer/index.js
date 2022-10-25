@@ -227,7 +227,6 @@ const api = wp.customize;
 			sectionIds = _.uniq( sectionIds );
 
 			const selectors = [];
-			const newBodyClass = `${ panelId.replaceAll( '_', '-' ) }-active`;
 
 			for ( const sectionId of sectionIds ) {
 				const section = api.section( sectionId );
@@ -236,8 +235,8 @@ const api = wp.customize;
 					const contentContainer = section.contentContainer;
 					const headContainer = section.headContainer;
 
-					selectors.push( `#sub-accordion-section-${ section.id }` );
-					headContainer.addClass( 'vite-hidden-section-navigator' );
+					selectors.push( `[id="sub-accordion-section-${ section.id }"]` );
+					headContainer.attr( 'data-navigator-hidden', 'true' );
 					contentContainer.find( '.section-meta' ).addClass( 'hidden' ).hide();
 
 					panel.expanded.bind( ( isExpanded ) => {
@@ -251,7 +250,7 @@ const api = wp.customize;
 						} );
 
 						if ( isExpanded ) {
-							$( `#sub-accordion-panel-${ panelId } li.control-section` ).addClass( 'vite-hidden-section-navigator' ).hide();
+							$( `#sub-accordion-panel-${ panelId } li.control-section` ).attr( 'data-navigator-hidden', 'true' );
 							$( 'body' ).attr( 'data-builder', 'active' );
 						} else {
 							$( 'body' ).removeAttr( 'data-builder' );
@@ -262,7 +261,7 @@ const api = wp.customize;
 			let styles = '';
 			if ( selectors?.length > 0 ) {
 				for ( const selector of selectors ) {
-					styles += `.${ newBodyClass } .in-sub-panel:not(.section-open) ul${ selector }{transform:none;height:auto;visibility:visible;top: 75px;}`;
+					styles += `[data-builder="active"] .in-sub-panel:not(.section-open) ul${ selector }{transform:none;height:auto;visibility:visible;top: 75px;}`;
 				}
 			}
 			$( 'head' ).append( `<style>${ styles }</style>` );
