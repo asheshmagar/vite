@@ -1,0 +1,21 @@
+.pagination {
+	margin-block-start: 4rem;
+
+	.page-numbers {
+		min-width: 40px;
+		min-height: 40px;
+		display: inline-grid;
+		place-items: center;
+		border-radius: var(--button--border--radius);
+
+		&:not(.next) {
+			margin-right: 10px;
+		}
+
+		&:hover,
+		&.current {
+			background-color: var(--button--background--color);
+			color: var(--button--color);
+		}
+	}
+}
