@@ -1,6 +1,9 @@
 <?php
 /**
  * Template hooks.
+ *
+ * @package Vite
+ * @since   1.0.0
  */
 
 namespace Vite;
@@ -21,9 +24,20 @@ class TemplateHooks {
 		add_action( 'vite_after_header', [ $this, 'page_header' ] );
 		add_action( 'vite_footer', [ $this, 'footer' ] );
 		add_filter( 'post_class', [ $this, 'post_class' ], 10, 3 );
-		add_action( 'vite_before_the_loop', [ $this, 'archive_wrapper_open' ] );
-		add_action( 'vite_after_the_loop', [ $this, 'archive_wrapper_close' ] );
-		add_action( 'vite_after_the_loop', [ $this, 'comments_template' ] );
+		add_action( 'vite_before_archive', [ $this, 'archive_wrapper_open' ] );
+		add_action( 'vite_after_archive', [ $this, 'archive_wrapper_close' ] );
+		add_action( 'vite_after_archive', [ $this, 'pagination_template' ], 11 );
+		add_action( 'vite_after_single', [ $this, 'comments_template' ] );
+		add_action( 'vite_after_page', [ $this, 'comments_template' ] );
+	}
+
+	/**
+	 * Pagination template.
+	 *
+	 * @return void
+	 */
+	public function pagination_template() {
+		get_template_part( 'template-parts/pagination/pagination', '' );
 	}
 
 	/**
@@ -32,7 +46,7 @@ class TemplateHooks {
 	 * @return void
 	 */
 	public function comments_template() {
-		if ( is_single() || is_page() ) {
+		if ( comments_open() || get_comments_number() ) {
 			comments_template();
 		}
 	}
@@ -43,9 +57,7 @@ class TemplateHooks {
 	 * @return void
 	 */
 	public function archive_wrapper_open() {
-		if ( is_archive() || is_search() || is_home() ) {
-			echo '<div class="vite-posts">';
-		}
+		echo '<div class="vite-posts">';
 	}
 
 	/**
@@ -54,9 +66,7 @@ class TemplateHooks {
 	 * @return void
 	 */
 	public function archive_wrapper_close() {
-		if ( is_archive() || is_search() || is_home() ) {
-			echo '</div>';
-		}
+		echo '</div>';
 	}
 
 	/**
