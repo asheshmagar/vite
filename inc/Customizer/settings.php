@@ -305,7 +305,7 @@ $control_settings = [
 		'transport'   => 'postMessage',
 		'partial'     => [
 			'selector'            => '.vite-posts',
-			'container_inclusive' => true,
+			'container_inclusive' => false,
 			'render_callback'     => function() {
 				vite( 'core' )->the_loop();
 			},
