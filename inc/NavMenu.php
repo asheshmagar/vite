@@ -5,9 +5,6 @@
 
 namespace Vite;
 
-use WP_Post;
-use stdClass;
-
 /**
  * NavMenu.
  */
@@ -23,9 +20,6 @@ class NavMenu {
 	 */
 	public function init(): void {
 		add_action( 'after_setup_theme', [ $this, 'register_nav_menus' ] );
-		add_filter( 'walker_nav_menu_start_el', [ $this, 'add_submenu_icon' ], 10, 4 );
-		add_filter( 'wp_nav_menu_objects', [ $this, 'add_submenu_class' ] );
-		add_filter( 'wp_list_pages', [ $this, 'add_class' ] );
 	}
 
 	/**
@@ -42,63 +36,6 @@ class NavMenu {
 			]
 		);
 		register_nav_menus( $menu_locations );
-	}
-
-	/**
-	 * Add submenu icon.
-	 *
-	 * The menu item's starting output only includes $args->before, the opening <a>,
-	 * the menu item's title, the closing </a>, and $args->after. Currently, there is
-	 * no filter for modifying the opening and closing <li> for a menu item.
-	 *
-	 * @param string   $item_output The menu item's starting HTML output.
-	 * @param WP_Post  $menu_item   Menu item data object.
-	 * @param int      $depth       Depth of menu item. Used for padding.
-	 * @param stdClass $args        An object of wp_nav_menu() arguments.
-	 * @return string
-	 */
-	public function add_submenu_icon( string $item_output, WP_Post $menu_item, int $depth, stdClass $args ): string {
-		if (
-			in_array( $args->theme_location, [ 'primary', 'secondary' ], true ) &&
-			(
-				in_array( 'menu-item-has-children', (array) $menu_item->classes, true ) ||
-				in_array( 'page_item_has_children', (array) $menu_item->classes, true )
-			)
-		) {
-			$icon        = apply_filters( 'vite_submenu_icon', vite( 'icon' )->get_icon( 'chevron-down', [ 'size' => 12 ] ) );
-			$item_output = str_replace(
-				"$args->link_after</a>",
-				"$args->link_after<span class='submenu-icon'>$icon</span></a>",
-				$item_output
-			);
-		}
-		return $item_output;
-	}
-
-	/**
-	 * Add submenu class.
-	 *
-	 * @param array $items Menu items.
-	 * @return array
-	 */
-	public function add_submenu_class( array $items ): array {
-		$parent_menu_items = array_reduce(
-			$items,
-			function ( $acc, $curr ) {
-				if ( $curr->menu_item_parent ) {
-					$acc[] = (int) $curr->menu_item_parent;
-				}
-				return $acc;
-			},
-			[]
-		);
-		foreach ( $items as $item ) {
-			if ( ! in_array( $item->ID, $parent_menu_items, true ) ) {
-				continue;
-			}
-			$item->classes[] = 'vite-has-submenu';
-		}
-		return $items;
 	}
 
 	/**
@@ -141,20 +78,21 @@ class NavMenu {
 	 * Render menu.
 	 *
 	 * @param string $type Menu type.
-	 * @param string $container_prefix Container prefix.
+	 * @param string $context Context header or footer.
 	 * @return void
 	 */
-	public function render_menu( string $type = 'primary', string $container_prefix = 'header' ) {
+	public function render_menu( string $type = 'primary', string $context = 'header' ) {
 		$args = [
 			'theme_location'  => $type,
 			'menu_id'         => "$type-menu",
 			'menu_class'      => "$type-menu menu",
 			'container'       => 'nav',
-			'container_id'    => "$container_prefix-$type-menu",
-			'container_class' => "$container_prefix-$type-menu",
-			'fallback_cb'     => function() use ( $type, $container_prefix ) {
-				$this->fallback_menu( $type, $container_prefix );
+			'container_id'    => "$context-$type-menu",
+			'container_class' => "$context-$type-menu",
+			'fallback_cb'     => function() use ( $type, $context ) {
+				$this->fallback_menu( $type, $context );
 			},
+			'walker'          => new WalkerNavMenu(),
 		];
 		wp_nav_menu( $args );
 	}
@@ -163,33 +101,39 @@ class NavMenu {
 	 * Fallback menu.
 	 *
 	 * @param string $type Menu type.
-	 * @param string $container_prefix Container prefix.
+	 * @param string $context Context header or footer.
 	 * @return void
 	 */
-	private function fallback_menu( string $type = 'primary', string $container_prefix = 'header' ) {
+	private function fallback_menu( string $type = 'primary', string $context = 'header' ) {
+		if ( 'mobile' === $type && $this->is_primary_menu_active() ) {
+			wp_nav_menu(
+				[
+					'theme_location'  => 'primary',
+					'menu_id'         => 'mobile-menu',
+					'menu_class'      => 'mobile-menu menu',
+					'container'       => 'nav',
+					'container_id'    => 'header-mobile-menu',
+					'container_class' => 'header-mobile-menu',
+					'walker'          => new WalkerNavMenu(),
+				]
+			);
+			return;
+		}
 		?>
-		<nav id="<?php echo esc_attr( "$container_prefix-$type" ); ?>-menu" class="<?php echo esc_attr( "$container_prefix-$type" ); ?>-menu">
+		<nav id="<?php echo esc_attr( "$context-$type" ); ?>-menu" class="<?php echo esc_attr( "$context-$type" ); ?>-menu">
 			<ul class="<?php echo esc_attr( $type ); ?>-menu menu">
 				<?php
 					wp_list_pages(
 						[
-							'echo'     => true,
-							'title_li' => false,
+							'echo'           => true,
+							'title_li'       => false,
+							'theme_location' => $type,
+							'walker'         => new WalkerPage(),
 						]
 					);
 				?>
 			</ul>
 		</nav>
 		<?php
-	}
-
-	/**
-	 * Add class to fallback menu.
-	 *
-	 * @param string $output Menu output.
-	 * @return array|string|string[]
-	 */
-	public function add_class( string $output ) {
-		return str_replace( 'page_item', 'page_item menu-item', $output );
 	}
 }
