@@ -23,7 +23,7 @@ class PageHeader {
 			'vite_page_header_elements',
 			[
 				'title',
-				'breadcrumbs',
+//				'breadcrumbs',
 			]
 		);
 		?>
