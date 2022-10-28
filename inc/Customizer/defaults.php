@@ -6,7 +6,7 @@
  */
 
 return [
-	'header'                => [
+	'header'                 => [
 		'desktop' => [
 			'top'    => [
 				'left'   => [],
@@ -42,18 +42,18 @@ return [
 			],
 		],
 	],
-	'header-html'           => __( 'Enter HTML.', 'vite' ),
-	'header-button-text'    => __( 'Button', 'vite' ),
-	'header-button-url'     => '#',
-	'footer'                => [
+	'header-html'            => __( 'Enter HTML.', 'vite' ),
+	'header-button-text'     => __( 'Button', 'vite' ),
+	'header-button-url'      => '#',
+	'footer'                 => [
 		'top'    => [],
 		'middle' => [],
 		'bottom' => [
 			'1' => [ 'html' ],
 		],
 	],
-	'footer-html'           => __( '{{copyright}} {{year}} {{site-title}}', 'vite' ),
-	'archive-elements'      => [
+	'footer-html'            => __( '{{copyright}} {{year}} {{site-title}}', 'vite' ),
+	'archive-elements'       => [
 		[
 			'id'      => 'meta-1',
 			'visible' => true,
@@ -121,6 +121,16 @@ return [
 					'visible' => true,
 				],
 			],
+		],
+		[
+			'id'      => 'breadcrumbs',
+			'visible' => false,
+		],
+	],
+	'page-header-elements'   => [
+		[
+			'id'      => 'title',
+			'visible' => true,
 		],
 		[
 			'id'      => 'breadcrumbs',
