@@ -1,5 +1,5 @@
 a {
-	text-decoration: none;
+	text-decoration: var(--link--text--decoration, none);
 	color: var(--link--color);
 	transition: all 200ms ease-in-out;
 
@@ -12,6 +12,8 @@ a {
 input[type="submit"],
 input[type="button"],
 input[type="reset"],
+.comment-reply-link,
+#cancel-comment-reply-link,
 .wp-block-button .wp-block-button__link {
 	padding: var(--button--padding);
 	border-radius: var(--button--border--radius);
