@@ -1,10 +1,10 @@
 .comments-area {
-	padding: 20px;
+	padding: var(--post--padding, 40px);
 	background-color: var(--global--color--8);
-	margin-top: 32px;
+	padding-top: 60px;
 
 	.comments-title {
-		margin-top: 0;
+		margin-bottom: 0.5em;
 	}
 
 	.comment-list {
@@ -15,10 +15,10 @@
 		.children {
 			list-style-type: none;
 		}
-	}
 
-	.comment-reply-link, .comment-edit-link {
-		--link--color: var(--global--color--1);
+		.comment-respond {
+			padding-bottom: 2em;
+		}
 	}
 
 	.comment-header,
@@ -26,8 +26,6 @@
 		display: flex;
 		font-size: 12px;
 		font-weight: 500;
-		--link--color: var(--global--color--1);
-		--link--hover--color: var(--global--color--2);
 		text-transform: uppercase;
 		gap: 10px;
 	}
@@ -36,6 +34,7 @@
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
+		color: var(--global--color--4);
 	}
 
 	.comment-footer {
@@ -45,16 +44,50 @@
 
 	.comment-respond {
 		border-top: 1px solid var(--global--color--5);
-		margin-top: 2em;
+		padding-top: 2em;
 	}
 
-	.logged-in-as > a {
-		font-size: 12px;
-		font-weight: 500;
-		--link--color: var(--global--color--1);
-		--link--hover--color: var(--global--color--2);
-		text-transform: uppercase;
+	.avatar {
+		border-radius: 50%;
 	}
+
+	.comment-inner {
+		padding-block: 1.2em;
+		border-top: 1px solid #e1e8ed;
+	}
+
+	.comment-header {
+		margin-bottom: 1.25em;
+		--link--color: var(--global--color--4);
+	}
+
+	.form-submit {
+		margin-bottom: 0;
+	}
+
+	.comment-reply-title {
+		margin-bottom: 1.5em;
+	}
+}
+
+.comment-reply-title {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.comment-reply-link,
+#cancel-comment-reply-link {
+	font-size: 12px;
+	--button--padding: 8px 15px;
+}
+
+.comment-edit-link {
+	color: var(--global--color--1);
+}
+
+.comment-content {
+	margin-bottom: 20px;
 }
 
 .comment-form {
