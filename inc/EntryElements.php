@@ -111,7 +111,9 @@ class EntryElements {
 				<?php the_post_thumbnail( 'full' ); ?>
 			<?php else : ?>
 				<a class="entry-thumbnail-link" href="<?php the_permalink(); ?>" aria-hidden="true" tabindex="-1">
-					<?php the_post_thumbnail( 'vite_thumbnail' ); ?>
+					<div class="entry-thumbnail-wrap" data-aspect-ratio="3:2">
+						<?php the_post_thumbnail( 'vite_thumbnail' ); ?>
+					</div>
 				</a>
 			<?php endif; ?>
 		</div>
