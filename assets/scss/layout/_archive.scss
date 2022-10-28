@@ -3,21 +3,29 @@
 }
 
 .vite-posts {
+	--grid--gap: 2em;
+	--grid--columns: 3;
+	--grid--min--size: calc(calc(var(--full--width) / var(--grid--columns)) - calc(var(--grid--gap) * calc(var(--grid--columns) - 1)));
 	display: grid;
-	grid-template-columns: repeat(3, minmax(0, 1fr));
-	grid-gap: 2em;
+	grid-gap: var(--grid--gap);
+	grid-template-columns: repeat(auto-fill, minmax(min(100%, var(--grid--min--size)), 1fr));
 
 	.vite-post {
+		--post--padding: 20px;
+
 		&.vite-has-post-thumbnail {
-			padding-top: 0;
+
+			&[data-first-element="featured-image"] {
+				padding-top: 0;
+			}
+
+			&[data-last-element="featured-image"] {
+				padding-bottom: 0;
+			}
 		}
 
 		.entry-thumbnail {
-			margin-inline: -15px;
-
-			img {
-				width: 100%;
-			}
+			margin-inline: -20px;
 		}
 
 		.post-wrap {
