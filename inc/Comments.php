@@ -38,9 +38,6 @@ class Comments {
 	 * @return void
 	 */
 	public function comments_list() {
-		if ( ! have_comments() ) {
-			return;
-		}
 		do_action( 'vite_before_comments_list' );
 		$this->comments_list_markup();
 		do_action( 'vite_after_comments_list' );
@@ -52,30 +49,30 @@ class Comments {
 	 * @return void
 	 */
 	public function comments_list_markup() {
-		$title          = '<h2 class="comments-title">%s</h2>';
-		$comments_list  = '<ol class="comment-list">%s</ol>';
 		$comments_count = (int) get_comments_number();
 
-		printf(
-			wp_kses_post( $title ),
-			sprintf(
-				esc_html(
-				/* translators: %1$s: Comments count, %2$s: Post title. */
-					_nx(
-						'%1$s thought on &ldquo;%2$s&rdquo;',
-						'%1$s thoughts on &ldquo;%2$s&rdquo;',
-						$comments_count,
-						'comments title',
-						'vite'
-					)
-				),
-				esc_html( number_format_i18n( $comments_count ) ),
-				wp_kses_post( get_the_title() )
-			)
-		);
+		if ( have_comments() ) {
+			printf(
+				wp_kses_post( '<h2 class="comments-title">%s</h2>' ),
+				sprintf(
+					esc_html(
+						/* translators: %1$s: Comments count, %2$s: Post title. */
+						_nx(
+							'%1$s thought on &ldquo;%2$s&rdquo;',
+							'%1$s thoughts on &ldquo;%2$s&rdquo;',
+							$comments_count,
+							'comments title',
+							'vite'
+						)
+					),
+					esc_html( number_format_i18n( $comments_count ) ),
+					wp_kses_post( get_the_title() )
+				)
+			);
+		}
 
 		printf(
-			wp_kses_post( $comments_list ),
+			wp_kses_post( '<ol class="comment-list">%s</ol>' ),
 			wp_list_comments(
 				[
 					'style'       => 'ol',
