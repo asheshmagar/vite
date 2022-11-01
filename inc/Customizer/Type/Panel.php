@@ -29,7 +29,7 @@ class Panel extends WP_Customize_Panel {
 	 *
 	 * @var string
 	 */
-	public $type = 'customind-panel';
+	public $type = 'vite-panel';
 
 	/**
 	 * Gather the parameters passed to client JavaScript via JSON.

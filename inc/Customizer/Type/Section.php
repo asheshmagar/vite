@@ -26,7 +26,7 @@ class Section extends WP_Customize_Section {
 	 *
 	 * @var string $type;
 	 */
-	public $type = 'customind-section';
+	public $type = 'vite-section';
 
 	/**
 	 * Gather the parameters passed to client JavaScript via JSON.
