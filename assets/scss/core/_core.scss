@@ -15,19 +15,22 @@
 	--global--color--2: #135e96;
 	--global--color--3: #100c08;
 	--global--color--4: #353f4a;
-	--global--color--5: #eaf0f6;
+	--global--color--5: #e7ebfd;
 	--global--color--6: #f2f5f7;
-	--global--color--7: #e7ebfd;
+	--global--color--7: #eaf0f6;
 	--global--color--8: #ffffff;
-	--border--color: var(--global--color--7);
+	--border--color: var(--global--color--5);
 	--link--color: var(--global--color--3);
 	--link--hover--color: var(--global--color--1);
 	--button--color: var(--global--color--8);
 	--button--hover--color: var(--button--color);
-	--button--background--color: var(--global--color--1);
-	--button--hover--background--color: var(--global--color--2);
+	--button--bg--color: var(--global--color--1);
+	--button--hover--bg--color: var(--global--color--2);
 	--button--padding: 15px 25px;
 	--button--border--radius: 2px;
+	--headings-color: var(--global--color--3);
+	--text--color: var(--global--color--4);
+	--accent--color: var(--global--color--1);
 }
 
 @import "common";
