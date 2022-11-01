@@ -60,30 +60,23 @@ class DynamicCSS {
 
 	/**
 	 * Init.
-	 *
-	 * @return $this
 	 */
-	public function init(): DynamicCSS {
-		$settings = apply_filters( 'vite_customizer_settings', require __DIR__ . '/settings.php' );
+	public function init() {
+		add_action( 'vite_customizer_init', [ $this, 'init_css_data' ], PHP_INT_MAX );
+	}
 
-		foreach ( $settings as $setting ) {
-			if (
-				isset( $setting['type'] ) &&
-				'control' === $setting['type'] &&
-				isset( $setting['selectors'] )
-			) {
-				$this->css_data[] = [
-					'name'       => $setting['name'],
-					'control'    => $setting['control'] ?? null,
-					'selectors'  => $setting['selectors'] ?? [],
-					'properties' => $setting['properties'] ?? [],
-					'context'    => $setting['context'] ?? null,
-					'extra'      => $setting['input_attrs'] ?? null,
-				];
+	/**
+	 * Init CSS data.
+	 *
+	 * @return void
+	 */
+	public function init_css_data() {
+		$settings = vite( 'customize' )->get_settings();
+		foreach ( $settings as $key => $setting ) {
+			if ( $setting['selectors'] ) {
+				$this->css_data[ $key ] = $setting;
 			}
 		}
-
-		return $this;
 	}
 
 	/**
@@ -151,7 +144,6 @@ class DynamicCSS {
 	 * @return void
 	 */
 	public function enqueue() {
-		$this->init();
 		$this->make();
 		$css = $this->get();
 
@@ -190,8 +182,6 @@ class DynamicCSS {
 	public function add( array $data = [] ) {
 		foreach ( $data as $datum ) {
 			if (
-				isset( $datum['type'] ) &&
-				'control' === $datum['type'] &&
 				isset( $datum['selectors'] )
 			) {
 				$this->css_data[] = [
@@ -207,22 +197,44 @@ class DynamicCSS {
 	}
 
 	/**
+	 * Check if it is default.
+	 *
+	 * @param mixed $value Theme mod value.
+	 * @param mixed $default Theme mod default.
+	 * @return bool
+	 */
+	private function is_default( $value, $default ): bool {
+		if ( is_array( $value ) && is_array( $default ) ) {
+			array_multisort( $value );
+			array_multisort( $default );
+			return wp_json_encode( $value ) === wp_json_encode( $default );
+		}
+
+		return $value === $default;
+	}
+
+
+	/**
 	 * Make css.
 	 *
 	 * @return $this
 	 */
 	public function make(): DynamicCSS {
 		if ( ! empty( $this->css_data ) ) {
-			foreach ( $this->css_data as $d ) {
-				$type = $d['control'] ?? null;
+			foreach ( $this->css_data as $id => $d ) {
+				$type = $d['type'] ?? '';
+				preg_match( '/\[([^]]*)]/', $id, $match );
 
-				preg_match( '/\[([^]]*)]/', $d['name'], $match );
+				$value   = vite( 'customizer' )->get_setting( $match[1] );
+				$default = vite( 'customizer' )->get_defaults()[ $match[1] ] ?? null;
 
-				$value = vite( 'customizer' )->get_setting( $match[1] );
+				if ( empty( $value ) || $this->is_default( $value, $default ) ) {
+					continue;
+				}
 
 				switch ( $type ) {
 					case 'vite-dimensions':
-						if ( ! empty( $value ) && is_array( $value ) ) {
+						if ( is_array( $value ) ) {
 							if ( $this->array_some(
 								function( $a ) {
 									return in_array( $a, static::SIDES, true );
@@ -245,179 +257,169 @@ class DynamicCSS {
 						}
 						break;
 					case 'vite-slider':
-						if ( ! empty( $value ) ) {
-							if ( is_array( $value ) ) {
-								if ( $this->array_some(
-									function( $a ) {
-										return in_array( $a, static::DEVICES, true );
-									},
-									array_keys( $value )
-								) ) {
-									foreach ( static::DEVICES as $device ) {
-										if ( isset( $value[ $device ] ) ) {
-											$values = $value[ $device ];
-											if ( is_scalar( $values ) ) {
-												$this->css[ $device ] .= $this->make_css( $d['selectors'], $d['properties'], $values );
-											} else {
-												if ( isset( $values['value'] ) ) {
-													$unit                  = $values['unit'] ?? ( $d['extra']['defaultUnit'] ?? 'px' );
-													$unit                  = '-' === $unit ? '' : $unit;
-													$this->css[ $device ] .= $this->make_css( $d['selectors'], $d['properties'], "{$values['value']}$unit" );
-												}
+						if ( is_array( $value ) ) {
+							if ( $this->array_some(
+								function( $a ) {
+									return in_array( $a, static::DEVICES, true );
+								},
+								array_keys( $value )
+							) ) {
+								foreach ( static::DEVICES as $device ) {
+									if ( isset( $value[ $device ] ) ) {
+										$values = $value[ $device ];
+										if ( is_scalar( $values ) ) {
+											$this->css[ $device ] .= $this->make_css( $d['selectors'], $d['properties'], $values );
+										} else {
+											if ( isset( $values['value'] ) ) {
+												$unit                  = $values['unit'] ?? ( $d['extra']['defaultUnit'] ?? 'px' );
+												$unit                  = '-' === $unit ? '' : $unit;
+												$this->css[ $device ] .= $this->make_css( $d['selectors'], $d['properties'], "{$values['value']}$unit" );
 											}
 										}
 									}
-								} else {
-									if ( isset( $value['value'] ) ) {
-										$unit                  = $value['unit'] ?? ( $d['extra']['defaultUnit'] ?? 'px' );
-										$unit                  = '-' === $unit ? '' : $unit;
-										$this->css['desktop'] .= $this->make_css( $d['selectors'], $d['properties'], "{$value['value']}$unit" );
-									}
 								}
 							} else {
-								$this->css['desktop'] .= $this->make_css( $d['selectors'], $d['properties'], $value );
+								if ( isset( $value['value'] ) ) {
+									$unit                  = $value['unit'] ?? ( $d['extra']['defaultUnit'] ?? 'px' );
+									$unit                  = '-' === $unit ? '' : $unit;
+									$this->css['desktop'] .= $this->make_css( $d['selectors'], $d['properties'], "{$value['value']}$unit" );
+								}
 							}
+						} else {
+							$this->css['desktop'] .= $this->make_css( $d['selectors'], $d['properties'], $value );
 						}
 						break;
 					case 'vite-background':
-						if ( ! empty( $value ) ) {
-							$type = $value['type'] ?? 'color';
+						$type = $value['type'] ?? 'color';
 
-							if ( 'gradient' === $type && isset( $value['gradient'] ) ) {
-								$this->css['desktop'] .= $this->make_css( $d['selectors'], [], "background: {$value['gradient']};" );
-							} else {
-								unset( $value['gradient'] );
-								unset( $value['type'] );
+						if ( 'gradient' === $type && isset( $value['gradient'] ) ) {
+							$this->css['desktop'] .= $this->make_css( $d['selectors'], [], "background: {$value['gradient']};" );
+						} else {
+							unset( $value['gradient'] );
+							unset( $value['type'] );
 
-								$desktop = [];
-								$tablet  = [];
-								$mobile  = [];
-
-								foreach ( static::DEVICES as $device ) {
-									foreach ( $value  as $k => $v ) {
-										if ( isset( $v ) && is_scalar( $v ) ) {
-											$desktop[ $k ] = $v;
-											continue;
-										}
-
-										if ( isset( $v[ $device ] ) ) {
-											${$device}[ $k ] = $v[ $device ];
-										}
-									}
-								}
-
-								if ( ! empty( $tablet ) ) {
-									$this->css['tablet'] .= $this->make_css( $d['selectors'], $d['properties'], $this->background_css( $tablet ) );
-								}
-								if ( ! empty( $mobile ) ) {
-									$this->css['mobile'] .= $this->make_css( $d['selectors'], $d['properties'], $this->background_css( $mobile ) );
-								}
-								if ( ! empty( $desktop ) ) {
-									$this->css['desktop'] .= $this->make_css( $d['selectors'], $d['properties'], $this->background_css( $desktop ) );
-								}
-							}
-						}
-						break;
-					case 'vite-typography':
-						if ( ! empty( $value ) ) {
 							$desktop = [];
 							$tablet  = [];
 							$mobile  = [];
 
 							foreach ( static::DEVICES as $device ) {
-								foreach ( $value as $k => $v ) {
+								foreach ( $value  as $k => $v ) {
 									if ( isset( $v ) && is_scalar( $v ) ) {
 										$desktop[ $k ] = $v;
 										continue;
 									}
+
 									if ( isset( $v[ $device ] ) ) {
 										${$device}[ $k ] = $v[ $device ];
 									}
 								}
 							}
 
-							if ( ! empty( $desktop ) ) {
-								$this->css['desktop'] .= $this->make_css( $d['selectors'], [], $this->typography_css( $desktop ) );
-							}
-
 							if ( ! empty( $tablet ) ) {
-								$this->css['tablet'] .= $this->make_css( $d['selectors'], [], $this->typography_css( $tablet ) );
+								$this->css['tablet'] .= $this->make_css( $d['selectors'], $d['properties'], $this->background_css( $tablet ) );
 							}
-
 							if ( ! empty( $mobile ) ) {
-								$this->css['mobile'] .= $this->make_css( $d['selectors'], [], $this->typography_css( $mobile ) );
+								$this->css['mobile'] .= $this->make_css( $d['selectors'], $d['properties'], $this->background_css( $mobile ) );
 							}
+							if ( ! empty( $desktop ) ) {
+								$this->css['desktop'] .= $this->make_css( $d['selectors'], $d['properties'], $this->background_css( $desktop ) );
+							}
+						}
+						break;
+					case 'vite-typography':
+						$desktop = [];
+						$tablet  = [];
+						$mobile  = [];
+
+						foreach ( static::DEVICES as $device ) {
+							foreach ( $value as $k => $v ) {
+								if ( isset( $v ) && is_scalar( $v ) ) {
+									$desktop[ $k ] = $v;
+									continue;
+								}
+								if ( isset( $v[ $device ] ) ) {
+									${$device}[ $k ] = $v[ $device ];
+								}
+							}
+						}
+
+						if ( ! empty( $desktop ) ) {
+							$this->css['desktop'] .= $this->make_css( $d['selectors'], [], $this->typography_css( $desktop ) );
+						}
+
+						if ( ! empty( $tablet ) ) {
+							$this->css['tablet'] .= $this->make_css( $d['selectors'], [], $this->typography_css( $tablet ) );
+						}
+
+						if ( ! empty( $mobile ) ) {
+							$this->css['mobile'] .= $this->make_css( $d['selectors'], [], $this->typography_css( $mobile ) );
 						}
 						break;
 					case 'vite-border':
-						if ( ! empty( $value ) ) {
-							if ( isset( $value['color']['hover'] ) ) {
-								$this->css['desktop'] .= $this->make_css(
-									array_map(
-										function( $s ) {
-											return $s . ':hover';
-										},
-										$d['selectors']
-									),
-									[ 'border-color' ],
-									$value['color']['hover']
-								);
-							}
-							$this->css['desktop'] .= $this->make_css( $d['selectors'], [], $this->border_css( $value ) );
+						if ( isset( $value['color']['hover'] ) ) {
+							$this->css['desktop'] .= $this->make_css(
+								array_map(
+									function( $s ) {
+										return $s . ':hover';
+									},
+									$d['selectors']
+								),
+								[ 'border-color' ],
+								$value['color']['hover']
+							);
 						}
+						$this->css['desktop'] .= $this->make_css( $d['selectors'], [], $this->border_css( $value ) );
 						break;
 					default:
-						if ( ! empty( $value ) ) {
-							if ( is_array( $value ) ) {
-								if ( $this->array_some(
-									function( $a ) {
-										return in_array( $a, static::DEVICES, true );
-									},
-									array_keys( $value )
-								) ) {
-									foreach ( static::DEVICES as $device ) {
-										if ( isset( $value[ $device ] ) ) {
-											$this->css[ $device ] .= $this->make_css( $d['selectors'], $d['properties'], (string) $value[ $device ] );
-										}
+						if ( is_array( $value ) ) {
+							if ( $this->array_some(
+								function( $a ) {
+									return in_array( $a, static::DEVICES, true );
+								},
+								array_keys( $value )
+							) ) {
+								foreach ( static::DEVICES as $device ) {
+									if ( isset( $value[ $device ] ) ) {
+										$this->css[ $device ] .= $this->make_css( $d['selectors'], $d['properties'], (string) $value[ $device ] );
 									}
 								}
-
-								if ( $this->array_some(
-									function( $a ) {
-										return in_array( $a, static::STATES, true );
-									},
-									array_keys( $value )
-								) ) {
-									foreach ( $value as $k => $v ) {
-										$this->css['desktop'] .= $this->make_css(
-											array_map(
-												function( $s ) use ( $k ) {
-													if ( empty( $k ) || ! in_array( $k, static::STATES, true ) ) {
-														return false;
-													}
-													if ( 'normal' === $k ) {
-														return $s;
-													}
-													return "$s:$k";
-												},
-												$d['selectors']
-											),
-											$d['properties'],
-											(string) $v
-										);
-									}
-								}
-								if ( ':root' === $d['selectors'][0] ) {
-									$css = "{$d['selectors'][0]} {";
-									foreach ( $value as $k => $v ) {
-										$css .= "$k: $v;";
-									}
-									$css                  .= '}';
-									$this->css['desktop'] .= $css;
-								}
-							} else {
-								$this->css['desktop'] .= $this->make_css( $d['selectors'], $d['properties'], (string) $value );
 							}
+
+							if ( $this->array_some(
+								function( $a ) {
+									return in_array( $a, static::STATES, true );
+								},
+								array_keys( $value )
+							) ) {
+								foreach ( $value as $k => $v ) {
+									$this->css['desktop'] .= $this->make_css(
+										array_map(
+											function( $s ) use ( $k ) {
+												if ( empty( $k ) || ! in_array( $k, static::STATES, true ) ) {
+													return false;
+												}
+												if ( 'normal' === $k ) {
+													return $s;
+												}
+												return "$s:$k";
+											},
+											$d['selectors']
+										),
+										$d['properties'],
+										(string) $v
+									);
+								}
+							}
+							if ( ':root' === $d['selectors'][0] ) {
+								$css = "{$d['selectors'][0]} {";
+								foreach ( $value as $k => $v ) {
+									$css .= "$k: $v;";
+								}
+								$css                  .= '}';
+								$this->css['desktop'] .= $css;
+							}
+						} else {
+							$this->css['desktop'] .= $this->make_css( $d['selectors'], $d['properties'], (string) $value );
 						}
 				}
 			}
