@@ -25,7 +25,7 @@
 		}
 
 		.entry-thumbnail {
-			margin-inline: -20px;
+			margin-inline: calc(var(--post--padding) * -1);
 		}
 
 		.post-wrap {
