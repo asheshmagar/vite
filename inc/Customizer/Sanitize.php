@@ -33,6 +33,10 @@ class Sanitize {
 		$sanitize = function( $color ) use ( $setting ) {
 			$color = sanitize_text_field( $color );
 
+			if ( false !== strpos( $color, 'var(--' ) ) {
+				return $color;
+			}
+
 			if ( false !== strpos( $color, 'rgba' ) ) {
 				$color = str_replace( ' ', '', $color );
 
