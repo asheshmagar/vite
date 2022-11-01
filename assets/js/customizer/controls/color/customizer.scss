@@ -14,6 +14,17 @@
 	.vite-control-body {
 		display: flex;
 		gap: 10px;
-		flex-wrap: wrap;
+	}
+
+	&[data-inline="true"] {
+		grid-template-columns: auto 1fr;
+		.vite-control-body {
+			justify-content: flex-end;
+		}
+	}
+
+	.customize-control-description {
+		grid-column: 1/-1;
 	}
 }
+
