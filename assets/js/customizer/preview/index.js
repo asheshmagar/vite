@@ -1,7 +1,9 @@
 import $ from 'jquery';
+import _ from 'lodash';
+
 {
-	const SETTINGS = ( window._VITE_CUSTOMIZER_PREVIEW_?.settings || [] )
-		.filter( s => s.type === 'control' && s.selectors );
+	let SETTINGS = window._VITE_CUSTOMIZER_PREVIEW_?.settings || {};
+	SETTINGS = _.pickBy( SETTINGS, ( value ) => value.hasOwnProperty( 'selectors' ) );
 
 	const STATES = [
 		'hover',
@@ -140,8 +142,9 @@ import $ from 'jquery';
 		return css;
 	};
 
-	for ( let { name, selectors, properties = [], control, input_attrs: attrs = {} } of SETTINGS ) {
-		api( name, value => {
+	for ( let id in SETTINGS ) {
+		const { selectors, properties = [], type, input_attrs: attrs = {} } = SETTINGS[ id ];
+		api( id, value => {
 			value.bind( newValue => {
 				if ( isNullOrUndefined( newValue ) ) {
 					return;
@@ -157,7 +160,7 @@ import $ from 'jquery';
 
 				let font = '';
 
-				switch ( control ) {
+				switch ( type ) {
 					case 'vite-dimensions':
 						keys = Object.keys( newValue );
 						if ( keys.some( k => SIDES.includes( k ) ) ) {
@@ -192,9 +195,9 @@ import $ from 'jquery';
 						}
 						break;
 					case 'vite-background':
-						const type = newValue?.type ?? 'color';
+						const backgroundType = newValue?.type ?? 'color';
 						css.desktop += makeCSS( selectors, properties, `background-color: ${ newValue?.color ?? 'transparent' };` );
-						if ( 'gradient' === type && newValue?.gradient ) {
+						if ( 'gradient' === backgroundType && newValue?.gradient ) {
 							css.desktop += makeCSS( selectors, [], `background:${ newValue.gradient };` );
 						} else {
 							delete newValue?.gradient;
@@ -308,17 +311,17 @@ import $ from 'jquery';
 						}
 				}
 
-				name = name.replace( /[\[\]']+/g, '-' );
+				id = id.replace( /[\[\]']+/g, '-' );
 				const $head = $( 'head' );
 
 				if ( font.length !== 0 ) {
-					$( `link#${ name }-font` ).remove();
-					$head.append( `<link id="${ name }-font" href="https://fonts.googleapis.com/css?${ font }" rel="stylesheet">` );
+					$( `link#${ id }-font` ).remove();
+					$head.append( `<link id="${ id }-font" href="https://fonts.googleapis.com/css?${ font }" rel="stylesheet">` );
 				}
 
-				$( `style#${ name }` ).remove();
+				$( `style#${ id }` ).remove();
 
-				const $style = $( `<style id="${ name }">${ css.desktop }</style>` );
+				const $style = $( `<style id="${ id }">${ css.desktop }</style>` );
 
 				if ( css.tablet ) {
 					$style.append( `@media (max-width: 721px){ ${ css.tablet } }` );
