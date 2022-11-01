@@ -1,4 +1,4 @@
-import { ColorPicker, Popover as Tooltip, GradientPicker } from '@wordpress/components';
+import { ColorPicker, Popover as Tooltip, GradientPicker, ColorPalette } from '@wordpress/components';
 import { useState, memo } from '@wordpress/element';
 import './customizer.scss';
 import { Popover } from '../../components';
@@ -10,33 +10,28 @@ export default memo( ( props ) => {
 		onChange = noop,
 		label,
 		type = 'color',
+		customizer,
+		control,
 	} = props;
 	const [ tooltip, setTooltip ] = useState( false );
 
-	const Picker = 'color' === type ? ColorPicker : GradientPicker;
+	const palette = Object.entries( customizer( 'vite[global-palette]' ).get() ?? {} ).map( ( [ key, val ] ) => ( {
+		name: key,
+		color: `var(${ key })`,
+		value: val,
+	} ) );
 
-	let pickerProps = {
-		color: value,
-		onChangeComplete: val => {
-			const { hex, rgb } = val;
-			let newColor = hex;
-			if ( rgb.a !== 1 ) {
-				newColor = `rgba(${ rgb.r },${ rgb.g },${ rgb.b },${ rgb.a })`;
+	const variableToColor = ( variable ) => {
+		if ( variable?.startsWith( 'var(' ) ) {
+			const regex = /var\(([^)]+)\)/;
+			const match = variable.match( regex );
+			if ( match ) {
+				const variableName = match[ 1 ];
+				return palette.find( p => p.name === variableName )?.value;
 			}
-			onChange( newColor );
-		},
-		enableAlpha: true,
-		copyFormat: [ 'hex' ],
+		}
+		return variable;
 	};
-
-	if ( 'color' !== type ) {
-		pickerProps = {
-			value,
-			onChange: val => {
-				onChange( val );
-			},
-		};
-	}
 
 	return (
 		<div className="vite-color-picker">
@@ -44,9 +39,38 @@ export default memo( ( props ) => {
 				popupClassName={ 'vite-color-picker-popup' }
 				action={ [ 'click' ] }
 				popup={
-					<Picker
-						{ ...pickerProps }
-					/>
+					<>
+						{ control.id !== 'vite[global-palette]' && (
+							<div className="vite-color-picker-palette">
+								<ColorPalette
+									onChange={ ( color ) => onChange( color ) }
+									value={ value }
+									colors={ palette }
+									disableCustomColors={ true }
+									clearable={ false }
+								/>
+							</div>
+						) }
+						{ 'color' === type && (
+							<ColorPicker
+								color={ variableToColor( value ) }
+								onChangeComplete={ ( val ) => {
+									const { hex, rgb } = val;
+									let newColor = hex;
+									if ( rgb.a !== 1 ) {
+										newColor = `rgba(${ rgb.r },${ rgb.g },${ rgb.b },${ rgb.a })`;
+									}
+									onChange( newColor );
+								} }
+							/>
+						) }
+						{ 'gradient' === type && (
+							<GradientPicker
+								value={ value }
+								onChange={ ( val ) => onChange( val ) }
+							/>
+						) }
+					</>
 				}
 			>
 				<span>

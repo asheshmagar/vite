@@ -30,3 +30,47 @@
 		padding: 10px;
 	}
 }
+
+.vite-color-picker-palette {
+	display: flex;
+	justify-content: space-between;
+	margin-bottom: 10px;
+}
+
+.vite-color-picker-palette {
+	.components-circular-option-picker__option-wrapper {
+		height: 24px;
+		width: 24px;
+		.components-circular-option-picker__option {
+			> span {
+				display: none;
+			}
+			&:focus {
+				box-shadow: none;
+				outline: none;
+
+				&:after {
+					width: 24px;
+					height: 24px;
+
+				}
+			}
+
+			&.is-pressed + svg {
+				left: 0;
+				top: 0;
+			}
+		}
+	}
+}
+
+.vite-reset {
+	min-width: 12px ! important;
+	width: 12px ! important;
+	height: 12px ! important;
+	.dashicon {
+		font-size: 12px;
+		height: 12px;
+		width: 12px;
+	}
+}
