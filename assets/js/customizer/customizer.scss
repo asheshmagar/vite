@@ -126,11 +126,11 @@
 
 		&:after {
 			content: '';
-			height: 1px;
+			height: 0;
 			width: 100%;
 			display: block;
-			background-color: #d5d5d5;
 			margin-block: 20px;
+			border-bottom: thin solid #d5d5d5;
 		}
 	}
 }
