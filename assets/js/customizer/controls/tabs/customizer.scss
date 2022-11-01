@@ -1,0 +1,23 @@
+.vite-tabs {
+	.components-tab-panel__tabs {
+		margin-bottom: 15px;
+
+		> .components-button {
+			height: 40px;
+			flex: 1;
+			justify-content: center;
+		}
+	}
+}
+
+.accordion-section-content {
+	.section-meta + .customize-control-vite-tabs {
+		.components-tab-panel__tabs {
+			margin: -15px -12px 15px;
+
+			button.active {
+				box-shadow: inset 0 var(--wp-admin-border-width-focus) var(--wp-admin-theme-color);
+			}
+		}
+	}
+}
