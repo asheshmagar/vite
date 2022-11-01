@@ -18,11 +18,10 @@ use WP_Customize_Manager;
  */
 class Control extends WP_Customize_Control {
 
-	const ADDITIONAL_PROP_KEYS = [
+	const ADDITIONAL_PROPERTIES = [
 		'selectors',
 		'properties',
 		'fonts',
-		'field',
 	];
 
 	/**
@@ -35,7 +34,7 @@ class Control extends WP_Customize_Control {
 	public function __construct( $manager, $id, $args = [] ) {
 		parent::__construct( $manager, $id, $args );
 
-		foreach ( static::ADDITIONAL_PROP_KEYS as $prop_key ) {
+		foreach ( static::ADDITIONAL_PROPERTIES as $prop_key ) {
 			if ( isset( $args[ $prop_key ] ) ) {
 				$this->{$prop_key} = $args[ $prop_key ];
 			}
@@ -56,7 +55,7 @@ class Control extends WP_Customize_Control {
 		$this->json['inputAttrs']  = $this->input_attrs;
 		$this->json['choices']     = $this->choices;
 
-		foreach ( static::ADDITIONAL_PROP_KEYS as $prop_key ) {
+		foreach ( static::ADDITIONAL_PROPERTIES as $prop_key ) {
 			if ( isset( $this->{$prop_key} ) ) {
 				$this->json[ $prop_key ] = $this->{$prop_key};
 			}
