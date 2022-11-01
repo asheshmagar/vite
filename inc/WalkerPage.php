@@ -112,7 +112,7 @@ class WalkerPage extends Walker_Page {
 		 * @param int      $current_page ID of the current page.
 		 */
 		$output .= $indent . sprintf(
-			'<li class="%s">%s<a href="%s">%s%s</a>%s%s',
+			'<li class="%s"%s>%s<a href="%s">%s%s</a>%s%s',
 			$css_classes,
 			$li_attrs,
 			$link_wrap_open,
