@@ -23,19 +23,31 @@ class Sidebar {
 		$sidebars = apply_filters(
 			'vite_sidebars',
 			[
-				'sidebar-1' => [
-					'name'          => __( 'Right sidebar', 'vite' ),
-					'id'            => 'sidebar-1',
-					'description'   => __( 'Add widgets here to appear in your sidebar.', 'vite' ),
-					'before_widget' => '<section id="%1$s" class="widget %2$s">',
-					'after_widget'  => '</section>',
-					'before_title'  => sprintf( '<%s class="widget-title">', apply_filters( 'vite_sidebar_title_tag', 'h2' ) ),
-					'after_title'   => sprintf( '</%s>', apply_filters( 'vite_sidebar_title_tag', 'h2' ) ),
-				],
+				'sidebar-1' => __( 'Sidebar 1', 'vite' ),
+				'sidebar-2' => __( 'Sidebar 2', 'vite' ),
+				'footer-1'  => __( 'Footer 1', 'vite' ),
+				'footer-2'  => __( 'Footer 2', 'vite' ),
+				'footer-3'  => __( 'Footer 3', 'vite' ),
+				'footer-4'  => __( 'Footer 4', 'vite' ),
+				'footer-5'  => __( 'Footer 5', 'vite' ),
+				'footer-6'  => __( 'Footer 6', 'vite' ),
 			]
 		);
-		foreach ( $sidebars as $sidebar ) {
-			register_sidebar( $sidebar );
+		foreach ( $sidebars as $id => $name ) {
+			register_sidebar(
+				apply_filters(
+					'vite_sidebar_args',
+					[
+						'name'          => $name,
+						'id'            => $id,
+						'description'   => __( 'Add widgets here..', 'vite' ),
+						'before_widget' => '<section id="%1$s" class="widget %2$s">',
+						'after_widget'  => '</section>',
+						'before_title'  => sprintf( '<%s class="widget-title">', apply_filters( 'vite_sidebar_title_tag', 'h2' ) ),
+						'after_title'   => sprintf( '</%s>', apply_filters( 'vite_sidebar_title_tag', 'h2' ) ),
+					]
+				)
+			);
 		}
 	}
 
