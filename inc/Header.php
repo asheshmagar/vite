@@ -72,8 +72,8 @@ class Header {
 								?>
 								<div data-col="<?php echo esc_attr( $col ); ?>">
 									<?php foreach ( $elements as $element ) : ?>
-										<div data-element="header-<?php echo esc_attr( $element ); ?>">
-											<?php get_template_part( 'template-parts/header/header', $element ); ?>
+										<div data-element="header-<?php echo esc_attr( $element['id'] ); ?>">
+											<?php get_template_part( 'template-parts/header/header', $element['id'] ); ?>
 										</div>
 									<?php endforeach; ?>
 								</div>
@@ -95,8 +95,7 @@ class Header {
 	 * @return void
 	 */
 	private function render_desktop_header() {
-		$default        = vite( 'customizer' )->get_defaults()['header'];
-		$header_configs = vite( 'customizer' )->get_setting( 'header', $default )['desktop'];
+		$header_configs = vite( 'customizer' )->get_setting( 'header' )['desktop'];
 
 		do_action( 'vite_before_desktop_header' );
 		?>
@@ -134,8 +133,8 @@ class Header {
 						?>
 						<div data-col="<?php echo esc_attr( $col ); ?>">
 							<?php foreach ( $elements as $element ) : ?>
-								<div data-element="header-<?php echo esc_attr( $element ); ?>">
-									<?php get_template_part( 'template-parts/header/header', $element ); ?>
+								<div data-element="header-<?php echo esc_attr( $element['id'] ); ?>">
+									<?php get_template_part( 'template-parts/header/header', $element['id'] ); ?>
 								</div>
 							<?php endforeach; ?>
 						</div>
