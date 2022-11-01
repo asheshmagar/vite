@@ -15,26 +15,31 @@ use Vite\Customizer\Type\Section;
  */
 class Customizer {
 
+	const STORE      = 'theme_mod';
+	const CAPABILITY = 'edit_theme_options';
+	const PRIORITY   = 10;
+	const TRANSPORT  = 'postMessage';
+
 	/**
 	 * Holds all settings.
 	 *
 	 * @var array Settings.
 	 */
-	public $settings = [];
+	private $settings = [];
 
 	/**
-	 * Control group.
+	 * Holds all sections.
 	 *
-	 * @var array Control group.
+	 * @var array Sections.
 	 */
-	public $group = [];
+	private $sections = [];
 
 	/**
-	 * Context.
+	 * Holds all panels.
 	 *
-	 * @var array
+	 * @var array Panels.
 	 */
-	public $context = [];
+	private $panels = [];
 
 	/**
 	 * Holds instance of dynamic CSS.
@@ -65,18 +70,61 @@ class Customizer {
 	private $defaults;
 
 	/**
+	 * Holds control condition.
+	 *
+	 * @var array
+	 */
+	private $condition = [];
+
+	/**
+	 * Hold control conditions.
+	 *
+	 * @var array
+	 */
+	private $conditions = [];
+
+	/**
 	 * Init.
 	 *
 	 * @return void
 	 */
 	public function init() {
-		add_action( 'customize_register', [ $this, 'customize_register' ], PHP_INT_MAX - 1 );
+		add_action( 'init', [ $this, 'after_wp_init' ], PHP_INT_MAX );
+		add_action( 'customize_register', [ $this, 'customize_register' ] );
 		add_action( 'customize_register', [ $this, 'override_controls' ] );
 		add_action( 'customize_controls_enqueue_scripts', [ $this, 'enqueue_control_script' ] );
 		add_action( 'customize_save_after', [ $this, 'save_dynamic_css' ] );
 		add_filter( 'customize_render_partials_response', [ $this, 'partial_response' ] );
 		add_action( 'wp_print_scripts', [ $this, 'print_dynamic_css' ] );
 		add_action( 'customize_preview_init', [ $this, 'enqueue_preview_script' ] );
+	}
+
+	/**
+	 * After WP init.
+	 *
+	 * @return void
+	 */
+	public function after_wp_init() {
+		$this->include();
+		do_action( 'vite_customizer_init' );
+	}
+
+	/**
+	 * Include files.
+	 *
+	 * @return void
+	 */
+	private function include() {
+		$options_dir       = __DIR__ . '/options/';
+		$option_file_names = scandir( $options_dir );
+
+		foreach ( $option_file_names as $option_file_name ) {
+			if ( '.' === $option_file_name || '..' === $option_file_name ) {
+				continue;
+			}
+			require $options_dir . $option_file_name;
+		}
+		require __DIR__ . '/panels-sections/panels-sections.php';
 	}
 
 	/**
@@ -101,9 +149,9 @@ class Customizer {
 	 */
 	public function get_defaults() {
 		if ( ! isset( $this->defaults ) ) {
-			$this->defaults = require __DIR__ . '/defaults.php';
+			$this->defaults = require __DIR__ . '/defaults/defaults.php';
 		}
-		return apply_filters( 'vite_setting_defaults', $this->defaults );
+		return apply_filters( 'vite_settings_defaults', $this->defaults );
 	}
 
 	/**
@@ -201,7 +249,9 @@ class Customizer {
 			'vite-customizer',
 			'_VITE_CUSTOMIZER_',
 			[
-				'icons' => vite( 'icon' )->get_icons(),
+				'icons'      => vite( 'icon' )->get_icons(),
+				'condition'  => $this->condition,
+				'conditions' => $this->conditions,
 			]
 		);
 		wp_set_script_translations( 'vite-customizer', 'vite', get_template_directory() . '/languages' );
@@ -236,25 +286,159 @@ class Customizer {
 	 * @return void
 	 */
 	public function customize_register( WP_Customize_Manager $wp_customize ) {
-		$this->css = vite( 'dynamic-css' )->init();
-		$this->add_settings( apply_filters( 'vite_customizer_settings', require __DIR__ . '/settings.php' ) );
-		$this->register( $wp_customize );
-		$this->add( $wp_customize );
+		$this->register_type( $wp_customize );
+		$this->add_panels( $wp_customize );
+		$this->add_sections( $wp_customize );
+		$this->add_settings( $wp_customize );
+	}
+
+	/**
+	 * Add panels.
+	 *
+	 * @param WP_Customize_Manager $wp_customize WP_Customize_Manager instance.
+	 * @return void
+	 */
+	private function add_panels( WP_Customize_Manager $wp_customize ) {
+		$panels = apply_filters( 'vite_customizer_panels', $this->panels );
+		if ( ! empty( $panels ) ) {
+			foreach ( $panels as $id => $config ) {
+				$wp_customize->add_panel(
+					new Panel(
+						$wp_customize,
+						$id,
+						wp_parse_args(
+							$config,
+							[
+								'type'       => 'vite-panel',
+								'priority'   => static::PRIORITY,
+								'capability' => static::CAPABILITY,
+							]
+						)
+					)
+				);
+			}
+		}
+	}
+
+	/**
+	 * Add sections.
+	 *
+	 * @param WP_Customize_Manager $wp_customize WP_Customize_Manager instance.
+	 * @return void
+	 */
+	private function add_sections( WP_Customize_Manager $wp_customize ) {
+		$sections = apply_filters( 'vite_customizer_sections', $this->sections );
+		if ( ! empty( $sections ) ) {
+			foreach ( $sections as $id => $config ) {
+				$wp_customize->add_section(
+					new Section(
+						$wp_customize,
+						$id,
+						wp_parse_args(
+							$config,
+							[
+								'type'       => 'vite-section',
+								'priority'   => static::PRIORITY,
+								'capability' => static::CAPABILITY,
+							]
+						)
+					)
+				);
+			}
+		}
 	}
 
 	/**
 	 * Add settings.
 	 *
-	 * @param array[] $settings Settings array.
+	 * @param WP_Customize_Manager $wp_customize WP_Customize_Manager instance.
 	 * @return void
 	 */
-	public function add_settings( array $settings ) {
-		if ( is_array( $settings[ array_key_first( $settings ) ] ) ) {
-			foreach ( $settings as $setting ) {
-				$this->settings[] = $setting;
+	private function add_settings( WP_Customize_Manager $wp_customize ) {
+		$settings           = apply_filters( 'vite_customizer_settings', $this->settings );
+		$sanitize_callbacks = apply_filters( 'vite_customizer_sanitize_callbacks', $this->sanitize_callbacks() );
+		if ( ! empty( $settings ) ) {
+			foreach ( $settings as $id => $config ) {
+				if ( ! isset( $config['type'] ) ) {
+					continue;
+				}
+
+				$selective_refresh   = isset( $config['partial'] );
+				$render_callback     = $config['partial']['render_callback'] ?? null;
+				$container_inclusive = $config['partial']['container_inclusive'] ?? false;
+				$selector            = $config['partial']['selector'] ?? '';
+
+				if ( $selective_refresh ) {
+					if ( isset( $wp_customize->selective_refresh ) ) {
+						$wp_customize->selective_refresh->add_partial(
+							$id,
+							[
+								'selector'            => $selector,
+								'render_callback'     => $render_callback,
+								'container_inclusive' => $container_inclusive,
+							]
+						);
+					}
+				}
+
+				if (
+					! array_diff( [ 'condition', 'conditions' ], array_keys( $config ) ) ||
+					in_array( 'conditions', array_keys( $config ), true )
+				) {
+					$this->conditions[ $id ] = $config['conditions'];
+				} elseif ( in_array( 'condition', array_keys( $config ), true ) ) {
+					$this->condition[ $id ] = $config['condition'];
+				}
+
+				$wp_customize->add_setting(
+					$id,
+					[
+						'default'           => $config['default'] ?? '',
+						'transport'         => static::TRANSPORT,
+						'type'              => static::STORE,
+						'sanitize_callback' => $sanitize_callbacks[ $config['type'] ] ?? null,
+					]
+				);
+
+				$wp_customize->add_control(
+					new Control(
+						$wp_customize,
+						$id,
+						[
+							'label'       => $config['title'] ?? '',
+							'title'       => $config['title'] ?? '',
+							'description' => $config['description'] ?? '',
+							'section'     => $config['section'] ?? '',
+							'settings'    => $id,
+							'type'        => $config['type'],
+							'choices'     => $config['choices'] ?? [],
+							'priority'    => $config['priority'] ?? static::PRIORITY,
+							'capability'  => static::CAPABILITY,
+							'input_attrs' => $config['input_attrs'] ?? [],
+							'fonts'       => 'vite-typography' === $config['type'] ? $this->get_google_fonts() : null,
+							'selectors'   => $config['selectors'] ?? null,
+							'properties'  => $config['properties'] ?? null,
+						]
+					)
+				);
 			}
-		} else {
-			$this->settings[] = $settings;
+		}
+	}
+
+	/**
+	 * Add sections, panels, settings.
+	 *
+	 * @param string $type Type.
+	 * @param array  $options Options.
+	 * @return void
+	 */
+	public function add( string $type, array $options ) {
+		if ( ! in_array( $type, [ 'panels', 'sections', 'settings' ], true ) ) {
+			return;
+		}
+
+		foreach ( $options as $key => $option ) {
+			$this->{$type}[ $key ] = $option;
 		}
 	}
 
@@ -264,223 +448,18 @@ class Customizer {
 	 * @param WP_Customize_Manager $wp_customize WP_Customize_Manager instance.
 	 * @return void
 	 */
-	public function register( WP_Customize_Manager $wp_customize ) {
+	private function register_type( WP_Customize_Manager $wp_customize ) {
 		$wp_customize->register_panel_type( Panel::class );
 		$wp_customize->register_section_type( Section::class );
 		$wp_customize->register_control_type( Control::class );
 	}
 
 	/**
-	 * Add custom section, panel, control and sub-control.
-	 *
-	 * @param WP_Customize_Manager $wp_customize WP_Customize_Manager instance.
-	 * @return void
-	 */
-	private function add( WP_Customize_Manager $wp_customize ) {
-		$configs = $this->settings;
-
-		if ( empty( $configs ) ) {
-			return;
-		}
-
-		foreach ( $configs as $config ) {
-			$config = wp_parse_args(
-				$config,
-				apply_filters(
-					'vite_customizer_default_configs',
-					[
-						'priority'             => null,
-						'title'                => null,
-						'label'                => null,
-						'name'                 => null,
-						'type'                 => null,
-						'description'          => null,
-						'capability'           => 'edit_theme_options',
-						'datastore_type'       => 'theme_mod',
-						'settings'             => null,
-						'active_callback'      => null,
-						'sanitize_callback'    => null,
-						'sanitize_js_callback' => null,
-						'theme_supports'       => null,
-						'transport'            => null,
-						'default'              => null,
-						'selector'             => null,
-						'fields'               => [],
-						'css'                  => null,
-						'input_attrs'          => [],
-					]
-				)
-			);
-
-			if ( ! isset( $config['type'] ) || ! isset( $config['name'] ) ) {
-				return;
-			}
-
-			if ( isset( $config['css'] ) ) {
-				vite( 'dynamic-css' )->add( $config );
-			}
-
-			$config['title'] = $config['title'] ?? $config['label'];
-
-			switch ( $config['type'] ) {
-				case 'panel':
-				case 'vite-builder-panel':
-					$wp_customize->add_panel( new Panel( $wp_customize, $config['name'], $config ) );
-					break;
-				case 'section':
-				case 'vite-builder-section':
-					$wp_customize->add_section( new Section( $wp_customize, $config['name'], $config ) );
-					break;
-				case 'sub-control':
-					$this->add_sub_control( $config, $wp_customize );
-					break;
-				case 'control':
-					$this->add_control( $config, $wp_customize );
-					break;
-			}
-		}
-	}
-
-	/**
-	 * Add control.
-	 *
-	 * @param array                $config Configs.
-	 * @param WP_Customize_Manager $wp_customize WP_Customize_Manager instance.
-	 * @return void
-	 */
-	private function add_control( array $config, WP_Customize_Manager $wp_customize ) {
-		$name              = $config['name'];
-		$control_configs   = $this->get_control_configs();
-		$transport         = $config['transport'] ?? 'refresh';
-		$sanitize_callback = $config['sanitize_callback'] ?? $control_configs[ $config['control'] ];
-
-		if ( 'vite-group' === $config['control'] ) {
-			$sanitize_callback = false;
-		}
-
-		$wp_customize->add_setting(
-			$name,
-			array(
-				'default'           => $config['default'],
-				'type'              => $config['datastore_type'],
-				'transport'         => $transport,
-				'sanitize_callback' => $sanitize_callback,
-			)
-		);
-		$config['type'] = $config['control'];
-		$config         = $this->additional_config( $config );
-
-		$wp_customize->add_control( new Control( $wp_customize, $name, $config ) );
-
-		$selective_refresh   = isset( $config['partial'] );
-		$render_callback     = $config['partial']['render_callback'] ?? '';
-		$container_inclusive = $config['partial']['container_inclusive'] ?? false;
-
-		if ( $selective_refresh ) {
-			if ( isset( $wp_customize->selective_refresh ) ) {
-				$wp_customize->selective_refresh->add_partial(
-					$name,
-					[
-						'selector'            => $config['partial']['selector'],
-						'render_callback'     => $render_callback,
-						'container_inclusive' => $container_inclusive,
-					]
-				);
-			}
-		}
-	}
-
-	/**
-	 * Add sub control.
-	 *
-	 * @param array                $config Configs.
-	 * @param WP_Customize_Manager $wp_customize WP_Customize_Manager instance.
-	 * @return void
-	 */
-	private function add_sub_control( array $config, WP_Customize_Manager $wp_customize ) {
-		$name            = $config['name'];
-		$control_configs = $this->get_control_configs();
-
-		if ( isset( $wp_customize->get_control( $name )->id ) ) {
-			return;
-		}
-
-		$parent = $config['input_attrs']['parent'] ?? '';
-		$tab    = $config['input_attrs']['tab'] ?? '';
-
-		if ( empty( $this->group[ $parent ] ) ) {
-			$this->group[ $parent ] = array();
-		}
-
-		if ( array_key_exists( 'tab', $config['input_attrs'] ) ) {
-			$this->group[ $parent ]['tabs'][ $tab ][] = $config;
-		} else {
-			$this->group[ $parent ][] = $config;
-		}
-
-		$sanitize_callback = $config['sanitize_callback'] ?? $control_configs[ $config['control'] ];
-		$transport         = $config['transport'] ?? 'refresh';
-		$config            = wp_parse_args(
-			[
-				'name'              => $name,
-				'datastore_type'    => apply_filters( 'vite_customize_datastore_type', 'theme_mod' ),
-				'control'           => 'customind-hidden',
-				'section'           => $config['section'],
-				'default'           => $config['default'],
-				'transport'         => $transport,
-				'sanitize_callback' => $sanitize_callback,
-			],
-			$config
-		);
-		$config            = $this->additional_config( $config );
-
-		$wp_customize->add_setting( $name, $config );
-
-		$config['type'] = $config['control'];
-
-		$wp_customize->add_control( new Control( $wp_customize, $name, $config ) );
-	}
-
-	/**
-	 * Add additional config.
-	 *
-	 * @param array $config Config.
-	 * @return array
-	 */
-	private function additional_config( array &$config ): array {
-		$name = $config['name'];
-
-		switch ( $config['type'] ) {
-			case 'vite-group':
-				$group = [];
-
-				if ( isset( $this->group[ $name ]['tabs'] ) ) {
-					$tabs = array_keys( $this->group[ $name ]['tabs'] );
-					foreach ( $tabs as $tab ) {
-						$group['tabs'][ $tab ] = wp_list_sort( $this->group[ $name ]['tabs'][ $tab ], 'priority' );
-					}
-				} else {
-					if ( isset( $this->group[ $name ] ) ) {
-						$group = wp_list_sort( $this->group[ $name ], 'priority' );
-					}
-				}
-
-				$config['field'] = $group;
-				break;
-			case 'vite-typography':
-				$config['fonts'] = $this->get_google_fonts();
-				break;
-		}
-
-		return $config;
-	}
-
-	/**
 	 * Get google fonts.
 	 *
-	 * @return array|mixed
+	 * @return array
 	 */
-	private function get_google_fonts() {
+	private function get_google_fonts(): array {
 		$fonts_json = VITE_ASSETS_DIR . 'json/google-fonts.json';
 		if ( file_exists( $fonts_json ) && empty( $this->google_fonts ) ) {
 			ob_start();
@@ -537,7 +516,7 @@ class Customizer {
 				)
 			);
 		}
-		return $this->google_fonts;
+		return apply_filters( 'vite_google_fonts', $this->google_fonts );
 	}
 
 	/**
@@ -545,38 +524,39 @@ class Customizer {
 	 *
 	 * @return array
 	 */
-	private function get_control_configs(): array {
+	private function sanitize_callbacks(): array {
 		return [
-			'vite-background'  => [ 'Vite\Customizer\Sanitize', 'sanitize_background' ],
-			'vite-typography'  => [ 'Vite\Customizer\Sanitize', 'sanitize_typography' ],
-			'vite-dimensions'  => [ 'Vite\Customizer\Sanitize', 'sanitize_dimensions' ],
-			'vite-buttonset'   => [ 'Vite\Customizer\Sanitize', 'sanitize_buttonset' ],
-			'vite-sortable'    => [ 'Vite\Customizer\Sanitize', 'sanitize_sortable' ],
-			'vite-checkbox'    => [ 'Vite\Customizer\Sanitize', 'sanitize_checkbox' ],
-			'vite-toggle'      => [ 'Vite\Customizer\Sanitize', 'sanitize_checkbox' ],
-			'vite-slider'      => [ 'Vite\Customizer\Sanitize', 'sanitize_slider' ],
-			'vite-color'       => [ 'Vite\Customizer\Sanitize', 'sanitize_color' ],
-			'vite-radio-image' => [ 'Vite\Customizer\Sanitize', 'sanitize_radio' ],
-			'vite-select'      => [ 'Vite\Customizer\Sanitize', 'sanitize_radio' ],
-			'select'           => [ 'Vite\Customizer\Sanitize', 'sanitize_radio' ],
-			'vite-radio'       => [ 'Vite\Customizer\Sanitize', 'sanitize_radio' ],
-			'radio'            => [ 'Vite\Customizer\Sanitize', 'sanitize_radio' ],
-			'vite-input'       => [ 'Vite\Customizer\Sanitize', 'sanitize_input' ],
-			'vite-border'      => [ 'Vite\Customizer\Sanitize', 'sanitize_border' ],
-			'number'           => [ 'Vite\Customizer\Sanitize', 'sanitize_int' ],
-			'vite-textarea'    => 'sanitize_textarea_field',
-			'textarea'         => 'sanitize_textarea_field',
-			'text'             => 'sanitize_text_field',
-			'vite-gradient'    => 'sanitize_text_field',
-			'email'            => 'sanitize_email',
-			'url'              => 'esc_url_raw',
-			'vite-editor'      => 'wp_kses_post',
-			'vite-hidden'      => null,
-			'vite-group'       => null,
-			'vite-title'       => null,
-			'vite-builder'     => null,
-			'vite-heading'     => null,
-			'vite-navigate'    => null,
+			'vite-background'     => [ 'Vite\Customizer\Sanitize', 'sanitize_background' ],
+			'vite-typography'     => [ 'Vite\Customizer\Sanitize', 'sanitize_typography' ],
+			'vite-dimensions'     => [ 'Vite\Customizer\Sanitize', 'sanitize_dimensions' ],
+			'vite-buttonset'      => [ 'Vite\Customizer\Sanitize', 'sanitize_buttonset' ],
+			'vite-sortable'       => [ 'Vite\Customizer\Sanitize', 'sanitize_sortable' ],
+			'vite-checkbox'       => [ 'Vite\Customizer\Sanitize', 'sanitize_checkbox' ],
+			'vite-toggle'         => [ 'Vite\Customizer\Sanitize', 'sanitize_checkbox' ],
+			'vite-slider'         => [ 'Vite\Customizer\Sanitize', 'sanitize_slider' ],
+			'vite-color'          => [ 'Vite\Customizer\Sanitize', 'sanitize_color' ],
+			'vite-radio-image'    => [ 'Vite\Customizer\Sanitize', 'sanitize_radio' ],
+			'vite-select'         => [ 'Vite\Customizer\Sanitize', 'sanitize_radio' ],
+			'select'              => [ 'Vite\Customizer\Sanitize', 'sanitize_radio' ],
+			'vite-radio'          => [ 'Vite\Customizer\Sanitize', 'sanitize_radio' ],
+			'radio'               => [ 'Vite\Customizer\Sanitize', 'sanitize_radio' ],
+			'vite-input'          => [ 'Vite\Customizer\Sanitize', 'sanitize_input' ],
+			'vite-border'         => [ 'Vite\Customizer\Sanitize', 'sanitize_border' ],
+			'number'              => [ 'Vite\Customizer\Sanitize', 'sanitize_int' ],
+			'vite-textarea'       => 'sanitize_textarea_field',
+			'textarea'            => 'sanitize_textarea_field',
+			'text'                => 'sanitize_text_field',
+			'vite-gradient'       => 'sanitize_text_field',
+			'email'               => 'sanitize_email',
+			'url'                 => 'esc_url_raw',
+			'vite-editor'         => 'wp_kses_post',
+			'vite-hidden'         => null,
+			'vite-group'          => null,
+			'vite-title'          => null,
+			'vite-builder'        => null,
+			'vite-header-builder' => null,
+			'vite-heading'        => null,
+			'vite-navigate'       => null,
 		];
 	}
 }
