@@ -27,8 +27,18 @@ class TemplateHooks {
 		add_action( 'vite_before_archive', [ $this, 'archive_wrapper_open' ] );
 		add_action( 'vite_after_archive', [ $this, 'archive_wrapper_close' ] );
 		add_action( 'vite_after_archive', [ $this, 'pagination_template' ], 11 );
-		add_action( 'vite_after_single', [ $this, 'comments_template' ] );
+		add_action( 'vite_after_single', [ $this, 'navigation_template' ] );
+		add_action( 'vite_after_single', [ $this, 'comments_template' ], 11 );
 		add_action( 'vite_after_page', [ $this, 'comments_template' ] );
+	}
+
+	/**
+	 * Add navigation template.
+	 *
+	 * @return void
+	 */
+	public function navigation_template() {
+		get_template_part( 'template-parts/navigation/navigation', '' );
 	}
 
 	/**
