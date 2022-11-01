@@ -18,6 +18,7 @@ $elements = vite( 'customizer' )->get_setting( 'single-header-elements' );
 	<header class="entry-header">
 		<?php vite( 'entry-elements' )->render_entry_elements( $elements ); ?>
 	</header>
+	<?php vite( 'entry-elements' )->render_entry_featured_image(); ?>
 	<div class="entry-content">
 		<?php
 		the_content(
