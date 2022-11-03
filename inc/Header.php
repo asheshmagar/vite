@@ -63,7 +63,7 @@ class Header {
 						<?php foreach ( $cols as $col => $elements ) : ?>
 								<?php
 								if ( empty( $elements ) && (
-										( 1 === $col_count && in_array( 'center', $col_keys, true ) ) ||
+										( 1 === $col_count ) ||
 										( 2 === $col_count && ! in_array( 'center', $col_keys, true ) )
 									)
 								) {
@@ -113,18 +113,19 @@ class Header {
 				continue;
 			}
 
-			$col_keys  = array_keys( $cols_with_content );
-			$col_count = count( $col_keys );
-			$cols_attr = $col_count . ':' . implode( ':', $col_keys );
+			$col_keys   = array_keys( $cols_with_content );
+			$col_count  = count( $col_keys );
+			$cols_attr  = $col_count . ':' . implode( ':', $col_keys );
+			$row_layout = vite( 'customizer' )->get_setting( "header-$row-row-layout" );
 
 			do_action( 'vite_before_desktop_header_row', $row, $cols_with_content );
 			?>
-			<div data-cols="<?php echo esc_attr( $cols_attr ); ?>" data-row="<?php echo esc_attr( $row ); ?>">
+			<div data-cols="<?php echo esc_attr( $cols_attr ); ?>" data-layout="<?php echo esc_attr( $row_layout ); ?>" data-row="<?php echo esc_attr( $row ); ?>">
 				<div class="container">
 					<?php foreach ( $cols as $col => $elements ) : ?>
 						<?php
 						if ( empty( $elements ) && (
-								( 1 === $col_count && in_array( 'center', $col_keys, true ) ) ||
+								( 1 === $col_count ) ||
 								( 2 === $col_count && ! in_array( 'center', $col_keys, true ) )
 							)
 						) {
@@ -164,9 +165,9 @@ class Header {
 			<?php else : ?>
 				<p class="site-title vite-site-title"><a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home"><?php bloginfo( 'name' ); ?></a></p>
 			<?php endif; ?>
-<!--			--><?php //if ( get_bloginfo( 'description', 'display' ) || is_customize_preview() ) : ?>
-<!--				<p class="site-description vite-site-description">--><?php //bloginfo( 'description' ); ?><!--</p>-->
-<!--			--><?php //endif; ?>
+<!--			--><?php // if ( get_bloginfo( 'description', 'display' ) || is_customize_preview() ) : ?>
+<!--				<p class="site-description vite-site-description">--><?php // bloginfo( 'description' ); ?><!--</p>-->
+<!--			--><?php // endif; ?>
 		</div>
 		<?php
 	}
@@ -233,8 +234,8 @@ class Header {
 	 * @return void
 	 */
 	public function render_header_html() {
-		$default = vite( 'customizer' )->get_defaults()['header-html'];
-		$content = vite( 'customizer' )->get_setting( 'header-html', $default );
+		$content = vite( 'customizer' )->get_setting( 'header-html' );
+		$content = vite( 'core' )->parse_smart_tags( $content );
 		?>
 		<div class="header-html">
 			<?php echo do_shortcode( $content ); ?>
@@ -280,6 +281,7 @@ class Header {
 	 * @return void
 	 */
 	public function render_mobile_menu_offset() {
+		$offset_config = vite( 'customizer' )->get_setting( 'header' )['offset'] ?? [];
 		?>
 		<div data-modal class="mobile-menu-offset">
 			<div class="mobile-menu-offset-inner">
@@ -289,7 +291,15 @@ class Header {
 					</a>
 				</div>
 				<div data-modal-content class="mobile-menu-offset-content">
-					<?php vite( 'nav-menu' )->render_menu( 'mobile' ); ?>
+					<?php
+					if ( ! empty( $offset_config ) ) {
+						foreach ( $offset_config as $element ) {
+							echo '<div data-element="header-' . esc_attr( $element['id'] ) . '">';
+							get_template_part( 'template-parts/header/header', $element['id'] );
+							echo '</div>';
+						}
+					}
+					?>
 				</div>
 			</div>
 		</div>
