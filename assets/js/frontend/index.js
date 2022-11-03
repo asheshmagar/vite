@@ -1,7 +1,7 @@
 import domReady from './dom-ready';
 import handleModal from './handle-modal';
 import loopFocus from './loop-focus';
-import { $, $$, slideDown, slideUp } from './utils';
+import { $, $$ } from './utils';
 
 domReady( () => {
 	[ ...( $$( '.header-primary-menu, .header-secondary-menu' ) ) ].forEach( ( menu ) => {
@@ -67,14 +67,17 @@ domReady( () => {
 	[ ...( $$( '.mobile-menu .vite-sub-menu-toggle' ) ) ].forEach( el => {
 		const submenu = el.closest( '.menu-item' )?.querySelector( '.sub-menu' );
 		if ( ! submenu ) return;
+		const submenuIcon = el.querySelector( '.vite-icon' );
 		el.addEventListener( 'click', e => {
 			e.preventDefault();
 			if ( el.dataset.submenuOpen ) {
 				delete el.dataset.submenuOpen;
-				slideUp( submenu );
+				submenu.style.display = 'none';
+				submenuIcon.style.transform = 'rotate(0deg)';
 			} else {
 				el.dataset.submenuOpen = 'true';
-				slideDown( submenu );
+				submenu.style.display = 'block';
+				submenuIcon.style.transform = 'rotate(180deg)';
 			}
 		} );
 	} );
@@ -82,7 +85,7 @@ domReady( () => {
 	// Handle search toggle and modal.
 	handleModal( {
 		modalEl: $( '.search-modal' ),
-		openModalEl: $( '.search-modal-open' ),
+		openModalEl: $$( '.search-modal-open' ),
 		closeModalEl: $( '.search-modal-close' ),
 		onOpen: ( { modalEl } ) => {
 			const timeout = setTimeout( () => {
@@ -91,7 +94,13 @@ domReady( () => {
 				loopFocus( modalEl );
 			}, 100 );
 		},
-		onClose: ( { openModalEl } ) => openModalEl?.focus(),
+		onClose: ( { openModalEl } ) => {
+			if ( openModalEl.length ) {
+				openModalEl[ 1 ].focus();
+			} else {
+				openModalEl?.focus();
+			}
+		},
 	} );
 
 	// Handle mobile menu toggle and modal.
