@@ -71,9 +71,9 @@ class DynamicCSS {
 	 * @return void
 	 */
 	public function init_css_data() {
-		$settings = vite( 'customize' )->get_settings();
+		$settings = vite( 'customizer' )->get_settings();
 		foreach ( $settings as $key => $setting ) {
-			if ( $setting['selectors'] ) {
+			if ( isset( $setting['selectors'] ) ) {
 				$this->css_data[ $key ] = $setting;
 			}
 		}
@@ -174,29 +174,6 @@ class DynamicCSS {
 	}
 
 	/**
-	 * Add.
-	 *
-	 * @param array[] $data Data.
-	 * @return void
-	 */
-	public function add( array $data = [] ) {
-		foreach ( $data as $datum ) {
-			if (
-				isset( $datum['selectors'] )
-			) {
-				$this->css_data[] = [
-					'name'       => $datum['name'],
-					'control'    => $datum['control'] ?? null,
-					'selectors'  => $datum['selectors'] ?? [],
-					'properties' => $datum['properties'] ?? [],
-					'context'    => $datum['context'] ?? null,
-					'extra'      => $datum['input_attrs'] ?? null,
-				];
-			}
-		}
-	}
-
-	/**
 	 * Check if it is default.
 	 *
 	 * @param mixed $value Theme mod value.
@@ -271,7 +248,7 @@ class DynamicCSS {
 											$this->css[ $device ] .= $this->make_css( $d['selectors'], $d['properties'], $values );
 										} else {
 											if ( isset( $values['value'] ) ) {
-												$unit                  = $values['unit'] ?? ( $d['extra']['defaultUnit'] ?? 'px' );
+												$unit                  = $values['unit'] ?? ( $d['input_attrs']['defaultUnit'] ?? 'px' );
 												$unit                  = '-' === $unit ? '' : $unit;
 												$this->css[ $device ] .= $this->make_css( $d['selectors'], $d['properties'], "{$values['value']}$unit" );
 											}
@@ -280,7 +257,7 @@ class DynamicCSS {
 								}
 							} else {
 								if ( isset( $value['value'] ) ) {
-									$unit                  = $value['unit'] ?? ( $d['extra']['defaultUnit'] ?? 'px' );
+									$unit                  = $value['unit'] ?? ( $d['input_attrs']['defaultUnit'] ?? 'px' );
 									$unit                  = '-' === $unit ? '' : $unit;
 									$this->css['desktop'] .= $this->make_css( $d['selectors'], $d['properties'], "{$value['value']}$unit" );
 								}
@@ -292,7 +269,9 @@ class DynamicCSS {
 					case 'vite-background':
 						$type = $value['type'] ?? 'color';
 
-						if ( 'gradient' === $type && isset( $value['gradient'] ) ) {
+						if ( 'color' === $type && isset( $value['color'] ) ) {
+							$this->css['desktop'] .= $this->make_css( $d['selectors'], [], "background-color: {$value['color']};" );
+						} elseif ( 'gradient' === $type && isset( $value['gradient'] ) ) {
 							$this->css['desktop'] .= $this->make_css( $d['selectors'], [], "background: {$value['gradient']};" );
 						} else {
 							unset( $value['gradient'] );
@@ -316,13 +295,13 @@ class DynamicCSS {
 							}
 
 							if ( ! empty( $tablet ) ) {
-								$this->css['tablet'] .= $this->make_css( $d['selectors'], $d['properties'], $this->background_css( $tablet ) );
+								$this->css['tablet'] .= $this->make_css( $d['selectors'], [], $this->background_css( $tablet ) );
 							}
 							if ( ! empty( $mobile ) ) {
-								$this->css['mobile'] .= $this->make_css( $d['selectors'], $d['properties'], $this->background_css( $mobile ) );
+								$this->css['mobile'] .= $this->make_css( $d['selectors'], [], $this->background_css( $mobile ) );
 							}
 							if ( ! empty( $desktop ) ) {
-								$this->css['desktop'] .= $this->make_css( $d['selectors'], $d['properties'], $this->background_css( $desktop ) );
+								$this->css['desktop'] .= $this->make_css( $d['selectors'], [], $this->background_css( $desktop ) );
 							}
 						}
 						break;
