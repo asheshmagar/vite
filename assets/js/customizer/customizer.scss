@@ -154,3 +154,25 @@
 		max-width: 100% !important;
 	}
 }
+
+[data-builder="active"] {
+	&.in-sub-panel:not(.section-open) [id="sub-accordion-panel-vite[header-builder]"] .control-section,
+	&.in-sub-panel:not(.section-open) [id="sub-accordion-panel-vite[footer-builder]"] .control-section {
+		display: none !important;
+	}
+}
+
+[data-builder="active"] {
+	&.in-sub-panel:not(.section-open) #customize-theme-controls {
+		ul[id="sub-accordion-section-vite[header-builder-settings]"] {
+			transform: none;
+			height: auto;
+			visibility: visible;
+			top: 75px;
+		}
+
+		.section-meta {
+			display: none;
+		}
+	}
+}
