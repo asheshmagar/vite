@@ -196,40 +196,47 @@ import _ from 'lodash';
 						break;
 					case 'vite-background':
 						const backgroundType = newValue?.type ?? 'color';
-						css.desktop += makeCSS( selectors, properties, `background-color: ${ newValue?.color ?? 'transparent' };` );
-						if ( 'gradient' === backgroundType && newValue?.gradient ) {
-							css.desktop += makeCSS( selectors, [], `background:${ newValue.gradient };` );
-						} else {
-							delete newValue?.gradient;
+						switch ( backgroundType ) {
+							case 'color':
+								css.desktop += makeCSS( selectors, [], `background-color: ${ newValue?.color ?? 'transparent' };` );
+								break;
+							case 'gradient':
+								if ( newValue?.gradient ) {
+									css.desktop += makeCSS( selectors, [], `background:${ newValue.gradient };` );
+								}
+								break;
+							case 'image':
+								delete newValue?.gradient;
 
-							const deviceArray = {
-								desktop: {},
-								tablet: {},
-								mobile: {},
-							};
+								const deviceArray = {
+									desktop: {},
+									tablet: {},
+									mobile: {},
+								};
 
-							for ( const device of DEVICES ) {
-								for ( const [ k, v ] of Object.entries( newValue ) ) {
-									if ( v && isScalar( v ) ) {
-										deviceArray.desktop[ k ] = v;
-										continue;
-									}
+								for ( const device of DEVICES ) {
+									for ( const [ k, v ] of Object.entries( newValue ) ) {
+										if ( v && isScalar( v ) ) {
+											deviceArray.desktop[ k ] = v;
+											continue;
+										}
 
-									if ( v?.[ device ] ) {
-										deviceArray[ device ][ k ] = v[ device ];
+										if ( v?.[ device ] ) {
+											deviceArray[ device ][ k ] = v[ device ];
+										}
 									}
 								}
-							}
 
-							if ( Object.keys( deviceArray.desktop ).length ) {
-								css.desktop += makeCSS( selectors, [], backgroundCSS( deviceArray.desktop ) );
-							}
-							if ( Object.keys( deviceArray.tablet ).length ) {
-								css.tablet += makeCSS( selectors, [], backgroundCSS( deviceArray.tablet ) );
-							}
-							if ( Object.keys( deviceArray.mobile ).length ) {
-								css.mobile += makeCSS( selectors, [], backgroundCSS( deviceArray.mobile ) );
-							}
+								if ( Object.keys( deviceArray.desktop ).length ) {
+									css.desktop += makeCSS( selectors, [], backgroundCSS( deviceArray.desktop ) );
+								}
+								if ( Object.keys( deviceArray.tablet ).length ) {
+									css.tablet += makeCSS( selectors, [], backgroundCSS( deviceArray.tablet ) );
+								}
+								if ( Object.keys( deviceArray.mobile ).length ) {
+									css.mobile += makeCSS( selectors, [], backgroundCSS( deviceArray.mobile ) );
+								}
+								break;
 						}
 						break;
 					case 'vite-typography':
