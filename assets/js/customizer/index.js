@@ -16,16 +16,16 @@ const api = wp.customize;
 
 {
 	api.bind( 'ready', () => {
-		const toStyles = values => {
+		let values = {};
+		const toStyles = val => {
 			let style = ':root{';
-			for ( const key in values ) {
-				style += `${ key }:${ values[ key ] };`;
+			for ( const key in val ) {
+				style += `${ key }:${ val[ key ] };`;
 			}
 			style += '}';
 			$( 'style#vite-root-css' ).remove();
 			$( 'head' ).append( `<style id="vite-root-css">${ style }</style>` );
 		};
-		let values = {};
 		[ 'global-palette', 'link-colors' ].forEach( control => {
 			const val = api( `vite[${ control }]` ).get();
 			if ( val ) {
@@ -152,6 +152,39 @@ const api = wp.customize;
 				}
 			}
 		} );
+
+		const initHeaderBuilderPanel = ( panel ) => {
+			const builderSection = api.section( 'vite[header-builder]' );
+
+			if ( ! builderSection ) return;
+			const settings = api.section( 'vite[header-builder-settings]' );
+
+			panel.expanded.bind( expanded => {
+				_.each( builderSection.controls(), control => {
+					if ( 'resolved' === control.deferred.embedded.state() ) return;
+					control.renderContent();
+					control.deferred.embedded.resolve();
+					control.container.trigger( 'init' );
+				} );
+
+				if ( expanded ) {
+					$( '.wp-full-overlay' ).attr( 'data-builder', 'active' );
+				} else {
+					$( '.wp-full-overlay' ).removeAttr( 'data-builder' );
+				}
+
+				if ( settings ) {
+					_.each( settings.controls(), control => {
+						if ( 'resolved' === control.deferred.embedded.state() ) return;
+						control.renderContent();
+						control.deferred.embedded.resolve();
+						control.container.trigger( 'init' );
+					} );
+				}
+			} );
+		};
+
+		api.panel( 'vite[header-builder]', initHeaderBuilderPanel );
 	} );
 }
 
