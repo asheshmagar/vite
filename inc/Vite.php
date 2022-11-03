@@ -29,6 +29,7 @@ class Vite {
 	 */
 	private function init() {
 		vite( 'customizer' )->init();
+		vite( 'dynamic-css' )->init();
 		vite( 'supports' )->init();
 		vite( 'nav-menu' )->init();
 		vite( 'sidebar' )->init();
