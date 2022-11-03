@@ -32,6 +32,7 @@ const ATTACHMENTS = [
 
 export default memo( ( props ) => {
 	const {
+		control,
 		control: {
 			setting,
 			params: {
@@ -39,6 +40,7 @@ export default memo( ( props ) => {
 				description,
 			},
 		},
+		customizer,
 	} = props;
 	const [ value, setValue ] = useState( setting.get() );
 	const { device, DeviceSelector } = useDeviceSelector();
@@ -91,6 +93,8 @@ export default memo( ( props ) => {
 							setting.set( temp );
 							setValue( temp );
 						} }
+						customizer={ customizer }
+						control={ control }
 					/>
 				) }
 				{ value?.type === 'gradient' && (
@@ -102,6 +106,8 @@ export default memo( ( props ) => {
 							setValue( temp );
 						} }
 						type="gradient"
+						customizer={ customizer }
+						control={ control }
 					/>
 				) }
 
