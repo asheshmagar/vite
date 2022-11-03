@@ -50,19 +50,27 @@ class WalkerPage extends Walker_Page {
 		$link_wrap_open        = '';
 		$link_wrap_close       = '';
 		$li_attrs              = '';
+		$submenu_icon          = '';
+		$submenu_icon_button   = '';
 
 		if ( isset( $args['pages_with_children'][ $data_object->ID ] ) ) {
 			$css_class[] = 'page_item_has_children vite-has-sub-menu';
 
 			if ( in_array( $theme_location, [ 'primary', 'secondary', 'mobile' ], true ) ) {
-				$submenu_icon = apply_filters( 'vite_submenu_icon', vite( 'icon' )->get_icon( 'chevron-down', [ 'size' => 10 ] ) );
+				$icon                = apply_filters( 'vite_submenu_icon', vite( 'icon' )->get_icon( 'chevron-down', [ 'size' => 10 ] ) );
+				$submenu_icon        = sprintf( '<span class="vite-sub-menu-icon" role="presentation">%s</span>', $icon );
+				$submenu_icon_button = sprintf(
+					'<button aria-expanded="false" aria-label="%s" class="vite-sub-menu-toggle%s">%s</button>',
+					esc_attr__( 'Open sub menu', 'vite' ),
+					'mobile' !== $theme_location ? ' vite-sub-menu-toggle-hidden' : '',
+					'mobile' !== $theme_location ? '' : $icon
+				);
 				if ( 'mobile' === $theme_location ) {
-					$link_wrap_open        = '<div class="vite-sub-menu-toggle-wrap">';
-					$link_wrap_close       = '</div>';
-					$mobile_submenu_toggle = "<button aria-expanded='false' class='vite-sub-menu-toggle'><span class='vite-sub-menu-icon' role='presentation'>$submenu_icon</span></button>";
+					$link_wrap_open  = '<div class="vite-sub-menu-toggle-wrap">';
+					$link_wrap_close = '</div>';
+					$submenu_icon    = '';
 				} else {
-					$li_attrs             = ' aria-haspopup="true"';
-					$desktop_submenu_icon = "<span class='vite-sub-menu-icon' role='presentation'>$submenu_icon</span>";
+					$li_attrs = ' aria-haspopup="true"';
 				}
 			}
 		}
@@ -118,8 +126,8 @@ class WalkerPage extends Walker_Page {
 			$link_wrap_open,
 			get_permalink( $data_object->ID ),
 			$title,
-			$desktop_submenu_icon,
-			$mobile_submenu_toggle,
+			$submenu_icon,
+			$submenu_icon_button,
 			$link_wrap_close
 		);
 	}
