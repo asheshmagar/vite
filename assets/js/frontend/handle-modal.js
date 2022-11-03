@@ -1,4 +1,4 @@
-const noop = () => {};
+import { noop } from './utils';
 
 export default ( {
 	modalEl,
@@ -23,6 +23,12 @@ export default ( {
 		onClose.call( null, { modalEl, openModalEl, closeModalEl } );
 	};
 
-	openModalEl?.addEventListener( 'click', openModal );
+	if ( openModalEl ) {
+		if ( openModalEl.length ) {
+			openModalEl.forEach( ( el ) => el.addEventListener( 'click', openModal ) );
+		} else {
+			openModalEl.addEventListener( 'click', openModal );
+		}
+	}
 	closeModalEl?.addEventListener( 'click', closeModal );
 };
