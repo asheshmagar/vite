@@ -1,0 +1,27 @@
+.vite-builder-components {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+
+	.vite-builder-component-inner {
+		display: flex;
+		min-height: 30px;
+		justify-content: space-between;
+		align-items: center;
+		background-color: #fff;
+		padding: 2px 10px;
+		border-radius: 4px;
+		cursor: pointer;
+		border: thin solid #ccc;
+	}
+}
+
+.vite-builder-component-inner.vite-builder-component-dragging {
+	.vite-builder-component-handle {
+		display: none;
+	}
+	padding: 5px 10px;
+	background-color: #fff;
+	border-radius: 4px;
+	border: thin solid #ccc;
+}
