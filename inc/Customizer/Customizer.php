@@ -42,13 +42,6 @@ class Customizer {
 	private $panels = [];
 
 	/**
-	 * Holds instance of dynamic CSS.
-	 *
-	 * @var DynamicCSS $css
-	 */
-	public $css;
-
-	/**
 	 * Print css.
 	 *
 	 * @var bool $print_css
@@ -134,11 +127,9 @@ class Customizer {
 	 * @return array
 	 */
 	public function partial_response( array $response ): array {
-		if ( ! empty( $this->css->css_data ) ) {
-			try {
-				$response['viteDynamicCSS'] = $this->css->make()->get();
-			} catch ( \Exception $e ) {} // phpcs:ignore
-		}
+		try {
+			$response['viteDynamicCSS'] = vite( 'dynamic-css' )->make()->get();
+		} catch ( \Exception $e ) {} // phpcs:ignore
 		return $response;
 	}
 
@@ -165,13 +156,10 @@ class Customizer {
 		}
 
 		$this->print_css = true;
-
-		if ( ! empty( $this->css->css_data ) ) {
-			try {
-				$css = $this->css->make()->get();
-				// echo '<style id="vite-dynamic-css">' . $css . '</style>'; // phpcs:ignore
-			} catch ( \Exception $e ) {} // phpcs:ignore
-		}
+		try {
+			$css = vite( 'dynamic-css' )->make()->get();
+			// echo '<style id="vite-dynamic-css">' . $css . '</style>'; // phpcs:ignore
+		} catch ( \Exception $e ) {} // phpcs:ignore
 	}
 
 	/**
@@ -195,6 +183,10 @@ class Customizer {
 		return $default;
 	}
 
+	public function get_settings() {
+		return $this->settings;
+	}
+
 	/**
 	 * Override default controls.
 	 *
@@ -204,6 +196,8 @@ class Customizer {
 	public function override_controls( WP_Customize_Manager $wp_customize ) {
 		$wp_customize->get_control( 'blogname' )->type        = 'vite-input';
 		$wp_customize->get_control( 'blogdescription' )->type = 'vite-input';
+		$wp_customize->get_control( 'custom_logo' )->section  = 'vite[header-logo]';
+		$wp_customize->get_control( 'custom_logo' )->priority = 1;
 	}
 
 	/**
@@ -212,11 +206,6 @@ class Customizer {
 	 * @return void
 	 */
 	public function save_dynamic_css() {
-		if ( ! empty( $this->css->css_data ) ) {
-			try {
-				// $this->css->make()->save();
-			} catch ( \Exception $e ) {} // phpcs:ignore
-		}
 	}
 
 	/**
