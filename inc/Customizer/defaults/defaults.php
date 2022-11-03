@@ -6,7 +6,7 @@
  */
 
 return [
-	'global-palette'          => [
+	'global-palette'           => [
 		'--global--color--1' => '#2271b1',
 		'--global--color--2' => '#135e96',
 		'--global--color--3' => '#100c08',
@@ -16,38 +16,38 @@ return [
 		'--global--color--7' => '#eaf0f6',
 		'--global--color--8' => '#ffffff',
 	],
-	'link-colors'             => [
+	'link-colors'              => [
 		'--link--color'        => 'var(--global--color--3)',
 		'--link--hover--color' => 'var(--global--color--1)',
 	],
-	'heading-color'           => [
+	'heading-color'            => [
 		'--heading--color' => 'var(--global--color--3)',
 	],
-	'text-color'              => [
+	'text-color'               => [
 		'--text--color' => 'var(--global--color--4)',
 	],
-	'accent-color'            => [
+	'accent-color'             => [
 		'--accent--color' => 'var(--global--color--1)',
 	],
-	'button-colors'           => [
+	'button-colors'            => [
 		'--button--color'            => 'var(--global--color--8)',
 		'--button--hover--color'     => 'var(--global--color--8)',
 		'--button--bg--color'        => 'var(--global--color--1)',
 		'--button--hover--bg--color' => 'var(--global--color--2)',
 	],
-	'border-color'            => [
+	'border-color'             => [
 		'--border--color' => 'var(--global--color--6)',
 	],
-	'header-background-color' => [
+	'header-background-color'  => [
 		'--header--background--color' => 'var(--global--color--8)',
 	],
-	'site-background-color'   => [
+	'site-background-color'    => [
 		'--site--background--color' => 'var(--global--color--5)',
 	],
-	'footer-background-color' => [
+	'footer-background-color'  => [
 		'--footer--background--color' => 'var(--global--color--8)',
 	],
-	'header'                  => [
+	'header'                   => [
 		'desktop' => [
 			'top'    => [
 				'left'   => [],
@@ -91,19 +91,24 @@ return [
 				'right'  => [],
 			],
 		],
+		'offset'  => [
+			[
+				'id' => 'mobile-menu',
+			],
+		],
 	],
-	'header-html'             => __( 'Enter HTML.', 'vite' ),
-	'header-button-text'      => __( 'Button', 'vite' ),
-	'header-button-url'       => '#',
-	'footer'                  => [
+	'header-html'              => __( 'Enter HTML.', 'vite' ),
+	'header-button-text'       => __( 'Button', 'vite' ),
+	'header-button-url'        => '#',
+	'footer'                   => [
 		'top'    => [],
 		'middle' => [],
 		'bottom' => [
 			'1' => [ 'html' ],
 		],
 	],
-	'footer-html'             => __( '{{copyright}} {{year}} {{site-title}}', 'vite' ),
-	'archive-elements'        => [
+	'footer-html'              => __( '{{copyright}} {{year}} {{site-title}}', 'vite' ),
+	'archive-elements'         => [
 		[
 			'id'      => 'meta-1',
 			'visible' => true,
@@ -149,7 +154,7 @@ return [
 			'visible' => true,
 		],
 	],
-	'single-header-elements'  => [
+	'single-header-elements'   => [
 		[
 			'id'      => 'title',
 			'visible' => true,
@@ -177,7 +182,7 @@ return [
 			'visible' => false,
 		],
 	],
-	'page-header-elements'    => [
+	'page-header-elements'     => [
 		[
 			'id'      => 'title',
 			'visible' => true,
@@ -186,5 +191,30 @@ return [
 			'id'      => 'breadcrumbs',
 			'visible' => false,
 		],
+	],
+	'header-top-row-height'    => [
+		'desktop' => [
+			'value' => 50,
+			'unit'  => 'px',
+		],
+	],
+	'header-main-row-height'   => [
+		'desktop' => [
+			'value' => 90,
+			'unit'  => 'px',
+		],
+	],
+	'header-bottom-row-height' => [
+		'desktop' => [
+			'value' => 50,
+			'unit'  => 'px',
+		],
+	],
+	'header-top-row-layout'    => 'contained',
+	'header-main-row-layout'   => 'contained',
+	'header-bottom-row-layout' => 'contained',
+	'header-background'        => [
+		'color' => 'var(--global--color--8)',
+		'type'  => 'color',
 	],
 ];
