@@ -3,10 +3,10 @@
 vite( 'customizer' )->add(
 	'panels',
 	[
-		'vite[global]'               => [
+		'vite[global]'         => [
 			'title' => __( 'Global', 'vite' ),
 		],
-		'vite[header-builder-panel]' => [
+		'vite[header-builder]' => [
 			'title' => __( 'Header', 'vite' ),
 		],
 	]
@@ -15,22 +15,46 @@ vite( 'customizer' )->add(
 vite( 'customizer' )->add(
 	'sections',
 	[
-		'vite[global-colors]'          => [
+		'vite[global-colors]'           => [
 			'title' => __( 'Colors', 'vite' ),
 			'panel' => 'vite[global]',
 		],
-		'vite[global-typography]'      => [
+		'vite[global-typography]'       => [
 			'title' => __( 'Typography', 'vite' ),
 			'panel' => 'vite[global]',
 		],
-		'vite[header-builder-section]' => [
+		'vite[header-builder]'          => [
 			'title' => __( 'Header', 'vite' ),
-			'panel' => 'vite[header-builder-panel]',
+			'panel' => 'vite[header-builder]',
 		],
-		'vite[archive]'                => [
+		'vite[header-builder-settings]' => [
+			'title' => __( 'Header builder settings', 'vite' ),
+			'panel' => 'vite[header-builder]',
+		],
+		'vite[header-logo]'             => [
+			'title' => __( 'Logo', 'vite' ),
+			'panel' => 'vite[header-builder]',
+		],
+		'vite[header-html]'             => [
+			'title' => __( 'HTML', 'vite' ),
+			'panel' => 'vite[header-builder]',
+		],
+		'vite[header-top-row]'          => [
+			'title' => __( 'Top row', 'vite' ),
+			'panel' => 'vite[header-builder]',
+		],
+		'vite[header-main-row]'         => [
+			'title' => __( 'Main row', 'vite' ),
+			'panel' => 'vite[header-builder]',
+		],
+		'vite[header-bottom-row]'       => [
+			'title' => __( 'Bottom', 'vite' ),
+			'panel' => 'vite[header-builder]',
+		],
+		'vite[archive]'                 => [
 			'title' => __( 'Archive/Blog', 'vite' ),
 		],
-		'vite[single]'                 => [
+		'vite[single]'                  => [
 			'title' => __( 'Single Post', 'vite' ),
 		],
 	]
