@@ -17,7 +17,6 @@ use WP_Comment;
 /**
  * Class WalkerComment.
  */
-
 class WalkerComment extends Walker_Comment {
 
 	/**
