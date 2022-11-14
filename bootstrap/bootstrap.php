@@ -13,6 +13,8 @@ $vite = new Container();
 $vite->delegate( new ReflectionContainer() );
 
 $service_providers = [
+	Vite\ServiceProvider\SchemaMarkupServiceProvider::class,
+	Vite\ServiceProvider\OpenGraphServiceProvider::class,
 	Vite\ServiceProvider\CoreServiceProvider::class,
 	Vite\ServiceProvider\BreadcrumbsServiceProvider::class,
 	Vite\ServiceProvider\SupportsServiceProvider::class,
