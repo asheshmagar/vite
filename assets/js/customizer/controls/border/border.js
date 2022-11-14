@@ -22,6 +22,8 @@ const BORDER_STYLES = [
 
 export default memo( ( props ) => {
 	const {
+		control,
+		customizer,
 		control: {
 			setting,
 			params: {
@@ -76,6 +78,8 @@ export default memo( ( props ) => {
 											} );
 										} }
 										label={ s.label }
+										customizer={ customizer }
+										control={ control }
 									/>
 								) ) }
 							</div>
