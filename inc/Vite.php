@@ -28,6 +28,8 @@ class Vite {
 	 * @return void
 	 */
 	private function init() {
+		vite( 'schema-markup' )->init();
+		vite( 'open-graph' )->init();
 		vite( 'customizer' )->init();
 		vite( 'dynamic-css' )->init();
 		vite( 'supports' )->init();
