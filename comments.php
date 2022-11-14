@@ -16,10 +16,9 @@ if ( post_password_required() ) {
 	return;
 }
 ?>
-<div id="comments" class="comments-area">
+<div id="comments" class="comments-area<?php print( esc_attr( have_comments() ? '' : ' no-comments' ) ); ?>">
 <?php
 	do_action( 'vite_before_comments' );
 	do_action( 'vite_comments' );
 	do_action( 'vite_after_comments' );
 ?>
-</div><!-- #comments -->
