@@ -40,27 +40,27 @@ $header_elements = apply_filters(
 			],
 			'mobile-menu'         => [
 				'name'    => __( 'Mobile menu', 'vite' ),
-				'section' => 'vite[header][mobile-menu]',
+				'section' => 'vite[header-mobile-menu]',
 			],
 			'mobile-menu-trigger' => [
 				'name'    => __( 'Trigger', 'vite' ),
-				'section' => 'vite[header][mobile-menu-trigger]',
+				'section' => 'vite[header-mobile-menu-trigger]',
 			],
 			'button'              => [
 				'name'    => __( 'Button', 'vite' ),
-				'section' => 'vite[header][button]',
+				'section' => 'vite[header-mobile-button]',
 			],
 			'social'              => [
 				'name'    => __( 'Social', 'vite' ),
-				'section' => 'vite[header][social]',
+				'section' => 'vite[header-mobile-social]',
 			],
 			'html'                => [
 				'name'    => __( 'HTML', 'vite' ),
-				'section' => 'vite[header][html]',
+				'section' => 'vite[header-mobile-html]',
 			],
 			'search'              => [
 				'name'    => __( 'Search', 'vite' ),
-				'section' => 'vite[header][search]',
+				'section' => 'vite[header-mobile-search]',
 			],
 		],
 	]
@@ -104,10 +104,6 @@ vite( 'customizer' )->add(
 					get_template_part( 'template-parts/header/header', '' );
 				},
 			],
-		],
-		'vite[header-builder-tabs]'       => [
-			'type'    => 'vite-tabs',
-			'section' => 'vite[header-builder-settings]',
 		],
 		'vite[header-builder-components]' => [
 			'section'     => 'vite[header-builder-settings]',
@@ -246,6 +242,75 @@ vite( 'customizer' )->add(
 			],
 			'selectors'   => [ '.site-header [data-row="bottom"] > .container' ],
 			'properties'  => [ '--min--height' ],
+		],
+		'vite[header-sticky]'             => [
+			'section'     => 'vite[header-builder-settings]',
+			'type'        => 'vite-toggle',
+			'title'       => __( 'Sticky', 'vite' ),
+			'default'     => vite( 'customizer' )->get_defaults()['[header-sticky'] ?? false,
+			'conditional' => [
+				'vite-tab' => 'general',
+			],
+		],
+		'vite[header-sticky-row]'         => [
+			'section'   => 'vite[header-builder-settings]',
+			'type'      => 'vite-select',
+			'title'     => __( 'Sticky row', 'vite' ),
+			'default'   => vite( 'customizer' )->get_defaults()['header-sticky-row'],
+			'choices'   => [
+				'top'         => __( 'Top', 'vite' ),
+				'main'        => __( 'Main', 'vite' ),
+				'bottom'      => __( 'Bottom', 'vite' ),
+				'top+main'    => __( 'Top + Main', 'vite' ),
+				'top+bottom'  => __( 'Top + Bottom', 'vite' ),
+				'main+bottom' => __( 'Main + Bottom', 'vite' ),
+				'all'         => __( 'All', 'vite' ),
+			],
+			'condition' => [
+				'vite[header-sticky]' => true,
+				'vite-tab'            => 'general',
+			],
+		],
+		'vite[header-sticky-enable]'      => [
+			'section'     => 'vite[header-builder-settings]',
+			'type'        => 'vite-buttonset',
+			'title'       => __( 'Enable on', 'vite' ),
+			'default'     => vite( 'customizer' )->get_defaults()['header-sticky-enable'],
+			'choices'     => [
+				'desktop' => __( 'Desktop', 'vite' ),
+				'tablet'  => __( 'Tablet', 'vite' ),
+				'mobile'  => __( 'Mobile', 'vite' ),
+			],
+			'input_attrs' => [
+				'multiple' => true,
+			],
+			'condition'   => [
+				'vite[header-sticky]' => true,
+				'vite-tab'            => 'general',
+			],
+		],
+		'vite[header-transparent]'        => [
+			'section' => 'vite[header-builder-settings]',
+			'type'    => 'vite-toggle',
+			'title'   => __( 'Transparent', 'vite' ),
+			'default' => vite( 'customizer' )->get_defaults()['[header-transparent'] ?? false,
+		],
+		'vite[header-transparent-enable]' => [
+			'section'     => 'vite[header-builder-settings]',
+			'type'        => 'vite-buttonset',
+			'title'       => __( 'Enable on', 'vite' ),
+			'default'     => vite( 'customizer' )->get_defaults()['header-transparent-enable'],
+			'choices'     => [
+				'desktop' => __( 'Desktop', 'vite' ),
+				'tablet'  => __( 'Tablet', 'vite' ),
+				'mobile'  => __( 'Mobile', 'vite' ),
+			],
+			'input_attrs' => [
+				'multiple' => true,
+			],
+			'condition'   => [
+				'vite[header-transparent]' => true,
+			],
 		],
 	]
 );

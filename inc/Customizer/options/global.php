@@ -6,7 +6,7 @@
 vite( 'customizer' )->add(
 	'settings',
 	[
-		'vite[global-palette]'  => [
+		'vite[global-palette]'         => [
 			'title'       => __( 'Global', 'vite' ),
 			'type'        => 'vite-color',
 			'default'     => vite( 'customizer' )->get_defaults()['global-palette'],
@@ -50,7 +50,7 @@ vite( 'customizer' )->add(
 			'selectors'   => [ ':root' ],
 			'properties'  => [ '' ],
 		],
-		'vite[text-color]'      => [
+		'vite[text-color]'             => [
 			'section'     => 'vite[global-colors]',
 			'type'        => 'vite-color',
 			'title'       => __( 'Text color', 'vite' ),
@@ -67,7 +67,7 @@ vite( 'customizer' )->add(
 			'selectors'   => [ ':root' ],
 			'properties'  => [ '' ],
 		],
-		'vite[link-colors]'     => [
+		'vite[link-colors]'            => [
 			'section'     => 'vite[global-colors]',
 			'type'        => 'vite-color',
 			'title'       => __( 'Link colors', 'vite' ),
@@ -88,7 +88,7 @@ vite( 'customizer' )->add(
 			'selectors'   => [ ':root' ],
 			'properties'  => [ '' ],
 		],
-		'vite[heading-color]'   => [
+		'vite[heading-color]'          => [
 			'section'     => 'vite[global-colors]',
 			'type'        => 'vite-color',
 			'title'       => __( 'Heading color', 'vite' ),
@@ -105,7 +105,7 @@ vite( 'customizer' )->add(
 			'selectors'   => [ ':root' ],
 			'properties'  => [ '' ],
 		],
-		'vite[button-colors]'   => [
+		'vite[button-colors]'          => [
 			'section'     => 'vite[global-colors]',
 			'type'        => 'vite-color',
 			'title'       => __( 'Button colors', 'vite' ),
@@ -134,7 +134,7 @@ vite( 'customizer' )->add(
 			'selectors'   => [ ':root' ],
 			'properties'  => [ '' ],
 		],
-		'vite[border-color]'    => [
+		'vite[border-color]'           => [
 			'section'     => 'vite[global-colors]',
 			'type'        => 'vite-color',
 			'title'       => __( 'Border color', 'vite' ),
@@ -151,47 +151,100 @@ vite( 'customizer' )->add(
 			'selectors'   => [ ':root' ],
 			'properties'  => [ '' ],
 		],
-		'vite[base-typography]' => [
+		'vite[base-typography]'        => [
 			'section'   => 'vite[global-typography]',
 			'type'      => 'vite-typography',
 			'title'     => __( 'Base', 'vite' ),
 			'selectors' => [ 'body' ],
 		],
-		'vite[h1-typography]'   => [
+		'vite[h1-typography]'          => [
 			'section'   => 'vite[global-typography]',
 			'type'      => 'vite-typography',
 			'title'     => __( 'Heading 1 (h1)', 'vite' ),
 			'selectors' => [ 'body' ],
 		],
-		'vite[h2-typography]'   => [
+		'vite[h2-typography]'          => [
 			'section'   => 'vite[global-typography]',
 			'type'      => 'vite-typography',
 			'title'     => __( 'Heading 2 (h2)', 'vite' ),
 			'selectors' => [ 'body' ],
 		],
-		'vite[h3-typography]'   => [
+		'vite[h3-typography]'          => [
 			'section'   => 'vite[global-typography]',
 			'type'      => 'vite-typography',
 			'title'     => __( 'Heading 3 (h3)', 'vite' ),
 			'selectors' => [ 'body' ],
 		],
-		'vite[h4-typography]'   => [
+		'vite[h4-typography]'          => [
 			'section'   => 'vite[global-typography]',
 			'type'      => 'vite-typography',
 			'title'     => __( 'Heading 4 (h4)', 'vite' ),
 			'selectors' => [ 'body' ],
 		],
-		'vite[h5-typography]'   => [
+		'vite[h5-typography]'          => [
 			'section'   => 'vite[global-typography]',
 			'type'      => 'vite-typography',
 			'title'     => __( 'Heading 5 (h5)', 'vite' ),
 			'selectors' => [ 'body' ],
 		],
-		'vite[h6-typography]'   => [
+		'vite[h6-typography]'          => [
 			'section'   => 'vite[global-typography]',
 			'type'      => 'vite-typography',
 			'title'     => __( 'Heading 6 (h6)', 'vite' ),
 			'selectors' => [ 'body' ],
+		],
+		'vite[container-wide-width]'   => [
+			'section'     => 'vite[global-layout]',
+			'type'        => 'vite-slider',
+			'title'       => __( 'Container max width (px)', 'vite' ),
+			'default'     => vite( 'customizer' )->get_defaults()['container-wide-width'],
+			'input_attrs' => [
+				'min'  => 728,
+				'max'  => 2000,
+				'step' => 1,
+				'unit' => 'px',
+			],
+		],
+		'vite[container-narrow-width]' => [
+			'section'     => 'vite[global-layout]',
+			'type'        => 'vite-slider',
+			'title'       => __( 'Container narrow width (px)', 'vite' ),
+			'default'     => vite( 'customizer' )->get_defaults()['container-narrow-width'],
+			'input_attrs' => [
+				'min'  => 428,
+				'max'  => 1028,
+				'step' => 1,
+				'unit' => 'px',
+			],
+		],
+		'vite[content-spacing]'        => [
+			'section'     => 'vite[global-layout]',
+			'type'        => 'vite-slider',
+			'title'       => __( 'Content spacing', 'vite' ),
+			'default'     => vite( 'customizer' )->get_defaults()['content-spacing'],
+			'input_attrs' => [
+				'noUnits'    => false,
+				'units'      => [ 'px', 'rem', 'em' ],
+				'responsive' => true,
+			],
+			'selectors'   => [ '.site-content' ],
+			'properties'  => [ 'padding-block' ],
+		],
+		'vite[buttons-padding]'        => [
+			'section'     => 'vite[global-buttons]',
+			'type'        => 'vite-dimensions',
+			'title'       => __( 'Padding', 'vite' ),
+			'default'     => vite( 'customizer' )->get_defaults()['buttons-padding'],
+			'input_attrs' => [
+				'noUnits'    => false,
+				'units'      => [ 'px', 'rem', 'em' ],
+				'responsive' => true,
+			],
+		],
+		'vite[buttons-border]'         => [
+			'section' => 'vite[global-buttons]',
+			'type'    => 'vite-border',
+			'title'   => __( 'Border', 'vite' ),
 		],
 	]
 );

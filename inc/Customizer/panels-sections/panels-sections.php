@@ -23,6 +23,14 @@ vite( 'customizer' )->add(
 			'title' => __( 'Typography', 'vite' ),
 			'panel' => 'vite[global]',
 		],
+		'vite[global-layout]'           => [
+			'title' => __( 'Layout', 'vite' ),
+			'panel' => 'vite[global]',
+		],
+		'vite[global-buttons]'           => [
+			'title' => __( 'button', 'vite' ),
+			'panel' => 'vite[global]',
+		],
 		'vite[header-builder]'          => [
 			'title' => __( 'Header', 'vite' ),
 			'panel' => 'vite[header-builder]',
