@@ -1,7 +1,7 @@
 .vite-builder-portal {
 	position: absolute;
 	left: 0;
-	bottom: -224px;
+	bottom: -260px;
 	right: 0;
 	background: #eee;
 	width: auto;
@@ -12,7 +12,7 @@
 
 [data-builder="active"] {
 	#customize-preview {
-		bottom: 224px;
+		bottom: 260px;
 		height: auto;
 	}
 
@@ -181,5 +181,6 @@
 
 .vite-builder-mobile-offset-inner .vite-builder-area {
 	height: 185px !important;
-	overflow-x: auto;
+	overflow-x: hidden;
+	overflow-y: auto;
 }

@@ -121,7 +121,9 @@
 }
 
 .control-section {
-	.customize-control[id*="vite"]:has(+ .customize-control) {
+	.customize-control:not(.vite-hidden-control):not(:last-child) {
+		padding-bottom: 40px;
+		position: relative;
 		margin-bottom: 0;
 
 		&:after {
@@ -129,8 +131,9 @@
 			height: 0;
 			width: 100%;
 			display: block;
-			margin-block: 20px;
 			border-bottom: thin solid #d5d5d5;
+			position: absolute;
+			top: calc(100% - 20px);
 		}
 	}
 }

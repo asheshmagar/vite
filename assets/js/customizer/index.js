@@ -127,6 +127,12 @@ const api = wp.customize;
 						const result = () => c === 'conditions' ? analyzeConditions( state ) : analyzeCondition( state );
 						const setActiveState = () => {
 							element.active.set( result() );
+
+							if ( ! result() ) {
+								element.container.addClass( 'vite-hidden-control' );
+							} else {
+								element.container.removeClass( 'vite-hidden-control' );
+							}
 						};
 						control.bind( setActiveState );
 						element.active.validate = result;
