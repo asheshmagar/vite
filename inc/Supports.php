@@ -50,9 +50,7 @@ class Supports {
 			'post-thumbnails'                     => true,
 			'align-wide'                          => true,
 			'wp-block-styles'                     => true,
-//			'editor-styles'                       => true,
-//			'editor-font-sizes'                   => true,
-//			'editor-color-palette'                => true,
+			'editor-styles'                       => true,
 			'custom-logo'                         => apply_filters(
 				'vite_custom_logo_args',
 				[
