@@ -6,7 +6,7 @@
  * @since x.x.x
  */
 
-namespace Vite\Customizer;
+namespace Vite;
 
 /**
  * Class CSS.
@@ -41,6 +41,15 @@ class DynamicCSS {
 	public $css_data = [];
 
 	/**
+	 * Context.
+	 *
+	 * Either customizer or meta.
+	 *
+	 * @var string
+	 */
+	public $context = 'customizer';
+
+	/**
 	 * CSS.
 	 *
 	 * @var string[]
@@ -59,19 +68,15 @@ class DynamicCSS {
 	private $fonts = [];
 
 	/**
-	 * Init.
-	 */
-	public function init() {
-		add_action( 'vite_customizer_init', [ $this, 'init_css_data' ], PHP_INT_MAX );
-	}
-
-	/**
 	 * Init CSS data.
 	 *
+	 * @param array $settings Customizer settings.
 	 * @return void
 	 */
-	public function init_css_data() {
-		$settings = vite( 'customizer' )->get_settings();
+	public function init_css_data( array $settings = [] ) {
+		if ( empty( $settings ) ) {
+			return;
+		}
 		foreach ( $settings as $key => $setting ) {
 			if ( isset( $setting['selectors'] ) ) {
 				$this->css_data[ $key ] = $setting;
@@ -144,8 +149,7 @@ class DynamicCSS {
 	 * @return void
 	 */
 	public function enqueue() {
-		$this->make();
-		$css = $this->get();
+		$css = $this->make()->get();
 
 		if ( ! empty( $this->fonts ) ) {
 			$families  = array_keys( $this->fonts );
@@ -169,7 +173,7 @@ class DynamicCSS {
 		}
 
 		if ( ! empty( $css ) ) {
-			wp_add_inline_style( 'vite-style', $css );
+			wp_add_inline_style( 'vite-style', $this->minify( $css ) );
 		}
 	}
 
@@ -186,10 +190,8 @@ class DynamicCSS {
 			array_multisort( $default );
 			return wp_json_encode( $value ) === wp_json_encode( $default );
 		}
-
 		return $value === $default;
 	}
-
 
 	/**
 	 * Make css.
