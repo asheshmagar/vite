@@ -16,7 +16,7 @@ class Sanitize {
 	 * @param WP_Customize_Setting $setting Settings.
 	 * @return string
 	 */
-	public static function sanitize_radio( string $input, WP_Customize_Setting $setting ): string {
+	public function sanitize_radio( string $input, WP_Customize_Setting $setting ): string {
 		$input   = sanitize_text_field( $input );
 		$choices = $setting->manager->get_control( $setting->id )->choices;
 		return in_array( $input, array_keys( $choices ), true ) ? $input : ( $setting->default ?? '' );
@@ -29,7 +29,7 @@ class Sanitize {
 	 * @param WP_Customize_Setting $setting Settings.
 	 * @return string|array
 	 */
-	public static function sanitize_color( $input, WP_Customize_Setting $setting ) {
+	public function sanitize_color( $input, WP_Customize_Setting $setting ) {
 		$sanitize = function( $color ) use ( $setting ) {
 			$color = sanitize_text_field( $color );
 
@@ -75,7 +75,7 @@ class Sanitize {
 	 * @param WP_Customize_Setting $setting Settings.
 	 * @return string
 	 */
-	public static function sanitize_input( string $input, WP_Customize_Setting $setting ): string {
+	public function sanitize_input( string $input, WP_Customize_Setting $setting ): string {
 		$type = $setting->manager->get_control( $setting->id )->input_attrs['type'] ?? 'text';
 
 		switch ( $type ) {
@@ -84,7 +84,7 @@ class Sanitize {
 			case 'email':
 				return sanitize_email( $input );
 			case 'number':
-				return static::sanitize_int( $input, $setting );
+				return $this->sanitize_int( $input, $setting );
 			default:
 				return sanitize_text_field( $input );
 		}
@@ -96,7 +96,7 @@ class Sanitize {
 	 * @param mixed $input Input.
 	 * @return mixed
 	 */
-	public static function sanitize_slider( $input ) {
+	public function sanitize_slider( $input ) {
 		return $input;
 	}
 
@@ -106,7 +106,7 @@ class Sanitize {
 	 * @param string|array $input Input.
 	 * @return array|string
 	 */
-	public static function sanitize_buttonset( $input ) {
+	public function sanitize_buttonset( $input ) {
 		if ( is_array( $input ) ) {
 			return array_map( 'sanitize_text_field', $input );
 		}
@@ -120,7 +120,7 @@ class Sanitize {
 	 * @param WP_Customize_Setting $setting Settings.
 	 * @return array
 	 */
-	public static function sanitize_border( array $input, WP_Customize_Setting $setting ): array {
+	public function sanitize_border( array $input, WP_Customize_Setting $setting ): array {
 		$border_styles = [
 			'none',
 			'solid',
@@ -139,13 +139,13 @@ class Sanitize {
 			$input['style'] = 'none';
 		}
 		if ( isset( $input['color'] ) ) {
-			$input['color'] = static::sanitize_color( $input['color'], $setting );
+			$input['color'] = $this->sanitize_color( $input['color'], $setting );
 		}
 		if ( isset( $input['width'] ) ) {
-			$input['width'] = static::sanitize_slider( $input['width'] );
+			$input['width'] = $this->sanitize_slider( $input['width'] );
 		}
 		if ( isset( $input['radius'] ) ) {
-			$input['width'] = static::sanitize_slider( $input['width'] );
+			$input['width'] = $this->sanitize_slider( $input['width'] );
 		}
 
 		return $input;
@@ -158,14 +158,14 @@ class Sanitize {
 	 * @param WP_Customize_Setting $setting Settings.
 	 * @return array
 	 */
-	public static function sanitize_background( array $input, WP_Customize_Setting $setting ): array {
+	public function sanitize_background( array $input, WP_Customize_Setting $setting ): array {
 		if ( isset( $input['type'] ) && in_array( $input['type'], [ 'color', 'gradient', 'image' ], true ) ) {
 			$input['type'] = sanitize_text_field( $input['type'] );
 		} else {
 			$input['type'] = 'color';
 		}
 		if ( isset( $input['color'] ) ) {
-			$input['color'] = static::sanitize_color( $input['color'], $setting );
+			$input['color'] = $this->sanitize_color( $input['color'], $setting );
 		}
 		if ( isset( $input['gradient'] ) ) {
 			$input['gradient'] = sanitize_text_field( $input['gradient'] );
@@ -188,7 +188,7 @@ class Sanitize {
 	 * @param mixed $input Input.
 	 * @return bool
 	 */
-	public static function sanitize_checkbox( $input ): bool {
+	public function sanitize_checkbox( $input ): bool {
 		return 1 === $input || '1' === $input || true === (bool) $input;
 	}
 
@@ -199,7 +199,7 @@ class Sanitize {
 	 * @param WP_Customize_Setting $setting Settings.
 	 * @return float|string
 	 */
-	public static function sanitize_int( $number, WP_Customize_Setting $setting ) {
+	public function sanitize_int( $number, WP_Customize_Setting $setting ) {
 		return is_numeric( $number ) ? floatval( $number ) : $setting->default;
 	}
 
@@ -209,7 +209,7 @@ class Sanitize {
 	 * @param array $input Input.
 	 * @return array
 	 */
-	public static function sanitize_sortable( array $input ): array {
+	public function sanitize_sortable( array $input ): array {
 		foreach ( $input as $i => $val ) {
 			foreach ( $val as $k => $v ) {
 				switch ( $k ) {
@@ -234,7 +234,7 @@ class Sanitize {
 	 * @param array $input Input.
 	 * @return array
 	 */
-	public static function sanitize_typography( array $input ): array {
+	public function sanitize_typography( array $input ): array {
 		foreach ( $input as $key => $value ) {
 			switch ( $key ) {
 				case 'family':
@@ -266,7 +266,7 @@ class Sanitize {
 	 * @param array $input Input.
 	 * @return array
 	 */
-	public static function sanitize_dimensions( array $input ): array {
+	public function sanitize_dimensions( array $input ): array {
 		$sanitize = function( $arr ) {
 			foreach ( [ 'top', 'right', 'bottom', 'left', 'unit', 'sync' ] as $k ) {
 				if ( 'sync' === $k ) {
