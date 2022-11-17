@@ -14,11 +14,30 @@ defined( 'ABSPATH' ) || exit;
 class Supports {
 
 	/**
+	 * Holds the instance of this class.
+	 *
+	 * @var null|Supports
+	 */
+	private static $instance = null;
+
+	/**
 	 * Init.
+	 *
+	 * @return Supports|null
+	 */
+	public static function init(): ?Supports {
+		if ( is_null( self::$instance ) ) {
+			self::$instance = new self();
+		}
+		return self::$instance;
+	}
+
+	/**
+	 * Supports constructor.
 	 *
 	 * @since x.x.x
 	 */
-	public function init(): void {
+	public function __construct() {
 		add_action( 'after_setup_theme', [ $this, 'add_theme_supports' ] );
 		add_action( 'after_setup_theme', [ $this, 'add_image_sizes' ] );
 	}
