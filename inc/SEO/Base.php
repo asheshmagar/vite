@@ -8,14 +8,30 @@ namespace Vite\SEO;
 /**
  * Class SEOBase.
  */
-class SEOBase {
+abstract class Base {
+
+	/**
+	 * Init.
+	 *
+	 * @return void
+	 */
+	public function init() {
+		add_action( 'wp_head', [ $this, 'in_head' ], 1 );
+	}
+
+	/**
+	 * Print script or meta in head.
+	 *
+	 * @return void
+	 */
+	public function in_head() {}
 
 	/**
 	 * Get title.
 	 *
 	 * @return string|void
 	 */
-	final public function get_title() {
+	public function get_title() {
 		$title = get_the_title();
 
 		if ( is_front_page() ) {
@@ -30,7 +46,7 @@ class SEOBase {
 	 *
 	 * @return string|void
 	 */
-	final public function get_description() {
+	public function get_description() {
 		$description = '';
 
 		if ( is_single() ) {
@@ -51,7 +67,7 @@ class SEOBase {
 	 *
 	 * @return false|string|void
 	 */
-	final public function get_url() {
+	public function get_url() {
 		$url = get_the_permalink();
 
 		if ( is_front_page() ) {
@@ -66,7 +82,7 @@ class SEOBase {
 	 *
 	 * @return string|void
 	 */
-	final public function get_site_name() {
+	public function get_site_name() {
 		return get_bloginfo( 'name' );
 	}
 
@@ -75,7 +91,7 @@ class SEOBase {
 	 *
 	 * @return false|string
 	 */
-	final public function get_image() {
+	public function get_image() {
 		$image = '';
 
 		if ( is_single() ) {
