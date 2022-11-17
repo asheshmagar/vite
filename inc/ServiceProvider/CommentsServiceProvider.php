@@ -10,7 +10,8 @@ namespace Vite\ServiceProvider;
 
 defined( 'ABSPATH' ) || exit;
 
-use Vite\Comments;
+use Vite\Comments\Comments;
+use Vite\Comments\WalkerComment;
 
 /**
  * Breadcrumbs service provider.
@@ -35,6 +36,9 @@ class CommentsServiceProvider extends ViteAbstractServiceProvider {
 	 * {@inheritDoc}
 	 */
 	public function register(): void {
-		$this->getContainer()->addShared( 'comments', Comments::class );
+		$this
+			->getContainer()
+			->addShared( 'comments', Comments::class )
+			->addArgument( new WalkerComment() );
 	}
 }
