@@ -15,6 +15,14 @@ defined( 'ABSPATH' ) || exit;
  */
 class Vite {
 
+	const ALIASES = [
+		'customizer',
+		'seo',
+		'nav-menu',
+		'sidebar',
+		'comments',
+	];
+
 	/**
 	 * Constructor.
 	 */
@@ -28,17 +36,23 @@ class Vite {
 	 * @return void
 	 */
 	private function init() {
-		vite( 'schema-markup' )->init();
-		vite( 'open-graph' )->init();
-		vite( 'customizer' )->init();
-		vite( 'dynamic-css' )->init();
-		vite( 'supports' )->init();
-		vite( 'nav-menu' )->init();
-		vite( 'sidebar' )->init();
-		vite( 'comments' )->init();
-		vite( 'template-hooks' )->init();
-		vite( 'scripts-styles' )->init();
 		$this->init_hooks();
+		$this->init_aliases();
+		Supports::init();
+		TemplateHooks::init();
+		ScriptsStyles::init();
+	}
+
+	/**
+	 * Init aliases.
+	 *
+	 * @return void
+	 */
+	private function init_aliases() {
+		$aliases = apply_filters( 'vite_aliases', static::ALIASES );
+		foreach ( $aliases as $alias ) {
+			vite( $alias )->init();
+		}
 	}
 
 	/**
