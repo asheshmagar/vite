@@ -1,5 +1,5 @@
-import { ColorPicker, Popover as Tooltip, GradientPicker, ColorPalette } from '@wordpress/components';
-import { useState, memo } from '@wordpress/element';
+import { ColorPicker, Tooltip, GradientPicker, ColorPalette } from '@wordpress/components';
+import { memo } from '@wordpress/element';
 import './customizer.scss';
 import { Popover } from '../../components';
 import { noop } from 'lodash';
@@ -13,7 +13,6 @@ export default memo( ( props ) => {
 		customizer,
 		control,
 	} = props;
-	const [ tooltip, setTooltip ] = useState( false );
 
 	const palette = Object.entries( customizer( 'vite[global-palette]' ).get() ?? {} ).map( ( [ key, val ] ) => ( {
 		name: key,
@@ -32,7 +31,6 @@ export default memo( ( props ) => {
 		}
 		return variable;
 	};
-
 	return (
 		<div className="vite-color-picker">
 			<Popover
@@ -73,28 +71,24 @@ export default memo( ( props ) => {
 					</>
 				}
 			>
-				<span>
-					<span
-						style={ {
-							height: 24,
-							width: 24,
-							borderRadius: '50%',
-							boxShadow: 'inset 0 0 0 1px rgb(0 0 0 / 20%)',
-							display: 'inline-block',
-							background: value,
-							cursor: 'pointer',
-						} }
-						role="button"
-						onKeyDown={ noop }
-						tabIndex={ -1 }
-						onMouseEnter={ () => setTooltip( true ) }
-						onMouseLeave={ () => setTooltip( false ) }
-					/>
-					{ ( label && tooltip ) && (
-						<Tooltip focusOnMount={ false } className="vite-tooltip" position="top center">
-							{ label }
-						</Tooltip>
-					) }
+				<span style={ { display: 'inline-block' } }>
+					<Tooltip
+						text={ label }
+						delay={ 300 }
+						position="top center"
+					>
+						<span
+							style={ {
+								height: 24,
+								width: 24,
+								borderRadius: '50%',
+								boxShadow: 'inset 0 0 0 1px rgb(0 0 0 / 20%)',
+								display: 'inline-block',
+								background: value,
+								cursor: 'pointer',
+							} }
+						/>
+					</Tooltip>
 				</span>
 			</Popover>
 		</div>
