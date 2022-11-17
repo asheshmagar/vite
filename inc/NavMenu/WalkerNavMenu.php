@@ -1,6 +1,6 @@
 <?php
 
-namespace Vite;
+namespace Vite\NavMenu;
 
 use stdClass;
 use Walker_Nav_Menu;

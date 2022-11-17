@@ -3,17 +3,42 @@
  *
  */
 
-namespace Vite;
+namespace Vite\NavMenu;
 
 /**
  * NavMenu.
  */
 class NavMenu {
 
+	/**
+	 * Walker nav menu.
+	 *
+	 * @var WalkerNavMenu|null
+	 */
+	protected $walker_nav_menu = null;
+
+	/**
+	 * Walker Page.
+	 *
+	 * @var WalkerPage|null
+	 */
+	protected $walker_page = null;
+
 	public const PRIMARY_MENU   = 'primary';
 	public const SECONDARY_MENU = 'secondary';
 	public const MOBILE_MENU    = 'mobile';
 	public const FOOTER_MENU    = 'footer';
+
+	/**
+	 * Constructor.
+	 *
+	 * @param WalkerNavMenu $walker_nav_menu WalkerNavMenu instance.
+	 * @param WalkerPage    $walker_page WalkerPage instance.
+	 */
+	public function __construct( WalkerNavMenu $walker_nav_menu, WalkerPage $walker_page ) {
+		$this->walker_nav_menu = $walker_nav_menu;
+		$this->walker_page     = $walker_page;
+	}
 
 	/**
 	 * Init.
@@ -92,7 +117,7 @@ class NavMenu {
 			'fallback_cb'     => function() use ( $type, $context ) {
 				$this->fallback_menu( $type, $context );
 			},
-			'walker'          => new WalkerNavMenu(),
+			'walker'          => $this->walker_nav_menu,
 		];
 		wp_nav_menu( $args );
 	}
@@ -114,7 +139,7 @@ class NavMenu {
 					'container'       => 'nav',
 					'container_id'    => 'header-mobile-menu',
 					'container_class' => 'header-mobile-menu',
-					'walker'          => new WalkerNavMenu(),
+					'walker'          => $this->walker_nav_menu,
 				]
 			);
 			return;
@@ -128,7 +153,7 @@ class NavMenu {
 							'echo'           => true,
 							'title_li'       => false,
 							'theme_location' => $type,
-							'walker'         => new WalkerPage(),
+							'walker'         => $this->walker_page,
 						]
 					);
 				?>
