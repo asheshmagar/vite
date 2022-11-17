@@ -2,6 +2,7 @@ import { memo, useState, RawHTML } from '@wordpress/element';
 import { useDeviceSelector } from '../../hooks';
 import { DEVICES } from '../../constants';
 import { Button, ButtonGroup, Dashicon, Dropdown } from '@wordpress/components';
+import { isEqual } from 'lodash';
 
 /* eslint-disable jsx-a11y/click-events-have-key-events,jsx-a11y/no-static-element-interactions */
 
@@ -27,6 +28,7 @@ export default memo( ( props ) => {
 					min = 0,
 					max = 300,
 				},
+				default: defaultValue,
 			},
 		},
 	} = props;
@@ -89,6 +91,16 @@ export default memo( ( props ) => {
 			{ label && (
 				<div className="vite-control-head">
 					<span className="customize-control-title">{ label }</span>
+					{ ! isEqual( defaultValue, value ) && (
+						<Button
+							onClick={ () => {
+								setValue( defaultValue );
+								setting.set( defaultValue );
+							} }
+							icon="image-rotate"
+							className="vite-reset"
+						/>
+					) }
 					{ responsive && <DeviceSelector /> }
 					<Units />
 				</div>

@@ -1,5 +1,6 @@
 import { RawHTML, useState, memo } from '@wordpress/element';
-import { RadioControl } from '@wordpress/components';
+import { RadioControl, Button } from '@wordpress/components';
+import { isEqual } from 'lodash';
 
 export default memo( ( props ) => {
 	const {
@@ -9,6 +10,7 @@ export default memo( ( props ) => {
 				label,
 				description,
 				choices = {},
+				default: defaultValue,
 			},
 		},
 	} = props;
@@ -20,6 +22,16 @@ export default memo( ( props ) => {
 			{ label && (
 				<div className="vite-control-head">
 					<span className="customize-control-title">{ label }</span>
+					{ ! isEqual( defaultValue, value ) && (
+						<Button
+							onClick={ () => {
+								setValue( defaultValue );
+								setting.set( defaultValue );
+							} }
+							icon="image-rotate"
+							className="vite-reset"
+						/>
+					) }
 				</div>
 			) }
 			<div className="vite-control-body">

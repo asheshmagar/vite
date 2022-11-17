@@ -2,9 +2,10 @@ import { memo, useState, RawHTML } from '@wordpress/element';
 import { MediaUpload } from '@wordpress/block-editor';
 import { __ } from '@wordpress/i18n';
 import { ViteColorPicker } from '../../components';
-import { ButtonGroup, FocalPointPicker, SelectControl } from '@wordpress/components';
+import { Button, ButtonGroup, FocalPointPicker, SelectControl } from '@wordpress/components';
 import { useDeviceSelector } from '../../hooks';
 import Tab from './tab';
+import { isEqual } from 'lodash';
 
 const TABS = [
 	{ label: 'Color', value: 'color', icon: 'admin-customizer' },
@@ -38,6 +39,7 @@ export default memo( ( props ) => {
 			params: {
 				label,
 				description,
+				default: defaultValue,
 			},
 		},
 		customizer,
@@ -63,6 +65,16 @@ export default memo( ( props ) => {
 			{ label && (
 				<div className="vite-control-head">
 					<span className="customize-control-title">{ label }</span>
+					{ ! isEqual( defaultValue, value ) && (
+						<Button
+							onClick={ () => {
+								setValue( defaultValue );
+								setting.set( defaultValue );
+							} }
+							icon="image-rotate"
+							className="vite-reset"
+						/>
+					) }
 				</div>
 			) }
 			<ButtonGroup className="vite-background-tabs">

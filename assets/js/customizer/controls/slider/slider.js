@@ -2,6 +2,8 @@ import { useState, memo, RawHTML } from '@wordpress/element';
 import { ViteRange } from '../../components';
 import { useDeviceSelector } from '../../hooks';
 import { DEVICES } from '../../constants';
+import { isEqual } from 'lodash';
+import { Button } from '@wordpress/components';
 
 export default memo( ( props ) => {
 	const {
@@ -18,6 +20,7 @@ export default memo( ( props ) => {
 					max = 300,
 					step = 1,
 				},
+				default: defaultValue,
 			},
 		},
 	} = props;
@@ -30,6 +33,16 @@ export default memo( ( props ) => {
 			{ label && (
 				<div className="vite-control-head">
 					<span className="customize-control-title">{ label }</span>
+					{ ! isEqual( defaultValue, value ) && (
+						<Button
+							onClick={ () => {
+								setValue( defaultValue );
+								setting.set( defaultValue );
+							} }
+							icon="image-rotate"
+							className="vite-reset"
+						/>
+					) }
 					{ responsive && <DeviceSelector /> }
 				</div>
 			) }

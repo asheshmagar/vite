@@ -1,5 +1,7 @@
 import { memo, useState, RawHTML } from '@wordpress/element';
 import { ViteColorPicker } from '../../components';
+import { isEqual } from 'lodash';
+import { Button } from '@wordpress/components';
 
 export default memo( ( props ) => {
 	const {
@@ -8,6 +10,7 @@ export default memo( ( props ) => {
 			params: {
 				label,
 				description,
+				default: defaultValue,
 			},
 		},
 	} = props;
@@ -19,6 +22,16 @@ export default memo( ( props ) => {
 				{ label && (
 					<div className="vite-control-head">
 						<span className="customize-control-title">{ label }</span>
+						{ ! isEqual( defaultValue, value ) && (
+							<Button
+								onClick={ () => {
+									setValue( defaultValue );
+									setting.set( defaultValue );
+								} }
+								icon="image-rotate"
+								className="vite-reset"
+							/>
+						) }
 					</div>
 				) }
 				<div className="vite-control-body">

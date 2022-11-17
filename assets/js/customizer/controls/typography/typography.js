@@ -1,10 +1,10 @@
 import { memo, useState, useMemo, RawHTML } from '@wordpress/element';
-import { Popover, SelectControl } from '@wordpress/components';
+import { Popover, SelectControl, Button } from '@wordpress/components';
 import { useDeviceSelector } from '../../hooks';
 import { ViteRange } from '../../components';
 import { __ } from '@wordpress/i18n';
 import { VARIANTS } from '../../constants';
-import { noop } from 'lodash';
+import { noop, isEqual } from 'lodash';
 import Select from 'react-select';
 
 const TEXT_TRANSFORMS = [
@@ -28,6 +28,7 @@ export default memo( ( props ) => {
 				label,
 				description,
 				fonts,
+				default: defaultValue,
 			},
 		},
 	} = props;
@@ -56,6 +57,16 @@ export default memo( ( props ) => {
 			{ label && (
 				<div className="vite-control-head">
 					<span className="customize-control-title">{ label }</span>
+					{ ! isEqual( defaultValue, value ) && (
+						<Button
+							onClick={ () => {
+								setValue( defaultValue );
+								setting.set( defaultValue );
+							} }
+							icon="image-rotate"
+							className="vite-reset"
+						/>
+					) }
 					<span
 						role={ 'button' }
 						tabIndex={ -1 }

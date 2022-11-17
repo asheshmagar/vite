@@ -3,9 +3,16 @@
 	.vite-sortable-item {
 		background-color: #fff;
 		cursor: move;
+		border-radius: 4px;
 
 		&[data-sort-disabled="true"] {
 			cursor: initial;
+		}
+
+		&[data-open="true"] {
+			> .vite-sortable-item-actions {
+				border-radius: 4px 4px 0 0;
+			}
 		}
 	}
 
@@ -13,15 +20,17 @@
 		padding: 10px;
 		border-width: 0 1px 1px 1px;
 		border-style: solid;
-		border-color: #8c8f94;
+		border-color: #ccc;
+		border-radius: 0 0 4px 4px;
 	}
 
 	.vite-sortable-item-actions {
 		display: flex;
 		align-items: center;
 		color: #50575e;
-		border: 1px solid #8c8f94;
+		border: thin solid #ccc;
 		min-height: 35px;
+		border-radius: 4px;
 
 		> div {
 			align-self: stretch;

@@ -23,6 +23,12 @@
 		}
 	}
 
+	&:not([data-inline="true"]) {
+		.vite-control-body {
+			justify-content: space-between;
+		}
+	}
+
 	.customize-control-description {
 		grid-column: 1/-1;
 	}

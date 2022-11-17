@@ -6,7 +6,7 @@ import { sprintf } from '@wordpress/i18n';
 const SortableItem = ( { item, innerItems = false, toggleItem, sort } ) => {
 	const [ open, setOpen ] = useState( false );
 	return (
-		<li className="vite-sortable-item" data-sort-disabled={ sort ? undefined : true }>
+		<li className="vite-sortable-item" data-open={ open } data-sort-disabled={ sort ? undefined : true }>
 			<div className="vite-sortable-item-actions">
 				<RawHTML
 					className="vite-visibility"
