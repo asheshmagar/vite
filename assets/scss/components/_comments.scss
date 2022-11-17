@@ -43,7 +43,7 @@
 		margin-bottom: 1em;
 	}
 
-	.comment-respond {
+	&:not(.no-comments) .comment-respond {
 		border-top: 1px solid var(--global--color--5);
 		padding-top: 2em;
 	}
