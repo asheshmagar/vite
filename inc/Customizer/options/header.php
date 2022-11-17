@@ -48,19 +48,19 @@ $header_elements = apply_filters(
 			],
 			'button'              => [
 				'name'    => __( 'Button', 'vite' ),
-				'section' => 'vite[header-mobile-button]',
+				'section' => 'vite[header-button]',
 			],
 			'social'              => [
 				'name'    => __( 'Social', 'vite' ),
-				'section' => 'vite[header-mobile-social]',
+				'section' => 'vite[header-social]',
 			],
 			'html'                => [
 				'name'    => __( 'HTML', 'vite' ),
-				'section' => 'vite[header-mobile-html]',
+				'section' => 'vite[header-html]',
 			],
 			'search'              => [
 				'name'    => __( 'Search', 'vite' ),
-				'section' => 'vite[header-mobile-search]',
+				'section' => 'vite[header-search]',
 			],
 		],
 	]
@@ -116,6 +116,13 @@ vite( 'customizer' )->add(
 			'condition'   => [
 				'vite-tab' => 'general',
 			],
+		],
+		'vite[mobile-logo]'               => [
+			'section' => 'vite[header-logo]',
+			'type'    => 'image',
+			'title'   => __( 'Mobile Logo', 'vite' ),
+			'height'  => 50,
+			'width'   => 125,
 		],
 		'vite[header-background]'         => [
 			'section'   => 'vite[header-builder-settings]',
