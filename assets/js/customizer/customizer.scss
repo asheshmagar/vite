@@ -26,6 +26,7 @@
 			font-size: 12px;
 			height: 12px;
 			width: 12px;
+			rotate: 15deg;
 		}
 	}
 }
@@ -111,8 +112,15 @@
 
 .vite-units,
 .vite-devices {
-	.components-dropdown__content .components-popover__content > div {
-		padding: 5px;
+	.components-dropdown__content .components-popover__content {
+		padding: 0;
+		> div {
+			padding: 5px;
+
+			.components-button {
+				box-shadow: none !important;
+			}
+		}
 	}
 }
 
@@ -141,6 +149,14 @@
 .vite-control {
 	display: grid;
 	grid-gap: 10px;
+}
+
+.customize-control-title,
+.accordion-section-title,
+#customize-controls h3 {
+	text-transform: uppercase;
+	font-size: 12px;
+	margin-bottom: 0;
 }
 
 #customize-theme-controls .control-section.open {
