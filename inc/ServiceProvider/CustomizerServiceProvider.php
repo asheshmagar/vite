@@ -11,6 +11,7 @@ namespace Vite\ServiceProvider;
 defined( 'ABSPATH' ) || exit;
 
 use Vite\Customizer\Customizer;
+use Vite\Customizer\Sanitize;
 
 /**
  * Core service provider.
@@ -35,6 +36,9 @@ class CustomizerServiceProvider extends ViteAbstractServiceProvider {
 	 * {@inheritDoc}
 	 */
 	public function register(): void {
-		$this->getContainer()->addShared( 'customizer', Customizer::class );
+		$this
+			->getContainer()
+			->addShared( 'customizer', Customizer::class )
+			->addArguments( [ 'dynamic-css', new Sanitize() ] );
 	}
 }
