@@ -6,9 +6,11 @@
 namespace Vite\Customizer;
 
 use Vite\Customizer\Type\Control;
+use WP_Customize_Cropped_Image_Control;
 use WP_Customize_Manager;
 use Vite\Customizer\Type\Panel;
 use Vite\Customizer\Type\Section;
+use Vite\DynamicCSS;
 
 /**
  * Customizer class.
@@ -77,6 +79,31 @@ class Customizer {
 	private $conditions = [];
 
 	/**
+	 * DynamicCSS.
+	 *
+	 * @var null|DynamicCSS
+	 */
+	public $dynamic_css = null;
+
+	/**
+	 * Sanitize.
+	 *
+	 * @var null|Sanitize
+	 */
+	protected $sanitize = null;
+
+	/**
+	 * Constructor.
+	 *
+	 * @param DynamicCSS $dynamic_css Instance of DynamicCSS.
+	 * @param Sanitize   $sanitize Instance of DynamicCSS.
+	 */
+	public function __construct( DynamicCSS $dynamic_css, Sanitize $sanitize ) {
+		$this->dynamic_css = $dynamic_css;
+		$this->sanitize    = $sanitize;
+	}
+
+	/**
 	 * Init.
 	 *
 	 * @return void
@@ -99,7 +126,7 @@ class Customizer {
 	 */
 	public function after_wp_init() {
 		$this->include();
-		do_action( 'vite_customizer_init' );
+		$this->dynamic_css->init_css_data( $this->settings );
 	}
 
 	/**
@@ -183,7 +210,12 @@ class Customizer {
 		return $default;
 	}
 
-	public function get_settings() {
+	/**
+	 * Get all settings.
+	 *
+	 * @return array
+	 */
+	public function get_settings(): array {
 		return $this->settings;
 	}
 
@@ -209,31 +241,15 @@ class Customizer {
 	}
 
 	/**
-	 * Get asset from file.
-	 *
-	 * @param string $file_name Filename.
-	 * @return array
-	 */
-	private function get_asset( string $file_name ): array {
-		$file = VITE_ASSETS_DIR . "dist/$file_name.asset.php";
-		return file_exists( $file ) ? require $file : [
-			'dependencies' => [],
-			'version'      => VITE_VERSION,
-		];
-	}
-
-	/**
 	 * Enqueue control script.
 	 *
 	 * @return void
 	 */
 	public function enqueue_control_script() {
-		$asset = $this->get_asset( 'customizer' );
-
 		wp_enqueue_media();
 		wp_enqueue_editor();
-		wp_enqueue_script( 'vite-customizer', VITE_ASSETS_URI . 'dist/customizer.js', $asset['dependencies'], $asset['version'], true );
-		wp_enqueue_style( 'vite-customizer', VITE_ASSETS_URI . 'dist/customizer.css', [ 'wp-components' ], $asset['version'] );
+		wp_enqueue_script( 'vite-customizer' );
+		wp_enqueue_style( 'vite-customizer' );
 		wp_localize_script(
 			'vite-customizer',
 			'_VITE_CUSTOMIZER_',
@@ -252,9 +268,7 @@ class Customizer {
 	 * @return void
 	 */
 	public function enqueue_preview_script() {
-		$asset = $this->get_asset( 'customizer-preview' );
-
-		wp_enqueue_script( 'vite-customizer-preview', VITE_ASSETS_URI . 'dist/customizer-preview.js', array_merge( $asset['dependencies'], [ 'customize-preview' ] ), $asset['version'], true );
+		wp_enqueue_script( 'vite-customizer-preview' );
 		wp_localize_script(
 			'vite-customizer-preview',
 			'_VITE_CUSTOMIZER_PREVIEW_',
@@ -262,8 +276,6 @@ class Customizer {
 				'settings' => $this->settings,
 			]
 		);
-
-		wp_register_style( 'vite-customizer-preview', false, false, '1.0.0' );
 		wp_enqueue_style( 'vite-customizer-preview' );
 		wp_add_inline_style( 'vite-customizer-preview', 'html, body, .site { height: 100% } ' );
 	}
@@ -388,6 +400,34 @@ class Customizer {
 						'sanitize_callback' => $sanitize_callbacks[ $config['type'] ] ?? null,
 					]
 				);
+
+				if ( 'image' === $config['type'] ) {
+					$wp_customize->add_control(
+						new WP_Customize_Cropped_Image_Control(
+							$wp_customize,
+							$id,
+							[
+								'label'         => $config['title'] ?? '',
+								'section'       => $config['section'] ?? '',
+								'priority'      => $config['priority'] ?? static::PRIORITY,
+								'height'        => $config['height'] ?? null,
+								'width'         => $config['width'] ?? null,
+								'flex_height'   => true,
+								'flex_width'    => true,
+								'button_labels' => array(
+									'select'       => __( 'Select logo', 'vite' ),
+									'change'       => __( 'Change logo', 'vite' ),
+									'remove'       => __( 'Remove', 'vite' ),
+									'default'      => __( 'Default', 'vite' ),
+									'placeholder'  => __( 'No logo selected', 'vite' ),
+									'frame_title'  => __( 'Select logo', 'vite' ),
+									'frame_button' => __( 'Choose logo', 'vite' ),
+								),
+							]
+						)
+					);
+					continue;
+				}
 
 				$wp_customize->add_control(
 					new Control(
@@ -515,23 +555,23 @@ class Customizer {
 	 */
 	private function sanitize_callbacks(): array {
 		return [
-			'vite-background'     => [ 'Vite\Customizer\Sanitize', 'sanitize_background' ],
-			'vite-typography'     => [ 'Vite\Customizer\Sanitize', 'sanitize_typography' ],
-			'vite-dimensions'     => [ 'Vite\Customizer\Sanitize', 'sanitize_dimensions' ],
-			'vite-buttonset'      => [ 'Vite\Customizer\Sanitize', 'sanitize_buttonset' ],
-			'vite-sortable'       => [ 'Vite\Customizer\Sanitize', 'sanitize_sortable' ],
-			'vite-checkbox'       => [ 'Vite\Customizer\Sanitize', 'sanitize_checkbox' ],
-			'vite-toggle'         => [ 'Vite\Customizer\Sanitize', 'sanitize_checkbox' ],
-			'vite-slider'         => [ 'Vite\Customizer\Sanitize', 'sanitize_slider' ],
-			'vite-color'          => [ 'Vite\Customizer\Sanitize', 'sanitize_color' ],
-			'vite-radio-image'    => [ 'Vite\Customizer\Sanitize', 'sanitize_radio' ],
-			'vite-select'         => [ 'Vite\Customizer\Sanitize', 'sanitize_radio' ],
-			'select'              => [ 'Vite\Customizer\Sanitize', 'sanitize_radio' ],
-			'vite-radio'          => [ 'Vite\Customizer\Sanitize', 'sanitize_radio' ],
-			'radio'               => [ 'Vite\Customizer\Sanitize', 'sanitize_radio' ],
-			'vite-input'          => [ 'Vite\Customizer\Sanitize', 'sanitize_input' ],
-			'vite-border'         => [ 'Vite\Customizer\Sanitize', 'sanitize_border' ],
-			'number'              => [ 'Vite\Customizer\Sanitize', 'sanitize_int' ],
+			'vite-background'     => [ $this->sanitize, 'sanitize_background' ],
+			'vite-typography'     => [ $this->sanitize, 'sanitize_typography' ],
+			'vite-dimensions'     => [ $this->sanitize, 'sanitize_dimensions' ],
+			'vite-buttonset'      => [ $this->sanitize, 'sanitize_buttonset' ],
+			'vite-sortable'       => [ $this->sanitize, 'sanitize_sortable' ],
+			'vite-checkbox'       => [ $this->sanitize, 'sanitize_checkbox' ],
+			'vite-toggle'         => [ $this->sanitize, 'sanitize_checkbox' ],
+			'vite-slider'         => [ $this->sanitize, 'sanitize_slider' ],
+			'vite-color'          => [ $this->sanitize, 'sanitize_color' ],
+			'vite-radio-image'    => [ $this->sanitize, 'sanitize_radio' ],
+			'vite-select'         => [ $this->sanitize, 'sanitize_radio' ],
+			'select'              => [ $this->sanitize, 'sanitize_radio' ],
+			'vite-radio'          => [ $this->sanitize, 'sanitize_radio' ],
+			'radio'               => [ $this->sanitize, 'sanitize_radio' ],
+			'vite-input'          => [ $this->sanitize, 'sanitize_input' ],
+			'vite-border'         => [ $this->sanitize, 'sanitize_border' ],
+			'number'              => [ $this->sanitize, 'sanitize_int' ],
 			'vite-textarea'       => 'sanitize_textarea_field',
 			'textarea'            => 'sanitize_textarea_field',
 			'text'                => 'sanitize_text_field',
