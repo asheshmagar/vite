@@ -10,7 +10,7 @@ namespace Vite\ServiceProvider;
 
 defined( 'ABSPATH' ) || exit;
 
-use Vite\Customizer\DynamicCSS;
+use Vite\DynamicCSS;
 
 /**
  * DynamicCSS service provider.
@@ -35,6 +35,6 @@ class DynamicCSSServiceProvider extends ViteAbstractServiceProvider {
 	 * {@inheritDoc}
 	 */
 	public function register(): void {
-		$this->getContainer()->addShared( 'dynamic-css', DynamicCSS::class );
+		$this->getContainer()->add( 'dynamic-css', DynamicCSS::class );
 	}
 }
