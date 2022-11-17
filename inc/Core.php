@@ -161,4 +161,37 @@ class Core {
 
 		return $this->post_types;
 	}
+
+	/**
+	 * Check if block editor is active.
+	 *
+	 * @return bool
+	 */
+	public function is_block_editor_active(): bool {
+		$gutenberg = ! ( false === has_filter( 'replace_editor', 'gutenberg_init' ) );
+
+		$block_editor = version_compare( $GLOBALS['wp_version'], '5.0-beta', '>' );
+
+		if ( ! $gutenberg && ! $block_editor ) {
+			return false;
+		}
+		if ( $this->is_classic_editor_plugin_active() ) {
+			$editor_option       = get_option( 'classic-editor-replace' );
+			$block_editor_active = array( 'no-replace', 'block' );
+
+			return in_array( $editor_option, $block_editor_active, true );
+		}
+
+		return true;
+	}
+
+	/**
+	 * Check if classic editor plugin is active.
+	 *
+	 * @return bool
+	 */
+	private function is_classic_editor_plugin_active(): bool {
+		! function_exists( 'is_plugin_active' ) && include_once ABSPATH . 'wp-admin/includes/plugin.php';
+		return is_plugin_active( 'classic-editor/classic-editor.php' );
+	}
 }
