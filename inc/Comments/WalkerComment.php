@@ -6,7 +6,7 @@
  * @since x.x.x
  */
 
-namespace Vite;
+namespace Vite\Comments;
 
 // Exit if accessed directly.
 defined( 'ABSPATH' ) || exit;

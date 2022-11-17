@@ -6,12 +6,28 @@
  * @since 1.0.0
  */
 
-namespace Vite;
+namespace Vite\Comments;
 
 /**
  * Class Comments.
  */
 class Comments {
+
+	/**
+	 * Walker comment.
+	 *
+	 * @var WalkerComment|null
+	 */
+	protected $walker_comment = null;
+
+	/**
+	 * Constructor.
+	 *
+	 * @param WalkerComment $walker_comment Instance of WalkerComment.
+	 */
+	public function __construct( WalkerComment $walker_comment ) {
+		$this->walker_comment = $walker_comment;
+	}
 
 	/**
 	 * Init.
@@ -79,7 +95,7 @@ class Comments {
 					'short_ping'  => true,
 					'avatar_size' => 40,
 					'echo'        => false,
-					'walker'      => new WalkerComment(),
+					'walker'      => $this->walker_comment,
 				]
 			)
 		);
