@@ -10,7 +10,9 @@ namespace Vite\ServiceProvider;
 
 defined( 'ABSPATH' ) || exit;
 
-use Vite\NavMenu;
+use Vite\NavMenu\NavMenu;
+use Vite\NavMenu\WalkerNavMenu;
+use Vite\NavMenu\WalkerPage;
 
 /**
  * NavMenu service provider.
@@ -35,6 +37,9 @@ class NavMenuServiceProvider extends ViteAbstractServiceProvider {
 	 * {@inheritDoc}
 	 */
 	public function register(): void {
-		$this->getContainer()->addShared( 'nav-menu', NavMenu::class );
+		$this
+			->getContainer()
+			->addShared( 'nav-menu', NavMenu::class )
+			->addArguments( [ new WalkerNavMenu(), new WalkerPage() ] );
 	}
 }
