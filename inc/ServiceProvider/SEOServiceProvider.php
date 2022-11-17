@@ -10,12 +10,12 @@ namespace Vite\ServiceProvider;
 
 defined( 'ABSPATH' ) || exit;
 
-use Vite\Seo\OpenGraph;
+use Vite\SEO\SEO;
 
 /**
  * PageHeader service provider.
  */
-class OpenGraphServiceProvider extends ViteAbstractServiceProvider {
+class SEOServiceProvider extends ViteAbstractServiceProvider {
 
 	/**
 	 * {@inheritDoc}
@@ -24,8 +24,8 @@ class OpenGraphServiceProvider extends ViteAbstractServiceProvider {
 	 */
 	public function provides( string $id ): bool {
 		$services = [
-			'open-graph',
-			OpenGraph::class,
+			'seo',
+			SEO::class,
 		];
 
 		return in_array( $id, $services, true );
@@ -35,6 +35,6 @@ class OpenGraphServiceProvider extends ViteAbstractServiceProvider {
 	 * {@inheritDoc}
 	 */
 	public function register(): void {
-		$this->getContainer()->addShared( 'open-graph', OpenGraph::class );
+		$this->getContainer()->addShared( 'seo', SEO::class );
 	}
 }
