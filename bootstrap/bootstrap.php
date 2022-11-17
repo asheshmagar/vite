@@ -13,11 +13,9 @@ $vite = new Container();
 $vite->delegate( new ReflectionContainer() );
 
 $service_providers = [
-	Vite\ServiceProvider\SchemaMarkupServiceProvider::class,
-	Vite\ServiceProvider\OpenGraphServiceProvider::class,
+	Vite\ServiceProvider\SEOServiceProvider::class,
 	Vite\ServiceProvider\CoreServiceProvider::class,
 	Vite\ServiceProvider\BreadcrumbsServiceProvider::class,
-	Vite\ServiceProvider\SupportsServiceProvider::class,
 	Vite\ServiceProvider\NavMenuServiceProvider::class,
 	Vite\ServiceProvider\SidebarServiceProvider::class,
 	Vite\ServiceProvider\HeaderServiceProvider::class,
@@ -26,8 +24,6 @@ $service_providers = [
 	Vite\ServiceProvider\CommentsServiceProvider::class,
 	Vite\ServiceProvider\EntryElementsServiceProvider::class,
 	Vite\ServiceProvider\FooterServiceProvider::class,
-	Vite\ServiceProvider\TemplateHooksServiceProvider::class,
-	Vite\ServiceProvider\ScriptsStylesServiceProvider::class,
 	Vite\ServiceProvider\WebFontLoaderServerProvider::class,
 	Vite\ServiceProvider\DynamicCSSServiceProvider::class,
 	Vite\ServiceProvider\CustomizerServiceProvider::class,
@@ -55,6 +51,6 @@ if ( ! function_exists( 'vite' ) ) {
 
 		return $vite;
 	}
-
-	vite( 'theme' );
 }
+
+vite( 'theme' );
