@@ -27,8 +27,8 @@ vite( 'customizer' )->add(
 			'title' => __( 'Layout', 'vite' ),
 			'panel' => 'vite[global]',
 		],
-		'vite[global-buttons]'           => [
-			'title' => __( 'button', 'vite' ),
+		'vite[global-buttons]'          => [
+			'title' => __( 'Button', 'vite' ),
 			'panel' => 'vite[global]',
 		],
 		'vite[header-builder]'          => [
@@ -43,8 +43,12 @@ vite( 'customizer' )->add(
 			'title' => __( 'Logo', 'vite' ),
 			'panel' => 'vite[header-builder]',
 		],
-		'vite[header-html]'             => [
-			'title' => __( 'HTML', 'vite' ),
+		'vite[header-html-1]'           => [
+			'title' => __( 'HTML 1', 'vite' ),
+			'panel' => 'vite[header-builder]',
+		],
+		'vite[header-html-2]'           => [
+			'title' => __( 'HTML 2', 'vite' ),
 			'panel' => 'vite[header-builder]',
 		],
 		'vite[header-top-row]'          => [
@@ -57,6 +61,30 @@ vite( 'customizer' )->add(
 		],
 		'vite[header-bottom-row]'       => [
 			'title' => __( 'Bottom', 'vite' ),
+			'panel' => 'vite[header-builder]',
+		],
+		'vite[header-primary-menu]'     => [
+			'title' => __( 'Primary Menu', 'vite' ),
+			'panel' => 'vite[header-builder]',
+		],
+		'vite[header-secondary-menu]'   => [
+			'title' => __( 'Secondary Menu', 'vite' ),
+			'panel' => 'vite[header-builder]',
+		],
+		'vite[header-button-1]'         => [
+			'title' => __( 'Button 1', 'vite' ),
+			'panel' => 'vite[header-builder]',
+		],
+		'vite[header-button-2]'         => [
+			'title' => __( 'Button 2', 'vite' ),
+			'panel' => 'vite[header-builder]',
+		],
+		'vite[header-mobile-menu]'      => [
+			'title' => __( 'Mobile Menu', 'vite' ),
+			'panel' => 'vite[header-builder]',
+		],
+		'vite[header-search]'           => [
+			'title' => __( 'Search', 'vite' ),
 			'panel' => 'vite[header-builder]',
 		],
 		'vite[archive]'                 => [
