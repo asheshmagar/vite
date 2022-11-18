@@ -1,14 +1,22 @@
-.vite-typography-control {
-	.vite-typography-popover > .components-popover__content {
-		min-width: 330px;
-		min-height: 340px;
-		padding: 15px
-	}
+.vite-popup.vite-typography-popover {
+	min-width: 330px;
+	min-height: 340px;
+	padding: 15px
+}
+
+.vite-typography-popover {
 
 	.vite-device-selector .vite-devices .vite-device .dashicon {
 		font-size: 14px;
 		height: 14px;
 		width: 14px;
+	}
+
+	.vite-units {
+		.components-select-control__input {
+			text-transform: uppercase;
+			font-size: 11px !important;
+		}
 	}
 
 	.vite-typography {
