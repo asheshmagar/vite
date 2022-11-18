@@ -129,7 +129,7 @@
 }
 
 .control-section {
-	.customize-control:not(.vite-hidden-control):not(:last-child) {
+	.customize-control[class*="customize-control-vite-"]:not(.vite-hidden-control):not(:last-child) {
 		padding-bottom: 40px;
 		position: relative;
 		margin-bottom: 0;
@@ -151,11 +151,9 @@
 	grid-gap: 10px;
 }
 
-.customize-control-title,
-.accordion-section-title,
-#customize-controls h3 {
+.customize-control-title {
 	text-transform: uppercase;
-	font-size: 12px;
+	font-size: 11px;
 	margin-bottom: 0;
 }
 
