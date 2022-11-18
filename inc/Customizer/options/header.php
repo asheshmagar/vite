@@ -12,13 +12,13 @@ $header_elements = apply_filters(
 				'name'    => __( 'Primary menu', 'vite' ),
 				'section' => 'vite[header-primary-menu]',
 			],
-			'secondary-menu' => [
-				'name'    => __( 'Secondary menu', 'vite' ),
-				'section' => 'vite[header-secondary-menu]',
-			],
 			'search'         => [
 				'name'    => __( 'Search', 'vite' ),
 				'section' => 'vite[header-search]',
+			],
+			'secondary-menu' => [
+				'name'    => __( 'Secondary menu', 'vite' ),
+				'section' => 'vite[header-secondary-menu]',
 			],
 			'social'         => [
 				'name'    => __( 'Social', 'vite' ),
@@ -423,8 +423,7 @@ vite( 'customizer' )->add(
 				'selector'            => '.header-primary-menu',
 				'container_inclusive' => true,
 				'render_callback'     => function() {
-					$id = vite( 'customizer' )->get_setting( 'header-primary-menu', '0' );
-					vite( 'nav-menu' )->render_menu( 'primary', (int) $id );
+					get_template_part( 'template-parts/header/header', 'primary-menu' );
 				},
 			],
 		],
@@ -438,8 +437,7 @@ vite( 'customizer' )->add(
 				'selector'            => '.header-secondary-menu',
 				'container_inclusive' => true,
 				'render_callback'     => function() {
-					$id = vite( 'customizer' )->get_setting( 'header-secondary-menu', '0' );
-					vite( 'nav-menu' )->render_menu( 'secondary', (int) $id );
+					get_template_part( 'template-parts/header/header', 'secondary-menu' );
 				},
 			],
 		],
@@ -637,8 +635,7 @@ vite( 'customizer' )->add(
 				'selector'            => '.header-mobile-menu',
 				'container_inclusive' => true,
 				'render_callback'     => function() {
-					$id = vite( 'customizer' )->get_setting( 'header-mobile-menu', '0' );
-					vite( 'nav-menu' )->render_menu( 'mobile', (int) $id );
+					get_template_part( 'template-parts/header/header', 'mobile-menu' );
 				},
 			],
 		],
