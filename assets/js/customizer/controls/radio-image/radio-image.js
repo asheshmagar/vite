@@ -29,11 +29,13 @@ const Item = ( { onChange, url, label, ...props } ) => {
 				{ ...props }
 				ref={ setAnchor }
 			>
-				{ url && (
+				{ url ? (
 					<img style={ { width: '100%' } } src={ url } alt={ label } />
+				) : (
+					<span>{ label }</span>
 				) }
 			</div>
-			{ isOpen && (
+			{ ( isOpen && url ) && (
 				<Popover className="vite-tooltip" anchor={ anchor } anchorRef={ anchor } position="top center">
 					{ label }
 				</Popover>
