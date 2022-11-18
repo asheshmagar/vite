@@ -40,3 +40,11 @@ a,
 		outline: thin dotted currentColor;
 	}
 }
+
+[data-style="outlined"] {
+	.button {
+		--button--color: var(--global--color--1);
+		--button--bg--color: var(--global--color--8);
+		border: 1px solid var(--global--color--1);
+	}
+}
