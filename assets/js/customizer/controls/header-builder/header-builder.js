@@ -113,7 +113,7 @@ export default memo( ( props ) => {
 											>
 												{ value?.offset?.map( ( item ) => (
 													// eslint-disable-next-line jsx-a11y/click-events-have-key-events,jsx-a11y/no-static-element-interactions
-													<div className="vite-builder-component" key={ item.id } onClick={ choices?.offset?.[ item.id ]?.section ? () => customizer.section( choices[ item.id ].section )?.focus() : null }>
+													<div className="vite-builder-component" key={ item.id } onClick={ choices?.mobile?.[ item.id ]?.section ? () => customizer.section( choices.mobile[ item.id ].section )?.focus() : undefined }>
 														<span className="vite-builder-component-title">
 															{ choices?.[ device ]?.[ item.id ]?.name }
 														</span>
