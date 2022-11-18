@@ -19,6 +19,11 @@ class Sanitize {
 	public function sanitize_radio( string $input, WP_Customize_Setting $setting ): string {
 		$input   = sanitize_text_field( $input );
 		$choices = $setting->manager->get_control( $setting->id )->choices;
+
+		if ( is_numeric( $input ) ) {
+			$input = (int) $input;
+		}
+
 		return in_array( $input, array_keys( $choices ), true ) ? $input : ( $setting->default ?? '' );
 	}
 
@@ -270,7 +275,9 @@ class Sanitize {
 		$sanitize = function( $arr ) {
 			foreach ( [ 'top', 'right', 'bottom', 'left', 'unit', 'sync' ] as $k ) {
 				if ( 'sync' === $k ) {
-					$arr[ $k ] = (bool) $arr[ $k ];
+					if ( isset( $arr[ $k ] ) ) {
+						$arr[ $k ] = (bool) $arr[ $k ];
+					}
 				} else {
 					if ( isset( $arr[ $k ] ) ) {
 						$arr[ $k ] = sanitize_text_field( $arr[ $k ] );
