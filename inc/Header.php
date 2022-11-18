@@ -58,35 +58,35 @@ class Header {
 
 				do_action( 'vite_before_mobile_header_row', $row, $cols_with_content );
 				?>
-					<div data-cols="<?php echo esc_attr( $cols_attr ); ?>" data-row="<?php echo esc_attr( $row ); ?>">
-						<div class="container">
+						<div data-cols="<?php echo esc_attr( $cols_attr ); ?>" data-row="<?php echo esc_attr( $row ); ?>">
+							<div class="container">
 						<?php foreach ( $cols as $col => $elements ) : ?>
-								<?php
-								if ( empty( $elements ) && (
-										( 1 === $col_count ) ||
-										( 2 === $col_count && ! in_array( 'center', $col_keys, true ) )
-									)
-								) {
-									continue;
-								}
-								?>
-								<div data-col="<?php echo esc_attr( $col ); ?>">
-									<?php foreach ( $elements as $element ) : ?>
-										<div data-element="header-<?php echo esc_attr( $element['id'] ); ?>">
-											<?php
-												preg_match( '/\d+$/', $element['id'], $matches );
-												$element_id = preg_replace( '/(_|-)\d+/', '', $element['id'] );
-												$type       = $matches[0] ?? null;
-											?>
-											<?php get_template_part( 'template-parts/header/header', $element_id, [ 'type' => $type ] ); ?>
-										</div>
-									<?php endforeach; ?>
-								</div>
-							<?php endforeach; ?>
+									<?php
+									if ( empty( $elements ) && (
+											( 1 === $col_count ) ||
+											( 2 === $col_count && ! in_array( 'center', $col_keys, true ) )
+										)
+									) {
+										continue;
+									}
+									?>
+									<div data-col="<?php echo esc_attr( $col ); ?>">
+										<?php foreach ( $elements as $element ) : ?>
+											<div data-element="header-<?php echo esc_attr( $element['id'] ); ?>">
+												<?php
+													preg_match( '/\d+$/', $element['id'], $matches );
+													$element_id = preg_replace( '/(_|-)\d+/', '', $element['id'] );
+													$type       = $matches[0] ?? null;
+												?>
+												<?php get_template_part( 'template-parts/header/header', $element_id, [ 'type' => $type ] ); ?>
+											</div>
+										<?php endforeach; ?>
+									</div>
+								<?php endforeach; ?>
+							</div>
 						</div>
-					</div>
-					<?php
-					do_action( 'vite_after_mobile_header_row', $row, $cols_with_content );
+						<?php
+						do_action( 'vite_after_mobile_header_row', $row, $cols_with_content );
 			}
 			?>
 		</div>
@@ -127,7 +127,7 @@ class Header {
 			?>
 			<div data-cols="<?php echo esc_attr( $cols_attr ); ?>" data-layout="<?php echo esc_attr( $row_layout ); ?>" data-row="<?php echo esc_attr( $row ); ?>">
 				<div class="container">
-					<?php foreach ( $cols as $col => $elements ) : ?>
+				<?php foreach ( $cols as $col => $elements ) : ?>
 						<?php
 						if ( empty( $elements ) && (
 								( 1 === $col_count ) ||
@@ -152,8 +152,8 @@ class Header {
 					<?php endforeach; ?>
 				</div>
 			</div>
-			<?php
-			do_action( 'vite_after_desktop_header_row', $row, $cols_with_content );
+				<?php
+				do_action( 'vite_after_desktop_header_row', $row, $cols_with_content );
 		}
 		?>
 		</div>
@@ -171,15 +171,15 @@ class Header {
 		$layout   = vite( 'customizer' )->get_setting( 'header-site-branding-layout' );
 		?>
 		<div class="site-branding" data-layout="<?php echo esc_attr( $layout ); ?>">
-			<?php the_custom_logo(); ?>
-			<?php if ( in_array( $elements, [ 'logo-title', 'logo-title-description' ], true ) ) : ?>
+		<?php the_custom_logo(); ?>
+		<?php if ( in_array( $elements, [ 'logo-title', 'logo-title-description' ], true ) ) : ?>
 				<?php if ( is_front_page() && is_home() ) : ?>
 					<h1 class="site-title vite-site-title"><a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home"><?php bloginfo( 'name' ); ?></a></h1>
 				<?php else : ?>
 					<p class="site-title vite-site-title"><a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home"><?php bloginfo( 'name' ); ?></a></p>
 				<?php endif; ?>
 			<?php endif; ?>
-			<?php if ( 'logo-title-description' === $elements ) : ?>
+		<?php if ( 'logo-title-description' === $elements ) : ?>
 				<?php if ( get_bloginfo( 'description', 'display' ) || is_customize_preview() ) : ?>
 				<p class="site-description vite-site-description"><?php bloginfo( 'description' ); ?></p>
 			<?php endif; ?>
@@ -194,18 +194,53 @@ class Header {
 	 * @return void
 	 */
 	public function render_header_social() {
+		$socials = [
+			[
+				'id'      => 'facebook',
+				'visible' => true,
+			],
+			[
+				'id'      => 'twitter',
+				'visible' => true,
+			],
+			[
+				'id'      => 'instagram',
+				'visible' => true,
+			],
+		]
 		?>
-		<div class="header-social">
-			Facebook
-		</div>
+		<div class="header-socials">
 		<?php
+		foreach ( $socials as $social ) {
+			if ( ! $social['visible'] || ! isset( $social['id'] ) ) {
+				continue;
+			}
+			?>
+				<a class="vite-social <?php echo esc_attr( $social['id'] ); ?>" rel="noopener" href=<?php echo esc_url( vite( 'customizer' )->get_setting( "{$social['id']}-link", '#' ) ); ?>>
+					<span class="vite-social-icon">
+						<?php
+						vite( 'icon' )->get_icon(
+							$social['id'],
+							[
+								'echo' => true,
+								'size' => 20,
+							]
+						);
+						?>
+					</span>
+				</a>
+			<?php
+		}
+		?>
+		</div>
+			<?php
 	}
 
-	/**
-	 * Search form.
-	 *
-	 * @return void
-	 */
+		/**
+		 * Search form.
+		 *
+		 * @return void
+		 */
 	public function render_header_search() {
 		$label            = vite( 'customizer' )->get_setting( 'header-search-label' );
 		$label_visibility = vite( 'customizer' )->get_setting( 'header-search-label-visibility' );
@@ -213,49 +248,49 @@ class Header {
 		?>
 		<div class="search-modal-trigger">
 			<a href="#" class="search-modal-open" data-modal-trigger data-label-visibility="<?php echo esc_attr( implode( ':', $label_visibility ) ); ?>" data-label-position="<?php echo esc_attr( $label_position ); ?>">
-				<?php if ( ! empty( $label ) ) : ?>
+			<?php if ( ! empty( $label ) ) : ?>
 					<span><?php echo esc_html( $label ); ?></span>
 				<?php endif; ?>
-				<?php vite( 'icon' )->get_icon( 'magnifying-glass', [ 'echo' => true ] ); ?>
+			<?php vite( 'icon' )->get_icon( 'magnifying-glass', [ 'echo' => true ] ); ?>
 			</a>
 		</div>
-		<?php
-		add_action( 'wp_footer', [ $this, 'render_search_modal' ], 11 );
+			<?php
+			add_action( 'wp_footer', [ $this, 'render_search_modal' ], 11 );
 	}
 
-	/**
-	 * Search modal.
-	 *
-	 * @return void
-	 */
+		/**
+		 * Search modal.
+		 *
+		 * @return void
+		 */
 	public function render_search_modal() {
 		?>
 		<div data-modal class="search-modal">
 			<div data-modal-actions class="search-modal-actions">
 				<a href="#" data-modal-trigger class="search-modal-close">
-					<?php
-						vite( 'icon' )->get_icon(
-							'xmark',
-							[
-								'echo' => true,
-							]
-						)
-					?>
+				<?php
+					vite( 'icon' )->get_icon(
+						'xmark',
+						[
+							'echo' => true,
+						]
+					)
+				?>
 				</a>
 			</div>
 			<div data-modal-content class="search-modal-content">
-				<?php get_template_part( 'template-parts/header/header', 'search-form' ); ?>
+					<?php get_template_part( 'template-parts/header/header', 'search-form' ); ?>
 			</div>
 		</div>
-		<?php
+			<?php
 	}
 
-	/**
-	 * Render header html.
-	 *
-	 * @param mixed $type HTML type.
-	 * @return void
-	 */
+		/**
+		 * Render header html.
+		 *
+		 * @param mixed $type HTML type.
+		 * @return void
+		 */
 	public function render_header_html( $type = 1 ) {
 		$content = vite( 'customizer' )->get_setting( "header-html-$type" );
 		$content = vite( 'core' )->parse_smart_tags( $content );
@@ -263,15 +298,15 @@ class Header {
 		<div class="header-html-<?php echo esc_attr( $type ); ?>">
 			<?php echo do_shortcode( $content ); ?>
 		</div>
-		<?php
+			<?php
 	}
 
-	/**
-	 * Render header button.
-	 *
-	 * @param mixed $type Button type.
-	 * @return void
-	 */
+		/**
+		 * Render header button.
+		 *
+		 * @param mixed $type Button type.
+		 * @return void
+		 */
 	public function render_header_button( $type = 1 ) {
 		$text      = vite( 'customizer' )->get_setting( "header-button-$type-text" );
 		$url       = vite( 'customizer' )->get_setting( "header-button-$type-url" );
@@ -303,30 +338,30 @@ class Header {
 			);
 			?>
 		</div>
-		<?php
+			<?php
 	}
 
-	/**
-	 * Render header mobile menu trigger.
-	 *
-	 * @return void
-	 */
+		/**
+		 * Render header mobile menu trigger.
+		 *
+		 * @return void
+		 */
 	public function render_header_mobile_menu_trigger() {
 		?>
 		<div class="mobile-menu-trigger">
 			<a href="#" data-modal-trigger class="mobile-menu-offset-open">
-				<?php vite( 'icon' )->get_icon( 'bars', [ 'echo' => true ] ); ?>
+			<?php vite( 'icon' )->get_icon( 'bars', [ 'echo' => true ] ); ?>
 			</a>
 		</div>
-		<?php
-		add_action( 'wp_footer', [ $this, 'render_mobile_menu_offset' ] );
+			<?php
+			add_action( 'wp_footer', [ $this, 'render_mobile_menu_offset' ] );
 	}
 
-	/**
-	 * Render mobile menu offset.
-	 *
-	 * @return void
-	 */
+		/**
+		 * Render mobile menu offset.
+		 *
+		 * @return void
+		 */
 	public function render_mobile_menu_offset() {
 		$offset_config = vite( 'customizer' )->get_setting( 'header' )['offset'] ?? [];
 		?>
@@ -334,22 +369,26 @@ class Header {
 			<div class="mobile-menu-offset-inner">
 				<div data-modal-actions class="mobile-menu-offset-actions">
 					<a href="#" data-modal-trigger class="mobile-menu-offset-close" aria-label="<?php esc_html_e( 'Close search modal', 'vite' ); ?>">
-						<?php vite( 'icon' )->get_icon( 'xmark', [ 'echo' => true ] ); ?>
+					<?php vite( 'icon' )->get_icon( 'xmark', [ 'echo' => true ] ); ?>
 					</a>
 				</div>
 				<div data-modal-content class="mobile-menu-offset-content">
-					<?php
-					if ( ! empty( $offset_config ) ) {
-						foreach ( $offset_config as $element ) {
-							echo '<div data-element="header-' . esc_attr( $element['id'] ) . '">';
-							get_template_part( 'template-parts/header/header', $element['id'] );
-							echo '</div>';
-						}
+				<?php
+				if ( ! empty( $offset_config ) ) {
+					foreach ( $offset_config as $element ) {
+						echo '<div data-element="header-' . esc_attr( $element['id'] ) . '">';
+						preg_match( '/\d+$/', $element['id'], $matches );
+						$element_id = preg_replace( '/(_|-)\d+/', '', $element['id'] );
+						$type       = $matches[0] ?? null;
+
+						get_template_part( 'template-parts/header/header', $element_id, [ 'type' => $type ] );
+						echo '</div>';
 					}
-					?>
+				}
+				?>
 				</div>
 			</div>
 		</div>
-		<?php
+			<?php
 	}
 }
