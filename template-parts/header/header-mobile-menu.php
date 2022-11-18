@@ -8,4 +8,10 @@
 
 defined( 'ABSPATH' ) || exit;
 
-vite( 'nav-menu' )->render_menu( 'mobile' );
+$mobile_menu = null;
+
+if ( is_customize_preview() ) {
+	$mobile_menu = vite( 'customizer' )->get_setting( 'header-mobile-menu', '0' );
+}
+
+vite( 'nav-menu' )->render_menu( 'mobile', $mobile_menu );

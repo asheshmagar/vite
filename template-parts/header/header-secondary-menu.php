@@ -8,4 +8,10 @@
 
 defined( 'ABSPATH' ) || exit;
 
-vite( 'nav-menu' )->render_menu( 'secondary' );
+$secondary_menu = null;
+
+if ( is_customize_preview() ) {
+	$secondary_menu = vite( 'customizer' )->get_setting( 'header-secondary-menu', '0' );
+}
+
+vite( 'nav-menu' )->render_menu( 'secondary', $secondary_menu );
