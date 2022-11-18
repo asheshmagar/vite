@@ -31,6 +31,10 @@ vite( 'customizer' )->add(
 			'title' => __( 'Button', 'vite' ),
 			'panel' => 'vite[global]',
 		],
+		'vite[socials]'                 => [
+			'title' => __( 'Social Accounts Links', 'vite' ),
+			'panel' => 'vite[global]',
+		],
 		'vite[header-builder]'          => [
 			'title' => __( 'Header', 'vite' ),
 			'panel' => 'vite[header-builder]',
