@@ -8,4 +8,6 @@
 
 defined( 'ABSPATH' ) || exit;
 
-vite( 'header' )->render_header_button();
+$header_button_type = $args['type'] ?? '1';
+
+vite( 'header' )->render_header_button( $header_button_type );
