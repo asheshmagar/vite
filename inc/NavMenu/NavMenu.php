@@ -103,10 +103,11 @@ class NavMenu {
 	 * Render menu.
 	 *
 	 * @param string $type Menu type.
+	 * @param mixed  $menu Menu id or string or WP_Term.
 	 * @param string $context Context header or footer.
 	 * @return void
 	 */
-	public function render_menu( string $type = 'primary', string $context = 'header' ) {
+	public function render_menu( string $type = 'primary', $menu = null, string $context = 'header' ) {
 		$args = [
 			'theme_location'  => $type,
 			'menu_id'         => "$type-menu",
@@ -119,6 +120,9 @@ class NavMenu {
 			},
 			'walker'          => $this->walker_nav_menu,
 		];
+		if ( isset( $menu ) ) {
+			$args['menu'] = $menu;
+		}
 		wp_nav_menu( $args );
 	}
 
