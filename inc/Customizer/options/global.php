@@ -248,3 +248,22 @@ vite( 'customizer' )->add(
 		],
 	]
 );
+
+$social_medias = require __DIR__ . '/social-medias.php';
+
+$social_media_links_settings = array_reduce(
+	array_keys( $social_medias ),
+	function( $acc, $curr ) use ( $social_medias ) {
+		$acc[ "vite[$curr-link]" ] = [
+			'section' => 'vite[socials]',
+			'type'    => 'text',
+			'title'   => $social_medias[ $curr ]['label'],
+			'default' => '',
+		];
+		return $acc;
+	},
+	[]
+);
+
+vite( 'customizer' )->add( 'settings', $social_media_links_settings );
+
