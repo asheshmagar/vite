@@ -117,6 +117,61 @@ class Customizer {
 		add_filter( 'customize_render_partials_response', [ $this, 'partial_response' ] );
 		add_action( 'wp_print_scripts', [ $this, 'print_dynamic_css' ] );
 		add_action( 'customize_preview_init', [ $this, 'enqueue_preview_script' ] );
+		add_action( 'customize_save_after', [ $this, 'sync_menus' ] );
+	}
+
+	/**
+	 * Sync menus.
+	 *
+	 * Sync menu across default WP settings and custom settings
+	 *
+	 * @param WP_Customize_Manager $wp_customize Instance of WP_Customize_Manager.
+	 * @return void
+	 */
+	public function sync_menus( WP_Customize_Manager $wp_customize ) {
+		$action = 'save-customize_' . $wp_customize->get_stylesheet();
+		if ( ! check_ajax_referer( $action, 'nonce', false ) ) {
+			wp_send_json_error( 'invalid_nonce' );
+		}
+
+		if ( ! isset( $_POST['customized'] ) ) {
+			return;
+		}
+
+		$customized = json_decode( sanitize_textarea_field( wp_unslash( $_POST['customized'] ) ), true );
+
+		if ( ! $customized ) {
+			return;
+		}
+
+		$primary   = ( $customized['nav_menu_locations[primary]'] ?? ( $customized['vite[header-primary-menu]'] ?? null ) );
+		$secondary = ( $customized['nav_menu_locations[secondary]'] ?? ( $customized['vite[header-secondary-menu]'] ?? null ) );
+		$locations = get_theme_mod( 'nav_menu_locations' );
+		$vite_mods = get_theme_mod( 'vite' );
+
+		if ( isset( $primary ) || isset( $secondary ) ) {
+			$primary   = absint( $primary );
+			$secondary = absint( $secondary );
+
+			if ( $primary ) {
+				$locations['primary']             = $primary;
+				$vite_mods['header-primary-menu'] = $primary;
+			} else {
+				unset( $locations['primary'] );
+				unset( $vite_mods['header-primary-menu'] );
+			}
+
+			if ( $secondary ) {
+				$locations['secondary']             = $secondary;
+				$vite_mods['header-secondary-menu'] = $secondary;
+			} else {
+				unset( $locations['secondary'] );
+				unset( $vite_mods['header-secondary-menu'] );
+			}
+
+			set_theme_mod( 'nav_menu_locations', $locations );
+			set_theme_mod( 'vite', $vite_mods );
+		}
 	}
 
 	/**
@@ -226,10 +281,58 @@ class Customizer {
 	 * @return void
 	 */
 	public function override_controls( WP_Customize_Manager $wp_customize ) {
-		$wp_customize->get_control( 'blogname' )->type        = 'vite-input';
-		$wp_customize->get_control( 'blogdescription' )->type = 'vite-input';
-		$wp_customize->get_control( 'custom_logo' )->section  = 'vite[header-logo]';
-		$wp_customize->get_control( 'custom_logo' )->priority = 1;
+		$control_blogname        = $wp_customize->get_control( 'blogname' );
+		$control_blogdescription = $wp_customize->get_control( 'blogdescription' );
+		$control_custom_logo     = $wp_customize->get_control( 'custom_logo' );
+
+		$control_custom_logo->priority = 1;
+		$control_custom_logo->section  = 'vite[header-logo]';
+
+		$control_blogname->type     = 'vite-input';
+		$control_blogname->section  = 'vite[header-logo]';
+		$control_blogname->priority = 3;
+
+		$control_blogdescription->type     = 'vite-input';
+		$control_blogdescription->section  = 'vite[header-logo]';
+		$control_blogdescription->priority = 4;
+
+		$wp_customize->get_setting( 'blogname' )->transport        = 'postMessage';
+		$wp_customize->get_setting( 'blogdescription' )->transport = 'postMessage';
+		$wp_customize->get_setting( 'custom_logo' )->transport     = 'postMessage';
+
+		$render_callback = function() {
+			get_template_part( 'template-parts/header/header', 'logo' );
+		};
+
+		$wp_customize->selective_refresh->add_partial(
+			'custom_logo',
+			[
+				'selector'            => '.site-branding',
+				'settings'            => [ 'custom_logo' ],
+				'container_inclusive' => true,
+				'render_callback'     => $render_callback,
+			]
+		);
+
+		$wp_customize->selective_refresh->add_partial(
+			'blogname',
+			[
+				'selector'            => '.site-branding',
+				'settings'            => [ 'blogname' ],
+				'container_inclusive' => true,
+				'render_callback'     => $render_callback,
+			]
+		);
+
+		$wp_customize->selective_refresh->add_partial(
+			'blogdescription',
+			[
+				'selector'            => '.site-branding',
+				'settings'            => [ 'blogdescription' ],
+				'container_inclusive' => true,
+				'render_callback'     => $render_callback,
+			]
+		);
 	}
 
 	/**
