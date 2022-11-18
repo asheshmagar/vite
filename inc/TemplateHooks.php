@@ -49,6 +49,33 @@ class TemplateHooks {
 		add_action( 'vite_after_single', [ $this, 'navigation_template' ] );
 		add_action( 'vite_after_single', [ $this, 'comments_template' ], 11 );
 		add_action( 'vite_after_page', [ $this, 'comments_template' ] );
+		add_action(
+			'vite_before_mobile_header',
+			function() {
+				add_filter( 'theme_mod_custom_logo', [ $this, 'change_logo' ] );
+			}
+		);
+		add_action(
+			'vite_after_mobile_header',
+			function() {
+				remove_filter( 'theme_mod_custom_logo', [ $this, 'change_logo' ] );
+			}
+		);
+	}
+
+	/**
+	 * Change logo id.
+	 *
+	 * @param mixed $attachment_id Attachment ID.
+	 * @return mixed
+	 */
+	public function change_logo( $attachment_id ) {
+		$mobile_logo = vite( 'customizer' )->get_setting( 'mobile-logo' );
+		if ( $mobile_logo ) {
+			return $mobile_logo;
+		}
+
+		return $attachment_id;
 	}
 
 	/**
