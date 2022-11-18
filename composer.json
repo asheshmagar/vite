@@ -8,7 +8,9 @@
       "Vite\\ServiceProvider\\": "inc/ServiceProvider/",
       "Vite\\Customizer\\": "inc/Customizer/",
       "Vite\\Customizer\\Type\\": "inc/Customizer/Type/",
-      "Vite\\SEO\\": "inc/Seo/"
+      "Vite\\SEO\\": "inc/SEO/",
+      "Vite\\Comments\\": "inc/Comments/",
+      "Vite\\NavMenu\\": "inc/NavMenu/"
     },
     "files": [
       "bootstrap/bootstrap.php"
