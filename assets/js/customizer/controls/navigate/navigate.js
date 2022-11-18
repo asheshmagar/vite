@@ -14,6 +14,7 @@ export default memo( ( props ) => {
 				},
 			},
 		},
+		customizer,
 	} = props;
 
 	if ( ! targetId || ! targetLabel ) {
@@ -35,7 +36,7 @@ export default memo( ( props ) => {
 				</div>
 			) }
 			<div className="vite-control-body">
-				<Button onClick={ () => props.customizer?.section( targetId ) && props.customizer.section( targetId ).focus() }>
+				<Button onClick={ () => customizer?.section( targetId ) && customizer.section( targetId ).focus() }>
 					<span>{ targetLabel }</span>
 					<Dashicon icon="arrow-right-alt2" />
 				</Button>
