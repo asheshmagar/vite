@@ -194,4 +194,25 @@ class Core {
 		! function_exists( 'is_plugin_active' ) && include_once ABSPATH . 'wp-admin/includes/plugin.php';
 		return is_plugin_active( 'classic-editor/classic-editor.php' );
 	}
+
+	/**
+	 * Get menus.
+	 *
+	 * @return array
+	 */
+	public function get_menus(): array {
+		return array_reduce(
+			get_terms(
+				[
+					'taxonomy'   => 'nav_menu',
+					'hide_empty' => true,
+				]
+			),
+			function ( $items, $menu ) {
+				$items[ "$menu->term_id" ] = $menu->name;
+				return $items;
+			},
+			[]
+		);
+	}
 }
