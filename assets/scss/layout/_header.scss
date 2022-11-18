@@ -426,3 +426,16 @@
 		}
 	}
 }
+
+.header-socials {
+	display: flex;
+
+	> a {
+		display: inline-flex;
+		padding: 5px;
+
+		> span {
+			display: inline-flex;
+		}
+	}
+}
