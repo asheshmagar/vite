@@ -86,8 +86,16 @@ class Breadcrumbs {
 			'separator'         => '/',
 		];
 
-		// Parse the arguments with the defaults.
-		$this->args = apply_filters( 'vite_breadcrumb_trail_args', wp_parse_args( $args, $defaults ) );
+		/**
+		 * Filter: vite/breadcrumbs/trail/args.
+		 *
+		 * Filter the breadcrumb trail default arguments.
+		 *
+		 * @since x.x.x
+		 * @param array $defaults Default arguments.
+		 * @param array $args Arguments passed to the breadcrumb trail.
+		 */
+		$this->args = vite( 'core' )->filter( 'breadcrumbs/trail/args', wp_parse_args( $args, $defaults ) );
 
 		// Set the labels and post taxonomy properties.
 		$this->set_labels();
@@ -109,18 +117,34 @@ class Breadcrumbs {
 		$breadcrumb    = '';
 		$item_count    = count( $this->items );
 		$item_position = 0;
+		$schema_type   = vite( 'customizer' )->get_setting( 'schema-markup-implementation' );
+		$has_schema    = vite( 'customizer' )->get_setting( 'schema-markup' );
+		$microdata     = $has_schema && 'microdata' === $schema_type;
+		$jsonld        = $has_schema && 'json-ld' === $schema_type;
+		$json          = [];
 
 		// Connect the breadcrumb trail if there are items in the trail.
 		if ( 0 < $item_count ) {
 			// Open the unordered list.
 			$breadcrumb .= sprintf(
-				'<%s class="vite-breadcrumbs-items" itemscope itemtype="http://schema.org/BreadcrumbList">',
-				tag_escape( $this->args['list_tag'] )
+				'<%s class="vite-breadcrumbs-items" %s>',
+				tag_escape( $this->args['list_tag'] ),
+				$microdata ? 'itemscope itemtype="https://schema.org/BreadcrumbList"' : ''
 			);
 
-			// Add the number of items and item list order schema.
-			$breadcrumb .= sprintf( '<meta name="numberOfItems" content="%d" />', absint( $item_count ) );
-			$breadcrumb .= '<meta name="itemListOrder" content="Ascending" />';
+			if ( $jsonld ) {
+				$json = [
+					'@context'        => 'https://schema.org',
+					'@type'           => 'BreadcrumbList',
+					'itemListElement' => [],
+				];
+			}
+
+			if ( $microdata ) {
+				// Add the number of items and item list order schema.
+				$breadcrumb .= sprintf( '<meta name="numberOfItems" content="%d" />', absint( $item_count ) );
+				$breadcrumb .= '<meta name="itemListOrder" content="Ascending" />';
+			}
 
 			// Loop through the items and add them to the list.
 			foreach ( $this->items as $item ) {
@@ -131,15 +155,24 @@ class Breadcrumbs {
 				// Check if the item is linked.
 				preg_match( '/(<a.*?>)(.*?)(<\/a>)/i', $item, $matches );
 
+				if ( $jsonld ) {
+					$json['itemListElement'][] = [
+						'@type'    => 'ListItem',
+						'position' => $item_position,
+						'name'     => ! empty( $matches ) ? $matches[2] : $item,
+						'item'     => ! empty( $matches ) ? preg_replace( '/.*href="([^"]+)".*/', '$1', $matches[1] ) : '',
+					];
+				}
+
 				// Wrap the item text with appropriate itemprop.
-				$item = ! empty( $matches ) ? sprintf( '%s<span itemprop="name">%s</span>%s', $matches[1], $matches[2], $matches[3] ) : sprintf( '<span>%s</span>', $item );
+				$item = ! empty( $matches ) ? sprintf( '%s<span%s>%s</span>%s', $matches[1], $microdata ? ' itemprop="name"' : '', $matches[2], $matches[3] ) : sprintf( '<span>%s</span>', $item );
 
 				// Add list item classes.
 				$item_class = 'vite-breadcrumb-item';
 
 				// Create list item attributes.
-				$attributes = 'itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem" class="' . $item_class . '"';
-				$span_item  = '<span itemprop="item">%s</span>';
+				$attributes = sprintf( '%sclass="%s"', $microdata ? 'itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem" ' : '', $item_class );
+				$span_item  = $microdata ? '<span itemprop="item">%s</span>' : '<span>%s</span>';
 				$meta       = sprintf( '<meta itemprop="position" content="%s" />', absint( $item_position ) );
 
 				if ( 1 === $item_position && 1 < $item_count ) {
@@ -157,11 +190,11 @@ class Breadcrumbs {
 
 				// Wrap the item with its itemprop.
 				$item = ! empty( $matches )
-					? preg_replace( '/(<a.*?)([\'"])>/i', '$1$2 itemprop=$2item$2>', $item )
+					? ( $microdata ? preg_replace( '/(<a.*?)([\'"])>/i', '$1$2 itemprop=$2item$2>', $item ) : $item )
 					: sprintf( $span_item, $item );
 
 				// Build the list item.
-				$breadcrumb .= sprintf( '<%1$s %2$s>%3$s%4$s</%1$s>', tag_escape( $this->args['item_tag'] ), $attributes, $item, $meta );
+				$breadcrumb .= sprintf( '<%1$s %2$s>%3$s%4$s</%1$s>', tag_escape( $this->args['item_tag'] ), $attributes, $item, $microdata ? $meta : '' );
 
 				if ( $item_position < $item_count ) {
 					$breadcrumb .= sprintf( '<span class="vite-breadcrumbs-separator">%s</span>', $this->args['separator'] );
@@ -173,23 +206,78 @@ class Breadcrumbs {
 
 			// Wrap the breadcrumb trail.
 			$breadcrumb = sprintf(
-				'<%1$s role="navigation" aria-label="%2$s" class="vite-breadcrumbs" itemprop="breadcrumb">%3$s%4$s%5$s</%1$s>',
+				'<%1$s role="navigation" aria-label="%2$s" class="vite-breadcrumbs"%3$s>%4$s%5$s%6$s</%1$s>',
 				tag_escape( $this->args['container'] ),
 				esc_attr( $this->labels['aria_label'] ),
+				$microdata ? ' itemprop="breadcrumb"' : '',
 				$this->args['before'],
 				$breadcrumb,
 				$this->args['after']
 			);
 		}
 
-		// Allow developers to filter the breadcrumb trail HTML.
-		$breadcrumb = apply_filters( 'vite_breadcrumb_trail', $breadcrumb, $this->args );
+		if ( ! empty( $json ) ) {
+			$breadcrumb = $breadcrumb . wp_print_inline_script_tag( wp_json_encode( $json ), [ 'type' => 'application/ld+json' ] ) . "\n";
+		}
+
+		/**
+		 * Filter: vite/breadcrumbs/trail/
+		 *
+		 * Filter the breadcrumb trail HTML.
+		 *
+		 * @since x.x.x
+		 * @param string $breadcrumb The HTML of the breadcrumb trail.
+		 * @param array  $args       An array of arguments.
+		 */
+		$breadcrumb = vite( 'core' )->filter( 'breadcrumbs/trail', $breadcrumb, $this->args );
 
 		if ( false === $this->args['echo'] ) {
 			return $breadcrumb;
 		}
 
-		echo $breadcrumb; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		echo wp_kses(
+			$breadcrumb,
+			[
+				'nav'    => [
+					'role'       => true,
+					'aria-label' => true,
+					'class'      => true,
+					'itemprop'   => true,
+				],
+				'ul'     => [
+					'class'     => true,
+					'itemscope' => true,
+					'itemtype'  => true,
+				],
+				'meta'   => [
+					'name'     => true,
+					'content'  => true,
+					'itemprop' => true,
+				],
+				'li'     => [
+					'itemprop'  => true,
+					'itemscope' => true,
+					'itemtype'  => true,
+					'class'     => true,
+				],
+				'a'      => [
+					'itemprop' => true,
+					'rel'      => true,
+					'class'    => true,
+					'href'     => true,
+				],
+				'span'   => [
+					'itemprop' => true,
+					'content'  => true,
+					'class'    => true,
+				],
+				'script' => [
+					'type' => [
+						'application/ld+json' => true,
+					],
+				],
+			]
+		);
 	}
 
 	/**
@@ -223,7 +311,7 @@ class Breadcrumbs {
 			'archive_year'        => '%s',
 		];
 
-		$this->labels = apply_filters( 'vite_breadcrumb_trail_labels', wp_parse_args( $this->args['labels'], $defaults ) );
+		$this->labels = vite( 'core' )->filter( 'breadcrumbs/trail/labels', wp_parse_args( $this->args['labels'], $defaults ) );
 	}
 
 	/**
@@ -240,7 +328,15 @@ class Breadcrumbs {
 			$defaults['post'] = 'category';
 		}
 
-		$this->post_taxonomy = apply_filters( 'vite_breadcrumb_trail_post_taxonomy', wp_parse_args( $this->args['post_taxonomy'], $defaults ) );
+		/**
+		 * Filter: vite/breadcrumbs/trail/post-taxonomy.
+		 *
+		 * Filter the post taxonomy array.
+		 *
+		 * @since x.x.x
+		 * @param array $defaults The default post taxonomy array.
+		 */
+		$this->post_taxonomy = vite( 'core' )->filter( 'breadcrumb/trail/post-taxonomy', wp_parse_args( $this->args['post_taxonomy'], $defaults ) );
 	}
 
 	/**
@@ -299,8 +395,16 @@ class Breadcrumbs {
 		// Add paged items if they exist.
 		$this->add_paged_items();
 
-		// Allow developers to overwrite the items for the breadcrumb trail.
-		$this->items = array_unique( apply_filters( 'vite_breadcrumb_trail_items', $this->items, $this->args ) );
+		/**
+		 * Filter: vite/breadcrumbs/trail/items.
+		 *
+		 * Filter the breadcrumb trail items.
+		 *
+		 * @since x.x.x
+		 * @param array $items The breadcrumb trail items.
+		 * @param array $args The breadcrumb trail arguments.
+		 */
+		$this->items = array_unique( vite( 'core' )->filter( 'breadcrumbs/trail/items', $this->items, $this->args ) );
 	}
 
 	/**
@@ -493,8 +597,16 @@ class Breadcrumbs {
 							// Add support for a non-standard label of 'archive_title' (special use case).
 							$label = ! empty( $post_type_object->labels->archive_title ) ? $post_type_object->labels->archive_title : $post_type_object->labels->name;
 
-							// Core filter hook.
-							$label = apply_filters( 'vite_post_type_archive_title', $label, $post_type_object->name );
+							/**
+							 * Filter: vite/breadcrumbs/post-type/archive/title
+							 *
+							 * Filters the post type archive title.
+							 *
+							 * @since x.x.x
+							 * @param string $label The post type archive title.
+							 * @param string $post_type The post type name.
+							 */
+							$label = vite( 'core' )->filter( 'breadcrumbs/post-type/archive/title', $label, $post_type_object->name );
 
 							// Add the post type archive link to the trail.
 							$this->items[] = sprintf( '<a href="%s">%s</a>', esc_url( get_post_type_archive_link( $post_type_object->name ) ), $label );
@@ -526,8 +638,16 @@ class Breadcrumbs {
 
 				$label = ! empty( $post_type_object->labels->archive_title ) ? $post_type_object->labels->archive_title : $post_type_object->labels->name;
 
-				// Core filter hook.
-				$label = apply_filters( 'vite_post_type_archive_title', $label, $post_type_object->name );
+				/**
+				 * Filter: vite/breadcrumbs/post-type/archive/title
+				 *
+				 * Filters the post type archive title.
+				 *
+				 * @since x.x.x
+				 * @param string $label The post type archive title.
+				 * @param string $post_type The post type name.
+				 */
+				$label = vite( 'core' )->core( 'breadcrumbs/post-type/archive/title', $label, $post_type_object->name );
 
 				$this->items[] = sprintf( '<a href="%s">%s</a>', esc_url( get_post_type_archive_link( $post_type_object->name ) ), $label );
 			}
@@ -884,8 +1004,15 @@ class Breadcrumbs {
 			// Add support for a non-standard label of 'archive_title' (special use case).
 			$label = ! empty( $post_type_object->labels->archive_title ) ? $post_type_object->labels->archive_title : $post_type_object->labels->name;
 
-			// Core filter hook.
-			$label = apply_filters( 'vite_post_type_archive_title', $label, $post_type_object->name );
+			/**
+			 * Filter: vite/breadcrumbs/post-type/archive/title.
+			 *
+			 * @since x.x.x
+			 * @param string $label Post type archive title.
+			 * @param string $post_type Post type name.
+			 * @param object $post_type_object Post type object.
+			 */
+			$label = vite( 'core' )->filter( 'breadcrumbs/post-type/archive/title', $label, $post_type_object->name );
 
 			$this->items[] = sprintf( '<a href="%s">%s</a>', esc_url( get_post_type_archive_link( $post_type ) ), $label );
 		}
