@@ -36,7 +36,7 @@ class NavMenuServiceProvider extends ViteAbstractServiceProvider {
 	/**
 	 * {@inheritDoc}
 	 */
-	public function register(): void {
+	public function register() {
 		$this
 			->getContainer()
 			->addShared( 'nav-menu', NavMenu::class )

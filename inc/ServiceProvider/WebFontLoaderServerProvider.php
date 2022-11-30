@@ -10,7 +10,7 @@ namespace Vite\ServiceProvider;
 
 defined( 'ABSPATH' ) || exit;
 
-use Vite\Customizer\WebFontLoader;
+use Vite\Performance\WebFontLoader;
 
 /**
  * Theme service provider.
@@ -34,7 +34,7 @@ class WebFontLoaderServerProvider extends ViteAbstractServiceProvider {
 	/**
 	 * {@inheritDoc}
 	 */
-	public function register(): void {
+	public function register() {
 		$this->getContainer()->add( 'font', WebFontLoader::class );
 	}
 }

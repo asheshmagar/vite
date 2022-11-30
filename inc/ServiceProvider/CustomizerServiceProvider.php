@@ -35,7 +35,7 @@ class CustomizerServiceProvider extends ViteAbstractServiceProvider {
 	/**
 	 * {@inheritDoc}
 	 */
-	public function register(): void {
+	public function register() {
 		$this
 			->getContainer()
 			->addShared( 'customizer', Customizer::class )

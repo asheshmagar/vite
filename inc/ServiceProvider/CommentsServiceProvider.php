@@ -35,7 +35,7 @@ class CommentsServiceProvider extends ViteAbstractServiceProvider {
 	/**
 	 * {@inheritDoc}
 	 */
-	public function register(): void {
+	public function register() {
 		$this
 			->getContainer()
 			->addShared( 'comments', Comments::class )

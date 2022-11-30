@@ -26,5 +26,5 @@ abstract class ViteAbstractServiceProvider extends AbstractServiceProvider {
 	 *
 	 * @return void
 	 */
-	abstract public function register(): void;
+	abstract public function register();
 }

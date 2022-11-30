@@ -34,7 +34,7 @@ class FooterServiceProvider extends ViteAbstractServiceProvider {
 	/**
 	 * {@inheritDoc}
 	 */
-	public function register(): void {
+	public function register() {
 		$this->getContainer()->addShared( 'footer', Footer::class );
 	}
 }

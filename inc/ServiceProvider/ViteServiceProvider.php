@@ -34,7 +34,7 @@ class ViteServiceProvider extends ViteAbstractServiceProvider {
 	/**
 	 * {@inheritDoc}
 	 */
-	public function register(): void {
+	public function register() {
 		$this->getContainer()->addShared( 'theme', Vite::class );
 	}
 }

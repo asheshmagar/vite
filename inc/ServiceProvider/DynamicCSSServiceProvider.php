@@ -34,7 +34,7 @@ class DynamicCSSServiceProvider extends ViteAbstractServiceProvider {
 	/**
 	 * {@inheritDoc}
 	 */
-	public function register(): void {
+	public function register() {
 		$this->getContainer()->add( 'dynamic-css', DynamicCSS::class );
 	}
 }

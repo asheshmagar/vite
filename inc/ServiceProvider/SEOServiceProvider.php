@@ -10,7 +10,7 @@ namespace Vite\ServiceProvider;
 
 defined( 'ABSPATH' ) || exit;
 
-use Vite\SEO\SEO;
+use Vite\SEO;
 
 /**
  * PageHeader service provider.
@@ -34,7 +34,7 @@ class SEOServiceProvider extends ViteAbstractServiceProvider {
 	/**
 	 * {@inheritDoc}
 	 */
-	public function register(): void {
+	public function register() {
 		$this->getContainer()->addShared( 'seo', SEO::class );
 	}
 }
