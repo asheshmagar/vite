@@ -74,7 +74,7 @@ export default memo( ( props ) => {
 				<span style={ { display: 'inline-block' } }>
 					<Tooltip
 						text={ label }
-						delay={ 300 }
+						delay={ 100 }
 						position="top center"
 					>
 						<span
