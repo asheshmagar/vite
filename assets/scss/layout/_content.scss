@@ -8,7 +8,8 @@
 	}
 }
 
-.vite-post {
+.vite-post,
+.error-404 {
 	padding: var(--post--padding, 40px);
 	border-radius: 2px;
 	background-color: var(--global--color--8);
@@ -18,6 +19,16 @@
 	.entry-header,
 	.entry-thumbnail {
 		margin-bottom: 2em;
+	}
+}
+
+.error-404 {
+	.search-form {
+		display: flex;
+
+		> label {
+			flex: 1;
+		}
 	}
 }
 
