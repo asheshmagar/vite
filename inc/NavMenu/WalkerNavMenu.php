@@ -41,7 +41,7 @@ class WalkerNavMenu extends Walker_Nav_Menu {
 				in_array( 'page_item_has_children', (array) $menu_item->classes, true )
 			)
 		) {
-			$icon                = apply_filters( 'vite_submenu_icon', vite( 'icon' )->get_icon( 'chevron-down', [ 'size' => 10 ] ) );
+			$icon                = vite( 'core' )->filter( 'submenu/icon', vite( 'icon' )->get_icon( 'chevron-down', [ 'size' => 10 ] ) );
 			$submenu_icon        = sprintf( '<span class="vite-sub-menu-icon" role="presentation">%s</span>', $icon );
 			$submenu_icon_button = sprintf(
 				'<button aria-expanded="false" aria-label="%s" class="vite-sub-menu-toggle%s">%s</button>',
