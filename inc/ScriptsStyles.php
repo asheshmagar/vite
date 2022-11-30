@@ -16,6 +16,13 @@ defined( 'ABSPATH' ) || exit;
  */
 class ScriptsStyles {
 
+	const STYLES = [
+		'vite-global' => 'global.css',
+		'vite-header' => 'header.css',
+		'vite-content' => 'content.css',
+		'vite-footer' => 'footer.css',
+	];
+
 	/**
 	 * Holds the instance of this class.
 	 *
@@ -41,7 +48,7 @@ class ScriptsStyles {
 	 * @since x.x.x
 	 */
 	public function __construct() {
-		add_action( 'init', [ $this, 'register' ], 0 );
+		add_action( 'init', [ $this, 'register' ], PHP_INT_MAX );
 		add_action( 'wp_enqueue_scripts', [ $this, 'enqueue' ] );
 		add_action( 'wp_head', [ $this, 'remove_no_js' ], 2 );
 	}
@@ -63,8 +70,12 @@ class ScriptsStyles {
 		wp_register_script( 'vite-customizer-preview', VITE_ASSETS_URI . 'dist/customizer-preview.js', array_merge( $customizer_preview_asset['dependencies'], [ 'customize-preview' ] ), $customizer_preview_asset['version'], true );
 
 		wp_register_style( 'vite-customizer', VITE_ASSETS_URI . 'dist/customizer.css', [ 'wp-components' ], $customizer_asset['version'] );
-		wp_register_style( 'vite-style', VITE_ASSETS_URI . 'dist/style.css', [], VITE_VERSION );
 		wp_register_style( 'vite-customizer-preview', false, false, '1.0.0' );
+
+		foreach ( self::STYLES as $handle => $file ) {
+			wp_register_style( $handle, VITE_ASSETS_URI . 'dist/' . $file, [], VITE_VERSION );
+			wp_style_add_data( $handle, 'precache', true );
+		}
 	}
 
 	/**
@@ -73,8 +84,16 @@ class ScriptsStyles {
 	 * @return void
 	 */
 	public function enqueue() {
+		$handles = vite( 'core' )->filter( 'style/handles', array_keys( static::STYLES ) );
+
+		if ( ! empty( $handles ) ) {
+			foreach ( $handles as $handle ) {
+				wp_enqueue_style( $handle );
+			}
+		}
+
 		wp_enqueue_script( 'vite-script' );
-		wp_enqueue_style( 'vite-style' );
+		wp_localize_script( 'vite-script', '_VITE_', [ 'publicPath' => VITE_ASSETS_URI . 'dist/' ] );
 		vite( 'customizer' )->dynamic_css->enqueue();
 	}
 
