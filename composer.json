@@ -6,11 +6,11 @@
     "psr-4": {
       "Vite\\": "inc/",
       "Vite\\ServiceProvider\\": "inc/ServiceProvider/",
-      "Vite\\Customizer\\": "inc/Customizer/",
       "Vite\\Customizer\\Type\\": "inc/Customizer/Type/",
-      "Vite\\SEO\\": "inc/SEO/",
+      "Vite\\Customizer\\": "inc/Customizer/",
       "Vite\\Comments\\": "inc/Comments/",
-      "Vite\\NavMenu\\": "inc/NavMenu/"
+      "Vite\\NavMenu\\": "inc/NavMenu/",
+      "Vite\\Performance\\": "inc/Performance/"
     },
     "files": [
       "bootstrap/bootstrap.php"
