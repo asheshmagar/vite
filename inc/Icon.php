@@ -32,7 +32,7 @@ class Icon {
 	 * @return mixed
 	 */
 	public function get_icons() {
-		return $this->icons;
+		return vite( 'core' )->filter( 'svg/icons', $this->icons );
 	}
 
 	/**
@@ -55,41 +55,48 @@ class Icon {
 			]
 		);
 
+		$args = vite( 'core' )->filter( 'svg/icon/args', $args, $icon );
+
 		if ( ! isset( $this->icons[ $icon ] ) ) {
 			return;
 		}
 
 		$svg          = sprintf( $this->icons[ $icon ], $args['class'], $args['size'], $args['size'] );
-		$allowed_html = [
-			'svg'     => [
-				'class'       => true,
-				'xmlns'       => true,
-				'width'       => true,
-				'height'      => true,
-				'viewbox'     => true,
-				'aria-hidden' => true,
-				'role'        => true,
-				'focusable'   => true,
-			],
-			'path'    => [
-				'fill'      => true,
-				'fill-rule' => true,
-				'd'         => true,
-				'transform' => true,
-			],
-			'circle'  => [
-				'cx' => true,
-				'cy' => true,
-				'r'  => true,
-			],
-			'polygon' => [
-				'fill'      => true,
-				'fill-rule' => true,
-				'points'    => true,
-				'transform' => true,
-				'focusable' => true,
-			],
-		];
+		$allowed_html = vite( 'core' )->filter(
+			'svg/allowed-html',
+			[
+				'svg'     => [
+					'class'       => true,
+					'xmlns'       => true,
+					'width'       => true,
+					'height'      => true,
+					'viewbox'     => true,
+					'aria-hidden' => true,
+					'role'        => true,
+					'focusable'   => true,
+				],
+				'path'    => [
+					'fill'      => true,
+					'fill-rule' => true,
+					'd'         => true,
+					'transform' => true,
+				],
+				'circle'  => [
+					'cx' => true,
+					'cy' => true,
+					'r'  => true,
+				],
+				'polygon' => [
+					'fill'      => true,
+					'fill-rule' => true,
+					'points'    => true,
+					'transform' => true,
+					'focusable' => true,
+				],
+			]
+		);
+
+		$svg = vite( 'core' )->filter( 'svg/icon', $svg, $this->icons );
 
 		if ( ! $args['echo'] ) {
 			return $svg;
