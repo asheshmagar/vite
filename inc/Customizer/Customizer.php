@@ -190,15 +190,7 @@ class Customizer {
 	 * @return void
 	 */
 	private function include() {
-		$options_dir       = __DIR__ . '/options/';
-		$option_file_names = scandir( $options_dir );
-
-		foreach ( $option_file_names as $option_file_name ) {
-			if ( '.' === $option_file_name || '..' === $option_file_name ) {
-				continue;
-			}
-			require $options_dir . $option_file_name;
-		}
+		require __DIR__ . '/options/options.php';
 		require __DIR__ . '/panels-sections/panels-sections.php';
 	}
 
@@ -224,7 +216,7 @@ class Customizer {
 		if ( ! isset( $this->defaults ) ) {
 			$this->defaults = require __DIR__ . '/defaults/defaults.php';
 		}
-		return apply_filters( 'vite_settings_defaults', $this->defaults );
+		return vite( 'core' )->filter( 'customizer/defaults', $this->defaults );
 	}
 
 	/**
@@ -353,13 +345,23 @@ class Customizer {
 		wp_enqueue_editor();
 		wp_enqueue_script( 'vite-customizer' );
 		wp_enqueue_style( 'vite-customizer' );
+
+		$this->condition['blogdescription'] = [
+			'vite[header-site-branding-elements]' => 'logo-title-description',
+		];
+
+		$this->condition['blogname'] = [
+			'vite[header-site-branding-elements]!' => 'logo',
+		];
+
 		wp_localize_script(
 			'vite-customizer',
 			'_VITE_CUSTOMIZER_',
 			[
 				'icons'      => vite( 'icon' )->get_icons(),
-				'condition'  => $this->condition,
-				'conditions' => $this->conditions,
+				'condition'  => vite( 'core' )->filter( 'customizer/condition', $this->condition ),
+				'conditions' => vite( 'core' )->filter( 'customizer/condition', $this->conditions ),
+				'publicPath' => vite( 'core' )->get_public_path(),
 			]
 		);
 		wp_set_script_translations( 'vite-customizer', 'vite', get_template_directory() . '/languages' );
@@ -403,7 +405,7 @@ class Customizer {
 	 * @return void
 	 */
 	private function add_panels( WP_Customize_Manager $wp_customize ) {
-		$panels = apply_filters( 'vite_customizer_panels', $this->panels );
+		$panels = vite( 'core' )->filter( 'customizer/panels', $this->panels );
 		if ( ! empty( $panels ) ) {
 			foreach ( $panels as $id => $config ) {
 				$wp_customize->add_panel(
@@ -431,7 +433,7 @@ class Customizer {
 	 * @return void
 	 */
 	private function add_sections( WP_Customize_Manager $wp_customize ) {
-		$sections = apply_filters( 'vite_customizer_sections', $this->sections );
+		$sections = vite( 'core' )->filter( 'customizer/sections', $this->sections );
 		if ( ! empty( $sections ) ) {
 			foreach ( $sections as $id => $config ) {
 				$wp_customize->add_section(
@@ -459,8 +461,8 @@ class Customizer {
 	 * @return void
 	 */
 	private function add_settings( WP_Customize_Manager $wp_customize ) {
-		$settings           = apply_filters( 'vite_customizer_settings', $this->settings );
-		$sanitize_callbacks = apply_filters( 'vite_customizer_sanitize_callbacks', $this->sanitize_callbacks() );
+		$settings           = vite( 'core' )->filter( 'customizer/settings', $this->settings );
+		$sanitize_callbacks = vite( 'core' )->filter( 'customizer/sanitize/callbacks', $this->sanitize_callbacks() );
 		if ( ! empty( $settings ) ) {
 			foreach ( $settings as $id => $config ) {
 				if ( ! isset( $config['type'] ) ) {
@@ -498,7 +500,7 @@ class Customizer {
 					$id,
 					[
 						'default'           => $config['default'] ?? '',
-						'transport'         => static::TRANSPORT,
+						'transport'         => $config['transport'] ?? static::TRANSPORT,
 						'type'              => static::STORE,
 						'sanitize_callback' => $sanitize_callbacks[ $config['type'] ] ?? null,
 					]
@@ -637,18 +639,10 @@ class Customizer {
 						'label'      => 'Inherit',
 					],
 				],
-				array_map(
-					function( $font ) {
-						$font['label'] = $font['family'];
-						$font['value'] = $font['family'];
-						return $font;
-
-					},
-					json_decode( ob_get_clean(), true )
-				)
+				json_decode( ob_get_clean(), true )
 			);
 		}
-		return apply_filters( 'vite_google_fonts', $this->google_fonts );
+		return vite( 'core' )->filter( 'customizer/google-fonts', $this->google_fonts );
 	}
 
 	/**
