@@ -114,13 +114,8 @@
 
 	> li {
 		> a {
-			padding: var(--padding, 0 0.875em);
-		}
-
-		&:last-child {
-			> a {
-				--padding: 0 0 0 0.875em;
-			}
+			--padding--inline: 14px;
+			padding: var(--padding, 0 var( --padding--inline, 0));
 		}
 	}
 
@@ -128,6 +123,12 @@
 		display: flex;
 		align-items: center;
 		gap: 5px;
+
+		&.current-menu-item {
+			> a {
+				color: var(--link--active--color);
+			}
+		}
 
 		> a {
 			display: flex;
