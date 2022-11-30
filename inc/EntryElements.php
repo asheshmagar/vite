@@ -110,7 +110,7 @@ class EntryElements {
 			<?php if ( is_singular( $post_type ) ) : ?>
 				<?php the_post_thumbnail( 'full' ); ?>
 			<?php else : ?>
-				<a class="entry-thumbnail-link" href="<?php the_permalink(); ?>" aria-hidden="true" tabindex="-1">
+				<a class="entry-thumbnail-link" href="<?php the_permalink(); ?>" aria-hidden="true" tabindex="-1" aria-label="<?php esc_html( the_title() ); ?>">
 					<div class="entry-thumbnail-wrap" data-aspect-ratio="3:2">
 						<?php the_post_thumbnail( 'vite_thumbnail' ); ?>
 					</div>
@@ -204,7 +204,8 @@ class EntryElements {
 	 */
 	public function render_entry_button() {
 		?>
-		<a href="<?php the_permalink(); ?>" class="entry-button">
+		<a href="<?php the_permalink(); ?>" class="entry-button" >
+			<span class="screen-reader-text"><?php the_title(); ?></span>
 			<span class="entry-button-text"><?php esc_html_e( 'Read More', 'vite' ); ?></span>
 			<span class="entry-button-icon">
 				<?php
