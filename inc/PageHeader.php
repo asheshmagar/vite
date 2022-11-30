@@ -16,23 +16,34 @@ class PageHeader {
 	/**
 	 * Page header markup.
 	 *
+	 * @param array $elements Elements.
 	 * @return void
 	 */
-	public function render_page_header() {
-		$page_header_elements = apply_filters(
-			'vite_page_header_elements',
-			[
-				'title',
-//				'breadcrumbs',
-			]
+	public function render_page_header( array $elements = [] ) {
+		if ( empty( $elements ) ) {
+			return;
+		}
+		$should_render = array_filter(
+			$elements,
+			function( $element ) {
+				return ! empty( $element['visible'] );
+			}
 		);
+		if ( empty( $should_render ) ) {
+			return;
+		}
+
+		$elements = vite( 'core' )->filter( 'page-header/elements', $elements );
 		?>
 		<div class="page-header-wrap">
 			<header class="page-header">
 				<div class="container">
 					<?php
-					foreach ( $page_header_elements as $page_header_element ) {
-						get_template_part( 'template-parts/page-header/page-header', $page_header_element );
+					foreach ( $elements as $element ) {
+						if ( ! $element['visible'] || ! isset( $element['id'] ) ) {
+							continue;
+						}
+						get_template_part( 'template-parts/page-header/page-header', $element['id'] );
 					}
 					?>
 				</div>
@@ -54,6 +65,21 @@ class PageHeader {
 			</h1>
 		</div>
 		<?php
+	}
+
+	/**
+	 * Render page header description.
+	 *
+	 * @return void
+	 */
+	public function render_page_header_description() {
+		if ( is_archive() && get_the_archive_description() ) {
+			?>
+			<div class="archive-description">
+				<?php the_archive_description(); ?>
+			</div>
+			<?php
+		}
 	}
 
 	/**
@@ -83,6 +109,8 @@ class PageHeader {
 		} elseif ( is_archive() ) {
 			$title = get_the_archive_title();
 		}
+
+		$title = vite( 'core' )->filter( 'page/title', $title );
 
 		if ( $should_return ) {
 			return $title;
