@@ -21,6 +21,7 @@ class Vite {
 		'nav-menu',
 		'sidebar',
 		'comments',
+		'performance',
 	];
 
 	/**
@@ -28,6 +29,7 @@ class Vite {
 	 */
 	public function __construct() {
 		$this->init();
+		vite( 'core' )->action( 'init' );
 	}
 
 	/**
@@ -49,7 +51,7 @@ class Vite {
 	 * @return void
 	 */
 	private function init_aliases() {
-		$aliases = apply_filters( 'vite_aliases', static::ALIASES );
+		$aliases = vite( 'core' )->filter( 'aliases', static::ALIASES );
 		foreach ( $aliases as $alias ) {
 			vite( $alias )->init();
 		}
