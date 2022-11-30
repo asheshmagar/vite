@@ -113,63 +113,16 @@ class DynamicCSS {
 	}
 
 	/**
-	 * Get font url.
-	 *
-	 * @return string
-	 */
-	public function font_url(): string {
-		if ( ! empty( $this->fonts ) ) {
-			$families  = array_keys( $this->fonts );
-			$fonts     = $this->fonts;
-			$fonts_url = add_query_arg(
-				[
-					'family'  => implode(
-						'|',
-						array_map(
-							function( $f ) use ( $fonts ) {
-								return $f . ':' . implode( ',', $fonts[ $f ] );
-							},
-							$families
-						)
-					),
-					'display' => 'swap',
-				],
-				'https://fonts.googleapis.com/css'
-			);
-
-			return vite( 'font' )->get( $fonts_url );
-		}
-
-		return '';
-	}
-
-	/**
 	 * Enqueue dynamic CSS and font styles.
 	 *
 	 * @return void
 	 */
 	public function enqueue() {
-		$css = $this->make()->get();
+		$css       = $this->make()->get();
+		$fonts_url = vite( 'performance' )->get_local_fonts_url( $this->fonts );
 
-		if ( ! empty( $this->fonts ) ) {
-			$families  = array_keys( $this->fonts );
-			$fonts     = $this->fonts;
-			$fonts_url = add_query_arg(
-				[
-					'family'  => implode(
-						'|',
-						array_map(
-							function( $f ) use ( $fonts ) {
-								return $f . ':' . implode( ',', $fonts[ $f ] );
-							},
-							$families
-						)
-					),
-					'display' => 'swap',
-				],
-				'https://fonts.googleapis.com/css'
-			);
-			wp_enqueue_style( 'vite-font', vite( 'font' )->get( $fonts_url ), [], VITE_VERSION );
+		if ( ! empty( $fonts_url ) ) {
+			wp_enqueue_style( 'vite-font', $fonts_url, [], VITE_VERSION );
 		}
 
 		if ( ! empty( $css ) ) {
@@ -608,7 +561,7 @@ class DynamicCSS {
 	 * @return void
 	 */
 	public function save() {
-		$css = apply_filters( 'vite_dynamic_css', $this->get() );
+		$css = vite( 'core' )->filter( 'dynamic/css', $this->get() );
 
 		if ( empty( $css ) ) {
 			return;
