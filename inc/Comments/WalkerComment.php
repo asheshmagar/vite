@@ -31,7 +31,7 @@ class WalkerComment extends Walker_Comment {
 		$tag = ( 'div' === $args['style'] ) ? 'div' : 'li';
 		?>
 		<<?php echo $tag; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?> id="comment-<?php comment_ID(); ?>" <?php comment_class( $this->has_children ? 'parent' : '', $comment ); ?>>
-			<article id="comment-<?php comment_ID(); ?>" class="comment-inner">
+			<article id="comment-<?php comment_ID(); ?>" class="comment-inner"<?php vite( 'seo' )->print_schema_microdata( 'comment' ); ?>>
 				<header class="comment-header">
 					<div class="comment-avatar">
 						<?php
@@ -45,9 +45,15 @@ class WalkerComment extends Walker_Comment {
 						$comment_author     = get_comment_author( $comment );
 						if ( 0 !== $args['avatar_size'] ) {
 							if ( ! empty( $comment_author_url ) ) {
-								printf( '<a href="%s" rel="external nofollow" class="url">%s</a>', $comment_author_url, esc_html( $comment_author ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped --Escaped in https://developer.wordpress.org/reference/functions/get_comment_author_url/
+								?>
+								<a href="<?php echo $comment_author_url;  // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped --Escaped in https://developer.wordpress.org/reference/functions/get_comment_author_url/ ?>"<?php vite( 'seo' )->print_schema_microdata( 'author' ); ?>>
+									<?php echo esc_html( $comment_author ); ?>
+								</a>
+								<?php
 							} else {
-								printf( '<span class="url">%s</span>', esc_html( $comment_author ) );
+								?>
+								<span class="url"<?php vite( 'seo' )->print_schema_microdata( 'author' ); ?>><?php echo esc_html( $comment_author ); ?></span>
+								<?php
 							}
 						}
 						/* translators: 1: Comment date, 2: Comment time. */
