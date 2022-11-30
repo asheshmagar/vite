@@ -11,12 +11,16 @@ module.exports = ( _, args ) => ( {
 	entry: {
 		customizer: resolve( process.cwd(), 'assets/js/customizer', 'index.js' ),
 		'customizer-preview': resolve( process.cwd(), 'assets/js/customizer/preview', 'index.js' ),
-		style: resolve( process.cwd(), 'assets/scss', 'style.scss' ),
+		global: resolve( process.cwd(), 'assets/scss', 'global.scss' ),
+		header: resolve( process.cwd(), 'assets/scss', 'header.scss' ),
+		content: resolve( process.cwd(), 'assets/scss', 'content.scss' ),
+		footer: resolve( process.cwd(), 'assets/scss', 'footer.scss' ),
 		frontend: resolve( process.cwd(), 'assets/js/frontend', 'index.js' ),
 	},
 	output: {
 		filename: '[name].js',
 		path: resolve( process.cwd(), 'assets/dist' ),
+		clean: true,
 	},
 	resolve: {
 		extensions: [ '.js', '.jsx' ],
