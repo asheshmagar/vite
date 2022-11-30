@@ -13,8 +13,8 @@ $vite = new Container();
 $vite->delegate( new ReflectionContainer() );
 
 $service_providers = [
-	Vite\ServiceProvider\SEOServiceProvider::class,
 	Vite\ServiceProvider\CoreServiceProvider::class,
+	Vite\ServiceProvider\SEOServiceProvider::class,
 	Vite\ServiceProvider\BreadcrumbsServiceProvider::class,
 	Vite\ServiceProvider\NavMenuServiceProvider::class,
 	Vite\ServiceProvider\SidebarServiceProvider::class,
@@ -25,6 +25,7 @@ $service_providers = [
 	Vite\ServiceProvider\EntryElementsServiceProvider::class,
 	Vite\ServiceProvider\FooterServiceProvider::class,
 	Vite\ServiceProvider\WebFontLoaderServerProvider::class,
+	Vite\ServiceProvider\PerformanceServiceProvider::class,
 	Vite\ServiceProvider\DynamicCSSServiceProvider::class,
 	Vite\ServiceProvider\CustomizerServiceProvider::class,
 	Vite\ServiceProvider\ViteServiceProvider::class,
