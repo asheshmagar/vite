@@ -32,9 +32,9 @@ class Comments {
 	/**
 	 * Init.
 	 */
-	public function init(): void {
+	public function init() {
 		add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_comments_reply_script' ] );
-		add_action( 'vite_comments', [ $this, 'comments_list' ] );
+		vite( 'core' )->add_action( 'vite/comments', [ $this, 'comments_list' ] );
 	}
 
 	/**
@@ -54,9 +54,9 @@ class Comments {
 	 * @return void
 	 */
 	public function comments_list() {
-		do_action( 'vite_before_comments_list' );
+		vite( 'core' )->action( 'comments/list/start' );
 		$this->comments_list_markup();
-		do_action( 'vite_after_comments_list' );
+		vite( 'core' )->action( 'comments/list/end' );
 	}
 
 	/**
@@ -64,7 +64,7 @@ class Comments {
 	 *
 	 * @return void
 	 */
-	public function comments_list_markup() {
+	private function comments_list_markup() {
 		$comments_count = (int) get_comments_number();
 
 		if ( have_comments() ) {
