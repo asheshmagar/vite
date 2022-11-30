@@ -12,15 +12,43 @@
 defined( 'ABSPATH' ) || exit;
 
 $elements = vite( 'customizer' )->get_setting( 'single-header-elements' );
-?>
+$core	 = vite( 'core' );
 
-<article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
+/**
+ * Action: vite/single/content/start.
+ *
+ * Fires before the single content.
+ *
+ * @since x.x.x
+ */
+$core->action( 'single/content/start' );
+?>
+<article id="post-<?php the_ID(); ?>" <?php post_class(); ?><?php vite( 'seo' )->print_schema_microdata( 'article' ); ?>>
 	<header class="entry-header">
-		<?php vite( 'entry-elements' )->render_entry_elements( $elements ); ?>
+		<?php
+		/**
+		 * Action: vite/single/content/header.
+		 *
+		 * Fires in the single content header.
+		 *
+		 * @param array $elements The header entry elements.
+		 * @since x.x.x
+		 */
+		$core->action( 'single/content/header', $elements );
+		vite( 'entry-elements' )->render_entry_elements( $elements );
+		?>
 	</header>
 	<?php vite( 'entry-elements' )->render_entry_featured_image(); ?>
 	<div class="entry-content">
 		<?php
+		/**
+		 * Action: vite/single/content/content.
+		 *
+		 * Fires in the single content.
+		 *
+		 * @since x.x.x
+		 */
+		$core->action( 'single/content' );
 		the_content(
 			sprintf(
 				wp_kses(
@@ -38,3 +66,12 @@ $elements = vite( 'customizer' )->get_setting( 'single-header-elements' );
 		?>
 	</div>
 </article>
+<?php
+/**
+ * Action: vite/single/content/end.
+ *
+ * Fires after the single content.
+ *
+ * @since x.x.x
+ */
+$core->action( 'single/content/end' );

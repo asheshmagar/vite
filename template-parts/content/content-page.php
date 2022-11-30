@@ -12,14 +12,42 @@
 defined( 'ABSPATH' ) || exit;
 
 $elements = vite( 'customizer' )->get_setting( 'page-header-elements' );
-?>
+$core	 = vite( 'core' );
 
+/**
+ * Action: vite/page/content/start.
+ *
+ * Fires before the page content.
+ *
+ * @since x.x.x
+ */
+$core->action( 'page/content/start' );
+?>
 <article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
 	<div class="entry-header">
-	<?php vite( 'entry-elements' )->render_entry_elements( $elements ); ?>
+	<?php
+	/**
+	 * Action: vite/page/content/header.
+	 *
+	 * Fires in the page content header.
+	 *
+	 * @param array $elements The header entry elements.
+	 * @since x.x.x
+	 */
+	$core->action( 'page/content/header', $elements );
+	vite( 'entry-elements' )->render_entry_elements( $elements );
+	?>
 	</div>
 	<div class="entry-content">
 		<?php
+		/**
+		 * Action: vite/page/content/content.
+		 *
+		 * Fires in the page content.
+		 *
+		 * @since x.x.x
+		 */
+		$core->action( 'page/content' );
 		the_content();
 		wp_link_pages(
 			array(
@@ -30,3 +58,12 @@ $elements = vite( 'customizer' )->get_setting( 'page-header-elements' );
 		?>
 	</div>
 </article>
+<?php
+/**
+ * Action: vite/page/content/end.
+ *
+ * Fires after the page content.
+ *
+ * @since x.x.x
+ */
+$core->action( 'page/content/end' );

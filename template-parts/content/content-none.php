@@ -10,8 +10,18 @@
 
 // Exit if accessed directly.
 defined( 'ABSPATH' ) || exit;
-?>
 
+$core = vite( 'core' );
+
+/**
+ * Action: vite/content-none/start.
+ *
+ * Fires before the content-none.
+ *
+ * @since x.x.x
+ */
+$core->action( 'content-none/start' );
+?>
 <section class="no-results not-found">
 	<div class="page-content">
 		<?php if ( is_home() && current_user_can( 'publish_posts' ) ) : ?>
@@ -42,4 +52,13 @@ defined( 'ABSPATH' ) || exit;
 		<?php endif; ?>
 	</div>
 </section>
+<?php
+/**
+ * Action: vite/content-none/end.
+ *
+ * Fires after the content-none.
+ *
+ * @since 1.0.0
+ */
+$core->action( 'content-none/end' );
 

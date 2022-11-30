@@ -9,6 +9,14 @@
 // Exit if accessed directly.
 defined( 'ABSPATH' ) || exit;
 
+/**
+ * Action: vite/header/search-form/start
+ *
+ * Fires before header search form.
+ *
+ * @since x.x.x
+ */
+vite( 'core' )->action( 'header/search-form/start' );
 ?>
 <form role="search" method="get" class="search-form" action="<?php echo esc_url( home_url( '/' ) ); ?>">
 	<label>
@@ -27,3 +35,12 @@ defined( 'ABSPATH' ) || exit;
 		</button>
 	</label>
 </form>
+<?php
+/**
+ * Action: vite/header/search-form/end
+ *
+ * Fires after header search form.
+ *
+ * @since x.x.x
+ */
+vite( 'core' )->action( 'header/search-form/end' );

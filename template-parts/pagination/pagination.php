@@ -5,8 +5,17 @@
  * @package Vite
  */
 
-$pagination_args = apply_filters(
-	'vite_pagination_args',
+$core = vite( 'core' );
+
+/**
+ * Filter: vite/pagination/args.
+ *
+ * Filters pagination arguments.
+ *
+ * @since x.x.x
+ */
+$pagination_args = $core->filter(
+	'pagination/args',
 	[
 		'mid_size'  => 3,
 		'prev_text' => sprintf(
@@ -22,4 +31,22 @@ $pagination_args = apply_filters(
 	]
 );
 
+/**
+ * Action: vite/pagination/start
+ *
+ * Fires before pagination.
+ *
+ * @since x.x.x
+ */
+$core->action( 'pagination/start' );
+
 the_posts_pagination( $pagination_args );
+
+/**
+ * Action: vite/pagination/end
+ *
+ * Fires after pagination.
+ *
+ * @since x.x.x
+ */
+$core->action( 'pagination/end' );

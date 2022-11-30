@@ -8,4 +8,4 @@
 
 defined( 'ABSPATH' ) || exit;
 
-vite( 'header' )->render_header_social();
+vite( 'header' )->render_header_socials();
