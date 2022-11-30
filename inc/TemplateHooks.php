@@ -38,29 +38,56 @@ class TemplateHooks {
 	 * @return void
 	 */
 	public function __construct() {
-		add_action( 'vite_the_loop', [ $this, 'content' ] );
-		add_action( 'vite_header', [ $this, 'header' ] );
-		add_action( 'vite_after_header', [ $this, 'page_header' ] );
-		add_action( 'vite_footer', [ $this, 'footer' ] );
-		add_filter( 'post_class', [ $this, 'post_class' ], 10, 3 );
-		add_action( 'vite_before_archive', [ $this, 'archive_wrapper_open' ] );
-		add_action( 'vite_after_archive', [ $this, 'archive_wrapper_close' ] );
-		add_action( 'vite_after_archive', [ $this, 'pagination_template' ], 11 );
-		add_action( 'vite_after_single', [ $this, 'navigation_template' ] );
-		add_action( 'vite_after_single', [ $this, 'comments_template' ], 11 );
-		add_action( 'vite_after_page', [ $this, 'comments_template' ] );
-		add_action(
-			'vite_before_mobile_header',
+		$core = vite( 'core' );
+
+		$core->add_action( 'vite/the-loop', [ $this, 'content' ] );
+		$core->add_action( 'vite/header', [ $this, 'header' ] );
+		$core->add_action( 'vite/footer', [ $this, 'footer' ] );
+		$core->add_action( 'vite/header/end', [ $this, 'archive_page_header' ] );
+		$core->add_action( 'vite/archive/start', [ $this, 'archive_wrapper_open' ] );
+		$core->add_action( 'vite/archive/end', [ $this, 'archive_wrapper_close' ] );
+		$core->add_action( 'vite/archive/end', [ $this, 'pagination_template' ], 11 );
+		$core->add_action( 'vite/single/end', [ $this, 'navigation_template' ] );
+		$core->add_action( 'vite/single/end', [ $this, 'comments_template' ], 11 );
+		$core->add_action( 'vite/page/end', [ $this, 'comments_template' ] );
+		$core->add_action(
+			'vite/header/mobile/start',
 			function() {
 				add_filter( 'theme_mod_custom_logo', [ $this, 'change_logo' ] );
 			}
 		);
-		add_action(
-			'vite_after_mobile_header',
+		$core->add_action(
+			'vite/header/mobile/end',
 			function() {
 				remove_filter( 'theme_mod_custom_logo', [ $this, 'change_logo' ] );
 			}
 		);
+		$core->add_action(
+			'vite/404',
+			function() {
+				get_template_part( 'template-parts/content/content', '404' );
+			}
+		);
+
+		add_filter( 'post_class', [ $this, 'post_class' ], 10, 3 );
+		add_filter( 'body_class', [ $this, 'body_class' ] );
+	}
+
+	/**
+	 * Add body classes.
+	 *
+	 * @param string[] $classes An array of body class names.
+	 * @return string[]
+	 */
+	public function body_class( array $classes ): array {
+		$classes[] = 'vite';
+
+		if ( is_archive() ) {
+			$archive_layout = vite( 'customizer' )->get_setting( 'archive-layout' );
+			$classes[]      = 'archive-layout-' . $archive_layout;
+		}
+
+		return $classes;
 	}
 
 	/**
@@ -113,7 +140,16 @@ class TemplateHooks {
 	 * @return void
 	 */
 	public function archive_wrapper_open() {
-		echo '<div class="vite-posts">';
+		$archive_style   = vite( 'customizer' )->get_setting( 'archive-style' );
+		$archive_columns = vite( 'customizer' )->get_setting( 'archive-columns' );
+		$is_masonry      = 'grid' === $archive_style && vite( 'customizer' )->get_setting( 'archive-style-masonry' );
+
+		printf(
+			'<div class="vite-posts"%s%s%s>',
+			esc_attr( " data-style=$archive_style" ),
+			'grid' === $archive_style ? esc_attr( " data-col=$archive_columns" ) : '',
+			esc_attr( $is_masonry ? ' data-masonry' : '' )
+		);
 	}
 
 	/**
@@ -169,11 +205,24 @@ class TemplateHooks {
 	 *
 	 * @return void
 	 */
-	public function page_header() {
-		if ( is_front_page() || is_singular() ) {
+	public function archive_page_header() {
+		if ( ! is_archive() ) {
 			return;
 		}
-		get_template_part( 'template-parts/page-header/page-header', '' );
+		$archive_title_position = vite( 'customizer' )->get_setting( 'archive-title-position' );
+		$archive_title_elements = vite( 'customizer' )->get_setting( 'archive-title-elements' );
+
+		if ( 'inside' === $archive_title_position ) {
+			vite( 'core' )->add_action(
+				'vite/archive/start',
+				function() use ( $archive_title_elements ) {
+					get_template_part( 'template-parts/page-header/page-header', '', [ 'elements' => $archive_title_elements ] );
+				},
+				9
+			);
+			return;
+		}
+		get_template_part( 'template-parts/page-header/page-header', '', [ 'elements' => $archive_title_elements ] );
 	}
 
 	/**
@@ -181,7 +230,7 @@ class TemplateHooks {
 	 *
 	 * @return void
 	 */
-	public function content(): void {
+	public function content() {
 		if ( is_archive() || is_home() || is_front_page() || is_search() ) {
 			get_template_part( 'template-parts/content/content', '' );
 		} elseif ( is_page() ) {
