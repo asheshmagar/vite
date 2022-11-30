@@ -19,8 +19,8 @@ class Footer {
 	 * @return void
 	 */
 	public function render_footer() {
-		$footer_configs = apply_filters(
-			'vite_footer_elements',
+		$footer_configs = vite( 'core' )->filter(
+			'footer/elements',
 			[
 				'top'    => [],
 				'middle' => [],
@@ -30,7 +30,7 @@ class Footer {
 			]
 		);
 		?>
-		<footer id="colophon" class="site-footer">
+		<footer id="colophon" class="site-footer"<?php vite( 'seo' )->print_schema_microdata( 'footer' ); ?>>
 			<?php
 			foreach ( $footer_configs as $row => $cols ) {
 				$is_row_empty = array_reduce(
