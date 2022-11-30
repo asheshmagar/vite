@@ -20,6 +20,10 @@ export default ( type, Component ) => {
 				} );
 			}
 
+			if ( args.params?.inputAttrs?.separator ) {
+				args.params.content = args.params.content.replace( 'class=', 'data-separator class=' );
+			}
+
 			control.propertyElements = [];
 			wp.customize.Control.prototype.initialize.call( control, id, args );
 		},
