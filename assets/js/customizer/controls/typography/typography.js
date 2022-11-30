@@ -29,6 +29,9 @@ export default memo( ( props ) => {
 				description,
 				fonts,
 				default: defaultValue,
+				inputAttrs: {
+					allow_reset: allowReset = true,
+				},
 			},
 		},
 	} = props;
@@ -55,7 +58,7 @@ export default memo( ( props ) => {
 			{ label && (
 				<div className="vite-control-head">
 					<span className="customize-control-title">{ label }</span>
-					{ ! isEqual( defaultValue, value ) && (
+					{ ( ! isEqual( defaultValue, value ) && allowReset ) && (
 						<Button
 							onClick={ () => {
 								setValue( defaultValue );

@@ -15,10 +15,10 @@ export default memo( ( props ) => {
 				inputAttrs: {
 					responsive = false,
 					units = [],
-					noUnits = true,
 					min = 0,
 					max = 300,
 					step = 1,
+					allow_reset: allowReset = true,
 				},
 				default: defaultValue,
 			},
@@ -33,7 +33,7 @@ export default memo( ( props ) => {
 			{ label && (
 				<div className="vite-control-head">
 					<span className="customize-control-title">{ label }</span>
-					{ ! isEqual( defaultValue, value ) && (
+					{ ( ! isEqual( defaultValue, value ) && allowReset ) && (
 						<Button
 							onClick={ () => {
 								setValue( defaultValue );
@@ -61,7 +61,6 @@ export default memo( ( props ) => {
 								} }
 								defaultUnit="px"
 								units={ units }
-								noUnits={ noUnits }
 								min={ min }
 								max={ max }
 								step={ step }
@@ -77,7 +76,6 @@ export default memo( ( props ) => {
 						} }
 						defaultUnit="px"
 						units={ units }
-						noUnits={ noUnits }
 						min={ min }
 						max={ max }
 						step={ step }

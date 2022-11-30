@@ -31,6 +31,9 @@ export default memo( ( props ) => {
 				label,
 				description,
 				default: defaultValue,
+				inputAttrs: {
+					allow_reset: allowReset = true,
+				},
 			},
 		},
 	} = props;
@@ -42,7 +45,7 @@ export default memo( ( props ) => {
 			{ label && (
 				<div className="vite-control-head">
 					<span className="customize-control-title">{ label }</span>
-					{ ! isEqual( defaultValue, value ) && (
+					{ ( ! isEqual( defaultValue, value ) && allowReset ) && (
 						<Button
 							onClick={ () => {
 								setValue( defaultValue );
@@ -113,20 +116,6 @@ export default memo( ( props ) => {
 						</div>
 					</>
 				) }
-				<div className="vite-border-radius">
-					<span>Radius</span>
-					<ViteRange
-						onChange={ val => {
-							setValue( prev => {
-								prev = { ...( prev || {} ), radius: val };
-								setting.set( prev );
-							} );
-						} }
-						value={ value?.radius ?? '' }
-						units={ [ 'px', 'em', 'rem', '%' ] }
-						noUnits={ false }
-					/>
-				</div>
 			</div>
 			{ description && (
 				<div className="customize-control-description">

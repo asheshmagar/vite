@@ -27,6 +27,7 @@ export default memo( ( props ) => {
 					step = 1,
 					min = 0,
 					max = 300,
+					allow_reset: allowReset = true,
 				},
 				default: defaultValue,
 			},
@@ -91,7 +92,7 @@ export default memo( ( props ) => {
 			{ label && (
 				<div className="vite-control-head">
 					<span className="customize-control-title">{ label }</span>
-					{ ! isEqual( defaultValue, value ) && (
+					{ ( ! isEqual( defaultValue, value ) && allowReset ) && (
 						<Button
 							onClick={ () => {
 								setValue( defaultValue );

@@ -1,9 +1,11 @@
-import { memo, useState, RawHTML } from '@wordpress/element';
+import { memo, useState, RawHTML, useEffect } from '@wordpress/element';
 import { ReactSortable } from 'react-sortablejs';
-import { isArray } from 'lodash';
+import { isArray, differenceBy } from 'lodash';
 import { sprintf } from '@wordpress/i18n';
+import Select from 'react-select';
+import { Button } from '@wordpress/components';
 
-const SortableItem = ( { item, innerItems = false, toggleItem, sort } ) => {
+const SortableItem = ( { item, innerItems = false, toggleItem, sort, removable = false, onRemove = () => {} } ) => {
 	const [ open, setOpen ] = useState( false );
 	return (
 		<li className="vite-sortable-item" data-open={ open } data-sort-disabled={ sort ? undefined : true }>
@@ -22,9 +24,14 @@ const SortableItem = ( { item, innerItems = false, toggleItem, sort } ) => {
 					) }
 				</RawHTML>
 				<div className="vite-label">{ item.label }</div>
-				{ !! innerItems && (
+				{ ( !! innerItems && ! removable ) && (
 					<RawHTML className="vite-toggle" onClick={ () => setOpen( prev => ! prev ) }>
 						{ sprintf( window?._VITE_CUSTOMIZER_?.icons?.[ 'caret-down' ], 'vite-icon', 14, 14 ) }
+					</RawHTML>
+				) }
+				{ removable && (
+					<RawHTML className="vite-remove" onClick={ onRemove }>
+						{ sprintf( window?._VITE_CUSTOMIZER_?.icons?.xmark, 'vite-icon', 14, 14 ) }
 					</RawHTML>
 				) }
 			</div>
@@ -49,6 +56,7 @@ export default memo( ( props ) => {
 					sort = true,
 					idWithInnerItems = false,
 					innerItems = [],
+					removable = false,
 				},
 			},
 			setting,
@@ -60,6 +68,10 @@ export default memo( ( props ) => {
 
 		if ( ! isArray( val ) ) {
 			val = [];
+		}
+
+		if ( removable ) {
+			return val;
 		}
 
 		if ( ! val?.length ) {
@@ -92,6 +104,17 @@ export default memo( ( props ) => {
 			selected: false,
 		} ) );
 	} );
+
+	const getSelected = () => {
+		const availableItems = differenceBy( choices ?? [], value ?? [], 'id' );
+		return availableItems?.length ? availableItems[ 0 ] : null;
+	};
+
+	const [ selected, setSelected ] = useState( getSelected );
+
+	useEffect( () => {
+		setSelected( getSelected );
+	}, [ value ] );
 
 	return (
 		<div className="vite-control vite-sortable-control" data-control-id={ id }>
@@ -135,6 +158,14 @@ export default memo( ( props ) => {
 								};
 								setValue( temp );
 								setting.set( temp );
+							} }
+							removable={ removable }
+							onRemove={ () => {
+								setValue( prev => {
+									prev = prev.filter( i => i.id !== item.id );
+									setting.set( prev );
+									return prev;
+								} );
 							} }
 							innerItems={ idWithInnerItems && item.id?.startsWith( idWithInnerItems ) && item?.items ? () => {
 								return (
@@ -194,10 +225,51 @@ export default memo( ( props ) => {
 										} ) }
 									</ReactSortable>
 								);
-							} : false }
+							} : null }
 						/>
 					) ) }
 				</ReactSortable>
+				{ removable && (
+					<div className="vite-sortable-available-items">
+						<Select
+							value={ selected }
+							isSearchable={ true }
+							onChange={ ( v ) => setSelected( v ) }
+							options={ differenceBy( choices, value, 'id' ) }
+							classNamePrefix="vite-select"
+							className="vite-select"
+							isMulti={ false }
+							components={ {
+								IndicatorSeparator: () => null,
+								DropdownIndicator: ( { size = 10 } ) => (
+									<svg height={ size } width={ size } viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+										<path d="M21.707,8.707l-9,9a1,1,0,0,1-1.414,0l-9-9A1,1,0,1,1,3.707,7.293L12,15.586l8.293-8.293a1,1,0,1,1,1.414,1.414Z" />
+									</svg>
+								) } }
+						/>
+						<Button
+							isPrimary={ true }
+							isSmall={ true }
+							onClick={ () => {
+								if ( selected ) {
+									setValue( prev => {
+										prev = [
+											...prev,
+											{
+												...selected,
+												visible: true,
+											},
+										];
+										setting.set( prev );
+										return prev;
+									} );
+								}
+							} }
+						>
+							Add
+						</Button>
+					</div>
+				) }
 			</div>
 		</div>
 	);

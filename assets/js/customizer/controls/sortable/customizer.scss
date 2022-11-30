@@ -53,3 +53,17 @@
 .vite-sortable-fallback {
 	opacity: 1 !important;
 }
+
+.vite-sortable-available-items {
+	display: flex;
+	margin-top: 10px;
+
+	.vite-select {
+		flex: 1;
+	}
+
+	.components-button {
+		height: 30px;
+		margin-left: 10px;
+	}
+}
