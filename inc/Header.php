@@ -20,7 +20,7 @@ class Header {
 	 */
 	public function render_header() {
 		?>
-		<header id="mast-head" class="site-header">
+		<header id="mast-head" class="site-header"<?php vite( 'seo' )->print_schema_microdata( 'header' ); ?>>
 			<?php $this->render_desktop_header(); ?>
 			<?php $this->render_mobile_header(); ?>
 		</header>
@@ -36,7 +36,7 @@ class Header {
 		$default        = vite( 'customizer' )->get_defaults()['header'];
 		$header_configs = vite( 'customizer' )->get_setting( 'header', $default )['mobile'];
 
-		do_action( 'vite_before_mobile_header' );
+		vite( 'core' )->action( 'header/mobile/start' );
 		?>
 		<div data-device-mobile>
 			<?php
@@ -56,42 +56,42 @@ class Header {
 				$col_count = count( $col_keys );
 				$cols_attr = $col_count . ':' . implode( ':', $col_keys );
 
-				do_action( 'vite_before_mobile_header_row', $row, $cols_with_content );
+				vite( 'core' )->action( 'header/mobile/row/start', $row, $cols_with_content );
 				?>
-						<div data-cols="<?php echo esc_attr( $cols_attr ); ?>" data-row="<?php echo esc_attr( $row ); ?>">
-							<div class="container">
+				<div data-cols="<?php echo esc_attr( $cols_attr ); ?>" data-row="<?php echo esc_attr( $row ); ?>">
+					<div class="container">
 						<?php foreach ( $cols as $col => $elements ) : ?>
-									<?php
-									if ( empty( $elements ) && (
-											( 1 === $col_count ) ||
-											( 2 === $col_count && ! in_array( 'center', $col_keys, true ) )
-										)
-									) {
-										continue;
-									}
-									?>
-									<div data-col="<?php echo esc_attr( $col ); ?>">
-										<?php foreach ( $elements as $element ) : ?>
-											<div data-element="header-<?php echo esc_attr( $element['id'] ); ?>">
-												<?php
-													preg_match( '/\d+$/', $element['id'], $matches );
-													$element_id = preg_replace( '/(_|-)\d+/', '', $element['id'] );
-													$type       = $matches[0] ?? null;
-												?>
-												<?php get_template_part( 'template-parts/header/header', $element_id, [ 'type' => $type ] ); ?>
-											</div>
-										<?php endforeach; ?>
+							<?php
+							if ( empty( $elements ) && (
+									( 1 === $col_count ) ||
+									( 2 === $col_count && ! in_array( 'center', $col_keys, true ) )
+								)
+							) {
+								continue;
+							}
+							?>
+							<div data-col="<?php echo esc_attr( $col ); ?>">
+								<?php foreach ( $elements as $element ) : ?>
+									<div data-element="header-<?php echo esc_attr( $element['id'] ); ?>">
+										<?php
+											preg_match( '/\d+$/', $element['id'], $matches );
+											$element_id = preg_replace( '/(_|-)\d+/', '', $element['id'] );
+											$type       = $matches[0] ?? null;
+										?>
+										<?php get_template_part( 'template-parts/header/header', $element_id, [ 'type' => $type ] ); ?>
 									</div>
 								<?php endforeach; ?>
 							</div>
-						</div>
-						<?php
-						do_action( 'vite_after_mobile_header_row', $row, $cols_with_content );
+						<?php endforeach; ?>
+					</div>
+				</div>
+				<?php
+				vite( 'core' )->action( 'header/mobile/row/end', $row, $cols_with_content );
 			}
 			?>
 		</div>
 		<?php
-		do_action( 'vite_after_mobile_header' );
+		vite( 'core' )->action( 'header/mobile/end' );
 	}
 
 	/**
@@ -102,7 +102,7 @@ class Header {
 	private function render_desktop_header() {
 		$header_configs = vite( 'customizer' )->get_setting( 'header' )['desktop'];
 
-		do_action( 'vite_before_desktop_header' );
+		vite( 'core' )->action( 'header/desktop/start' );
 		?>
 		<div data-device-desktop>
 		<?php
@@ -123,7 +123,7 @@ class Header {
 			$cols_attr  = $col_count . ':' . implode( ':', $col_keys );
 			$row_layout = vite( 'customizer' )->get_setting( "header-$row-row-layout" );
 
-			do_action( 'vite_before_desktop_header_row', $row, $cols_with_content );
+			vite( 'core' )->action( 'header/desktop/row/start', $row, $cols_with_content );
 			?>
 			<div data-cols="<?php echo esc_attr( $cols_attr ); ?>" data-layout="<?php echo esc_attr( $row_layout ); ?>" data-row="<?php echo esc_attr( $row ); ?>">
 				<div class="container">
@@ -153,12 +153,12 @@ class Header {
 				</div>
 			</div>
 				<?php
-				do_action( 'vite_after_desktop_header_row', $row, $cols_with_content );
+				vite( 'core' )->action( 'header/desktop/row/end', $row, $cols_with_content );
 		}
 		?>
 		</div>
 		<?php
-		do_action( 'vite_after_desktop_header' );
+		vite( 'core' )->action( 'header/desktop/end' );
 	}
 
 	/**
@@ -170,7 +170,7 @@ class Header {
 		$elements = vite( 'customizer' )->get_setting( 'header-site-branding-elements' );
 		$layout   = vite( 'customizer' )->get_setting( 'header-site-branding-layout' );
 		?>
-		<div class="site-branding" data-layout="<?php echo esc_attr( $layout ); ?>">
+		<div class="site-branding" data-layout="<?php echo esc_attr( $layout ); ?>"<?php vite( 'seo' )->print_schema_microdata( 'logo' ); ?>>
 		<?php the_custom_logo(); ?>
 		<?php if ( in_array( $elements, [ 'logo-title', 'logo-title-description' ], true ) ) : ?>
 				<?php if ( is_front_page() && is_home() ) : ?>
@@ -189,25 +189,19 @@ class Header {
 	}
 
 	/**
-	 * Render header menu.
+	 * Render header socials.
 	 *
 	 * @return void
 	 */
-	public function render_header_social() {
-		$socials = [
-			[
-				'id'      => 'facebook',
-				'visible' => true,
-			],
-			[
-				'id'      => 'twitter',
-				'visible' => true,
-			],
-			[
-				'id'      => 'instagram',
-				'visible' => true,
-			],
-		]
+	public function render_header_socials() {
+		$customizer = vite( 'customizer' );
+		$socials    = $customizer->get_setting( 'header-social-links' );
+		$size       = $customizer->get_setting( 'header-social-icons-size' );
+		$color_type = $customizer->get_setting( 'header-social-icons-color-type' );
+
+		if ( empty( $socials ) ) {
+			return;
+		}
 		?>
 		<div class="header-socials">
 		<?php
@@ -216,14 +210,14 @@ class Header {
 				continue;
 			}
 			?>
-				<a class="vite-social <?php echo esc_attr( $social['id'] ); ?>" rel="noopener" href=<?php echo esc_url( vite( 'customizer' )->get_setting( "{$social['id']}-link", '#' ) ); ?>>
+				<a <?php print( esc_attr( 'brand' === $color_type && isset( $social['color'] ) ? 'style=color:' . $social['color'] : '' ) ); ?> class="vite-social <?php echo esc_attr( $social['id'] ); ?>" rel="noopener" href=<?php echo esc_url( vite( 'customizer' )->get_setting( "{$social['id']}-link", '#' ) ); ?>>
 					<span class="vite-social-icon">
 						<?php
 						vite( 'icon' )->get_icon(
 							$social['id'],
 							[
 								'echo' => true,
-								'size' => 20,
+								'size' => $size,
 							]
 						);
 						?>
@@ -242,9 +236,10 @@ class Header {
 		 * @return void
 		 */
 	public function render_header_search() {
-		$label            = vite( 'customizer' )->get_setting( 'header-search-label' );
-		$label_visibility = vite( 'customizer' )->get_setting( 'header-search-label-visibility' );
-		$label_position   = vite( 'customizer' )->get_setting( 'header-search-label-position' );
+		$customizer       = vite( 'customizer' );
+		$label            = $customizer->get_setting( 'header-search-label' );
+		$label_visibility = $customizer->get_setting( 'header-search-label-visibility' );
+		$label_position   = $customizer->get_setting( 'header-search-label-position' );
 		?>
 		<div class="search-modal-trigger">
 			<a href="#" class="search-modal-open" data-modal-trigger data-label-visibility="<?php echo esc_attr( implode( ':', $label_visibility ) ); ?>" data-label-position="<?php echo esc_attr( $label_position ); ?>">
@@ -254,8 +249,8 @@ class Header {
 			<?php vite( 'icon' )->get_icon( 'magnifying-glass', [ 'echo' => true ] ); ?>
 			</a>
 		</div>
-			<?php
-			add_action( 'wp_footer', [ $this, 'render_search_modal' ], 11 );
+		<?php
+		add_action( 'wp_footer', [ $this, 'render_search_modal' ], 11 );
 	}
 
 		/**
@@ -308,13 +303,14 @@ class Header {
 		 * @return void
 		 */
 	public function render_header_button( $type = 1 ) {
-		$text      = vite( 'customizer' )->get_setting( "header-button-$type-text" );
-		$url       = vite( 'customizer' )->get_setting( "header-button-$type-url" );
-		$target    = vite( 'customizer' )->get_setting( "header-button-$type-target" );
-		$download  = vite( 'customizer' )->get_setting( "header-button-$type-download" );
-		$sponsored = vite( 'customizer' )->get_setting( "header-button-$type-sponsored" );
-		$nofollow  = vite( 'customizer' )->get_setting( "header-button-$type-nofollow" );
-		$style     = vite( 'customizer' )->get_setting( "header-button-$type-style" );
+		$customizer = vite( 'customizer' );
+		$text       = $customizer->get_setting( "header-button-$type-text" );
+		$url        = $customizer->get_setting( "header-button-$type-url" );
+		$target     = $customizer->get_setting( "header-button-$type-target" );
+		$download   = $customizer->get_setting( "header-button-$type-download" );
+		$sponsored  = $customizer->get_setting( "header-button-$type-sponsored" );
+		$nofollow   = $customizer->get_setting( "header-button-$type-nofollow" );
+		$style      = $customizer->get_setting( "header-button-$type-style" );
 
 		$rel = [];
 
@@ -353,8 +349,8 @@ class Header {
 			<?php vite( 'icon' )->get_icon( 'bars', [ 'echo' => true ] ); ?>
 			</a>
 		</div>
-			<?php
-			add_action( 'wp_footer', [ $this, 'render_mobile_menu_offset' ] );
+		<?php
+		add_action( 'wp_footer', [ $this, 'render_mobile_menu_offset' ] );
 	}
 
 		/**
@@ -364,6 +360,13 @@ class Header {
 		 */
 	public function render_mobile_menu_offset() {
 		$offset_config = vite( 'customizer' )->get_setting( 'header' )['offset'] ?? [];
+
+		/**
+		 * Filter: vite/header/mobile-menu-offset/elements.
+		 *
+		 * @param array $elements Elements.
+		 */
+		$offset_config = vite( 'core' )->filter( 'header/mobile-menu-offset/elements', $offset_config );
 		?>
 		<div data-modal class="mobile-menu-offset">
 			<div class="mobile-menu-offset-inner">
