@@ -1,6 +1,13 @@
 <?php
+/**
+ * Sanitize.
+ *
+ * @package Vite
+ */
 
 namespace Vite\Customizer;
+
+defined( 'ABSPATH' ) || exit;
 
 use WP_Customize_Setting;
 
@@ -268,10 +275,10 @@ class Sanitize {
 	/**
 	 * Sanitize dimensions.
 	 *
-	 * @param array $input Input.
-	 * @return array
+	 * @param mixed $input Input.
+	 * @return mixed|array
 	 */
-	public function sanitize_dimensions( array $input ): array {
+	public function sanitize_dimensions( $input ) {
 		$sanitize = function( $arr ) {
 			foreach ( [ 'top', 'right', 'bottom', 'left', 'unit', 'sync' ] as $k ) {
 				if ( 'sync' === $k ) {
