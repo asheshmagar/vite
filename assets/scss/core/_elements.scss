@@ -33,7 +33,7 @@ blockquote {
 	border-left: var(--blockquote--border--left, 4px solid rgba(0, 0, 0, 0.05));
 	padding: 10px;
 	font-size: 1.2em;
-	font-style:italic;
+	font-style: italic;
 	margin: 0 0 1.5em;
 	position: relative;
 }
@@ -97,31 +97,13 @@ h6 {
 	font-family: inherit;
 	line-height: var(--line--height, 1.2em);
 	font-size: var(--font--size);
-	color: var(--heading--color);
+	color: var(--heading--color, var(--headings-color));
 }
 
-h1 {
-	--font--size: 2rem;
-}
-
-h2 {
-	--font--size: 1.75rem;
-}
-
-h3 {
-	--font--size: 1.5rem;
-}
-
-h4 {
-	--font--size: 1.25rem;
-}
-
-h5 {
-	--font--size: 1rem;
-}
-
-h5 {
-	--font--size: 0.875rem;
+@for $i from 1 through 6 {
+	h#{$i} {
+		--font--size: #{2.25 - (0.25 * $i) }rem;
+	}
 }
 
 ul,
