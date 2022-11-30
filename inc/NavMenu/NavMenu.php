@@ -43,7 +43,7 @@ class NavMenu {
 	/**
 	 * Init.
 	 */
-	public function init(): void {
+	public function init() {
 		add_action( 'after_setup_theme', [ $this, 'register_nav_menus' ] );
 	}
 
@@ -51,8 +51,8 @@ class NavMenu {
 	 * Register nav menus.
 	 */
 	public function register_nav_menus() {
-		$menu_locations = apply_filters(
-			'vite_menu_locations',
+		$menu_locations = vite( 'core' )->filter(
+			'menu/locations',
 			[
 				static::PRIMARY_MENU   => __( 'Primary Menu', 'vite' ),
 				static::SECONDARY_MENU => __( 'Secondary Menu', 'vite' ),
@@ -78,7 +78,7 @@ class NavMenu {
 	 * @return bool
 	 */
 	public function is_mobile_menu_active(): bool {
-		return has_nav_menu( static::MOBILE_MENU );
+		return vite( 'core' )->filter( has_nav_menu( static::MOBILE_MENU ) );
 	}
 
 	/**
@@ -87,7 +87,7 @@ class NavMenu {
 	 * @return bool
 	 */
 	public function is_secondary_menu_active(): bool {
-		return has_nav_menu( static::SECONDARY_MENU );
+		return vite( 'core' )->filter( has_nav_menu( static::SECONDARY_MENU ) );
 	}
 
 	/**
@@ -96,7 +96,7 @@ class NavMenu {
 	 * @return bool
 	 */
 	public function is_footer_menu_active(): bool {
-		return has_nav_menu( static::FOOTER_MENU );
+		return vite( 'core' )->filter( has_nav_menu( static::FOOTER_MENU ) );
 	}
 
 	/**
@@ -112,7 +112,7 @@ class NavMenu {
 			'theme_location'  => $type,
 			'menu_id'         => "$type-menu",
 			'menu_class'      => "$type-menu menu",
-			'container'       => 'nav',
+			'container'       => null,
 			'container_id'    => "$context-$type-menu",
 			'container_class' => "$context-$type-menu",
 			'fallback_cb'     => function() use ( $type, $context ) {
@@ -123,7 +123,15 @@ class NavMenu {
 		if ( isset( $menu ) ) {
 			$args['menu'] = $menu;
 		}
-		wp_nav_menu( $args );
+
+		$args = vite( 'core' )->filter( "menu/$type/args", $args );
+		?>
+		<nav id="<?php echo esc_attr( "$context-$type" ); ?>-menu" class="<?php echo esc_attr( "$context-$type" ); ?>-menu"<?php vite( 'seo' )->print_schema_microdata( 'navigation' ); ?>>
+			<?php
+			wp_nav_menu( $args );
+			?>
+		</nav>
+		<?php
 	}
 
 	/**
@@ -149,7 +157,7 @@ class NavMenu {
 			return;
 		}
 		?>
-		<nav id="<?php echo esc_attr( "$context-$type" ); ?>-menu" class="<?php echo esc_attr( "$context-$type" ); ?>-menu">
+		<nav id="<?php echo esc_attr( "$context-$type" ); ?>-menu" class="<?php echo esc_attr( "$context-$type" ); ?>-menu"<?php vite( 'seo' )->print_schema_microdata( 'navigation' ); ?>>
 			<ul class="<?php echo esc_attr( $type ); ?>-menu menu">
 				<?php
 					wp_list_pages(
