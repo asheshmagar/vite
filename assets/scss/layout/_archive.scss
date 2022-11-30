@@ -3,15 +3,44 @@
 }
 
 .vite-posts {
-	--grid--gap: 2em;
-	--grid--columns: 3;
-	--grid--min--size: calc(calc(var(--full--width) / var(--grid--columns)) - calc(var(--grid--gap) * calc(var(--grid--columns) - 1)));
-	display: grid;
-	grid-gap: var(--grid--gap);
-	grid-template-columns: repeat(auto-fill, minmax(min(100%, var(--grid--min--size)), 1fr));
+	--gutter: 2em;
+	--columns--3: 3;
+
+	&[data-style="grid"] {
+		display: flex;
+		flex-wrap: wrap;
+		margin-left: calc(-1 * var(--gutter));
+
+		.vite-post {
+			margin-left: var(--gutter);
+		}
+
+		@for $i from 1 through 4 {
+			&[data-col="#{$i}"] {
+				.vite-post {
+					width: calc( calc(100% / #{$i}) - var(--gutter) );
+				}
+
+				@include media-query('tablet') {
+					@if($i > 1) {
+						.vite-post {
+							width: calc( calc(100% / #{$i - 1}) - var(--gutter) );
+						}
+					}
+				}
+			}
+		}
+
+		@include media-query('mobile') {
+			&[data-col] .vite-post {
+				width: calc(100% - var(--gutter));
+			}
+		}
+	}
 
 	.vite-post {
 		--post--padding: 20px;
+		margin-bottom: var(--gutter);
 
 		&.vite-has-post-thumbnail {
 
