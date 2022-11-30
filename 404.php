@@ -9,6 +9,40 @@
 // Exit if accessed directly.
 defined( 'ABSPATH' ) || exit;
 
+$core = vite( 'core' );
+
 get_header();
-do_action( 'vite_404' );
+?>
+<main id="main" class="site-main">
+	<?php
+	/**
+	 * Action: vite/404/start.
+	 *
+	 * Fires before the 404 page.
+	 *
+	 * @since x.x.x
+	 */
+	$core->action( '404/start' );
+
+	/**
+	 * Action: vite/404.
+	 *
+	 * Fires in the 404 page.
+	 *
+	 * @since x.x.x
+	 */
+	$core->action( '404' );
+
+	/**
+	 * Action: vite/404/end.
+	 *
+	 * Fires after the 404 page.
+	 *
+	 * @since x.x.x
+	 */
+	$core->action( '404/end' );
+	?>
+</main>
+</div>
+<?php
 get_footer();

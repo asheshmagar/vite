@@ -9,13 +9,40 @@
 // Exit if accessed directly.
 defined( 'ABSPATH' ) || exit;
 
+$core = vite( 'core' );
+
 get_header();
 ?>
 	<main id="main" class="site-main">
 		<?php
-			do_action( 'vite_before_page' );
-			vite( 'core' )->the_loop();
-			do_action( 'vite_after_page' );
+			/**
+			 * Action: vite/page/start.
+			 *
+			 * Fires before the page.
+			 *
+			 * @since x.x.x
+			 */
+			$core->action( 'page/start' );
+
+			/**
+			 * Action: vite/page.
+			 *
+			 * Fires in the page.
+			 *
+			 * @since x.x.x
+			 */
+			$core->action( 'page' );
+
+			$core->the_loop();
+
+			/**
+			 * Action: vite/page/end.
+			 *
+			 * Fires after the page.
+			 *
+			 * @since x.x.x
+			 */
+			$core->action( 'page/end' );
 		?>
 	</main>
 	<?php get_sidebar(); ?>

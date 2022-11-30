@@ -15,10 +15,37 @@ defined( 'ABSPATH' ) || exit;
 if ( post_password_required() ) {
 	return;
 }
+
+$core = vite( 'core' );
 ?>
 <div id="comments" class="comments-area<?php print( esc_attr( have_comments() ? '' : ' no-comments' ) ); ?>">
 <?php
-	do_action( 'vite_before_comments' );
-	do_action( 'vite_comments' );
-	do_action( 'vite_after_comments' );
+	/**
+	 * Action: vite/comments/start.
+	 *
+	 * Fires before the comments.
+	 *
+	 * @since x.x.x
+	 */
+	$core->action( 'comments/start' );
+
+	/**
+	 * Action: vite/comments.
+	 *
+	 * Fires in the comments' area.
+	 *
+	 * @see vite\Comments\Comments::comments_list()
+	 * @since x.x.x
+	 */
+	$core->action( 'comments' );
+
+	/**
+	 * Action: vite/comments/end.
+	 *
+	 * Fires after the comments.
+	 *
+	 * @since x.x.x
+	 */
+	$core->action( 'comments/end' );
 ?>
+</div>

@@ -16,13 +16,40 @@
 // Exit if accessed directly.
 defined( 'ABSPATH' ) || exit;
 
+$core = vite( 'core' );
+
 get_header();
 ?>
 	<main id="main" class="site-main">
 		<?php
-			do_action( 'vite_before_archive' );
-			vite( 'core' )->the_loop();
-			do_action( 'vite_after_archive' );
+			/**
+			 * Action: vite/archive/start.
+			 *
+			 * Fires before the archive.
+			 *
+			 * @since x.x.x
+			 */
+			$core->action( 'archive/start' );
+
+			/**
+			 * Action: vite/archive.
+			 *
+			 * Fires in the archive.
+			 *
+			 * @since x.x.x
+			 */
+			$core->action( 'archive' );
+
+			$core->the_loop();
+
+			/**
+			 * Action: vite/archive/end.
+			 *
+			 * Fires after the archive.
+			 *
+			 * @since x.x.x
+			 */
+			$core->action( 'archive/end' );
 		?>
 	</main>
 	<?php

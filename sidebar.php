@@ -10,4 +10,33 @@
 // Exit if accessed directly.
 defined( 'ABSPATH' ) || exit;
 
+$core = vite( 'core' );
+
+/**
+ * Action: vite/sidebar/start.
+ *
+ * Fires before the sidebar.
+ *
+ * @since x.x.x
+ */
+$core->action( 'sidebar/start' );
+
+/**
+ * Action: vite/sidebar.
+ *
+ * Fires in the sidebar.
+ *
+ * @since x.x.x
+ */
+$core->action( 'sidebar' );
+
 vite( 'sidebar' )->render_sidebar( [ 'should_render' => false ] );
+
+/**
+ * Action: vite/sidebar/end.
+ *
+ * Fires after the sidebar.
+ *
+ * @since x.x.x
+ */
+$core->action( 'sidebar/end' );

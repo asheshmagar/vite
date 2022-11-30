@@ -10,24 +10,93 @@
 
 // Exit if accessed directly.
 defined( 'ABSPATH' ) || exit;
+
+$core = vite( 'core' );
 ?>
 <!doctype html>
-<html class="no-js" <?php language_attributes(); ?>>
+<html class="no-js" <?php language_attributes(); ?><?php vite( 'seo' )->print_schema_microdata( 'html' ); ?>>
 	<head>
+		<?php
+		/**
+		 * Action: vite/head/start.
+		 *
+		 * Fires before the head.
+		 *
+		 * @since x.x.x
+		 */
+		$core->action( 'head/start' );
+		?>
 		<meta charset="<?php bloginfo( 'charset' ); ?>">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
 		<link rel="profile" href="https://gmpg.org/xfn/11">
-		<?php wp_head(); ?>
+		<?php
+		/**
+		 * Action: vite/head.
+		 *
+		 * Fires in the head.
+		 *
+		 * @see Vite\SEO::print();
+		 * @since x.x.x
+		 */
+		$core->action( 'head' );
+
+		wp_head();
+
+		/**
+		 * Action: vite/head/end.
+		 *
+		 * Fires after the head.
+		 */
+		$core->action( 'head/end' );
+		?>
 	</head>
 	<body <?php body_class(); ?>>
+		<a
+			class="skip-link screen-reader-text"
+			href="#content"
+			role="link"
+			title="<?php esc_html_e( 'Skip to content', 'vite' ); ?>">
+			<?php esc_html_e( 'Skip to content', 'vite' ); ?>
+		</a>
 		<?php wp_body_open(); ?>
 		<div id="page" class="hfeed site wp-site-blocks">
 			<?php
-			do_action( 'vite_before_header' );
-			do_action( 'vite_header' );
-			do_action( 'vite_after_header' );
+			/**
+			 * Action: vite/header/start.
+			 *
+			 * Fires before the header.
+			 *
+			 * @since x.x.x
+			 */
+			$core->action( 'header/start' );
+
+			/**
+			 * Action: vite/header.
+			 *
+			 * Fires in the header.
+			 *
+			 * @since x.x.x
+			 */
+			$core->action( 'header' );
+
+			/**
+			 * Action: vite/header/end.
+			 *
+			 * Fires after the header.
+			 *
+			 * @since x.x.x
+			 */
+			$core->action( 'header/end' );
 			?>
 			<div id="content" class="site-content">
 				<div class="container">
 					<div id="primary" class="content-area">
-						<?php do_action( 'vite_before_content' ); ?>
+						<?php
+						/**
+						 * Action: vite/content/start.
+						 *
+						 * Fires before the content.
+						 *
+						 * @since x.x.x
+						 */
+						$core->action( 'content/start' );

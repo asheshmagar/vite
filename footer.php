@@ -10,14 +10,48 @@
 
 // Exit if accessed directly.
 defined( 'ABSPATH' ) || exit;
+
+$core = vite( 'core' );
 ?>
 					</div>
-				<?php do_action( 'vite_after_content' ); ?>
+				<?php
+					/**
+					 * Action: vite/content/end.
+					 *
+					 * Fires after the content.
+					 *
+					 * @since x.x.x
+					 */
+					vite( 'core' )->action( 'content/end' );
+				?>
 			</div>
 		<?php
-		do_action( 'vite_before_footer' );
-		do_action( 'vite_footer' );
-		do_action( 'vite_after_footer' );
+		/**
+		 * Action: vite/footer/start.
+		 *
+		 * Fires before the footer.
+		 *
+		 * @since x.x.x
+		 */
+		$core->action( 'footer/start' );
+
+		/**
+		 * Action: vite/footer.
+		 *
+		 * Fires in the footer.
+		 *
+		 * @since x.x.x
+		 */
+		$core->action( 'footer' );
+
+		/**
+		 * Action: vite/footer/end.
+		 *
+		 * Fires after the footer.
+		 *
+		 * @since x.x.x
+		 */
+		$core->action( 'footer/end' );
 		?>
 	</div>
 	<?php wp_footer(); ?>
