@@ -70,8 +70,8 @@ class Supports {
 			'align-wide'                          => true,
 			'wp-block-styles'                     => true,
 			'editor-styles'                       => true,
-			'custom-logo'                         => apply_filters(
-				'vite_custom_logo_args',
+			'custom-logo'                         => vite( 'core' )->filter(
+				'custom-logo/args',
 				[
 					'width'       => 150,
 					'height'      => 75,
@@ -80,8 +80,20 @@ class Supports {
 				]
 			),
 			'customize-selective-refresh-widgets' => true,
+			'title-tag'                           => true,
+			'automatic-feed-links'                => true,
 		];
-		$features = apply_filters( 'vite_vite_supports', $features );
+
+		/**
+		 * Filter: vite/supports.
+		 *
+		 * Filter the theme supports.
+		 *
+		 * @since x.x.x
+		 * @param array $features Theme supports.
+		 */
+		$features = vite( 'core' )->filter( 'supports', $features );
+
 		foreach ( $features as $feature => $args ) {
 			if ( $args && is_array( $args ) ) {
 				add_theme_support( $feature, $args );
