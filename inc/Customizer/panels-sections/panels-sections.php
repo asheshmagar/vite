@@ -3,11 +3,14 @@
 vite( 'customizer' )->add(
 	'panels',
 	[
-		'vite[global]'         => [
-			'title' => __( 'Global', 'vite' ),
+		'vite[general]'        => [
+			'title' => __( 'General', 'vite' ),
 		],
 		'vite[header-builder]' => [
 			'title' => __( 'Header', 'vite' ),
+		],
+		'vite[blog]'           => [
+			'title' => __( 'Blog', 'vite' ),
 		],
 	]
 );
@@ -17,23 +20,31 @@ vite( 'customizer' )->add(
 	[
 		'vite[global-colors]'           => [
 			'title' => __( 'Colors', 'vite' ),
-			'panel' => 'vite[global]',
+			'panel' => 'vite[general]',
 		],
 		'vite[global-typography]'       => [
 			'title' => __( 'Typography', 'vite' ),
-			'panel' => 'vite[global]',
+			'panel' => 'vite[general]',
 		],
 		'vite[global-layout]'           => [
 			'title' => __( 'Layout', 'vite' ),
-			'panel' => 'vite[global]',
+			'panel' => 'vite[general]',
 		],
 		'vite[global-buttons]'          => [
 			'title' => __( 'Button', 'vite' ),
-			'panel' => 'vite[global]',
+			'panel' => 'vite[general]',
 		],
 		'vite[socials]'                 => [
 			'title' => __( 'Social Accounts Links', 'vite' ),
-			'panel' => 'vite[global]',
+			'panel' => 'vite[general]',
+		],
+		'vite[seo]'                     => [
+			'title' => __( 'SEO', 'vite' ),
+			'panel' => 'vite[general]',
+		],
+		'vite[performance]'             => [
+			'title' => __( 'Performance', 'vite' ),
+			'panel' => 'vite[general]',
 		],
 		'vite[header-builder]'          => [
 			'title' => __( 'Header', 'vite' ),
@@ -91,11 +102,17 @@ vite( 'customizer' )->add(
 			'title' => __( 'Search', 'vite' ),
 			'panel' => 'vite[header-builder]',
 		],
+		'vite[header-socials]'          => [
+			'title' => __( 'Socials', 'vite' ),
+			'panel' => 'vite[header-builder]',
+		],
 		'vite[archive]'                 => [
-			'title' => __( 'Archive/Blog', 'vite' ),
+			'title' => __( 'Blog/Archive', 'vite' ),
+			'panel' => 'vite[blog]',
 		],
 		'vite[single]'                  => [
 			'title' => __( 'Single Post', 'vite' ),
+			'panel' => 'vite[blog]',
 		],
 	]
 );
