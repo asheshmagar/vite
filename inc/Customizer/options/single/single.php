@@ -1,36 +1,32 @@
 <?php
+/**
+ * Single post options.
+ *
+ * @package Vite
+ */
 
 vite( 'customizer' )->add(
 	'settings',
 	[
-		'vite[archive-elements]' => [
+		'vite[single-header-elements]' => [
 			'type'        => 'vite-sortable',
-			'control'     => __( 'Archive elements', 'vite' ),
-			'section'     => 'vite[archive]',
-			'title'       => __( 'Archive elements', 'vite' ),
+			'title'       => __( 'Header/Title elements', 'vite' ),
+			'section'     => 'vite[single]',
 			'choices'     => [
 				[
 					'id'    => 'title',
 					'label' => __( 'Title', 'vite' ),
 				],
 				[
-					'id'    => 'featured-image',
-					'label' => __( 'Featured Image', 'vite' ),
-				],
-				[
 					'id'    => 'meta',
 					'label' => __( 'Meta', 'vite' ),
 				],
 				[
-					'id'    => 'excerpt',
-					'label' => __( 'Excerpt', 'vite' ),
-				],
-				[
-					'id'    => 'read-more',
-					'label' => __( 'Read more', 'vite' ),
+					'id'    => 'breadcrumbs',
+					'label' => __( 'Breadcrumbs', 'vite' ),
 				],
 			],
-			'default'     => vite( 'customizer' )->get_defaults()['archive-elements'],
+			'default'     => vite( 'customizer' )->get_defaults()['single-header-elements'],
 			'input_attrs' => [
 				'idWithInnerItems' => 'meta',
 				'innerItems'       => [
@@ -54,18 +50,13 @@ vite( 'customizer' )->add(
 						'id'    => 'tags',
 						'label' => __( 'Tags', 'vite' ),
 					],
-					[
-						'id'    => 'comments',
-						'label' => __( 'Comments', 'vite' ),
-					],
 				],
 			],
-			'transport'   => 'postMessage',
 			'partial'     => [
-				'selector'            => '.vite-posts',
-				'container_inclusive' => false,
+				'selector'            => '.vite-single',
+				'container_inclusive' => true,
 				'render_callback'     => function() {
-					vite( 'core' )->the_loop();
+					get_template_part( 'template-parts/content/content', 'single' );
 				},
 			],
 		],
