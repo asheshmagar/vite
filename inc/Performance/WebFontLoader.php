@@ -3,7 +3,7 @@
  *
  */
 
-namespace Vite\Customizer;
+namespace Vite\Performance;
 
 use WP_Filesystem_Base;
 
@@ -110,7 +110,7 @@ class WebFontLoader {
 	public function __construct() {
 		// Add a cleanup routine.
 		$this->schedule_cleanup();
-		add_action( 'vite_delete_fonts_folder', array( $this, 'delete_fonts_folder' ) );
+		vite( 'core' )->add_action( 'vite/local-fonts/cleanup', array( $this, 'delete_fonts_folder' ) );
 	}
 
 	/**
@@ -157,7 +157,7 @@ class WebFontLoader {
 	 * @return void
 	 * @since 1.0.0
 	 */
-	private function styles(): void {
+	private function styles() {
 		// If we already have the local file, return its contents.
 		$local_stylesheet_contents = $this->get_local_stylesheet_contents();
 		if ( $local_stylesheet_contents ) {
@@ -515,7 +515,7 @@ class WebFontLoader {
 	 */
 	private function get_base_path(): string {
 		if ( ! $this->base_path ) {
-			$this->base_path = apply_filters( 'vite_get_local_fonts_base_path', $this->get_filesystem()->wp_content_dir() );
+			$this->base_path = vite( 'core' )->filter( 'local-fonts/path', $this->get_filesystem()->wp_content_dir() );
 		}
 		return $this->base_path;
 	}
@@ -528,7 +528,7 @@ class WebFontLoader {
 	 */
 	private function get_base_url(): string {
 		if ( ! $this->base_url ) {
-			$this->base_url = apply_filters( 'vite_get_local_fonts_base_url', content_url() );
+			$this->base_url = vite( 'core' )->filter( 'local-fonts/url', content_url() );
 		}
 		return $this->base_url;
 	}
@@ -541,7 +541,7 @@ class WebFontLoader {
 	 */
 	private function get_subfolder_name(): string {
 		if ( ! $this->subfolder_name ) {
-			$this->subfolder_name = apply_filters( 'vite_get_local_fonts_subfolder_name', 'fonts' );
+			$this->subfolder_name = vite( 'core' )->filter( 'local-fonts/subfolder-name', 'fonts' );
 		}
 		return $this->subfolder_name;
 	}
@@ -573,8 +573,8 @@ class WebFontLoader {
 	 */
 	private function schedule_cleanup() {
 		if ( ! is_multisite() || ( is_multisite() && is_main_site() ) ) {
-			if ( ! wp_next_scheduled( 'vite_delete_fonts_folder' ) && ! wp_installing() ) {
-				wp_schedule_event( time(), self::CLEANUP_FREQUENCY, 'vite_delete_fonts_folder' );
+			if ( ! wp_next_scheduled( 'vite/local-fonts/cleanup' ) && ! wp_installing() ) {
+				wp_schedule_event( time(), self::CLEANUP_FREQUENCY, 'vite/local-fonts/cleanup' );
 			}
 		}
 	}
