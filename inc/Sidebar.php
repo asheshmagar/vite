@@ -12,7 +12,7 @@ class Sidebar {
 	 *
 	 * @return void
 	 */
-	public function init(): void {
+	public function init() {
 		add_action( 'widgets_init', [ $this, 'register_sidebars' ] );
 	}
 
@@ -20,8 +20,8 @@ class Sidebar {
 	 * Register sidebars.
 	 */
 	public function register_sidebars() {
-		$sidebars = apply_filters(
-			'vite_sidebars',
+		$sidebars  = vite( 'core' )->filter(
+			'sidebars',
 			[
 				'sidebar-1' => __( 'Sidebar 1', 'vite' ),
 				'sidebar-2' => __( 'Sidebar 2', 'vite' ),
@@ -33,18 +33,20 @@ class Sidebar {
 				'footer-6'  => __( 'Footer 6', 'vite' ),
 			]
 		);
+		$title_tag = vite( 'core' )->filter( 'sidebars/title/tag', 'h2' );
+
 		foreach ( $sidebars as $id => $name ) {
 			register_sidebar(
-				apply_filters(
-					'vite_sidebar_args',
+				vite( 'core' )->filter(
+					'sidebar/args',
 					[
 						'name'          => $name,
 						'id'            => $id,
 						'description'   => __( 'Add widgets here..', 'vite' ),
 						'before_widget' => '<section id="%1$s" class="widget %2$s">',
 						'after_widget'  => '</section>',
-						'before_title'  => sprintf( '<%s class="widget-title">', apply_filters( 'vite_sidebar_title_tag', 'h2' ) ),
-						'after_title'   => sprintf( '</%s>', apply_filters( 'vite_sidebar_title_tag', 'h2' ) ),
+						'before_title'  => sprintf( '<%s class="widget-title">', vite( 'core' )->filter( "sidebar/$id/title/tag", $title_tag ) ),
+						'after_title'   => sprintf( '</%s>', vite( 'core' )->filter( "sidebar/$id/title/tag", $title_tag ) ),
 					]
 				)
 			);
@@ -78,8 +80,12 @@ class Sidebar {
 			return;
 		}
 
+		ob_start();
+		vite( 'seo' )->print_schema_microdata( 'sidebar' );
+		$schema_microdata = ob_get_clean();
+
 		printf(
-			'<%1$s id="%2$s" class="%3$s">',
+			'<%1$s id="%2$s" class="%3$s"' . esc_attr( $schema_microdata ) . '>',
 			esc_attr( $wrapper_tag ),
 			esc_attr( $wrapper_id ),
 			esc_attr( $wrapper_class )
