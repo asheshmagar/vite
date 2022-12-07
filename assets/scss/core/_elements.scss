@@ -211,14 +211,7 @@ img {
 	vertical-align: middle
 }
 
-input[type="text"],
-input[type="email"],
-input[type="url"],
-input[type="password"],
-input[type="search"],
-input[type="number"],
-input[type="tel"],
-input[type="reset"],
+input,
 select,
 textarea {
 	border: 1px solid var(--global--color--5);
@@ -237,7 +230,7 @@ textarea {
 
 
 a,
-.search-submit {
+button {
 	&:focus,
 	&:active{
 		outline: none;
@@ -246,4 +239,9 @@ a,
 	&:focus-visible {
 		outline: thin dotted currentColor;
 	}
+}
+
+button {
+	cursor: pointer;
+	background-color: transparent;
 }
