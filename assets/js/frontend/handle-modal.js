@@ -11,6 +11,7 @@ export default ( {
 
 	const openModal = ( e ) => {
 		e.preventDefault();
+		modalEl.classList.add( 'vite-modal--open' );
 		modalEl.dataset.modalOpen = '';
 		document.body.style.overflow = 'hidden';
 		onOpen.call( null, { modalEl, openModalEl, closeModalEl } );
@@ -18,7 +19,7 @@ export default ( {
 
 	const closeModal = ( e ) => {
 		e.preventDefault();
-		delete modalEl.dataset.modalOpen;
+		modalEl.classList.remove( 'vite-modal--open' );
 		document.body.style.overflow = '';
 		onClose.call( null, { modalEl, openModalEl, closeModalEl } );
 	};
