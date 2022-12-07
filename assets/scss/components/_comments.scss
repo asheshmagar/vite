@@ -1,29 +1,36 @@
-.comments-area {
+.comment-reply-link,
+#cancel-comment-reply-link {
+	font-size: 12px;
+	--button--padding: 8px 15px;
+}
+
+.vite-comments {
 	padding: var(--post--padding, 40px);
 	background-color: var(--global--color--8);
-	padding-top: 60px;
-	margin-block-start: 40px;
+	margin-top: 40px;
 
-	.comments-title {
+	&__title {
 		margin-bottom: 0.5em;
 	}
 
-	.comment-list {
-		list-style-type: none;
+	&__list {
 		margin: 0;
 		padding: 0;
 
-		.children {
+		&,
+		&-children {
 			list-style-type: none;
-		}
 
-		.comment-respond {
-			padding-bottom: 2em;
 		}
 	}
+}
 
-	.comment-header,
-	.comment-footer {
+.vite-comment {
+	padding-block: 1.2em;
+	border-top: 1px solid #e1e8ed;
+
+	&__header,
+	&__footer {
 		display: flex;
 		font-size: 12px;
 		font-weight: 500;
@@ -31,67 +38,55 @@
 		gap: 10px;
 	}
 
-	.comment-meta {
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-		color: var(--global--color--4);
-	}
-
-	.comment-footer {
-		justify-content: space-between;
-		margin-bottom: 1em;
-	}
-
-	&:not(.no-comments) .comment-respond {
-		border-top: 1px solid var(--global--color--5);
-		padding-top: 2em;
-	}
-
-	.avatar {
-		border-radius: 50%;
-	}
-
-	.comment-inner {
-		padding-block: 1.2em;
-		border-top: 1px solid #e1e8ed;
-	}
-
-	.comment-header {
+	&__header {
 		margin-bottom: 1.25em;
 		--link--color: var(--global--color--4);
 	}
 
+	&__meta {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		color: var(--global--color--4);
+
+		.avatar {
+			border-radius: 50%;
+		}
+
+		&-edit {
+			color: var(--global--color--1);
+		}
+	}
+
+	&__footer {
+		justify-content: space-between;
+	}
+
+	&__content {
+		margin-bottom: 20px;
+	}
+}
+
+.vite-comment-respond {
+	border-top: 1px solid var(--global--color--5);
+	padding-top: 2em;
+
+	&__title {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+	}
+}
+
+.comment-form {
 	.form-submit {
 		margin-bottom: 0;
 	}
 
-	.comment-reply-title {
-		margin-bottom: 1.5em;
+	.submit {
+		width: auto;
 	}
-}
 
-.comment-reply-title {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-}
-
-.comment-reply-link,
-#cancel-comment-reply-link {
-	font-size: 12px;
-	--button--padding: 8px 15px;
-}
-
-.comment-edit-link {
-	color: var(--global--color--1);
-}
-
-.comment-content {
-	margin-bottom: 20px;
-}
-
-.comment-form {
 	label {
 		display: block;
 	}
@@ -99,12 +94,6 @@
 	#comment {
 		width: 100%;
 		min-height: 200px;
-	}
-
-	input[type="text"],
-	input[type="email"],
-	input[type="url"] {
-		width: 100%;
 	}
 
 	.comment-form-cookies-consent {
