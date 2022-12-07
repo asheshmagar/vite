@@ -1,9 +1,13 @@
 <?php
 /**
+ * Breadcrumbs class.
  *
+ * @package Vite
  */
 
 namespace Vite;
+
+defined( 'ABSPATH' ) || exit;
 
 /**
  * Breadcrumbs.
@@ -49,7 +53,7 @@ class Breadcrumbs {
 	}
 
 	/**
-	 * Sets up the breadcrumb trail properties.  Calls the `Breadcrumb_Trail::add_items()` method
+	 * Sets up the breadcrumb trail properties.  Calls the `Breadcrumbs::add_items()` method
 	 * to creat the array of breadcrumb items.
 	 *
 	 * @param array $args {.
@@ -63,8 +67,8 @@ class Breadcrumbs {
 	 * @type bool $show_on_front Whether to show when `is_front_page()`.
 	 * @type bool $network Whether to link to the network main site (multisite only).
 	 * @type bool $show_title Whether to show the title (last item) in the trail.
-	 * @type array $labels Text labels. @see Breadcrumb_Trail::set_labels()
-	 * @type array $post_taxonomy Taxonomies to use for post types. @see Breadcrumb_Trail::set_post_taxonomy()
+	 * @type array $labels Text labels. @see Breadcrumbs::set_labels()
+	 * @type array $post_taxonomy Taxonomies to use for post types. @see Breadcrumbs::set_post_taxonomy()
 	 * @type bool $echo Whether to print or return the breadcrumbs.
 	 * }
 	 */
@@ -194,11 +198,7 @@ class Breadcrumbs {
 					: sprintf( $span_item, $item );
 
 				// Build the list item.
-				$breadcrumb .= sprintf( '<%1$s %2$s>%3$s%4$s</%1$s>', tag_escape( $this->args['item_tag'] ), $attributes, $item, $microdata ? $meta : '' );
-
-				if ( $item_position < $item_count ) {
-					$breadcrumb .= sprintf( '<span class="vite-breadcrumb__separator">%s</span>', $this->args['separator'] );
-				}
+				$breadcrumb .= sprintf( '<%1$s %2$s>%3$s%4$s%5$s</%1$s>', tag_escape( $this->args['item_tag'] ), $attributes, $item, $microdata ? $meta : '', $item_position < $item_count ? sprintf( '<span class="vite-breadcrumb__separator">%s</span>', $this->args['separator'] ) : '' );
 			}
 
 			// Close the unordered list.
