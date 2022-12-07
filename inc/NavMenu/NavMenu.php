@@ -24,10 +24,10 @@ class NavMenu {
 	 */
 	protected $walker_page = null;
 
-	public const PRIMARY_MENU   = 'primary';
-	public const SECONDARY_MENU = 'secondary';
-	public const MOBILE_MENU    = 'mobile';
-	public const FOOTER_MENU    = 'footer';
+	public const PRIMARY_MENU   = 'menu-1';
+	public const SECONDARY_MENU = 'menu-2';
+	public const MOBILE_MENU    = 'menu-3';
+	public const FOOTER_MENU    = 'menu-4';
 
 	/**
 	 * Constructor.
@@ -107,14 +107,14 @@ class NavMenu {
 	 * @param string $context Context header or footer.
 	 * @return void
 	 */
-	public function render_menu( string $type = 'primary', $menu = null, string $context = 'header' ) {
+	public function render_menu( string $type = '1', $menu = null, string $context = 'header' ) {
 		$args = [
-			'theme_location'  => $type,
-			'menu_id'         => "$type-menu",
-			'menu_class'      => "$type-menu menu",
-			'container'       => null,
+			'theme_location'  => "menu-$type",
+			'menu_id'         => "menu-$type",
+			'menu_class'      => 'vite-nav__list',
+			'container'       => 'nav',
 			'container_id'    => "$context-$type-menu",
-			'container_class' => "$context-$type-menu",
+			'container_class' => "vite-nav vite-nav--$type",
 			'fallback_cb'     => function() use ( $type, $context ) {
 				$this->fallback_menu( $type, $context );
 			},
@@ -125,13 +125,7 @@ class NavMenu {
 		}
 
 		$args = vite( 'core' )->filter( "menu/$type/args", $args );
-		?>
-		<nav id="<?php echo esc_attr( "$context-$type" ); ?>-menu" class="<?php echo esc_attr( "$context-$type" ); ?>-menu"<?php vite( 'seo' )->print_schema_microdata( 'navigation' ); ?>>
-			<?php
-			wp_nav_menu( $args );
-			?>
-		</nav>
-		<?php
+		wp_nav_menu( $args );
 	}
 
 	/**
@@ -141,30 +135,30 @@ class NavMenu {
 	 * @param string $context Context header or footer.
 	 * @return void
 	 */
-	private function fallback_menu( string $type = 'primary', string $context = 'header' ) {
-		if ( 'mobile' === $type && $this->is_primary_menu_active() ) {
+	private function fallback_menu( string $type = '1', string $context = 'header' ) {
+		if ( '3' === $type && $this->is_primary_menu_active() ) {
 			wp_nav_menu(
 				[
-					'theme_location'  => 'primary',
-					'menu_id'         => 'mobile-menu',
-					'menu_class'      => 'mobile-menu menu',
+					'theme_location'  => 'menu-1',
+					'menu_id'         => 'menu-3',
+					'menu_class'      => 'vite-nav__list',
 					'container'       => 'nav',
-					'container_id'    => 'header-mobile-menu',
-					'container_class' => 'header-mobile-menu',
+					'container_id'    => 'header-menu-3',
+					'container_class' => 'vite-nav vite-nav--3',
 					'walker'          => $this->walker_nav_menu,
 				]
 			);
 			return;
 		}
 		?>
-		<nav id="<?php echo esc_attr( "$context-$type" ); ?>-menu" class="<?php echo esc_attr( "$context-$type" ); ?>-menu"<?php vite( 'seo' )->print_schema_microdata( 'navigation' ); ?>>
-			<ul class="<?php echo esc_attr( $type ); ?>-menu menu">
+		<nav id="<?php echo esc_attr( "menu-$type" ); ?>-menu" class="vite-nav vite-nav--<?php echo esc_attr( $type ); ?>"<?php vite( 'seo' )->print_schema_microdata( 'navigation' ); ?>>
+			<ul class="vite-nav__list">
 				<?php
 					wp_list_pages(
 						[
 							'echo'           => true,
 							'title_li'       => false,
-							'theme_location' => $type,
+							'theme_location' => "menu-$type",
 							'walker'         => $this->walker_page,
 						]
 					);
