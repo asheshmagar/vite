@@ -21,7 +21,7 @@ $header_button_defaults = array_reduce(
 );
 
 $defaults = [
-	'global-palette'                      => [
+	'global-palette'                 => [
 		'--global--color--1' => '#2271b1',
 		'--global--color--2' => '#135e96',
 		'--global--color--3' => '#100c08',
@@ -31,38 +31,38 @@ $defaults = [
 		'--global--color--7' => '#eaf0f6',
 		'--global--color--8' => '#ffffff',
 	],
-	'link-colors'                         => [
+	'link-colors'                    => [
 		'--link--color'        => 'var(--global--color--3)',
 		'--link--hover--color' => 'var(--global--color--1)',
 	],
-	'heading-color'                       => [
+	'heading-color'                  => [
 		'--heading--color' => 'var(--global--color--3)',
 	],
-	'text-color'                          => [
+	'text-color'                     => [
 		'--text--color' => 'var(--global--color--4)',
 	],
-	'accent-color'                        => [
+	'accent-color'                   => [
 		'--accent--color' => 'var(--global--color--1)',
 	],
-	'button-colors'                       => [
+	'button-colors'                  => [
 		'--button--color'            => 'var(--global--color--8)',
 		'--button--hover--color'     => 'var(--global--color--8)',
 		'--button--bg--color'        => 'var(--global--color--1)',
 		'--button--hover--bg--color' => 'var(--global--color--2)',
 	],
-	'border-color'                        => [
+	'border-color'                   => [
 		'--border--color' => 'var(--global--color--6)',
 	],
-	'header-background-color'             => [
+	'header-background-color'        => [
 		'--header--background--color' => 'var(--global--color--8)',
 	],
-	'site-background-color'               => [
+	'site-background-color'          => [
 		'--site--background--color' => 'var(--global--color--5)',
 	],
-	'footer-background-color'             => [
+	'footer-background-color'        => [
 		'--footer--background--color' => 'var(--global--color--8)',
 	],
-	'header'                              => [
+	'header'                         => [
 		'desktop' => [
 			'top'    => [
 				'left'   => [],
@@ -75,7 +75,7 @@ $defaults = [
 				],
 				'center' => [],
 				'right'  => [
-					[ 'id' => 'primary-menu' ],
+					[ 'id' => 'menu-1' ],
 					[ 'id' => 'search' ],
 				],
 			],
@@ -97,7 +97,7 @@ $defaults = [
 				],
 				'center' => [],
 				'right'  => [
-					[ 'id' => 'mobile-menu-trigger' ],
+					[ 'id' => 'trigger' ],
 				],
 			],
 			'bottom' => [
@@ -108,22 +108,22 @@ $defaults = [
 		],
 		'offset'  => [
 			[
-				'id'       => 'mobile-menu',
+				'id'       => 'menu-3',
 				'filtered' => true,
 			],
 		],
 	],
-	'header-html-1'                       => __( 'Enter HTML.', 'vite' ),
-	'header-html-2'                       => __( 'Enter HTML.', 'vite' ),
-	'footer'                              => [
+	'header-html-1'                  => __( 'Enter HTML.', 'vite' ),
+	'header-html-2'                  => __( 'Enter HTML.', 'vite' ),
+	'footer'                         => [
 		'top'    => [],
 		'middle' => [],
 		'bottom' => [
-			'1' => [ 'html' ],
+			[ 'id' => 'html-1' ],
 		],
 	],
-	'footer-html'                         => __( '{{copyright}} {{year}} {{site-title}}', 'vite' ),
-	'archive-elements'                    => [
+	'footer-html'                    => __( '{{copyright}} {{year}} {{site-title}}', 'vite' ),
+	'archive-elements'               => [
 		[
 			'id'      => 'meta-1',
 			'visible' => true,
@@ -169,7 +169,7 @@ $defaults = [
 			'visible' => true,
 		],
 	],
-	'archive-title-elements'              => [
+	'archive-title-elements'         => [
 		[
 			'id'      => 'title',
 			'visible' => true,
@@ -183,12 +183,12 @@ $defaults = [
 			'visible' => false,
 		],
 	],
-	'archive-layout'                      => 'wide',
-	'archive-style'                       => 'grid',
-	'archive-columns'                     => '3',
-	'archive-style-masonry'               => false,
-	'archive-title-position'              => 'outside',
-	'single-header-elements'              => [
+	'archive-layout'                 => 'wide',
+	'archive-style'                  => 'grid',
+	'archive-columns'                => '3',
+	'archive-style-masonry'          => false,
+	'archive-title-position'         => 'outside',
+	'single-header-elements'         => [
 		[
 			'id'      => 'title',
 			'visible' => true,
@@ -216,7 +216,7 @@ $defaults = [
 			'visible' => false,
 		],
 	],
-	'page-header-elements'                => [
+	'page-header-elements'           => [
 		[
 			'id'      => 'title',
 			'visible' => true,
@@ -226,54 +226,54 @@ $defaults = [
 			'visible' => false,
 		],
 	],
-	'header-top-row-height'               => [
+	'header-top-row-height'          => [
 		'desktop' => [
 			'value' => 50,
 			'unit'  => 'px',
 		],
 	],
-	'header-main-row-height'              => [
+	'header-main-row-height'         => [
 		'desktop' => [
 			'value' => 70,
 			'unit'  => 'px',
 		],
 	],
-	'header-bottom-row-height'            => [
+	'header-bottom-row-height'       => [
 		'desktop' => [
 			'value' => 50,
 			'unit'  => 'px',
 		],
 	],
-	'header-top-row-layout'               => 'contained',
-	'header-main-row-layout'              => 'contained',
-	'header-bottom-row-layout'            => 'contained',
-	'header-background'                   => [
+	'header-top-row-layout'          => 'contained',
+	'header-main-row-layout'         => 'contained',
+	'header-bottom-row-layout'       => 'contained',
+	'header-background'              => [
 		'color' => 'var(--global--color--8)',
 		'type'  => 'color',
 	],
-	'header-sticky'                       => false,
-	'header-sticky-row'                   => 'main',
-	'header-sticky-style'                 => 'default',
-	'header-sticky-enable'                => [
+	'header-sticky'                  => false,
+	'header-sticky-row'              => 'main',
+	'header-sticky-style'            => 'default',
+	'header-sticky-enable'           => [
 		'desktop',
 		'tablet',
 		'mobile',
 	],
-	'header-transparent'                  => false,
-	'header-transparent-enable'           => [
+	'header-transparent'             => false,
+	'header-transparent-enable'      => [
 		'desktop',
 		'tablet',
 		'mobile',
 	],
-	'container-wide-width'                => 1200,
-	'container-narrow-width'              => 728,
-	'content-spacing'                     => [
+	'container-wide-width'           => 1200,
+	'container-narrow-width'         => 728,
+	'content-spacing'                => [
 		'desktop' => [
 			'value' => 4,
 			'unit'  => 'rem',
 		],
 	],
-	'buttons-padding'                     => [
+	'buttons-padding'                => [
 		'desktop' => [
 			'top'    => 10,
 			'right'  => 20,
@@ -282,7 +282,7 @@ $defaults = [
 			'unit'   => 'px',
 		],
 	],
-	'buttons-border'                      => [
+	'buttons-border'                 => [
 		'radius' => [
 			'desktop' => [
 				'value' => 2,
@@ -290,9 +290,9 @@ $defaults = [
 			],
 		],
 	],
-	'header-site-branding-elements'       => 'logo-title',
-	'header-site-branding-layout'         => 'inline',
-	'header-site-title-typography'        => [
+	'header-site-branding-elements'  => 'logo-title',
+	'header-site-branding-layout'    => 'inline',
+	'header-site-title-typography'   => [
 		'size'   => [
 			'desktop' => [
 				'value' => 24,
@@ -301,13 +301,13 @@ $defaults = [
 		],
 		'weight' => '700',
 	],
-	'header-button-1-style'               => 'filled',
-	'header-button-2-style'               => 'outlined',
-	'header-search-label'                 => '',
-	'header-search-label-position'        => 'left',
-	'header-search-label-visibility'      => [ 'desktop' ],
-	'header-search-placeholder'           => __( 'Search', 'vite' ),
-	'header-social-links'                 => [
+	'header-button-1-style'          => 'filled',
+	'header-button-2-style'          => 'outlined',
+	'header-search-label'            => '',
+	'header-search-label-position'   => 'left',
+	'header-search-label-visibility' => [ 'desktop' ],
+	'header-search-placeholder'      => __( 'Search', 'vite' ),
+	'header-social-links'            => [
 		[
 			'id'      => 'facebook',
 			'value'   => 'facebook',
@@ -330,54 +330,59 @@ $defaults = [
 			'color'   => '#517fa4',
 		],
 	],
-	'header-social-icons-size'            => 20,
-	'header-social-icons-color-type'      => 'custom',
-	'header-social-icons-colors'          => [
+	'header-social-icons-size'       => 20,
+	'header-social-icons-color-type' => 'custom',
+	'header-social-icons-colors'     => [
 		'--link--color'        => 'var(--global--color--3)',
 		'--link--hover--color' => 'var(--global--color--1)',
 	],
-	'header-button-1-font-colors'         => [
+	'header-button-1-font-colors'    => [
 		'--button--color'        => 'var(--global--color--8)',
 		'--button--hover--color' => 'var(--button--color)',
 	],
-	'header-button-2-font-colors'         => [
+	'header-button-2-font-colors'    => [
 		'--button--color'        => 'var(--global--color--1)',
 		'--button--hover--color' => 'var(--button--color)',
 	],
-	'header-button-1-button-colors'       => [
+	'header-button-1-button-colors'  => [
 		'--button--bg--color'        => 'var(--global--color--1)',
 		'--button--hover--bg--color' => 'var(--global--color--2)',
 	],
-	'header-button-2-button-colors'       => [
+	'header-button-2-button-colors'  => [
 		'--button--bg--color'        => 'var(--global--color--1)',
 		'--button--hover--bg--color' => 'var(--global--color--2)',
 	],
-	'header-button-1-radius'              => [
+	'header-button-1-radius'         => [
 		'desktop' => [
 			'value' => 2,
 			'unit'  => 'px',
 		],
 	],
-	'header-button-2-radius'              => [
+	'header-button-2-radius'         => [
 		'desktop' => [
 			'value' => 2,
 			'unit'  => 'px',
 		],
 	],
-	'header-primary-menu-items-spacing'   => [
+	'header-menu-1-items-spacing'    => [
 		'value' => 14,
 		'unit'  => 'px',
 	],
-	'header-secondary-menu-items-spacing' => [
+	'header-menu-2-items-spacing'    => [
 		'value' => 14,
 		'unit'  => 'px',
 	],
-	'header-primary-menu-colors'          => [
+	'header-menu-1-colors'           => [
 		'--link--color'         => 'var(--global--color--3)',
 		'--link--hover--color'  => 'var(--global--color--1)',
 		'--link--active--color' => 'var(--global--color--1)',
 	],
-	'header-secondary-menu-colors'        => [
+	'header-menu-2-colors'           => [
+		'--link--color'         => 'var(--global--color--3)',
+		'--link--hover--color'  => 'var(--global--color--1)',
+		'--link--active--color' => 'var(--global--color--1)',
+	],
+	'header-menu-3-colors'           => [
 		'--link--color'         => 'var(--global--color--3)',
 		'--link--hover--color'  => 'var(--global--color--1)',
 		'--link--active--color' => 'var(--global--color--1)',
