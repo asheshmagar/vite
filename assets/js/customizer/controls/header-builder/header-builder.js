@@ -5,6 +5,43 @@ import { ReactSortable } from 'react-sortablejs';
 import { sprintf, __ } from '@wordpress/i18n';
 import { ButtonGroup, Button } from '@wordpress/components';
 
+const Item = ( {
+	item,
+	row,
+	area,
+	device,
+	choices,
+	remove,
+	customizer,
+} ) => {
+	const [ isActive, setIsActive ] = useState( false );
+	const section = choices?.[ device ]?.[ item.id ]?.section ?? null;
+
+	useEffect( () => {
+		if ( section ) {
+			customizer.section( section ).expanded.bind( setIsActive );
+		}
+	}, [] );
+	return (
+		// eslint-disable-next-line
+		<div className={ `vite-builder-component${ isActive ? ' is-active' : '' }` } onClick={ section ? () => customizer.section( section )?.focus() : null }>
+			<span className="vite-builder-component-title">
+				{ choices?.[ device ]?.[ item.id ]?.name }
+			</span>
+			<span
+				role="button"
+				tabIndex={ -1 }
+				onKeyDown={ () => {} }
+				className="vite-builder-component-handle"
+				dangerouslySetInnerHTML={ {
+					__html: sprintf( window?._VITE_CUSTOMIZER_?.icons?.xmark, 'vite-icon', 10, 10 ),
+				} }
+				onClick={ () => remove( row, area, item ) }
+			/>
+		</div>
+	);
+};
+
 export default memo( ( props ) => {
 	const {
 		control: {
@@ -165,22 +202,7 @@ export default memo( ( props ) => {
 																animation={ 150 }
 															>
 																{ getAreaItems( row, area, d ).map( ( item ) => (
-																	// eslint-disable-next-line jsx-a11y/click-events-have-key-events,jsx-a11y/no-static-element-interactions
-																	<div className="vite-builder-component" key={ item.id } onClick={ choices?.[ device ]?.[ item.id ]?.section ? () => customizer.section( choices?.[ device ]?.[ item.id ].section )?.focus() : null }>
-																		<span className="vite-builder-component-title">
-																			{ choices?.[ device ]?.[ item.id ]?.name }
-																		</span>
-																		<span
-																			role="button"
-																			tabIndex={ -1 }
-																			onKeyDown={ () => {} }
-																			className="vite-builder-component-handle"
-																			dangerouslySetInnerHTML={ {
-																				__html: sprintf( window?._VITE_CUSTOMIZER_?.icons?.xmark, 'vite-icon', 10, 10 ),
-																			} }
-																			onClick={ () => remove( row, area, item ) }
-																		/>
-																	</div>
+																	<Item key={ item.id } { ...{ row, area, item, device, customizer, remove, choices } } />
 																) ) }
 															</ReactSortable>
 														</div>
