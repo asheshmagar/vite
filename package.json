@@ -1,6 +1,6 @@
 {
-  "name": "theme",
-  "version": "x.x.x",
+  "name": "vite",
+  "version": "1.0.0",
   "description": "A WordPress theme.",
   "main": "index.js",
   "repository": "git@github.com:asheshmagar/theme.git",
