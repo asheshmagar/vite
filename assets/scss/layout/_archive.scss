@@ -6,7 +6,7 @@
 	--gutter: 2em;
 	--columns--3: 3;
 
-	&[data-style="grid"] {
+	&--grid {
 		display: flex;
 		flex-wrap: wrap;
 		margin-left: calc(-1 * var(--gutter));
@@ -14,27 +14,27 @@
 		.vite-post {
 			margin-left: var(--gutter);
 		}
+	}
 
-		@for $i from 1 through 4 {
-			&[data-col="#{$i}"] {
-				.vite-post {
-					width: calc( calc(100% / #{$i}) - var(--gutter) );
-				}
+	@for $i from 1 through 4 {
+		&--col-#{$i} {
+			.vite-post {
+				width: calc( calc(100% / #{$i}) - var(--gutter) );
+			}
 
-				@include media-query('tablet') {
-					@if($i > 1) {
-						.vite-post {
-							width: calc( calc(100% / #{$i - 1}) - var(--gutter) );
-						}
+			@include media-query('tablet') {
+				@if($i > 1) {
+					.vite-post {
+						width: calc( calc(100% / #{$i - 1}) - var(--gutter) );
 					}
 				}
 			}
 		}
+	}
 
-		@include media-query('mobile') {
-			&[data-col] .vite-post {
-				width: calc(100% - var(--gutter));
-			}
+	@include media-query('mobile') {
+		&[class*="--col"] .vite-post {
+			width: calc(100% - var(--gutter));
 		}
 	}
 
@@ -42,22 +42,20 @@
 		--post--padding: 20px;
 		margin-bottom: var(--gutter);
 
-		&.vite-has-post-thumbnail {
-
-			&[data-first-element="featured-image"] {
-				padding-top: 0;
-			}
-
-			&[data-last-element="featured-image"] {
-				padding-bottom: 0;
-			}
+		&--thumbnail-first {
+			padding-top: 0;
 		}
 
-		.entry-thumbnail {
-			margin-inline: calc(var(--post--padding) * -1);
+		&--thumbnail-last {
+			padding-bottom: 0;
 		}
 
-		.post-wrap {
+		&__thumbnail {
+			margin-left: calc(var(--post--padding) * -1);
+			margin-right: calc(var(--post--padding) * -1);
+		}
+
+		&__inner {
 			display: flex;
 			flex-direction: column;
 			gap: 10px;
