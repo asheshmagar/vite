@@ -17,10 +17,10 @@ defined( 'ABSPATH' ) || exit;
 class ScriptsStyles {
 
 	const STYLES = [
-		'vite-global' => 'global.css',
-		'vite-header' => 'header.css',
+		'vite-global'  => 'global.css',
+		'vite-header'  => 'header.css',
 		'vite-content' => 'content.css',
-		'vite-footer' => 'footer.css',
+		'vite-footer'  => 'footer.css',
 	];
 
 	/**
