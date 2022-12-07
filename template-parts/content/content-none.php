@@ -22,8 +22,8 @@ $core = vite( 'core' );
  */
 $core->action( 'content-none/start' );
 ?>
-<section class="no-results not-found">
-	<div class="page-content">
+<section class="vite-post vite-post--empty">
+	<div class="vite-post__content">
 		<?php if ( is_home() && current_user_can( 'publish_posts' ) ) : ?>
 			<p>
 				<?php
@@ -44,10 +44,8 @@ $core->action( 'content-none/start' );
 				?>
 			</p>
 		<?php elseif ( is_search() ) : ?>
-			<p><?php esc_html_e( 'Sorry, but nothing matched your search terms. Please try again with some different keywords.', 'vite' ); ?></p>
-			<?php get_search_form(); ?>
-		<?php else : ?>
-			<p><?php esc_html_e( 'It seems we can&rsquo;t find what you&rsquo;re looking for. Perhaps searching can help.', 'vite' ); ?></p>
+			<h1><?php esc_html_e( 'Search:', 'vite' ); ?><span>"<?php echo esc_html( get_search_query() ); ?>"</span></h1>
+			<p><?php esc_html_e( 'We could not find any results for your search. You can give it another try through the search form below.', 'vite' ); ?></p>
 			<?php get_search_form(); ?>
 		<?php endif; ?>
 	</div>

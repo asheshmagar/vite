@@ -12,7 +12,7 @@
 defined( 'ABSPATH' ) || exit;
 
 $elements = vite( 'customizer' )->get_setting( 'single-header-elements' );
-$core	 = vite( 'core' );
+$core     = vite( 'core' );
 
 /**
  * Action: vite/single/content/start.
@@ -24,7 +24,7 @@ $core	 = vite( 'core' );
 $core->action( 'single/content/start' );
 ?>
 <article id="post-<?php the_ID(); ?>" <?php post_class(); ?><?php vite( 'seo' )->print_schema_microdata( 'article' ); ?>>
-	<header class="entry-header">
+	<header class="vite-post__header">
 		<?php
 		/**
 		 * Action: vite/single/content/header.
@@ -39,7 +39,7 @@ $core->action( 'single/content/start' );
 		?>
 	</header>
 	<?php vite( 'entry-elements' )->render_entry_featured_image(); ?>
-	<div class="entry-content">
+	<div class="vite-post__content">
 		<?php
 		/**
 		 * Action: vite/single/content/content.

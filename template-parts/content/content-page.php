@@ -24,7 +24,7 @@ $core	 = vite( 'core' );
 $core->action( 'page/content/start' );
 ?>
 <article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
-	<div class="entry-header">
+	<div class="vite-post__header">
 	<?php
 	/**
 	 * Action: vite/page/content/header.
@@ -38,7 +38,7 @@ $core->action( 'page/content/start' );
 	vite( 'entry-elements' )->render_entry_elements( $elements );
 	?>
 	</div>
-	<div class="entry-content">
+	<div class="vite-post__content">
 		<?php
 		/**
 		 * Action: vite/page/content/content.

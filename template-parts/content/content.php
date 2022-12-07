@@ -32,8 +32,8 @@ $core             = vite( 'core' );
  */
 $core->action( 'archive/content/start' );
 ?>
-<article id="post-<?php the_ID(); ?>" <?php post_class(); ?> data-first-element="<?php echo esc_attr( $first_element['id'] ?? 'false' ); ?>" data-last-element="<?php echo esc_attr( $last_element['id'] ?? 'false' ); ?>"<?php vite( 'seo' )->print_schema_microdata( 'article' ); ?>>
-	<div class="post-wrap">
+<article id="post-<?php the_ID(); ?>" <?php post_class(); ?><?php vite( 'seo' )->print_schema_microdata( 'article' ); ?>>
+	<div class="vite-post__inner">
 		<?php
 		/**
 		 * Action: vite/content.
@@ -44,8 +44,6 @@ $core->action( 'archive/content/start' );
 		 * @since 1.0.0
 		 */
 		$core->action( 'archive/content', $elements );
-
-		vite( 'entry-elements' )->render_entry_elements( $elements );
 		?>
 	</div>
 </article>
