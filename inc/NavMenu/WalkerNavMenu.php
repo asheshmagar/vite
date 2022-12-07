@@ -14,6 +14,41 @@ class WalkerNavMenu extends Walker_Nav_Menu {
 	/**
 	 * {@inheritDoc}
 	 *
+	 * @param string   $output Used to append additional content (passed by reference).
+	 * @param int      $depth  Depth of menu item. Used for padding.
+	 * @param stdClass $args   An object of wp_nav_menu() arguments.
+	 * @return void
+	 */
+	public function start_lvl( &$output, $depth = 0, $args = null ) {
+		if ( isset( $args->item_spacing ) && 'discard' === $args->item_spacing ) {
+			$t = '';
+			$n = '';
+		} else {
+			$t = "\t";
+			$n = "\n";
+		}
+		$indent = str_repeat( $t, $depth );
+
+		$classes = [ 'vite-nav__submenu' ];
+
+		/**
+		 * Filters the CSS class(es) applied to a menu list element.
+		 *
+		 * @since 4.8.0
+		 *
+		 * @param string[] $classes Array of the CSS classes that are applied to the menu `<ul>` element.
+		 * @param stdClass $args    An object of `wp_nav_menu()` arguments.
+		 * @param int      $depth   Depth of menu item. Used for padding.
+		 */
+		$class_names = implode( ' ', apply_filters( 'nav_menu_submenu_css_class', $classes, $args, $depth ) );
+		$class_names = $class_names ? ' class="' . esc_attr( $class_names ) . '"' : '';
+
+		$output .= "{$n}{$indent}<ul$class_names>{$n}";
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
 	 * @param string   $output            Used to append additional content (passed by reference).
 	 * @param WP_Post  $data_object       Menu item data object.
 	 * @param int      $depth             Depth of menu item. Used for padding.
@@ -28,6 +63,7 @@ class WalkerNavMenu extends Walker_Nav_Menu {
 		$classes   = $menu_item->classes ?? [];
 		$classes   = (array) $classes;
 		$classes[] = 'menu-item-' . $menu_item->ID;
+		$classes[] = 'vite-nav__item';
 
 		$submenu_icon        = '';
 		$submenu_icon_button = '';
@@ -35,23 +71,23 @@ class WalkerNavMenu extends Walker_Nav_Menu {
 		$wrap_close          = '';
 
 		if (
-			in_array( $args->menu_id, [ 'primary-menu', 'secondary-menu', 'mobile-menu' ], true ) &&
+			in_array( $args->menu_id, [ 'menu-1', 'menu-2', 'menu-3' ], true ) &&
 			(
 				in_array( 'menu-item-has-children', (array) $menu_item->classes, true ) ||
 				in_array( 'page_item_has_children', (array) $menu_item->classes, true )
 			)
 		) {
+			$classes[]           = 'vite-nav__item--parent';
 			$icon                = vite( 'core' )->filter( 'submenu/icon', vite( 'icon' )->get_icon( 'chevron-down', [ 'size' => 10 ] ) );
-			$submenu_icon        = sprintf( '<span class="vite-sub-menu-icon" role="presentation">%s</span>', $icon );
+			$submenu_icon        = sprintf( '<span class="vite-nav__submenu-icon" role="presentation">%s</span>', $icon );
 			$submenu_icon_button = sprintf(
-				'<button aria-expanded="false" aria-label="%s" class="vite-sub-menu-toggle%s">%s</button>',
+				'<button aria-expanded="false" aria-label="%s" class="vite-nav__submenu-toggle%s">%s</button>',
 				esc_attr__( 'Open sub menu', 'vite' ),
-				'mobile-menu' !== $args->menu_id ? ' vite-sub-menu-toggle-hidden' : '',
-				'mobile-menu' !== $args->menu_id ? '' : $icon
+				'menu-3' !== $args->menu_id ? ' vite-nav__submenu-toggle--hidden' : '',
+				'menu-3' !== $args->menu_id ? '' : $icon
 			);
-			$classes[]           = 'vite-has-sub-menu';
-			if ( 'mobile-menu' === $args->menu_id ) {
-				$wrap_open    = '<div class="vite-sub-menu-toggle-wrap">';
+			if ( 'menu-3' === $args->menu_id ) {
+				$wrap_open    = '<div class="vite-nav__item-inner">';
 				$wrap_close   = '</div>';
 				$submenu_icon = '';
 			}
@@ -100,6 +136,7 @@ class WalkerNavMenu extends Walker_Nav_Menu {
 		}
 		$atts['href']         = ! empty( $menu_item->url ) ? $menu_item->url : '';
 		$atts['aria-current'] = $menu_item->current ? 'page' : '';
+		$atts['class']        = 'vite-nav__link';
 
 		/**
 		 * Filters the HTML attributes applied to a menu item's anchor element.

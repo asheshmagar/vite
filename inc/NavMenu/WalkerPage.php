@@ -28,7 +28,7 @@ class WalkerPage extends Walker_Page {
 			$n = '';
 		}
 		$indent  = str_repeat( $t, $depth );
-		$output .= "$n$indent<ul class='children sub-menu'>$n";
+		$output .= "$n$indent<ul class='vite-nav__submenu'>$n";
 	}
 
 	/**
@@ -45,7 +45,7 @@ class WalkerPage extends Walker_Page {
 		$indent                = str_repeat( "\t", $depth );
 		$desktop_submenu_icon  = '';
 		$mobile_submenu_toggle = '';
-		$css_class             = [ 'page_item', 'menu-item', 'page-item-' . $data_object->ID ];
+		$css_class             = [ 'page_item', 'menu-item', 'page-item-' . $data_object->ID, 'vite-nav__item' ];
 		$theme_location        = empty( $args['theme_location'] ) ? '' : $args['theme_location'];
 		$link_wrap_open        = '';
 		$link_wrap_close       = '';
@@ -54,19 +54,19 @@ class WalkerPage extends Walker_Page {
 		$submenu_icon_button   = '';
 
 		if ( isset( $args['pages_with_children'][ $data_object->ID ] ) ) {
-			$css_class[] = 'page_item_has_children vite-has-sub-menu';
+			$css_class[] = 'vite-nav__item--parent';
 
-			if ( in_array( $theme_location, [ 'primary', 'secondary', 'mobile' ], true ) ) {
+			if ( in_array( $theme_location, [ 'menu-1', 'menu-2', 'menu-3' ], true ) ) {
 				$icon                = vite( 'core' )->filter( 'submenu/icon', vite( 'icon' )->get_icon( 'chevron-down', [ 'size' => 10 ] ) );
-				$submenu_icon        = sprintf( '<span class="vite-sub-menu-icon" role="presentation">%s</span>', $icon );
+				$submenu_icon        = sprintf( '<span class="vite-nav__submenu-icon" role="presentation">%s</span>', $icon );
 				$submenu_icon_button = sprintf(
-					'<button aria-expanded="false" aria-label="%s" class="vite-sub-menu-toggle%s">%s</button>',
+					'<button aria-expanded="false" aria-label="%s" class="vite-nav__submenu-toggle%s">%s</button>',
 					esc_attr__( 'Open sub menu', 'vite' ),
-					'mobile' !== $theme_location ? ' vite-sub-menu-toggle-hidden' : '',
-					'mobile' !== $theme_location ? '' : $icon
+					'menu-3' !== $theme_location ? ' vite-nav__submenu-toggle--hidden' : '',
+					'menu-3' !== $theme_location ? '' : $icon
 				);
-				if ( 'mobile' === $theme_location ) {
-					$link_wrap_open  = '<div class="vite-sub-menu-toggle-wrap">';
+				if ( 'menu-3' === $theme_location ) {
+					$link_wrap_open  = '<div class="vite-nav__item-inner">';
 					$link_wrap_close = '</div>';
 					$submenu_icon    = '';
 				} else {
@@ -79,14 +79,18 @@ class WalkerPage extends Walker_Page {
 			$_current_page = get_post( $current_object_id );
 			if ( $_current_page && in_array( $data_object->ID, $_current_page->ancestors, true ) ) {
 				$css_class[] = 'current_page_ancestor';
+				$css_class[] = 'vite-nav__item--active';
 			}
 			if ( $data_object->ID === $current_object_id ) {
 				$css_class[] = 'current_page_item';
+				$css_class[] = 'vite-nav__item--active';
 			} elseif ( $_current_page && $data_object->ID === $_current_page->post_parent ) {
 				$css_class[] = 'current_page_parent';
+				$css_class[] = 'vite-nav__item--active';
 			}
 		} elseif ( get_option( 'page_for_posts' ) === $data_object->ID ) {
 			$css_class[] = 'current_page_parent';
+			$css_class[] = 'vite-nav__item--active';
 		}
 
 		/**
@@ -120,7 +124,7 @@ class WalkerPage extends Walker_Page {
 		 * @param int      $current_page ID of the current page.
 		 */
 		$output .= $indent . sprintf(
-			'<li class="%s"%s>%s<a href="%s">%s%s</a>%s%s',
+			'<li class="%s"%s>%s<a href="%s" class="vite-nav__link">%s%s</a>%s%s',
 			$css_classes,
 			$li_attrs,
 			$link_wrap_open,
