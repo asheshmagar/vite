@@ -14,7 +14,7 @@ $options = array_reduce(
 			'title'   => __( 'Text', 'vite' ),
 			'default' => vite( 'customizer' )->get_defaults()[ "header-button-$curr-text" ],
 			'partial' => [
-				'selector'        => ".header-button-$curr",
+				'selector'        => ".vite-button--$curr",
 				'render_callback' => function() use ( $curr ) {
 					get_template_part( 'template-parts/header/header', 'button', [ 'type' => $curr ] );
 				},
@@ -26,7 +26,7 @@ $options = array_reduce(
 			'title'   => __( 'Link', 'vite' ),
 			'default' => vite( 'customizer' )->get_defaults()[ "header-button-$curr-link" ],
 			'partial' => [
-				'selector'        => ".header-button-$curr",
+				'selector'        => ".vite-button--$curr",
 				'render_callback' => function() use ( $curr ) {
 					get_template_part( 'template-parts/header/header', 'button', [ 'type' => $curr ] );
 				},
@@ -38,7 +38,7 @@ $options = array_reduce(
 			'title'   => __( 'Open in new tab', 'vite' ),
 			'default' => vite( 'customizer' )->get_defaults()[ "header-button-$curr-target" ],
 			'partial' => [
-				'selector'        => ".header-button-$curr",
+				'selector'        => ".vite-button--$curr",
 				'render_callback' => function() use ( $curr ) {
 					get_template_part( 'template-parts/header/header', 'button', [ 'type' => $curr ] );
 				},
@@ -50,7 +50,7 @@ $options = array_reduce(
 			'title'   => __( 'No follow', 'vite' ),
 			'default' => vite( 'customizer' )->get_defaults()[ "header-button-$curr-nofollow" ],
 			'partial' => [
-				'selector'        => ".header-button-$curr",
+				'selector'        => ".vite-button--$curr",
 				'render_callback' => function() use ( $curr ) {
 					get_template_part( 'template-parts/header/header', 'button', [ 'type' => $curr ] );
 				},
@@ -62,7 +62,7 @@ $options = array_reduce(
 			'title'   => __( 'Sponsored', 'vite' ),
 			'default' => vite( 'customizer' )->get_defaults()[ "header-button-$curr-sponsored" ],
 			'partial' => [
-				'selector'        => ".header-button-$curr",
+				'selector'        => ".vite-button--$curr",
 				'render_callback' => function() use ( $curr ) {
 					get_template_part( 'template-parts/header/header', 'button', [ 'type' => $curr ] );
 				},
@@ -74,7 +74,7 @@ $options = array_reduce(
 			'title'   => __( 'Download', 'vite' ),
 			'default' => vite( 'customizer' )->get_defaults()[ "header-button-$curr-download" ],
 			'partial' => [
-				'selector'        => ".header-button-$curr",
+				'selector'        => ".vite-button--$curr",
 				'render_callback' => function() use ( $curr ) {
 					get_template_part( 'template-parts/header/header', 'button', [ 'type' => $curr ] );
 				},
@@ -86,7 +86,7 @@ $options = array_reduce(
 			'title'   => __( 'Style', 'vite' ),
 			'default' => vite( 'customizer' )->get_defaults()[ "header-button-$curr-style" ],
 			'partial' => [
-				'selector'        => ".header-button-$curr",
+				'selector'        => ".vite-button--$curr",
 				'render_callback' => function() use ( $curr ) {
 					get_template_part( 'template-parts/header/header', 'button', [ 'type' => $curr ] );
 				},
@@ -113,7 +113,7 @@ $options = array_reduce(
 					],
 				],
 			],
-			'selectors'   => [ ".header-button-$curr .button" ],
+			'selectors'   => [ ".vite-button--$curr .vite-button__link" ],
 			'properties'  => [ '' ],
 		];
 		$acc[ "vite[header-button-$curr-button-colors]" ] = [
@@ -133,7 +133,7 @@ $options = array_reduce(
 					],
 				],
 			],
-			'selectors'   => [ ".header-button-$curr .button" ],
+			'selectors'   => [ ".vite-button--$curr .vite-button__link" ],
 			'properties'  => [ '' ],
 		];
 		$acc[ "vite[header-button-$curr-radius]" ]        = [
@@ -150,7 +150,7 @@ $options = array_reduce(
 				],
 				'responsive' => true,
 			],
-			'selectors'   => [ ".header-button-$curr .button" ],
+			'selectors'   => [ ".vite-button--$curr .vite-button__link" ],
 			'properties'  => [ '--button--border--radius' ],
 		];
 

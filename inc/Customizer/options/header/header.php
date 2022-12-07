@@ -9,77 +9,77 @@ $header_elements = apply_filters(
 	'vite_header_builder_elements',
 	[
 		'desktop' => [
-			'logo'           => [
+			'logo'     => [
 				'name'    => __( 'Logo', 'vite' ),
 				'section' => 'vite[header-logo]',
 			],
-			'primary-menu'   => [
-				'name'    => __( 'Primary menu', 'vite' ),
-				'section' => 'vite[header-primary-menu]',
+			'menu-1'   => [
+				'name'    => __( 'Primary Menu', 'vite' ),
+				'section' => 'vite[header-menu-1]',
 			],
-			'search'         => [
+			'search'   => [
 				'name'    => __( 'Search', 'vite' ),
 				'section' => 'vite[header-search]',
 			],
-			'secondary-menu' => [
-				'name'    => __( 'Secondary menu', 'vite' ),
-				'section' => 'vite[header-secondary-menu]',
+			'menu-2'   => [
+				'name'    => __( 'Secondary Menu', 'vite' ),
+				'section' => 'vite[header-menu-2]',
 			],
-			'socials'        => [
+			'socials'  => [
 				'name'    => __( 'Socials', 'vite' ),
 				'section' => 'vite[header-socials]',
 			],
-			'button-1'       => [
+			'button-1' => [
 				'name'    => __( 'Button 1', 'vite' ),
 				'section' => 'vite[header-button-1]',
 			],
-			'button-2'       => [
+			'button-2' => [
 				'name'    => __( 'Button 2', 'vite' ),
 				'section' => 'vite[header-button-2]',
 			],
-			'html-1'         => [
+			'html-1'   => [
 				'name'    => __( 'HTML 1', 'vite' ),
 				'section' => 'vite[header-html-1]',
 			],
-			'html-2'         => [
+			'html-2'   => [
 				'name'    => __( 'HTML 2', 'vite' ),
 				'section' => 'vite[header-html-2]',
 			],
 		],
 		'mobile'  => [
-			'logo'                => [
+			'logo'     => [
 				'name'    => __( 'Logo', 'vite' ),
 				'section' => 'vite[header-logo]',
 			],
-			'mobile-menu'         => [
-				'name'    => __( 'Mobile menu', 'vite' ),
-				'section' => 'vite[header-mobile-menu]',
+			'menu'     => [
+				'name'    => __( 'Mobile Menu', 'vite' ),
+				'section' => 'vite[header-menu-3]',
 			],
-			'mobile-menu-trigger' => [
+			'trigger'  => [
 				'name'    => __( 'Trigger', 'vite' ),
-				'section' => 'vite[header-mobile-menu-trigger]',
+				'section' => 'vite[header-trigger]',
 			],
-			'search'              => [
+			'search'   => [
 				'name'    => __( 'Search', 'vite' ),
 				'section' => 'vite[header-search]',
 			],
-			'socials'             => [
+			'socials'  => [
 				'name'    => __( 'Socials', 'vite' ),
 				'section' => 'vite[header-socials]',
 			],
-			'button-1'            => [
+			'button-1' => [
 				'name'    => __( 'Button 1', 'vite' ),
 				'section' => 'vite[header-button-1]',
 			],
-			'button-2'            => [
+			'button-2' => [
 				'name'    => __( 'Button 2', 'vite' ),
 				'section' => 'vite[header-button-2]',
 			],
-			'html-1'              => [
+			'html-1'   => [
 				'name'    => __( 'HTML 1', 'vite' ),
 				'section' => 'vite[header-html-1]',
 			],
-			'html-2'              => [
+			'html-2'   => [
 				'name'    => __( 'HTML 2', 'vite' ),
 				'section' => 'vite[header-html-2]',
 			],
@@ -117,7 +117,7 @@ $options = [
 			],
 		],
 		'partial'     => [
-			'selector'            => '.site-header',
+			'selector'            => '.vite-header',
 			'container_inclusive' => true,
 			'render_callback'     => function() {
 				get_template_part( 'template-parts/header/header', '' );
@@ -143,7 +143,7 @@ $options = [
 			'full-width' => __( 'Full width', 'vite' ),
 		],
 		'partial' => [
-			'selector'            => '.site-header',
+			'selector'            => '.vite-header',
 			'container_inclusive' => true,
 			'render_callback'     => function() {
 				get_template_part( 'template-parts/header/header', '' );
@@ -162,7 +162,7 @@ $options = [
 			'units'      => [ 'px' ],
 			'responsive' => true,
 		],
-		'selectors'   => [ '.site-header [data-row="top"] > .container' ],
+		'selectors'   => [ '.vite-header [data-row="top"] > .container' ],
 		'properties'  => [ '--min--height' ],
 	],
 	'vite[header-main-row-layout]'    => [
@@ -175,7 +175,7 @@ $options = [
 			'full-width' => __( 'Full width', 'vite' ),
 		],
 		'partial' => [
-			'selector'            => '.site-header',
+			'selector'            => '.vite-header',
 			'container_inclusive' => true,
 			'render_callback'     => function() {
 				get_template_part( 'template-parts/header/header', '' );
@@ -194,7 +194,7 @@ $options = [
 			'units'      => [ 'px' ],
 			'responsive' => true,
 		],
-		'selectors'   => [ '.site-header [data-row="main"] > .container' ],
+		'selectors'   => [ '.vite-header [data-row="main"] > .container' ],
 		'properties'  => [ '--min--height' ],
 	],
 	'vite[header-bottom-row-layout]'  => [
@@ -207,7 +207,7 @@ $options = [
 			'full-width' => __( 'Full width', 'vite' ),
 		],
 		'partial' => [
-			'selector'            => '.site-header',
+			'selector'            => '.vite-header',
 			'container_inclusive' => true,
 			'render_callback'     => function() {
 				get_template_part( 'template-parts/header/header', '' );
@@ -226,7 +226,7 @@ $options = [
 			'units'      => [ 'px' ],
 			'responsive' => true,
 		],
-		'selectors'   => [ '.site-header [data-row="bottom"] > .container' ],
+		'selectors'   => [ '.vite-header [data-row="bottom"] > .container' ],
 		'properties'  => [ '--min--height' ],
 	],
 	'vite[header-sticky]'             => [
@@ -304,7 +304,7 @@ $options = [
 		'type'        => 'vite-background',
 		'title'       => __( 'Background', 'vite' ),
 		'default'     => vite( 'customizer' )->get_defaults()['header-background'],
-		'selectors'   => [ '.site-header' ],
+		'selectors'   => [ '.vite-header' ],
 		'input_attrs' => [
 			'separator' => true,
 		],

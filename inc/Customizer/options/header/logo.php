@@ -25,7 +25,7 @@ $options = [
 			'logo-title-description' => __( 'Logo & Title & Description', 'vite' ),
 		],
 		'partial' => [
-			'selector'        => '.site-branding',
+			'selector'        => '.vite-brand',
 			'render_callback' => function() {
 				get_template_part( 'template-parts/header/header', 'logo' );
 			},
@@ -41,7 +41,7 @@ $options = [
 			'stacked' => __( 'Stacked', 'vite' ),
 		],
 		'partial' => [
-			'selector'        => '.site-branding',
+			'selector'        => '.vite-brand',
 			'render_callback' => function() {
 				get_template_part( 'template-parts/header/header', 'logo' );
 			},
@@ -63,7 +63,7 @@ $options = [
 				],
 			],
 		],
-		'selectors'   => [ '.site-branding .site-title a' ],
+		'selectors'   => [ '.vite-brand__title a' ],
 		'properties'  => [ '' ],
 	],
 	'vite[header-site-title-typography]'  => [
@@ -72,7 +72,7 @@ $options = [
 		'type'        => 'vite-typography',
 		'title'       => __( 'Site title typography', 'vite' ),
 		'input_attrs' => [],
-		'selectors'   => [ '.site-branding .site-title' ],
+		'selectors'   => [ '.vite-brand__title' ],
 	],
 ];
 

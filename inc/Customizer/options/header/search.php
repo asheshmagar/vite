@@ -12,7 +12,7 @@ $options = [
 		'title'   => __( 'Label', 'vite' ),
 		'default' => vite( 'customizer' )->get_defaults()['header-search-label'],
 		'partial' => [
-			'selector'        => '.search-modal-trigger',
+			'selector'        => '.vite-search',
 			'render_callback' => function () {
 				get_template_part( 'template-parts/header/header', 'search' );
 			},
@@ -24,7 +24,7 @@ $options = [
 		'title'     => __( 'Label Position', 'vite' ),
 		'default'   => vite( 'customizer' )->get_defaults()['header-search-label-position'],
 		'partial'   => [
-			'selector'        => '.search-modal-trigger',
+			'selector'        => '.vite-search',
 			'render_callback' => function () {
 				get_template_part( 'template-parts/header/header', 'search' );
 			},
@@ -44,7 +44,7 @@ $options = [
 		'title'       => __( 'Label Visibility', 'vite' ),
 		'default'     => vite( 'customizer' )->get_defaults()['header-search-label-visibility'],
 		'partial'     => [
-			'selector'        => '.search-modal-trigger',
+			'selector'        => '.vite-search',
 			'render_callback' => function () {
 				get_template_part( 'template-parts/header/header', 'search' );
 			},
@@ -67,7 +67,7 @@ $options = [
 		'title'   => __( 'Placeholder', 'vite' ),
 		'default' => vite( 'customizer' )->get_defaults()['header-search-placeholder'],
 		'partial' => [
-			'selector'        => '.search-modal-trigger',
+			'selector'        => '.vite-search',
 			'render_callback' => function () {
 				get_template_part( 'template-parts/header/header', 'search' );
 			},

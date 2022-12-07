@@ -12,7 +12,7 @@ $options = [
 		'title'       => __( 'Socials Links', 'vite' ),
 		'default'     => vite( 'customizer' )->get_defaults()['header-social-links'],
 		'partial'     => [
-			'selector'        => '.header-socials',
+			'selector'        => '.vite-social',
 			'render_callback' => function () {
 				get_template_part( 'template-parts/header/header', 'socials' );
 			},
@@ -28,7 +28,7 @@ $options = [
 		'title'       => __( 'Icons Size', 'vite' ),
 		'default'     => vite( 'customizer' )->get_defaults()['header-social-icons-size'],
 		'partial'     => [
-			'selector'        => '.header-socials',
+			'selector'        => '.vite-social',
 			'render_callback' => function () {
 				get_template_part( 'template-parts/header/header', 'socials' );
 			},
@@ -45,7 +45,7 @@ $options = [
 		'title'     => __( 'Icons Color Type', 'vite' ),
 		'default'   => vite( 'customizer' )->get_defaults()['header-social-icons-color-type'],
 		'partial'   => [
-			'selector'        => '.header-socials',
+			'selector'        => '.vite-social',
 			'render_callback' => function () {
 				get_template_part( 'template-parts/header/header', 'socials' );
 			},
@@ -79,7 +79,7 @@ $options = [
 			'vite[header-social-icons-color-type]' => 'custom',
 			'vite[header-social-links]!'           => [],
 		],
-		'selectors'   => [ '.header-socials a' ],
+		'selectors'   => [ '.vite-social a' ],
 		'properties'  => [ '' ],
 	],
 	'vite[header-social-icons-spacing]'    => [
@@ -87,12 +87,12 @@ $options = [
 		'type'        => 'vite-slider',
 		'title'       => __( 'Icons Spacing', 'vite' ),
 		'input_attrs' => [
-			'min'     => 0,
-			'max'     => 100,
-			'step'    => 1,
-			'units'   => [ 'px', 'rem', 'em' ],
+			'min'   => 0,
+			'max'   => 100,
+			'step'  => 1,
+			'units' => [ 'px', 'rem', 'em' ],
 		],
-		'selectors'   => [ '.header-socials' ],
+		'selectors'   => [ '.vite-social' ],
 		'properties'  => [ 'gap' ],
 	],
 ];

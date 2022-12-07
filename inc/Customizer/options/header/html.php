@@ -14,7 +14,7 @@ $options = array_reduce(
 			'title'   => __( 'HTML', 'vite' ),
 			'default' => vite( 'customizer' )->get_defaults()[ "header-html-$curr" ],
 			'partial' => [
-				'selector'        => ".header-html-$curr",
+				'selector'        => ".vite-html--$curr",
 				'render_callback' => function() use ( $curr ) {
 					get_template_part( 'template-parts/header/header', 'html', [ 'type' => $curr ] );
 				},
