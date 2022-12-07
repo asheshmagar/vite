@@ -1,7 +1,7 @@
-.site-footer {
+.vite-footer {
 	background-color: var(--global--color--8);
 
-	[data-row="bottom"] > .container {
-		padding-block: var(--container--spacing, 1.5625rem);
+	&__row--bottom {
+		--container--padding--block: 1.5625rem;
 	}
 }
