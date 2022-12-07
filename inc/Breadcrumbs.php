@@ -127,7 +127,7 @@ class Breadcrumbs {
 		if ( 0 < $item_count ) {
 			// Open the unordered list.
 			$breadcrumb .= sprintf(
-				'<%s class="vite-breadcrumbs-items" %s>',
+				'<%s class="vite-breadcrumb__list" %s>',
 				tag_escape( $this->args['list_tag'] ),
 				$microdata ? 'itemscope itemtype="https://schema.org/BreadcrumbList"' : ''
 			);
@@ -168,7 +168,7 @@ class Breadcrumbs {
 				$item = ! empty( $matches ) ? sprintf( '%s<span%s>%s</span>%s', $matches[1], $microdata ? ' itemprop="name"' : '', $matches[2], $matches[3] ) : sprintf( '<span>%s</span>', $item );
 
 				// Add list item classes.
-				$item_class = 'vite-breadcrumb-item';
+				$item_class = 'vite-breadcrumb__item';
 
 				// Create list item attributes.
 				$attributes = sprintf( '%sclass="%s"', $microdata ? 'itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem" ' : '', $item_class );
@@ -176,10 +176,10 @@ class Breadcrumbs {
 				$meta       = sprintf( '<meta itemprop="position" content="%s" />', absint( $item_position ) );
 
 				if ( 1 === $item_position && 1 < $item_count ) {
-					$item_class .= ' vite-breadcrumbs-item-first';
+					$item_class .= ' vite-breadcrumbs__item--first';
 					// Build the meta position HTML.
 				} elseif ( $item_count === $item_position ) {
-					$item_class .= ' vite-breadcrumbs-item-last';
+					$item_class .= ' vite-breadcrumbs__item--last';
 
 					if ( is_404() || false === $this->args['link_current_item'] ) {
 						$attributes = 'class="' . $item_class . '"';
@@ -197,7 +197,7 @@ class Breadcrumbs {
 				$breadcrumb .= sprintf( '<%1$s %2$s>%3$s%4$s</%1$s>', tag_escape( $this->args['item_tag'] ), $attributes, $item, $microdata ? $meta : '' );
 
 				if ( $item_position < $item_count ) {
-					$breadcrumb .= sprintf( '<span class="vite-breadcrumbs-separator">%s</span>', $this->args['separator'] );
+					$breadcrumb .= sprintf( '<span class="vite-breadcrumb__separator">%s</span>', $this->args['separator'] );
 				}
 			}
 
@@ -206,7 +206,7 @@ class Breadcrumbs {
 
 			// Wrap the breadcrumb trail.
 			$breadcrumb = sprintf(
-				'<%1$s role="navigation" aria-label="%2$s" class="vite-breadcrumbs"%3$s>%4$s%5$s%6$s</%1$s>',
+				'<%1$s role="navigation" aria-label="%2$s" class="vite-breadcrumb"%3$s>%4$s%5$s%6$s</%1$s>',
 				tag_escape( $this->args['container'] ),
 				esc_attr( $this->labels['aria_label'] ),
 				$microdata ? ' itemprop="breadcrumb"' : '',
