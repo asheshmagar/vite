@@ -1,16 +1,19 @@
-.vite-breadcrumbs-items {
-	list-style-type: none;
-	margin: 0;
-	padding: 0;
-	text-transform: uppercase;
-	font-size: 12px;
-	font-weight: 500;
-	display: flex;
-	flex-wrap: wrap;
-	align-items: center;
-	--link--color: var(--global--color--4);
+.vite-breadcrumb {
 
-	.vite-breadcrumbs-separator {
+	&__list {
+		list-style-type: none;
+		margin: 0;
+		padding: 0;
+		text-transform: uppercase;
+		font-size: 12px;
+		font-weight: 500;
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		--link--color: var(--global--color--4);
+	}
+
+	&__separator {
 		margin-inline: 5px;
 	}
 }
