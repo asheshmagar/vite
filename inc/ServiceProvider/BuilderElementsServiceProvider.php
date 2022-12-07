@@ -1,6 +1,6 @@
 <?php
 /**
- * Elements service provider.
+ * Builder elements service provider.
  *
  * @package Vite
  * @since 1.0.0
@@ -10,12 +10,12 @@ namespace Vite\ServiceProvider;
 
 defined( 'ABSPATH' ) || exit;
 
-use Vite\Elements\EntryElements;
+use Vite\Elements\BuilderElements;
 
 /**
- * Elements service provider.
+ * Breadcrumbs service provider.
  */
-class EntryElementsServiceProvider extends ViteAbstractServiceProvider {
+class BuilderElementsServiceProvider extends ViteAbstractServiceProvider {
 
 	/**
 	 * {@inheritDoc}
@@ -24,8 +24,8 @@ class EntryElementsServiceProvider extends ViteAbstractServiceProvider {
 	 */
 	public function provides( string $id ): bool {
 		$services = [
-			'entry-elements',
-			EntryElements::class,
+			'builder-elements',
+			BuilderElements::class,
 		];
 
 		return in_array( $id, $services, true );
@@ -35,8 +35,9 @@ class EntryElementsServiceProvider extends ViteAbstractServiceProvider {
 	 * {@inheritDoc}
 	 */
 	public function register() {
-		$this->getContainer()
-			->add( 'entry-elements', EntryElements::class )
+		$this
+			->getContainer()
+			->addShared( 'builder-elements', BuilderElements::class )
 			->addArguments( [ 'core', 'customizer' ] );
 	}
 }
