@@ -78,11 +78,11 @@ vite( 'customizer' )->add(
 			'title' => __( 'Bottom', 'vite' ),
 			'panel' => 'vite[header-builder]',
 		],
-		'vite[header-primary-menu]'     => [
+		'vite[header-menu-1]'           => [
 			'title' => __( 'Primary Menu', 'vite' ),
 			'panel' => 'vite[header-builder]',
 		],
-		'vite[header-secondary-menu]'   => [
+		'vite[header-menu-2]'           => [
 			'title' => __( 'Secondary Menu', 'vite' ),
 			'panel' => 'vite[header-builder]',
 		],
@@ -94,7 +94,7 @@ vite( 'customizer' )->add(
 			'title' => __( 'Button 2', 'vite' ),
 			'panel' => 'vite[header-builder]',
 		],
-		'vite[header-mobile-menu]'      => [
+		'vite[header-menu-3]'           => [
 			'title' => __( 'Mobile Menu', 'vite' ),
 			'panel' => 'vite[header-builder]',
 		],
