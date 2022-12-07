@@ -18,7 +18,7 @@ class TemplateHooks {
 	 *
 	 * @var null|TemplateHooks
 	 */
-	private static ?TemplateHooks $instance = null;
+	private static $instance = null;
 
 	/**
 	 * Init.
@@ -70,9 +70,30 @@ class TemplateHooks {
 				get_template_part( 'template-parts/content/content', '404' );
 			}
 		);
+		$core->add_action( 'vite/single/content/content/start', [ $this, 'single_featured_image' ] );
+		$core->add_action( 'vite/single/content/header', [ $this, 'single_header_elements' ] );
 
 		add_filter( 'post_class', [ $this, 'post_class' ], 10, 3 );
 		add_filter( 'body_class', [ $this, 'body_class' ] );
+	}
+
+	/**
+	 * Single header elements.
+	 *
+	 * @param mixed $elements Elements.
+	 * @return void
+	 */
+	public function single_header_elements( $elements ) {
+		get_template_part( 'template-parts/entry/entry', '', [ 'elements' => $elements ] );
+	}
+
+	/**
+	 * Single featured image.
+	 *
+	 * @return void
+	 */
+	public function single_featured_image() {
+		get_template_part( 'template-parts/entry/entry-featured-image', '' );
 	}
 
 	/**
@@ -265,6 +286,7 @@ class TemplateHooks {
 		if ( ! is_archive() ) {
 			return;
 		}
+
 		$archive_title_position = vite( 'customizer' )->get_setting( 'archive-title-position' );
 		$archive_title_elements = vite( 'customizer' )->get_setting( 'archive-title-elements' );
 
