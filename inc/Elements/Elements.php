@@ -20,14 +20,14 @@ class Elements {
 	 *
 	 * @var Core|null
 	 */
-	protected ?Core $core;
+	protected $core;
 
 	/**
 	 * Holds instance of Customizer.
 	 *
 	 * @var Customizer|null
 	 */
-	protected ?Customizer $customizer;
+	protected $customizer;
 
 	/**
 	 * Template constructor.

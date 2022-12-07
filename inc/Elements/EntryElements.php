@@ -218,7 +218,7 @@ class EntryElements extends Elements {
 		$this->core->action( 'entry-elements/meta/comments/start' );
 		?>
 		<div class="vite-post__meta__comments">
-			<a href="<?php echo esc_url( get_comments_link() ); ?>" tabindex="-1">
+			<span class="vite-post__meta__icon">
 				<?php
 					vite( 'icon' )->get_icon(
 						'comment',
@@ -228,7 +228,7 @@ class EntryElements extends Elements {
 						]
 					);
 				?>
-			</a>
+			</span>
 			<?php comments_popup_link( __( 'Leave a comment', 'vite' ), __( '1 Comment', 'vite' ), __( '% Comments', 'vite' ) ); ?>
 		</div>
 		<?php

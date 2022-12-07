@@ -15,9 +15,9 @@ class BuilderElements extends Elements {
 	/**
 	 * Context.
 	 *
-	 * @var string|null
+	 * @var string
 	 */
-	protected ?string $context;
+	protected $context = '';
 
 	/**
 	 * {@inheritDoc}
