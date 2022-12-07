@@ -1,7 +1,64 @@
 const request = require( 'request' );
 const fs = require( 'fs' );
-const gulp = require( 'gulp' );
+const zip = require( 'gulp-zip' );
+const { exec } = require( 'child_process' );
 const pkg = JSON.parse( fs.readFileSync( './package.json' ) );
+const { series, dest, src, parallel } = require( 'gulp' );
+
+const files = {
+	inc: {
+		src: 'inc/**/*',
+		dest: `build/${ pkg.name }/inc`,
+	},
+	assets: {
+		src: [ 'assets/**/*', '!assets/js/**/*', '!assets/scss/**/*' ],
+		dest: `build/${ pkg.name }/assets`,
+	},
+	bootstrap: {
+		src: 'bootstrap/**/*',
+		dest: `build/${ pkg.name }/bootstrap`,
+	},
+	templateParts: {
+		src: 'template-parts/**/*',
+		dest: `build/${ pkg.name }/template-parts`,
+	},
+	composer: {
+		src: [ 'composer.json', 'composer.lock' ],
+		dest: `build/${ pkg.name }/`,
+	},
+	other: {
+		src: [ 'README.md', 'style.css', '*.php' ],
+		dest: `build/${ pkg.name }/`,
+	},
+};
+
+const copy = [
+	() => src( files.inc.src ).pipe( dest( files.inc.dest ) ),
+	() => src( files.assets.src ).pipe( dest( files.assets.dest ) ),
+	() => src( files.bootstrap.src ).pipe( dest( files.bootstrap.dest ) ),
+	() => src( files.templateParts.src ).pipe( dest( files.templateParts.dest ) ),
+	() => src( files.composer.src ).pipe( dest( files.composer.dest ) ),
+	() => src( files.other.src ).pipe( dest( files.other.dest ) ),
+];
+
+const composer = () => exec( `cd build/${ pkg.name } && composer install --no-dev --optimize-autoloader` );
+
+const compressFiles = [ 'build/**/*', '!build/**/composer.lock', '!build/**/composer.json', '!build/**/assets/js', '!build/**/assets/scss', '!build/**/node_modules/**/*' ];
+
+const compress = [
+	() => src( compressFiles ).pipe( zip( `${ pkg.name }.zip` ) ).pipe( dest( 'release' ) ),
+	() => src( compressFiles ).pipe( zip( `${ pkg.name }-${ pkg.version }.zip` ) ).pipe( dest( 'release' ) ),
+];
+
+const release = series(
+	() => exec( `rm -rf build` ),
+	() => exec( `rm -rf release` ),
+	() => exec( 'yarn build' ),
+	copy,
+	composer,
+	parallel( ...compress ),
+	() => exec( `rm -rf build` ),
+);
 
 const fetchGoogleFonts = () => request( 'https://google-webfonts-helper.herokuapp.com/api/fonts', ( error, response, body ) => {
 	if ( ! error && response.statusCode === 200 ) {
@@ -44,3 +101,4 @@ const fetchFontAwesome = () => request( 'https://raw.githubusercontent.com/FortA
 
 exports.fetchGoogleFonts = fetchGoogleFonts;
 exports.fetchFontAwesome = fetchFontAwesome;
+exports.release = release;
