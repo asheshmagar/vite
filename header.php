@@ -59,7 +59,7 @@ $core = vite( 'core' );
 			<?php esc_html_e( 'Skip to content', 'vite' ); ?>
 		</a>
 		<?php wp_body_open(); ?>
-		<div id="page" class="hfeed site wp-site-blocks">
+		<div id="page" class="wp-site-blocks vite-site">
 			<?php
 			/**
 			 * Action: vite/header/start.
@@ -88,9 +88,9 @@ $core = vite( 'core' );
 			 */
 			$core->action( 'header/end' );
 			?>
-			<div id="content" class="site-content">
-				<div class="container">
-					<div id="primary" class="content-area">
+			<div id="content" class="vite-content">
+				<div class="vite-container">
+					<div id="primary" class="vite-content__area">
 						<?php
 						/**
 						 * Action: vite/content/start.

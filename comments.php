@@ -18,7 +18,7 @@ if ( post_password_required() ) {
 
 $core = vite( 'core' );
 ?>
-<div id="comments" class="comments-area<?php print( esc_attr( have_comments() ? '' : ' no-comments' ) ); ?>">
+<div id="comments" class="vite-comments<?php print( esc_attr( have_comments() ? '' : ' vite-comments--empty' ) ); ?>">
 <?php
 	/**
 	 * Action: vite/comments/start.
