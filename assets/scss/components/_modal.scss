@@ -1,4 +1,4 @@
-[data-modal] {
+.vite-modal {
 	position: fixed;
 	top: var(--admin--bar--height, 0);
 	left: 0;
@@ -12,44 +12,61 @@
 	display: flex;
 	flex-direction: column;
 
-	* {
-		color: var(--global--color--4);
-	}
-
 	&,
-	&[data-modal-open] {
+	&--open {
 		transition-property: visibility, opacity;
 		transition-duration: 300ms;
 		transition-timing-function: ease-in-out;
 	}
 
-	&[data-modal-open] {
+	&--open {
 		opacity: 1;
 		visibility: visible;
 		pointer-events: auto;
+
+		.vite-modal__content--slide-up {
+			@include animation(modal--open--slide--up, 300ms, ease-in-out, 0s, 1, normal, both, running)
+		}
 	}
 
-	[data-modal-actions] {
+	&__action {
 		display: flex;
 		gap: 1em;
 		align-items: center;
 		justify-content: flex-end;
+		position: absolute;
+		top: 0;
+		right: 12px;
 	}
 
-	[data-modal-content] {
+	&__content {
 		width: 100%;
 		max-width: 80%;
 		overflow: auto;
 		flex: 1;
 		display: grid;
 		place-items: center;
-		margin-inline: auto;
+		margin-left: auto;
+		margin-right: auto;
+		padding-top: 34px;
 	}
 
-	[data-modal-trigger] {
+	&__btn {
 		display: inline-grid;
 		place-items: center;
-		width: 32px;
-		height: 32px;
+		width: 50px;
+		height: 50px;
+	}
+}
+
+@keyframes modal--open--slide--up {
+	0% {
+		opacity: 0;
+		transform: translateY(50px)
+	}
+
+	100% {
+		opacity: 1;
+		transform: translateY(0)
 	}
 }
