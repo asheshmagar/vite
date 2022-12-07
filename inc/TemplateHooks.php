@@ -16,9 +16,9 @@ class TemplateHooks {
 	/**
 	 * Holds the instance of this class.
 	 *
-	 * @var null|Supports
+	 * @var null|TemplateHooks
 	 */
-	private static $instance = null;
+	private static ?TemplateHooks $instance = null;
 
 	/**
 	 * Init.
@@ -41,8 +41,10 @@ class TemplateHooks {
 		$core = vite( 'core' );
 
 		$core->add_action( 'vite/the-loop', [ $this, 'content' ] );
+		$core->add_action( 'vite/the-loop/no-posts', [ $this, 'content_none' ] );
 		$core->add_action( 'vite/header', [ $this, 'header' ] );
 		$core->add_action( 'vite/footer', [ $this, 'footer' ] );
+		$core->add_action( 'vite/archive/content', [ $this, 'archive_content' ] );
 		$core->add_action( 'vite/header/end', [ $this, 'archive_page_header' ] );
 		$core->add_action( 'vite/archive/start', [ $this, 'archive_wrapper_open' ] );
 		$core->add_action( 'vite/archive/end', [ $this, 'archive_wrapper_close' ] );
@@ -71,6 +73,25 @@ class TemplateHooks {
 
 		add_filter( 'post_class', [ $this, 'post_class' ], 10, 3 );
 		add_filter( 'body_class', [ $this, 'body_class' ] );
+	}
+
+	/**
+	 * Archive content.
+	 *
+	 * @param mixed $elements Elements.
+	 * @return void
+	 */
+	public function archive_content( $elements ) {
+		get_template_part( 'template-parts/entry/entry', '', [ 'elements' => $elements ] );
+	}
+
+	/**
+	 * Content none template.
+	 *
+	 * @return void
+	 */
+	public function content_none() {
+		get_template_part( 'template-parts/content/content', 'none' );
 	}
 
 	/**
@@ -140,15 +161,29 @@ class TemplateHooks {
 	 * @return void
 	 */
 	public function archive_wrapper_open() {
-		$archive_style   = vite( 'customizer' )->get_setting( 'archive-style' );
-		$archive_columns = vite( 'customizer' )->get_setting( 'archive-columns' );
-		$is_masonry      = 'grid' === $archive_style && vite( 'customizer' )->get_setting( 'archive-style-masonry' );
+		$archive_style           = vite( 'customizer' )->get_setting( 'archive-style' );
+		$archive_columns         = vite( 'customizer' )->get_setting( 'archive-columns' );
+		$is_masonry              = 'grid' === $archive_style && vite( 'customizer' )->get_setting( 'archive-style-masonry' );
+		$archive_wrapper_classes = [
+			'vite-posts',
+			'vite-posts--' . $archive_style,
+		];
+
+		if ( 'grid' === $archive_style ) {
+			$archive_wrapper_classes[] = 'vite-posts--col-' . $archive_columns;
+		}
+
+		if ( $is_masonry ) {
+			$archive_wrapper_classes[] = 'vite-posts--masonry';
+		}
+
+		if ( ! have_posts() ) {
+			$archive_wrapper_classes = [ 'vite-posts' ];
+		}
 
 		printf(
-			'<div class="vite-posts"%s%s%s>',
-			esc_attr( " data-style=$archive_style" ),
-			'grid' === $archive_style ? esc_attr( " data-col=$archive_columns" ) : '',
-			esc_attr( $is_masonry ? ' data-masonry' : '' )
+			'<div class="%s">',
+			esc_attr( implode( ' ', array_unique( $archive_wrapper_classes ) ) )
 		);
 	}
 
@@ -170,15 +205,36 @@ class TemplateHooks {
 	 * @return string[]
 	 */
 	public function post_class( array $classes, array $class, int $post_id ): array {
-		if ( has_post_thumbnail( $post_id ) ) {
-			$classes[] = 'vite-has-post-thumbnail';
-		}
+		$elements         = vite( 'customizer' )->get_setting( 'archive-elements' );
+		$visible_elements = array_filter(
+			$elements,
+			function( $element ) {
+				return $element['visible'];
+			}
+		);
+		$first_element    = reset( $visible_elements );
+		$last_element     = end( $visible_elements );
 
 		if ( is_single() ) {
 			$classes[] = 'vite-single';
 		}
 
 		$classes[] = 'vite-post';
+
+		if ( has_post_thumbnail( $post_id ) ) {
+			$classes[] = 'vite-post--has-thumbnail';
+
+			if ( is_archive() ) {
+				if ( isset( $first_element['id'] ) && 'featured-image' === $first_element['id'] ) {
+					$classes[] = 'vite-post--thumbnail-first';
+				}
+
+				if ( isset( $last_element['id'] ) && 'featured-image' === $last_element['id'] ) {
+					$classes[] = 'vite-post--thumbnail-last';
+				}
+			}
+		}
+
 		return $classes;
 	}
 
