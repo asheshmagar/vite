@@ -35,10 +35,9 @@ $core->action( 'single/content/start' );
 		 * @since x.x.x
 		 */
 		$core->action( 'single/content/header', $elements );
-		vite( 'entry-elements' )->render_entry_elements( $elements );
 		?>
 	</header>
-	<?php vite( 'entry-elements' )->render_entry_featured_image(); ?>
+	<?php $core->action( 'single/content/content/start' ); ?>
 	<div class="vite-post__content">
 		<?php
 		/**
@@ -48,7 +47,7 @@ $core->action( 'single/content/start' );
 		 *
 		 * @since x.x.x
 		 */
-		$core->action( 'single/content' );
+		$core->action( 'single/content/content' );
 		the_content(
 			sprintf(
 				wp_kses(
@@ -65,6 +64,7 @@ $core->action( 'single/content/start' );
 		);
 		?>
 	</div>
+	<?php $core->action( 'single/content/content/end' ); ?>
 </article>
 <?php
 /**
