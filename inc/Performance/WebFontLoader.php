@@ -110,7 +110,7 @@ class WebFontLoader {
 	public function __construct() {
 		// Add a cleanup routine.
 		$this->schedule_cleanup();
-		vite( 'core' )->add_action( 'vite/local-fonts/cleanup', array( $this, 'delete_fonts_folder' ) );
+		vite( 'core' )->add_action( 'vite/local-fonts/cleanup', [ $this, 'delete_fonts_folder' ] );
 	}
 
 	/**
