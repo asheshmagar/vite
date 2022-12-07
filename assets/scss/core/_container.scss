@@ -1,5 +1,19 @@
-.container {
+.vite-container {
 	max-width: var(--container--width);
-	padding-inline: var(--container--padding--inline);
+	padding: var(--container--padding--block, 0px) var(--container--padding--inline);
 	margin-inline: auto;
+	min-height: var(--container--min--height, auto);
+
+	&--grid {
+		display: grid;
+		grid-template-columns: var(--grid--columns, 1fr);
+	}
+
+	&--col-2 {
+		--grid--columns: repeat(2, auto);
+	}
+
+	&--col-lf-even {
+		--grid--columns: 1fr auto 1fr;
+	}
 }
