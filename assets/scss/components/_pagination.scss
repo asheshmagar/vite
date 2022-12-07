@@ -1,21 +1,22 @@
-.pagination {
-	margin-block-start: 4rem;
+.vite-pagination {
+	margin-top: 4rem;
 
-	.page-numbers {
+	&__link {
 		min-width: 40px;
 		min-height: 40px;
 		display: inline-grid;
 		place-items: center;
 		border-radius: var(--button--border--radius);
-
-		&:not(.next) {
-			margin-right: 10px;
-		}
+		margin-right: 10px;
 
 		&:hover,
-		&.current {
+		&--current {
 			background-color: var(--button--bg--color);
 			color: var(--button--color);
+		}
+
+		&--next {
+			margin-right: 0;
 		}
 	}
 }
