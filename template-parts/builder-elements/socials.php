@@ -8,4 +8,4 @@
 
 defined( 'ABSPATH' ) || exit;
 
-vite( 'header' )->render_header_socials();
+vite( 'builder-elements' )->render( 'socials', $args ?? [] );
