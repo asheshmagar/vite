@@ -1,27 +1,9 @@
-.page-header-wrap {
-	margin-block-start: 4rem;
-	ul {
-		list-style-type: none;
-		display: flex;
-		margin: 0;
-		padding: 0;
-		gap: 0.5em;
-	}
+.vite-page-header {
+	margin-top: 4rem;
 
-	.container {
-		display: flex;
-		flex-direction: column;
-		gap: 1em;
-	}
-
-	a {
-		text-decoration: none;
-		color: var(--base--color);
-
-		&:hover,
-		&:focus,
-		&:active {
-			color: var(--primary--color);
+	:where(.vite-container) {
+		> *:not(:last-child) {
+			margin-bottom: 0.5em;
 		}
 	}
 }
