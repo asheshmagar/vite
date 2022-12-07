@@ -21,7 +21,7 @@ $service_providers = [
 	Vite\ServiceProvider\NavMenuServiceProvider::class,
 	Vite\ServiceProvider\SidebarServiceProvider::class,
 	Vite\ServiceProvider\IconServiceProvider::class,
-	Vite\ServiceProvider\PageHeaderServiceProvider::class,
+	Vite\ServiceProvider\PageHeaderElementsServiceProvider::class,
 	Vite\ServiceProvider\CommentsServiceProvider::class,
 	Vite\ServiceProvider\WebFontLoaderServerProvider::class,
 	Vite\ServiceProvider\PerformanceServiceProvider::class,
