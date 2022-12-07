@@ -69,7 +69,7 @@ class Comments {
 
 		if ( have_comments() ) {
 			printf(
-				wp_kses_post( '<h2 class="comments-title">%s</h2>' ),
+				wp_kses_post( '<h2 class="vite-comments__title">%s</h2>' ),
 				sprintf(
 					esc_html(
 						/* translators: %1$s: Comments count, %2$s: Post title. */
@@ -88,7 +88,7 @@ class Comments {
 		}
 
 		printf(
-			wp_kses_post( '<ol class="comment-list">%s</ol>' ),
+			wp_kses_post( '<ol class="vite-comments__list">%s</ol>' ),
 			wp_list_comments(
 				[
 					'style'       => 'ol',
@@ -104,10 +104,18 @@ class Comments {
 
 		if ( ! comments_open() ) {
 			?>
-			<p class="no-comments"><?php esc_html_e( 'Comments are closed.', 'vite' ); ?></p>
+			<p class="vite-no-comments"><?php esc_html_e( 'Comments are closed.', 'vite' ); ?></p>
 			<?php
 		}
 
-		comment_form();
+		$comment_for_args = vite( 'core' )->filter(
+			'comment/form/args',
+			[
+				'title_reply_before' => '<h2 id="reply-title" class="vite-comment-respond__title">',
+				'class_container'    => 'vite-comment-respond',
+			]
+		);
+
+		comment_form( $comment_for_args );
 	}
 }
