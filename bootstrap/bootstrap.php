@@ -1,10 +1,16 @@
 <?php
 /**
  * Init app.
+ *
+ * @package Vite
  */
+
+defined( 'ABSPATH' ) || exit;
 
 use League\Container\Container;
 use League\Container\ReflectionContainer;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 
 global $vite;
 
@@ -46,7 +52,11 @@ if ( ! function_exists( 'vite' ) ) {
 		global $vite;
 
 		if ( ! empty( $class_or_alias ) && $vite->has( $class_or_alias ) ) {
-			return $vite->get( $class_or_alias );
+			try {
+				return $vite->get( $class_or_alias );
+			} catch ( NotFoundExceptionInterface | ContainerExceptionInterface $e ) {
+				return (object) [];
+			}
 		}
 
 		return $vite;
