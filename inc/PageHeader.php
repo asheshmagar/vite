@@ -35,19 +35,17 @@ class PageHeader {
 
 		$elements = vite( 'core' )->filter( 'page-header/elements', $elements );
 		?>
-		<div class="page-header-wrap">
-			<header class="page-header">
-				<div class="container">
-					<?php
-					foreach ( $elements as $element ) {
-						if ( ! $element['visible'] || ! isset( $element['id'] ) ) {
-							continue;
-						}
-						get_template_part( 'template-parts/page-header/page-header', $element['id'] );
+		<div class="vite-page-header">
+			<div class="vite-container">
+				<?php
+				foreach ( $elements as $element ) {
+					if ( ! $element['visible'] || ! isset( $element['id'] ) ) {
+						continue;
 					}
-					?>
-				</div>
-			</header>
+					get_template_part( 'template-parts/page-header/page-header', $element['id'] );
+				}
+				?>
+			</div>
 		</div>
 		<?php
 	}
@@ -59,11 +57,9 @@ class PageHeader {
 	 */
 	public function render_page_header_title() {
 		?>
-		<div class="page-title-wrap">
-			<h1 class="page-title">
-				<?php $this->page_title(); ?>
-			</h1>
-		</div>
+		<h1 class="vite-page-header__title">
+			<?php $this->page_title(); ?>
+		</h1>
 		<?php
 	}
 
@@ -75,7 +71,7 @@ class PageHeader {
 	public function render_page_header_description() {
 		if ( is_archive() && get_the_archive_description() ) {
 			?>
-			<div class="archive-description">
+			<div class="vite-page-header__archive-desc">
 				<?php the_archive_description(); ?>
 			</div>
 			<?php
