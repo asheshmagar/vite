@@ -10,14 +10,15 @@
       "Vite\\Customizer\\": "inc/Customizer/",
       "Vite\\Comments\\": "inc/Comments/",
       "Vite\\NavMenu\\": "inc/NavMenu/",
-      "Vite\\Performance\\": "inc/Performance/"
+      "Vite\\Performance\\": "inc/Performance/",
+      "Vite\\Elements\\": "inc/Elements/"
     },
     "files": [
       "bootstrap/bootstrap.php"
     ]
   },
   "require": {
-    "php": ">=7.2",
+    "php": ">=7.4",
     "league/container": "^4.2"
   }
 }
