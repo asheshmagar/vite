@@ -10,12 +10,12 @@ namespace Vite\ServiceProvider;
 
 defined( 'ABSPATH' ) || exit;
 
-use Vite\PageHeader;
+use Vite\Elements\PageHeaderElements;
 
 /**
  * PageHeader service provider.
  */
-class PageHeaderServiceProvider extends ViteAbstractServiceProvider {
+class PageHeaderElementsServiceProvider extends ViteAbstractServiceProvider {
 
 	/**
 	 * {@inheritDoc}
@@ -24,8 +24,8 @@ class PageHeaderServiceProvider extends ViteAbstractServiceProvider {
 	 */
 	public function provides( string $id ): bool {
 		$services = [
-			'page-header',
-			PageHeader::class,
+			'page-header-elements',
+			PageHeaderElements::class,
 		];
 
 		return in_array( $id, $services, true );
@@ -35,6 +35,8 @@ class PageHeaderServiceProvider extends ViteAbstractServiceProvider {
 	 * {@inheritDoc}
 	 */
 	public function register() {
-		$this->getContainer()->addShared( 'page-header', PageHeader::class );
+		$this->getContainer()
+			->addShared( 'page-header-elements', PageHeaderElements::class )
+			->addArguments( [ 'core', 'customizer' ] );
 	}
 }
