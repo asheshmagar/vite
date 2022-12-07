@@ -6,17 +6,31 @@
  */
 
 $posts_render_callback = function() {
-	$archive_style   = vite( 'customizer' )->get_setting( 'archive-style' );
-	$archive_columns = vite( 'customizer' )->get_setting( 'archive-columns' );
-	$is_masonry      = 'grid' === $archive_style && vite( 'customizer' )->get_setting( 'archive-style-masonry' );
+	$archive_style           = vite( 'customizer' )->get_setting( 'archive-style' );
+	$archive_columns         = vite( 'customizer' )->get_setting( 'archive-columns' );
+	$is_masonry              = 'grid' === $archive_style && vite( 'customizer' )->get_setting( 'archive-style-masonry' );
+	$archive_wrapper_classes = [
+		'vite-posts',
+		'vite-posts--' . $archive_style,
+	];
+
+	if ( 'grid' === $archive_style ) {
+		$archive_wrapper_classes[] = 'vite-posts--col-' . $archive_columns;
+	}
+
+	if ( $is_masonry ) {
+		$archive_wrapper_classes[] = 'vite-posts--masonry';
+	}
+
+	$archive_wrapper_classes = vite( 'core' )->filter( 'archive/wrapper/classes', $archive_wrapper_classes );
 
 	printf(
-		'<div class="vite-posts"%s%s%s>',
-		esc_attr( " data-style=$archive_style" ),
-		'grid' === $archive_style ? esc_attr( " data-col=$archive_columns" ) : '',
-		esc_attr( $is_masonry ? ' data-masonry' : '' )
+		'<div class="%s">',
+		esc_attr( implode( ' ', array_unique( $archive_wrapper_classes ) ) )
 	);
+
 	vite( 'core' )->the_loop();
+
 	echo '</div>';
 };
 
@@ -54,7 +68,7 @@ vite( 'customizer' )->add(
 			],
 			'default' => vite( 'customizer' )->get_defaults()['archive-title-elements'],
 			'partial' => [
-				'selector'            => '.page-header-wrap',
+				'selector'            => '.vite-page-header',
 				'container_inclusive' => true,
 				'render_callback'     => function() {
 					$archive_title_elements = vite( 'customizer' )->get_setting( 'archive-title-elements' );
