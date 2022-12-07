@@ -1,0 +1,47 @@
+.vite-search-form {
+	display: flex;
+	width: 100%;
+
+	> label {
+		flex: 1;
+	}
+
+	&--modal {
+		border-bottom: 2px solid;
+		max-width: 70%;
+		> label {
+			display: flex;
+			flex: 1;
+		}
+
+		input {
+			font-size: calc(var(--font--size) * 2);
+			width: 100%;
+			background: transparent;
+			transition: all .4s ease-out;
+			border-width: 0;
+			outline: none;
+
+			&::-ms-clear,
+			&::-ms-reveal {
+				display: none;
+				width: 0;
+				height: 0;
+			}
+
+			&::-webkit-search-decoration,
+			&::-webkit-search-cancel-button,
+			&::-webkit-search-results-button,
+			&::-webkit-search-results-decoration {
+				display: none;
+			}
+		}
+		.vite-search-form__submit {
+			--button--padding: 0;
+			--button--bg--color: transparent;
+			--button--hover--bg--color: transparent;
+			--button--color: var(--global--color--3);
+			--button--hover--color: var(--global--color--3);
+		}
+	}
+}
