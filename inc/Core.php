@@ -1,6 +1,6 @@
 <?php
 /**
- * The loop.
+ * Theme core methods.
  *
  * @since x.x.x
  * @package Vite
@@ -8,19 +8,10 @@
 
 namespace Vite;
 
-use WP_Post_Type;
-
 /**
  * Core.
  */
 class Core {
-
-	/**
-	 * Holds current post types.
-	 *
-	 * @var string[]|WP_Post_Type[]
-	 */
-	public $post_types;
 
 	/**
 	 * Adds a callback function to an action hook.
@@ -36,7 +27,7 @@ class Core {
 	 *
 	 * @return true Always returns true.
 	 */
-	public function add_action( string $hook_name, $callback, int $priority = 10, int $accepted_args = 1 ) {
+	public function add_action( string $hook_name, $callback, int $priority = 10, int $accepted_args = 1 ): bool {
 		return add_action( $hook_name, $callback, $priority, $accepted_args );
 	}
 
@@ -54,7 +45,7 @@ class Core {
 	 *
 	 * @return true Always returns true.
 	 */
-	public function add_filter( string $hook_name, $callback, int $priority = 10, int $accepted_args = 1 ) {
+	public function add_filter( string $hook_name, $callback, int $priority = 10, int $accepted_args = 1 ): bool {
 		return add_filter( $hook_name, $callback, $priority, $accepted_args );
 	}
 
@@ -216,56 +207,6 @@ class Core {
 	}
 
 	/**
-	 * Static theme string.
-	 *
-	 * @param string $id String id.
-	 * @param bool   $should_return Whether to return or echo string.
-	 * @return string|void
-	 */
-	public function static_strings( string $id, bool $should_return = false ) {
-		$strings = [
-			'no-posts'        => __( 'No posts found.', 'vite' ),
-			'skip-to-content' => __( 'Skip to content', 'vite' ),
-			'go-to-top'       => __( 'Go to top', 'vite' ),
-			'leave-a-comment' => __( 'Leave a comment', 'vite' ),
-			'primary-menu'    => __( 'Primary Menu', 'vite' ),
-			'secondary-menu'  => __( 'Secondary Menu', 'vite' ),
-			'footer-menu'     => __( 'Footer Menu', 'vite' ),
-
-		];
-
-		if ( ! isset( $id ) || ! isset( $strings[ $id ] ) ) {
-			return '';
-		}
-
-		if ( $should_return ) {
-			return $strings[ $id ];
-		}
-
-		echo esc_html( $strings[ $id ] );
-	}
-
-	/**
-	 * Get default options.
-	 *
-	 * @param string $id Id.
-	 * @return string|string[]
-	 */
-	public function get_default_options( string $id ) {
-
-		$defaults = [
-			'post_page_header' => 'style-1',
-			'page_page_header' => 'style-1',
-		];
-
-		if ( ! isset( $id ) || ! isset( $defaults[ $id ] ) ) {
-			return $defaults;
-		}
-
-		return $defaults[ $id ];
-	}
-
-	/**
 	 * Parse smart tags.
 	 *
 	 * @param string $content Content.
@@ -287,33 +228,6 @@ class Core {
 		}
 
 		return $content;
-	}
-
-	/**
-	 * Get the current post types.
-	 *
-	 * @return string[]|WP_Post_Type[]
-	 */
-	public function get_current_post_types(): array {
-		$post_types = get_post_types(
-			[
-				'public'   => true,
-				'_builtin' => false,
-			],
-			'objects'
-		);
-		$exclude    = $this->filter(
-			'vite_ignored_post_types',
-			[
-				'attachment',
-				'elementor_library',
-				'elementor-hf',
-			]
-		);
-
-		$this->post_types = array_diff( $post_types, $exclude );
-
-		return $this->post_types;
 	}
 
 	/**
@@ -384,14 +298,5 @@ class Core {
 			$social_networks = json_decode( ob_get_clean(), true );
 		}
 		return $social_networks;
-	}
-
-	/**
-	 * Get public path.
-	 *
-	 * @return string
-	 */
-	public function get_public_path(): string {
-		return VITE_ASSETS_URI . 'dist/';
 	}
 }
