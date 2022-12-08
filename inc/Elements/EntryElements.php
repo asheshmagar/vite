@@ -12,7 +12,7 @@ namespace Vite\Elements;
  */
 class EntryElements {
 
-	use ElementTrait;
+	use ElementsTrait;
 
 	/**
 	 * Elements.
@@ -34,7 +34,7 @@ class EntryElements {
 		 *
 		 * @since x.x.x
 		 */
-		$args['core']->action( 'entry-elements/start' );
+		$this->action( 'entry-elements/start' );
 
 		foreach ( $elements as $element ) {
 			if ( $element['visible'] ) {
@@ -53,7 +53,7 @@ class EntryElements {
 		 *
 		 * @since x.x.x
 		 */
-		$args['core']->action( 'entry-elements/end' );
+		$this->action( 'entry-elements/end' );
 	}
 
 	/**
@@ -84,7 +84,7 @@ class EntryElements {
 		 *
 		 * @since x.x.x
 		 */
-		$args['core']->action( 'entry-elements/meta/start' );
+		$this->action( 'entry-elements/meta/start' );
 		?>
 		<div class="vite-post__meta">
 			<?php
@@ -114,7 +114,7 @@ class EntryElements {
 		 *
 		 * @since x.x.x
 		 */
-		$args['core']->action( 'entry-elements/meta/end' );
+		$this->action( 'entry-elements/meta/end' );
 	}
 
 	/**
@@ -132,7 +132,7 @@ class EntryElements {
 		 *
 		 * @since x.x.x
 		 */
-		$args['core']->action( 'entry-elements/excerpt/start' );
+		$this->action( 'entry-elements/excerpt/start' );
 		?>
 		<div class="vite-post__excerpt">
 			<?php the_excerpt(); ?>
@@ -145,7 +145,7 @@ class EntryElements {
 		 *
 		 * @since x.x.x
 		 */
-		$args['core']->action( 'entry-elements/excerpt/end' );
+		$this->action( 'entry-elements/excerpt/end' );
 	}
 
 	/**
@@ -177,7 +177,7 @@ class EntryElements {
 		 *
 		 * @since x.x.x
 		 */
-		$args['core']->action( 'entry-elements/featured-image/start' );
+		$this->action( 'entry-elements/featured-image/start' );
 		?>
 		<div class="vite-post__thumbnail">
 			<?php if ( is_singular( $post_type ) ) : ?>
@@ -199,7 +199,7 @@ class EntryElements {
 		 *
 		 * @since x.x.x
 		 */
-		$args['core']->action( 'entry-elements/featured-image/end' );
+		$this->action( 'entry-elements/featured-image/end' );
 	}
 
 	/**
@@ -220,7 +220,7 @@ class EntryElements {
 		 *
 		 * @since x.x.x
 		 */
-		$args['core']->action( 'entry-elements/meta/comments/start' );
+		$this->action( 'entry-elements/meta/comments/start' );
 		?>
 		<div class="vite-post__meta__comments">
 			<span class="vite-post__meta__icon">
@@ -245,7 +245,7 @@ class EntryElements {
 		 *
 		 * @since x.x.x
 		 */
-		$args['core']->action( 'entry-elements/meta/comments/end' );
+		$this->action( 'entry-elements/meta/comments/end' );
 	}
 
 	/**
@@ -263,7 +263,7 @@ class EntryElements {
 		 *
 		 * @since x.x.x
 		 */
-		$args['core']->action( 'entry-elements/title/start' );
+		$this->action( 'entry-elements/title/start' );
 		?>
 		<div class="vite-post__title">
 			<?php
@@ -283,7 +283,7 @@ class EntryElements {
 		 *
 		 * @since x.x.x
 		 */
-		$args['core']->action( 'entry-elements/title/end' );
+		$this->action( 'entry-elements/title/end' );
 	}
 
 	/**
@@ -300,7 +300,7 @@ class EntryElements {
 		 *
 		 * @since x.x.x
 		 */
-		$args['core']->action( 'entry-elements/content/start' );
+		$this->action( 'entry-elements/content/start' );
 		?>
 		<div class="vite-post__content">
 			<?php
@@ -331,7 +331,7 @@ class EntryElements {
 		 *
 		 * @since x.x.x
 		 */
-		$args['core']->action( 'entry-elements/content/end' );
+		$this->action( 'entry-elements/content/end' );
 	}
 
 	/**
@@ -349,7 +349,7 @@ class EntryElements {
 		 *
 		 * @since x.x.x
 		 */
-		$args['core']->action( 'entry-elements/button/start' );
+		$this->action( 'entry-elements/button/start' );
 		?>
 		<a href="<?php the_permalink(); ?>" class="vite-post__btn" >
 			<span class="screen-reader-text"><?php the_title(); ?></span>
@@ -364,7 +364,7 @@ class EntryElements {
 		 *
 		 * @since x.x.x
 		 */
-		$args['core']->action( 'entry-elements/button/end' );
+		$this->action( 'entry-elements/button/end' );
 	}
 
 	/**
@@ -396,7 +396,7 @@ class EntryElements {
 		 *
 		 * @since x.x.x
 		 */
-		$args['core']->action( 'entry-elements/meta/date/start' );
+		$this->action( 'entry-elements/meta/date/start' );
 		?>
 		<div class="vite-post__meta__date">
 			<span class="vite-post__meta__icon">
@@ -436,7 +436,7 @@ class EntryElements {
 		 *
 		 * @since x.x.x
 		 */
-		$args['core']->action( 'entry-elements/meta/date/end' );
+		$this->action( 'entry-elements/meta/date/end' );
 	}
 
 	/**
@@ -454,7 +454,7 @@ class EntryElements {
 		 *
 		 * @since x.x.x
 		 */
-		$args['core']->action( 'entry-elements/meta/author/start' );
+		$this->action( 'entry-elements/meta/author/start' );
 		?>
 		<div class="vite-post__meta__author">
 			<span class="vite-post__meta__icon">
@@ -477,7 +477,7 @@ class EntryElements {
 				?>
 		</div>
 		<?php
-		$args['core']->action( 'entry-elements/meta/author/end' );
+		$this->action( 'entry-elements/meta/author/end' );
 	}
 
 	/**
@@ -501,7 +501,7 @@ class EntryElements {
 		 *
 		 * @since x.x.x
 		 */
-		$args['core']->action( "entry-elements/meta/$type/start" );
+		$this->action( "entry-elements/meta/$type/start" );
 		printf(
 		/* translators: %1$s: post link. %2$s: post categories */
 			'<span class="vite-post__meta__%1$s-links">%2$s</span>',
@@ -525,6 +525,6 @@ class EntryElements {
 		 *
 		 * @since x.x.x
 		 */
-		$args['core']->action( "entry-elements/meta/$type/end" );
+		$this->action( "entry-elements/meta/$type/end" );
 	}
 }

@@ -5,10 +5,14 @@
 
 namespace Vite\NavMenu;
 
+use Vite\Traits\Hook;
+
 /**
  * NavMenu.
  */
 class NavMenu {
+
+	use Hook;
 
 	/**
 	 * Walker nav menu.
@@ -51,7 +55,7 @@ class NavMenu {
 	 * Register nav menus.
 	 */
 	public function register_nav_menus() {
-		$menu_locations = vite( 'core' )->filter(
+		$menu_locations = $this->filter(
 			'menu/locations',
 			[
 				static::PRIMARY_MENU   => __( 'Primary Menu', 'vite' ),
@@ -78,7 +82,7 @@ class NavMenu {
 	 * @return bool
 	 */
 	public function is_mobile_menu_active(): bool {
-		return vite( 'core' )->filter( has_nav_menu( static::MOBILE_MENU ) );
+		return $this->filter( has_nav_menu( static::MOBILE_MENU ) );
 	}
 
 	/**
@@ -87,7 +91,7 @@ class NavMenu {
 	 * @return bool
 	 */
 	public function is_secondary_menu_active(): bool {
-		return vite( 'core' )->filter( has_nav_menu( static::SECONDARY_MENU ) );
+		return $this->filter( has_nav_menu( static::SECONDARY_MENU ) );
 	}
 
 	/**
@@ -96,7 +100,7 @@ class NavMenu {
 	 * @return bool
 	 */
 	public function is_footer_menu_active(): bool {
-		return vite( 'core' )->filter( has_nav_menu( static::FOOTER_MENU ) );
+		return $this->filter( has_nav_menu( static::FOOTER_MENU ) );
 	}
 
 	/**
@@ -124,7 +128,7 @@ class NavMenu {
 			$args['menu'] = $menu;
 		}
 
-		$args = vite( 'core' )->filter( "menu/$type/args", $args );
+		$args = $this->filter( "menu/$type/args", $args );
 		wp_nav_menu( $args );
 	}
 

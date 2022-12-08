@@ -9,12 +9,16 @@ namespace Vite;
 
 defined( 'ABSPATH' ) || exit;
 
+use Vite\Traits\Hook;
+
 /**
  * Class Styles
  *
  * @package Vite
  */
 class ScriptsStyles {
+
+	use Hook;
 
 	const STYLES = [
 		'vite-global'  => 'global.css',
@@ -65,7 +69,7 @@ class ScriptsStyles {
 	 * @return void
 	 */
 	public function enqueue() {
-		$handles = vite( 'core' )->filter( 'style/handles', array_keys( static::STYLES ) );
+		$handles = $this->filter( 'style/handles', array_keys( static::STYLES ) );
 
 		if ( ! empty( $handles ) ) {
 			foreach ( $handles as $handle ) {

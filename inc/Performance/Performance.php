@@ -5,10 +5,14 @@
 
 namespace Vite\Performance;
 
+use Vite\Traits\Mods;
+
 /**
  * Class Performance.
  */
 class Performance {
+
+	use Mods;
 
 	/**
 	 * Holds WebFontLoader.
@@ -41,7 +45,7 @@ class Performance {
 	 * @return void
 	 */
 	public function disable_emoji_script() {
-		if ( vite( 'customizer' )->get_setting( 'emoji-script', true ) ) {
+		if ( $this->get_theme_mod( 'emoji-script', true ) ) {
 			return;
 		}
 
@@ -104,6 +108,6 @@ class Performance {
 			'https://fonts.googleapis.com/css'
 		);
 
-		return vite( 'core' )->filter( 'performance/local-fonts/url', $this->local_font->get( $fonts_url ) );
+		return $this->filter( 'performance/local-fonts/url', $this->local_font->get( $fonts_url ) );
 	}
 }

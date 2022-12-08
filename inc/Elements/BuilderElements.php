@@ -12,7 +12,7 @@ namespace Vite\Elements;
  */
 class BuilderElements {
 
-	use ElementTrait;
+	use ElementsTrait;
 
 	/**
 	 * Site branding.
@@ -21,8 +21,8 @@ class BuilderElements {
 	 * @return void
 	 */
 	public function logo( $args ) {
-		$elements = $args['customizer']->get_setting( 'header-site-branding-elements' );
-		$layout   = $args['customizer']->get_setting( 'header-site-branding-layout' );
+		$elements = $this->get_theme_mod( 'header-site-branding-elements' );
+		$layout   = $this->get_theme_mod( 'header-site-branding-layout' );
 
 		/**
 		 * Action: vite/header/site-branding/start
@@ -31,7 +31,7 @@ class BuilderElements {
 		 *
 		 * @since 1.0.0
 		 */
-		$args['core']->action( 'header/site-branding/start' );
+		$this->action( 'header/site-branding/start' );
 		?>
 		<div class="vite-brand vite-brand--<?php echo esc_attr( $layout ); ?>"<?php vite( 'seo' )->print_schema_microdata( 'logo' ); ?>>
 			<?php the_custom_logo(); ?>
@@ -57,7 +57,7 @@ class BuilderElements {
 		 *
 		 * @since 1.0.0
 		 */
-		$args['core']->action( 'header/site-branding/end' );
+		$this->action( 'header/site-branding/end' );
 	}
 
 	/**
@@ -67,9 +67,9 @@ class BuilderElements {
 	 * @return void
 	 */
 	public function socials( $args ) {
-		$socials    = $args['customizer']->get_setting( "{$args['context']}-social-links" );
-		$size       = $args['customizer']->get_setting( "{$args['context']}-social-icons-size" );
-		$color_type = $args['customizer']->get_setting( "{$args['context']}-social-icons-color-type" );
+		$socials    = $this->get_theme_mod( "{$args['context']}-social-links" );
+		$size       = $this->get_theme_mod( "{$args['context']}-social-icons-size" );
+		$color_type = $this->get_theme_mod( "{$args['context']}-social-icons-color-type" );
 
 		if ( empty( $socials ) ) {
 			return;
@@ -82,7 +82,7 @@ class BuilderElements {
 		 *
 		 * @since 1.0.0
 		 */
-		$args['core']->action( "{$args['context']}/socials/start" );
+		$this->action( "{$args['context']}/socials/start" );
 		?>
 		<div class="vite-social">
 			<ul class="vite-social__list">
@@ -93,7 +93,7 @@ class BuilderElements {
 					}
 					?>
 						<li class="vite-social__item">
-							<a <?php print( esc_attr( 'brand' === $color_type && isset( $social['color'] ) ? 'style=color:' . $social['color'] : '' ) ); ?> class="vite-social__link vite-social__link--<?php echo esc_attr( $social['id'] ); ?>" rel="noopener" href=<?php echo esc_url( $args['customizer']->get_setting( "{$social['id']}-link", '#' ) ); ?>>
+							<a <?php print( esc_attr( 'brand' === $color_type && isset( $social['color'] ) ? 'style=color:' . $social['color'] : '' ) ); ?> class="vite-social__link vite-social__link--<?php echo esc_attr( $social['id'] ); ?>" rel="noopener" href=<?php echo esc_url( $this->get_theme_mod( "{$social['id']}-link", '#' ) ); ?>>
 							<?php isset( $social['label'] ) && printf( '<span class="screen-reader-text">%s</span>', esc_html( $social['label'] ) ); ?>
 								<span class="vite-social__icon">
 						<?php
@@ -122,7 +122,7 @@ class BuilderElements {
 		 *
 		 * @since 1.0.0
 		 */
-		$args['core']->action( "{$args['context']}/socials/end" );
+		$this->action( "{$args['context']}/socials/end" );
 	}
 
 	/**
@@ -132,9 +132,9 @@ class BuilderElements {
 	 * @return void
 	 */
 	public function search( $args ) {
-		$label            = $args['customizer']->get_setting( "{$args['context']}-search-label" );
-		$label_visibility = $args['customizer']->get_setting( "{$args['context']}-search-label-visibility" );
-		$label_position   = $args['customizer']->get_setting( "{$args['context']}-search-label-position" );
+		$label            = $this->get_theme_mod( "{$args['context']}-search-label" );
+		$label_visibility = $this->get_theme_mod( "{$args['context']}-search-label-visibility" );
+		$label_position   = $this->get_theme_mod( "{$args['context']}-search-label-position" );
 		$visibility       = 'none';
 
 		if ( count( $label_visibility ) === 3 ) {
@@ -150,7 +150,7 @@ class BuilderElements {
 		 *
 		 * @since 1.0.0
 		 */
-		$args['core']->action( "{$args['context']}/search/start" );
+		$this->action( "{$args['context']}/search/start" );
 		?>
 		<div class="vite-search">
 			<button class="vite-search__btn" aria-label="<?php esc_attr_e( 'Search modal open button', 'vite' ); ?>">
@@ -171,7 +171,7 @@ class BuilderElements {
 		 *
 		 * @since 1.0.0
 		 */
-		$args['core']->action( "{$args['context']}/search/end" );
+		$this->action( "{$args['context']}/search/end" );
 		add_action( 'wp_footer', [ $this, 'search_modal' ], 11 );
 	}
 
@@ -188,7 +188,7 @@ class BuilderElements {
 		 *
 		 * @since 1.0.0
 		 */
-		vite( 'core' )->action( 'header/search/modal/start' );
+		$this->action( 'header/search/modal/start' );
 		?>
 		<div class="vite-modal vite-modal--search">
 			<div class="vite-modal__action">
@@ -223,7 +223,7 @@ class BuilderElements {
 		 *
 		 * @since 1.0.0
 		 */
-		vite( 'core' )->action( 'header/search/modal/end' );
+		$this->action( 'header/search/modal/end' );
 	}
 
 	/**
@@ -233,10 +233,9 @@ class BuilderElements {
 	 * @return void
 	 */
 	public function html( $args ) {
-		$args    = func_get_args()[0] ?? [];
 		$type    = $args['type'] ?? '1';
-		$content = $args['customizer']->get_setting( "{$args['context']}-html-$type" );
-		$content = vite( 'core' )->parse_smart_tags( $content );
+		$content = $this->get_theme_mod( "{$args['context']}-html-$type" );
+		$content = $this->parse_smart_tags( $content );
 
 		/**
 		 * Action: vite/$args['context']/html/start
@@ -245,7 +244,7 @@ class BuilderElements {
 		 *
 		 * @since 1.0.0
 		 */
-		$args['core']->action( "{$args['context']}/html/start" );
+		$this->action( "{$args['context']}/html/start" );
 		?>
 		<div class="vite-html vite-html--<?php echo esc_attr( $type ); ?>">
 			<?php echo do_shortcode( $content ); ?>
@@ -259,7 +258,7 @@ class BuilderElements {
 		 *
 		 * @since 1.0.0
 		 */
-		$args['core']->action( "{$args['context']}/html/end" );
+		$this->action( "{$args['context']}/html/end" );
 	}
 
 	/**
@@ -269,15 +268,14 @@ class BuilderElements {
 	 * @return void
 	 */
 	public function button( $args ) {
-		$args      = func_get_args()[0] ?? [];
 		$type      = $args['type'] ?? '1';
-		$text      = $args['customizer']->get_setting( "{$args['context']}-button-$type-text" );
-		$url       = $args['customizer']->get_setting( "{$args['context']}-button-$type-url", '#' );
-		$target    = $args['customizer']->get_setting( "{$args['context']}-button-$type-target" );
-		$download  = $args['customizer']->get_setting( "{$args['context']}-button-$type-download" );
-		$sponsored = $args['customizer']->get_setting( "{$args['context']}-button-$type-sponsored" );
-		$nofollow  = $args['customizer']->get_setting( "{$args['context']}-button-$type-nofollow" );
-		$style     = $args['customizer']->get_setting( "{$args['context']}-button-$type-style" );
+		$text      = $this->get_theme_mod( "{$args['context']}-button-$type-text" );
+		$url       = $this->get_theme_mod( "{$args['context']}-button-$type-url", '#' );
+		$target    = $this->get_theme_mod( "{$args['context']}-button-$type-target" );
+		$download  = $this->get_theme_mod( "{$args['context']}-button-$type-download" );
+		$sponsored = $this->get_theme_mod( "{$args['context']}-button-$type-sponsored" );
+		$nofollow  = $this->get_theme_mod( "{$args['context']}-button-$type-nofollow" );
+		$style     = $this->get_theme_mod( "{$args['context']}-button-$type-style" );
 
 		$rel = [];
 
@@ -296,7 +294,7 @@ class BuilderElements {
 		 *
 		 * @since 1.0.0
 		 */
-		$args['core']->action( "{$args['context']}/button/start" );
+		$this->action( "{$args['context']}/button/start" );
 		?>
 		<div class="vite-button vite-button--<?php echo esc_attr( $type ); ?>">
 			<?php
@@ -320,7 +318,7 @@ class BuilderElements {
 		 *
 		 * @since 1.0.0
 		 */
-		$args['core']->action( "{$args['context']}/button/end" );
+		$this->action( "{$args['context']}/button/end" );
 	}
 
 	/**
@@ -338,7 +336,7 @@ class BuilderElements {
 		 *
 		 * @since 1.0.0
 		 */
-		$args['core']->action( "{$args['context']}/mobile-menu-trigger/start" );
+		$this->action( "{$args['context']}/mobile-menu-trigger/start" );
 		?>
 		<div class="vite-mobile-menu">
 			<button class="vite-mobile-menu__btn" aria-label="<?php esc_attr_e( 'Mobile menu modal open button', 'vite' ); ?>">
@@ -356,7 +354,7 @@ class BuilderElements {
 		 *
 		 * @since 1.0.0
 		 */
-		$args['core']->action( "{$args['context']}/mobile-menu-trigger/end" );
+		$this->action( "{$args['context']}/mobile-menu-trigger/end" );
 		add_action( 'wp_footer', [ $this, 'mobile_menu_offset' ] );
 	}
 
@@ -365,15 +363,15 @@ class BuilderElements {
 	 *
 	 * @return void
 	 */
-	public function mobile_menu_offset( $args ) {
-		$offset_config = vite( 'customizer' )->get_setting( 'header' )['offset'] ?? [];
+	public function mobile_menu_offset() {
+		$offset_config = $this->get_theme_mod( 'header' )['offset'] ?? [];
 
 		/**
 		 * Filter: vite/header/mobile-menu-offset/elements.
 		 *
 		 * @param array $elements Elements.
 		 */
-		$offset_config = vite( 'core' )->filter( 'header/mobile-menu-offset/elements', $offset_config );
+		$offset_config = $this->filter( 'header/mobile-menu-offset/elements', $offset_config );
 
 		/**
 		 * Action: vite/$args['context']/mobile-menu-offset/start
@@ -382,7 +380,7 @@ class BuilderElements {
 		 *
 		 * @since 1.0.0
 		 */
-		vite( 'core' )->action( 'header/mobile-menu-offset/start' );
+		$this->action( 'header/mobile-menu-offset/start' );
 		?>
 		<div data-modal class="vite-modal vite-modal--mobile-menu">
 			<div class="vite-modal__inner">
@@ -424,7 +422,7 @@ class BuilderElements {
 		 *
 		 * @since 1.0.0
 		 */
-		vite( 'core' )->action( 'header/mobile-menu-offset/end' );
+		$this->action( 'header/mobile-menu-offset/end' );
 	}
 
 	/**
@@ -434,12 +432,11 @@ class BuilderElements {
 	 * @return void
 	 */
 	public function menu( $args ) {
-		$args = func_get_args()[0] ?? [];
 		$type = $args['type'] ?? '1';
 		$menu = null;
 
 		if ( is_customize_preview() ) {
-			$menu = vite( 'customizer' )->get_setting( "menu-$type", '0' );
+			$menu = $this->get_theme_mod( "menu-$type", '0' );
 		}
 
 		/**
@@ -449,7 +446,7 @@ class BuilderElements {
 		 *
 		 * @since 1.0.0
 		 */
-		$menu = $args['core']->filter( "{$args['context']}/$type/menu", $menu );
+		$menu = $this->filter( "{$args['context']}/$type/menu", $menu );
 
 		vite( 'nav-menu' )->render_menu( $type, $menu, $args['context'] );
 
@@ -460,6 +457,6 @@ class BuilderElements {
 		 *
 		 * @since 1.0.0
 		 */
-		$args['core']->action( "{$args['context']}/$type/menu/end" );
+		$this->action( "{$args['context']}/$type/menu/end" );
 	}
 }

@@ -6,15 +6,14 @@ namespace Vite\Elements;
  */
 class PageHeaderElements {
 
-	use ElementTrait;
+	use ElementsTrait;
 
 	/**
 	 * Page header elements.
 	 *
 	 * @return void
 	 */
-	public function page_header() {
-		$args     = func_get_args()[0] ?? [];
+	public function page_header( $args ) {
 		$elements = $args['elements'] ?? [];
 
 		if ( empty( $elements ) ) {
@@ -31,7 +30,7 @@ class PageHeaderElements {
 			return;
 		}
 
-		$elements = vite( 'core' )->filter( 'page-header/elements', $elements );
+		$elements = $this->filter( 'page-header/elements', $elements );
 
 		/**
 		 * Action: vite/page-header/start
@@ -40,7 +39,7 @@ class PageHeaderElements {
 		 *
 		 * @since x.x.x
 		 */
-		$this->core->action( 'page-header/start' );
+		$this->action( 'page-header/start' );
 		?>
 		<div class="vite-page-header">
 			<div class="vite-container">
@@ -63,7 +62,7 @@ class PageHeaderElements {
 		 *
 		 * @since x.x.x
 		 */
-		$this->core->action( 'page-header/end' );
+		$this->action( 'page-header/end' );
 	}
 
 	/**
@@ -80,7 +79,7 @@ class PageHeaderElements {
 		 *
 		 * @since x.x.x
 		 */
-		$this->core->action( 'page-header/title/start' );
+		$this->action( 'page-header/title/start' );
 		?>
 		<h1 class="vite-page-header__title">
 			<?php echo wp_kses_post( $this->get_title() ); ?>
@@ -94,7 +93,7 @@ class PageHeaderElements {
 		 *
 		 * @since x.x.x
 		 */
-		$this->core->action( 'page-header/title/end' );
+		$this->action( 'page-header/title/end' );
 	}
 
 	/**
@@ -110,7 +109,7 @@ class PageHeaderElements {
 		 *
 		 * @since x.x.x
 		 */
-		$this->core->action( 'page-header/breadcrumbs/start' );
+		$this->action( 'page-header/breadcrumbs/start' );
 
 		vite( 'breadcrumbs' )->breadcrumbs(
 			[
@@ -126,7 +125,7 @@ class PageHeaderElements {
 		 *
 		 * @since x.x.x
 		 */
-		$this->core->action( 'page-header/breadcrumbs/end' );
+		$this->action( 'page-header/breadcrumbs/end' );
 	}
 
 	/**
@@ -144,7 +143,7 @@ class PageHeaderElements {
 			 *
 			 * @since x.x.x
 			 */
-			$this->core->action( 'page-header/description/start' );
+			$this->action( 'page-header/description/start' );
 			?>
 			<div class="vite-page-header__archive-desc">
 				<?php the_archive_description(); ?>
@@ -158,7 +157,7 @@ class PageHeaderElements {
 			 *
 			 * @since x.x.x
 			 */
-			$this->core->action( 'page-header/description/end' );
+			$this->action( 'page-header/description/end' );
 		}
 	}
 
@@ -189,6 +188,6 @@ class PageHeaderElements {
 			$title = get_the_archive_title();
 		}
 
-		return $this->core->filter( 'page/title', $title );
+		return $this->filter( 'page/title', $title );
 	}
 }

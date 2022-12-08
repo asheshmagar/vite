@@ -5,12 +5,15 @@
 
 namespace Vite\Performance;
 
+use Vite\Traits\Hook;
 use WP_Filesystem_Base;
 
 /**
  * Class WebFontLoader.
  */
 class WebFontLoader {
+
+	use Hook;
 
 	/**
 	 * The font-format.
@@ -110,7 +113,7 @@ class WebFontLoader {
 	public function __construct() {
 		// Add a cleanup routine.
 		$this->schedule_cleanup();
-		vite( 'core' )->add_action( 'vite/local-fonts/cleanup', [ $this, 'delete_fonts_folder' ] );
+		$this->add_action( 'vite/local-fonts/cleanup', [ $this, 'delete_fonts_folder' ] );
 	}
 
 	/**
@@ -515,7 +518,7 @@ class WebFontLoader {
 	 */
 	private function get_base_path(): string {
 		if ( ! $this->base_path ) {
-			$this->base_path = vite( 'core' )->filter( 'local-fonts/path', $this->get_filesystem()->wp_content_dir() );
+			$this->base_path = $this->filter( 'local-fonts/path', $this->get_filesystem()->wp_content_dir() );
 		}
 		return $this->base_path;
 	}
@@ -528,7 +531,7 @@ class WebFontLoader {
 	 */
 	private function get_base_url(): string {
 		if ( ! $this->base_url ) {
-			$this->base_url = vite( 'core' )->filter( 'local-fonts/url', content_url() );
+			$this->base_url = $this->filter( 'local-fonts/url', content_url() );
 		}
 		return $this->base_url;
 	}
@@ -541,7 +544,7 @@ class WebFontLoader {
 	 */
 	private function get_subfolder_name(): string {
 		if ( ! $this->subfolder_name ) {
-			$this->subfolder_name = vite( 'core' )->filter( 'local-fonts/subfolder-name', 'fonts' );
+			$this->subfolder_name = $this->filter( 'local-fonts/subfolder-name', 'fonts' );
 		}
 		return $this->subfolder_name;
 	}

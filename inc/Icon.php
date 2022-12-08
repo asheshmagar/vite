@@ -2,10 +2,15 @@
 
 namespace Vite;
 
+use Vite\Traits\Hook;
+use Vite\Traits\JSON;
+
 /**
  * Class Icon.
  */
 class Icon {
+
+	use Hook, JSON;
 
 	/**
 	 * Icons list.
@@ -18,12 +23,7 @@ class Icon {
 	 * Icon constructor.
 	 */
 	public function __construct() {
-		$file = VITE_ASSETS_DIR . '/json/font-awesome.json';
-		if ( file_exists( $file ) ) {
-			ob_start();
-			include $file;
-			$this->icons = json_decode( ob_get_clean(), true );
-		}
+		$this->icons = $this->json_to_array( VITE_ASSETS_DIR . '/json/font-awesome.json' );
 	}
 
 	/**
@@ -32,7 +32,7 @@ class Icon {
 	 * @return mixed
 	 */
 	public function get_icons() {
-		return vite( 'core' )->filter( 'svg/icons', $this->icons );
+		return $this->filter( 'svg/icons', $this->icons );
 	}
 
 	/**
@@ -55,14 +55,14 @@ class Icon {
 			]
 		);
 
-		$args = vite( 'core' )->filter( 'svg/icon/args', $args, $icon );
+		$args = $this->filter( 'svg/icon/args', $args, $icon );
 
 		if ( ! isset( $this->icons[ $icon ] ) ) {
 			return;
 		}
 
 		$svg          = sprintf( $this->icons[ $icon ], $args['class'], $args['size'], $args['size'] );
-		$allowed_html = vite( 'core' )->filter(
+		$allowed_html = $this->filter(
 			'svg/allowed-html',
 			[
 				'svg'     => [
@@ -96,7 +96,7 @@ class Icon {
 			]
 		);
 
-		$svg = vite( 'core' )->filter( 'svg/icon', $svg, $this->icons );
+		$svg = $this->filter( 'svg/icon', $svg, $this->icons );
 
 		if ( ! $args['echo'] ) {
 			return $svg;

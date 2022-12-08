@@ -3,6 +3,7 @@
 namespace Vite\NavMenu;
 
 use stdClass;
+use Vite\Traits\Hook;
 use Walker_Nav_Menu;
 use WP_Post;
 
@@ -10,6 +11,8 @@ use WP_Post;
  * NavMenu.
  */
 class WalkerNavMenu extends Walker_Nav_Menu {
+
+	use Hook;
 
 	/**
 	 * {@inheritDoc}
@@ -78,7 +81,7 @@ class WalkerNavMenu extends Walker_Nav_Menu {
 			)
 		) {
 			$classes[]           = 'vite-nav__item--parent';
-			$icon                = vite( 'core' )->filter( 'submenu/icon', vite( 'icon' )->get_icon( 'chevron-down', [ 'size' => 10 ] ) );
+			$icon                = $this->filter( 'submenu/icon', vite( 'icon' )->get_icon( 'chevron-down', [ 'size' => 10 ] ) );
 			$submenu_icon        = sprintf( '<span class="vite-nav__submenu-icon" role="presentation">%s</span>', $icon );
 			$submenu_icon_button = sprintf(
 				'<button aria-expanded="false" aria-label="%s" class="vite-nav__submenu-toggle%s">%s</button>',

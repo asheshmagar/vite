@@ -7,8 +7,11 @@ namespace Vite\Elements;
 
 use Vite\Core;
 use Vite\Customizer\Customizer;
+use Vite\Traits\Mods;
 
-trait ElementTrait {
+trait ElementsTrait {
+
+	use Mods;
 
 	/**
 	 * Instance of core.

@@ -2,10 +2,14 @@
 
 namespace Vite;
 
+use Vite\Traits\Mods;
+
 /**
  * Init sidebar.
  */
 class Sidebar {
+
+	use Mods;
 
 	/**
 	 * Init.
@@ -20,7 +24,7 @@ class Sidebar {
 	 * Register sidebars.
 	 */
 	public function register_sidebars() {
-		$sidebars  = vite( 'core' )->filter(
+		$sidebars  = $this->filter(
 			'sidebars',
 			[
 				'sidebar-1' => __( 'Sidebar 1', 'vite' ),
@@ -33,11 +37,11 @@ class Sidebar {
 				'footer-6'  => __( 'Footer 6', 'vite' ),
 			]
 		);
-		$title_tag = vite( 'core' )->filter( 'sidebars/title/tag', 'h2' );
+		$title_tag = $this->filter( 'sidebars/title/tag', 'h2' );
 
 		foreach ( $sidebars as $id => $name ) {
 			register_sidebar(
-				vite( 'core' )->filter(
+				$this->filter(
 					'sidebar/args',
 					[
 						'name'          => $name,
@@ -45,8 +49,8 @@ class Sidebar {
 						'description'   => __( 'Add widgets here..', 'vite' ),
 						'before_widget' => '<section id="%1$s" class="widget %2$s">',
 						'after_widget'  => '</section>',
-						'before_title'  => sprintf( '<%s class="widget-title">', vite( 'core' )->filter( "sidebar/$id/title/tag", $title_tag ) ),
-						'after_title'   => sprintf( '</%s>', vite( 'core' )->filter( "sidebar/$id/title/tag", $title_tag ) ),
+						'before_title'  => sprintf( '<%s class="widget-title">', $this->filter( "sidebar/$id/title/tag", $title_tag ) ),
+						'after_title'   => sprintf( '</%s>', $this->filter( "sidebar/$id/title/tag", $title_tag ) ),
 					]
 				)
 			);

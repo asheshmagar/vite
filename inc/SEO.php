@@ -7,12 +7,16 @@
 
 namespace Vite;
 
+use Vite\Traits\Mods;
+
 defined( 'ABSPATH' ) || exit;
 
 /**
  * SEO
  */
 class SEO {
+
+	use Mods;
 
 	const SCHEMA_ORG = 'https://schema.org/';
 
@@ -46,7 +50,7 @@ class SEO {
 	 */
 	public function init() {
 		add_action( 'init', [ $this, 'init_props' ] );
-		vite( 'core' )->add_action( 'vite/head', [ $this, 'print' ] );
+		$this->add_action( 'vite/head', [ $this, 'print' ] );
 	}
 
 	/**
@@ -55,9 +59,9 @@ class SEO {
 	 * @return void
 	 */
 	public function init_props() {
-		$this->schema_markup                = vite( 'customizer' )->get_setting( 'schema-markup', false );
-		$this->schema_markup_implementation = vite( 'customizer' )->get_setting( 'schema-markup-implementation', 'json-ld' );
-		$this->og_meta_tags                 = vite( 'customizer' )->get_setting( 'og-meta-tags', false );
+		$this->schema_markup                = $this->get_theme_mod( 'schema-markup', false );
+		$this->schema_markup_implementation = $this->get_theme_mod( 'schema-markup-implementation', 'json-ld' );
+		$this->og_meta_tags                 = $this->get_theme_mod( 'og-meta-tags', false );
 	}
 
 	/**
@@ -107,7 +111,7 @@ class SEO {
 			'image'            => $this->get_image(),
 		];
 
-		$json = vite( 'core' )->filter( 'seo/schema/json-ld', $json );
+		$json = $this->filter( 'seo/schema/json-ld', $json );
 
 		wp_print_inline_script_tag( wp_json_encode( $json ), [ 'type' => 'application/ld+json' ] );
 	}

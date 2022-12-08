@@ -8,10 +8,14 @@
 
 namespace Vite\Comments;
 
+use Vite\Traits\Hook;
+
 /**
  * Class Comments.
  */
 class Comments {
+
+	use Hook;
 
 	/**
 	 * Walker comment.
@@ -34,7 +38,7 @@ class Comments {
 	 */
 	public function init() {
 		add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_comments_reply_script' ] );
-		vite( 'core' )->add_action( 'vite/comments', [ $this, 'comments_list' ] );
+		$this->add_action( 'vite/comments', [ $this, 'comments_list' ] );
 	}
 
 	/**
@@ -54,9 +58,9 @@ class Comments {
 	 * @return void
 	 */
 	public function comments_list() {
-		vite( 'core' )->action( 'comments/list/start' );
+		$this->action( 'comments/list/start' );
 		$this->comments_list_markup();
-		vite( 'core' )->action( 'comments/list/end' );
+		$this->action( 'comments/list/end' );
 	}
 
 	/**
@@ -108,7 +112,7 @@ class Comments {
 			<?php
 		}
 
-		$comment_for_args = vite( 'core' )->filter(
+		$comment_for_args = $this->filter(
 			'comment/form/args',
 			[
 				'title_reply_before' => '<h2 id="reply-title" class="vite-comment-respond__title">',

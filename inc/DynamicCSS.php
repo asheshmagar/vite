@@ -8,11 +8,15 @@
 
 namespace Vite;
 
+use Vite\Traits\Hook;
+use Vite\Traits\Mods;
+
 /**
  * Class CSS.
  */
 class DynamicCSS {
 
+	use Mods;
 	const STATES = [
 		'normal',
 		'hover',
@@ -157,8 +161,8 @@ class DynamicCSS {
 				$type = $d['type'] ?? '';
 				preg_match( '/\[([^]]*)]/', $id, $match );
 
-				$value   = vite( 'customizer' )->get_setting( $match[1] );
-				$default = vite( 'customizer' )->get_defaults()[ $match[1] ] ?? null;
+				$value   = $this->get_theme_mod( $match[1] );
+				$default = $this->get_theme_mod_default( (string) $match[1] );
 
 				if ( empty( $value ) || $this->is_default( $value, $default ) ) {
 					continue;
@@ -561,7 +565,7 @@ class DynamicCSS {
 	 * @return void
 	 */
 	public function save() {
-		$css = vite( 'core' )->filter( 'dynamic/css', $this->get() );
+		$css = $this->filter( 'dynamic/css', $this->get() );
 
 		if ( empty( $css ) ) {
 			return;

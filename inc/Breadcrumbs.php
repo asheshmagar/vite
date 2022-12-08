@@ -7,12 +7,17 @@
 
 namespace Vite;
 
+
 defined( 'ABSPATH' ) || exit;
+
+use Vite\Traits\Mods;
 
 /**
  * Breadcrumbs.
  */
 class Breadcrumbs {
+
+	use Mods;
 
 	/**
 	 * Array of items belonging to the current breadcrumb trail.
@@ -99,7 +104,7 @@ class Breadcrumbs {
 		 * @param array $defaults Default arguments.
 		 * @param array $args Arguments passed to the breadcrumb trail.
 		 */
-		$this->args = vite( 'core' )->filter( 'breadcrumbs/trail/args', wp_parse_args( $args, $defaults ) );
+		$this->args = $this->filter( 'breadcrumbs/trail/args', wp_parse_args( $args, $defaults ) );
 
 		// Set the labels and post taxonomy properties.
 		$this->set_labels();
@@ -121,8 +126,8 @@ class Breadcrumbs {
 		$breadcrumb    = '';
 		$item_count    = count( $this->items );
 		$item_position = 0;
-		$schema_type   = vite( 'customizer' )->get_setting( 'schema-markup-implementation' );
-		$has_schema    = vite( 'customizer' )->get_setting( 'schema-markup' );
+		$schema_type   = $this->get_theme_mod( 'schema-markup-implementation' );
+		$has_schema    = $this->get_theme_mod( 'schema-markup' );
 		$microdata     = $has_schema && 'microdata' === $schema_type;
 		$jsonld        = $has_schema && 'json-ld' === $schema_type;
 		$json          = [];
@@ -229,7 +234,7 @@ class Breadcrumbs {
 		 * @param string $breadcrumb The HTML of the breadcrumb trail.
 		 * @param array  $args       An array of arguments.
 		 */
-		$breadcrumb = vite( 'core' )->filter( 'breadcrumbs/trail', $breadcrumb, $this->args );
+		$breadcrumb = $this->filter( 'breadcrumbs/trail', $breadcrumb, $this->args );
 
 		if ( false === $this->args['echo'] ) {
 			return $breadcrumb;
@@ -311,7 +316,7 @@ class Breadcrumbs {
 			'archive_year'        => '%s',
 		];
 
-		$this->labels = vite( 'core' )->filter( 'breadcrumbs/trail/labels', wp_parse_args( $this->args['labels'], $defaults ) );
+		$this->labels = $this->filter( 'breadcrumbs/trail/labels', wp_parse_args( $this->args['labels'], $defaults ) );
 	}
 
 	/**
@@ -336,7 +341,7 @@ class Breadcrumbs {
 		 * @since x.x.x
 		 * @param array $defaults The default post taxonomy array.
 		 */
-		$this->post_taxonomy = vite( 'core' )->filter( 'breadcrumb/trail/post-taxonomy', wp_parse_args( $this->args['post_taxonomy'], $defaults ) );
+		$this->post_taxonomy = $this->filter( 'breadcrumb/trail/post-taxonomy', wp_parse_args( $this->args['post_taxonomy'], $defaults ) );
 	}
 
 	/**
@@ -404,7 +409,7 @@ class Breadcrumbs {
 		 * @param array $items The breadcrumb trail items.
 		 * @param array $args The breadcrumb trail arguments.
 		 */
-		$this->items = array_unique( vite( 'core' )->filter( 'breadcrumbs/trail/items', $this->items, $this->args ) );
+		$this->items = array_unique( $this->filter( 'breadcrumbs/trail/items', $this->items, $this->args ) );
 	}
 
 	/**
@@ -606,7 +611,7 @@ class Breadcrumbs {
 							 * @param string $label The post type archive title.
 							 * @param string $post_type The post type name.
 							 */
-							$label = vite( 'core' )->filter( 'breadcrumbs/post-type/archive/title', $label, $post_type_object->name );
+							$label = $this->filter( 'breadcrumbs/post-type/archive/title', $label, $post_type_object->name );
 
 							// Add the post type archive link to the trail.
 							$this->items[] = sprintf( '<a href="%s">%s</a>', esc_url( get_post_type_archive_link( $post_type_object->name ) ), $label );
@@ -647,7 +652,7 @@ class Breadcrumbs {
 				 * @param string $label The post type archive title.
 				 * @param string $post_type The post type name.
 				 */
-				$label = vite( 'core' )->core( 'breadcrumbs/post-type/archive/title', $label, $post_type_object->name );
+				$label = $this->core( 'breadcrumbs/post-type/archive/title', $label, $post_type_object->name );
 
 				$this->items[] = sprintf( '<a href="%s">%s</a>', esc_url( get_post_type_archive_link( $post_type_object->name ) ), $label );
 			}
@@ -1012,7 +1017,7 @@ class Breadcrumbs {
 			 * @param string $post_type Post type name.
 			 * @param object $post_type_object Post type object.
 			 */
-			$label = vite( 'core' )->filter( 'breadcrumbs/post-type/archive/title', $label, $post_type_object->name );
+			$label = $this->filter( 'breadcrumbs/post-type/archive/title', $label, $post_type_object->name );
 
 			$this->items[] = sprintf( '<a href="%s">%s</a>', esc_url( get_post_type_archive_link( $post_type ) ), $label );
 		}
