@@ -19,8 +19,15 @@ use WP_Comment;
  */
 class WalkerComment extends Walker_Comment {
 
+	/**
+	 * Starts the list before the elements are added.
+	 *
+	 * @param string $output Used to append additional content (passed by reference).
+	 * @param int    $depth  Optional. Depth of the current comment. Default 0.
+	 * @param array  $args   Optional. Uses 'style' argument for type of HTML list. Default empty array.
+	 */
 	public function start_lvl( &$output, $depth = 0, $args = array() ) {
-		$GLOBALS['comment_depth'] = $depth + 1;
+		$GLOBALS['comment_depth'] = $depth + 1; // phpcs:ignore
 
 		switch ( $args['style'] ) {
 			case 'div':
