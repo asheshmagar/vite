@@ -8,12 +8,16 @@
 
 namespace Vite;
 
+use Vite\Traits\Hook;
+
 defined( 'ABSPATH' ) || exit;
 
 /**
  * Class Theme.
  */
 class Vite {
+
+	use Hook;
 
 	const ALIASES = [
 		'customizer',
@@ -29,7 +33,7 @@ class Vite {
 	 */
 	public function __construct() {
 		$this->init();
-		vite( 'core' )->action( 'loaded' );
+		$this->action( 'loaded' );
 	}
 
 	/**
@@ -94,7 +98,7 @@ class Vite {
 			'align-wide'                          => true,
 			'wp-block-styles'                     => true,
 			'editor-styles'                       => true,
-			'custom-logo'                         => vite( 'core' )->filter(
+			'custom-logo'                         => $this->filter(
 				'custom-logo/args',
 				[
 					'width'       => 150,
@@ -116,7 +120,7 @@ class Vite {
 		 * @since x.x.x
 		 * @param array $features Theme supports.
 		 */
-		$features = vite( 'core' )->filter( 'supports', $features );
+		$features = $this->filter( 'supports', $features );
 
 		foreach ( $features as $feature => $args ) {
 			if ( $args && is_array( $args ) ) {
