@@ -24,30 +24,11 @@ class ScriptsStyles {
 	];
 
 	/**
-	 * Holds the instance of this class.
-	 *
-	 * @var null|ScriptsStyles
-	 */
-	private static $instance = null;
-
-	/**
 	 * Init.
-	 *
-	 * @return ScriptsStyles|null
-	 */
-	public static function init(): ?ScriptsStyles {
-		if ( is_null( self::$instance ) ) {
-			self::$instance = new self();
-		}
-		return self::$instance;
-	}
-
-	/**
-	 * Constructor.
 	 *
 	 * @since x.x.x
 	 */
-	public function __construct() {
+	public function init() {
 		add_action( 'init', [ $this, 'register' ], PHP_INT_MAX );
 		add_action( 'wp_enqueue_scripts', [ $this, 'enqueue' ] );
 		add_action( 'wp_head', [ $this, 'remove_no_js' ], 2 );
