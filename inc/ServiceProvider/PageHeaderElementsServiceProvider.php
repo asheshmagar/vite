@@ -49,7 +49,6 @@ class PageHeaderElementsServiceProvider extends AbstractServiceProvider {
 	 */
 	public function register(): void {
 		$this->getContainer()
-			->addShared( 'page-header-elements', PageHeaderElements::class )
-			->addArguments( [ 'core', 'customizer' ] );
+			->addShared( 'page-header-elements', PageHeaderElements::class );
 	}
 }

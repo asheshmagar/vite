@@ -49,7 +49,6 @@ class EntryElementsServiceProvider extends AbstractServiceProvider {
 	 */
 	public function register(): void {
 		$this->getContainer()
-			->add( 'entry-elements', EntryElements::class )
-			->addArguments( [ 'core', 'customizer' ] );
+			->add( 'entry-elements', EntryElements::class );
 	}
 }

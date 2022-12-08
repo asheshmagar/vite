@@ -50,7 +50,6 @@ class BuilderElementsServiceProvider extends AbstractServiceProvider {
 	public function register(): void {
 		$this
 			->getContainer()
-			->addShared( 'builder-elements', BuilderElements::class )
-			->addArguments( [ 'core', 'customizer' ] );
+			->addShared( 'builder-elements', BuilderElements::class );
 	}
 }
