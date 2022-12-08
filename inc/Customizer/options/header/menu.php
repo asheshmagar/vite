@@ -34,7 +34,7 @@ $options = array_reduce(
 			'section'     => "vite[header-menu-$curr]",
 			'type'        => 'vite-color',
 			'title'       => __( 'Colors', 'vite' ),
-			'default'     => vite( 'customizer' )->get_defaults()[ "header-menu-$curr-colors" ],
+			'default'     => vite( 'core' )->get_theme_mod_defaults()[ "header-menu-$curr-colors" ],
 			'input_attrs' => [
 				'colors' => [
 					[
@@ -60,7 +60,7 @@ $options = array_reduce(
 				'section'     => "vite[header-menu-$curr]",
 				'type'        => 'vite-slider',
 				'title'       => __( 'Items Spacing', 'vite' ),
-				'default'     => vite( 'customizer' )->get_defaults()[ "header-menu-$curr-items-spacing" ],
+				'default'     => vite( 'core' )->get_theme_mod_defaults()[ "header-menu-$curr-items-spacing" ],
 				'input_attrs' => [
 					'min'  => 0,
 					'max'  => 100,
@@ -75,7 +75,7 @@ $options = array_reduce(
 			'section'    => "vite[header-menu-$curr]",
 			'type'       => 'vite-typography',
 			'title'      => __( 'Typography', 'vite' ),
-//			'default'    => vite( 'customizer' )->get_defaults()[ "header-menu-$curr-typography" ],
+//			'default'    => vite( 'core' )->get_theme_mod_defaults()[ "header-menu-$curr-typography" ],
 			'selectors'  => [ ".vite-nav--$curr" ],
 			'properties' => [ '' ],
 		];

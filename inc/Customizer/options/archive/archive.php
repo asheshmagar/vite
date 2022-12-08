@@ -6,9 +6,9 @@
  */
 
 $posts_render_callback = function() {
-	$archive_style           = vite( 'customizer' )->get_setting( 'archive-style' );
-	$archive_columns         = vite( 'customizer' )->get_setting( 'archive-columns' );
-	$is_masonry              = 'grid' === $archive_style && vite( 'customizer' )->get_setting( 'archive-style-masonry' );
+	$archive_style           = vite( 'core' )->get_theme_mod( 'archive-style' );
+	$archive_columns         = vite( 'core' )->get_theme_mod( 'archive-columns' );
+	$is_masonry              = 'grid' === $archive_style && vite( 'core' )->get_theme_mod( 'archive-style-masonry' );
 	$archive_wrapper_classes = [
 		'vite-posts',
 		'vite-posts--' . $archive_style,
@@ -45,7 +45,7 @@ vite( 'customizer' )->add(
 				'outside' => __( 'Outside content', 'vite' ),
 				'inside'  => __( 'Inside content', 'vite' ),
 			],
-			'default'   => vite( 'customizer' )->get_defaults()['archive-title-position'],
+			'default'   => vite( 'core' )->get_theme_mod_defaults()['archive-title-position'],
 			'transport' => 'refresh',
 		],
 		'vite[archive-title-elements]' => [
@@ -66,12 +66,12 @@ vite( 'customizer' )->add(
 					'label' => __( 'Breadcrumbs', 'vite' ),
 				],
 			],
-			'default' => vite( 'customizer' )->get_defaults()['archive-title-elements'],
+			'default' => vite( 'core' )->get_theme_mod_defaults()['archive-title-elements'],
 			'partial' => [
 				'selector'            => '.vite-page-header',
 				'container_inclusive' => true,
 				'render_callback'     => function() {
-					$archive_title_elements = vite( 'customizer' )->get_setting( 'archive-title-elements' );
+					$archive_title_elements = vite( 'core' )->get_theme_mod( 'archive-title-elements' );
 					get_template_part( 'template-parts/page-header/page-header', '', [ 'elements' => $archive_title_elements ] );
 				},
 			],
@@ -80,7 +80,7 @@ vite( 'customizer' )->add(
 			'section'   => 'vite[archive]',
 			'type'      => 'vite-select',
 			'title'     => __( 'Layout', 'vite' ),
-			'default'   => vite( 'customizer' )->get_defaults()['archive-layout'],
+			'default'   => vite( 'core' )->get_theme_mod_defaults()['archive-layout'],
 			'choices'   => [
 				'wide'          => __( 'Wide', 'vite' ),
 				'narrow'        => __( 'Narrow', 'vite' ),
@@ -94,7 +94,7 @@ vite( 'customizer' )->add(
 			'section' => 'vite[archive]',
 			'type'    => 'vite-select',
 			'title'   => __( 'Style', 'vite' ),
-			'default' => vite( 'customizer' )->get_defaults()['archive-style'],
+			'default' => vite( 'core' )->get_theme_mod_defaults()['archive-style'],
 			'choices' => [
 				'grid' => __( 'Grid', 'vite' ),
 				'list' => __( 'List', 'vite' ),
@@ -109,7 +109,7 @@ vite( 'customizer' )->add(
 			'section'   => 'vite[archive]',
 			'type'      => 'vite-buttonset',
 			'title'     => __( 'Columns', 'vite' ),
-			'default'   => vite( 'customizer' )->get_defaults()['archive-columns'],
+			'default'   => vite( 'core' )->get_theme_mod_defaults()['archive-columns'],
 			'choices'   => [
 				'1' => __( '1', 'vite' ),
 				'2' => __( '2', 'vite' ),
@@ -129,7 +129,7 @@ vite( 'customizer' )->add(
 			'section'   => 'vite[archive]',
 			'type'      => 'vite-toggle',
 			'title'     => __( 'Masonry', 'vite' ),
-			'default'   => vite( 'customizer' )->get_defaults()['archive-style-masonry'],
+			'default'   => vite( 'core' )->get_theme_mod_defaults()['archive-style-masonry'],
 			'condition' => [
 				'vite[archive-style]' => 'grid',
 			],
@@ -166,7 +166,7 @@ vite( 'customizer' )->add(
 					'label' => __( 'Read more', 'vite' ),
 				],
 			],
-			'default'     => vite( 'customizer' )->get_defaults()['archive-elements'],
+			'default'     => vite( 'core' )->get_theme_mod_defaults()['archive-elements'],
 			'input_attrs' => [
 				'idWithInnerItems' => 'meta',
 				'innerItems'       => [
