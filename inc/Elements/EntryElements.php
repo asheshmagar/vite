@@ -10,15 +10,17 @@ namespace Vite\Elements;
 /**
  * EntryElements.
  */
-class EntryElements extends Elements {
+class EntryElements {
+
+	use ElementTrait;
 
 	/**
 	 * Elements.
 	 *
+	 * @param mixed $args Arguments.
 	 * @return void
 	 */
-	public function entry() {
-		$args     = func_get_args()[0] ?? [];
+	public function entry( $args ) {
 		$elements = $args['elements'] ?? [];
 
 		if ( empty( $elements ) ) {
@@ -32,7 +34,7 @@ class EntryElements extends Elements {
 		 *
 		 * @since x.x.x
 		 */
-		$this->core->action( 'entry-elements/start' );
+		$args['core']->action( 'entry-elements/start' );
 
 		foreach ( $elements as $element ) {
 			if ( $element['visible'] ) {
@@ -51,16 +53,16 @@ class EntryElements extends Elements {
 		 *
 		 * @since x.x.x
 		 */
-		$this->core->action( 'entry-elements/end' );
+		$args['core']->action( 'entry-elements/end' );
 	}
 
 	/**
 	 * Meta.
 	 *
+	 * @param mixed $args Arguments.
 	 * @return void
 	 */
-	public function meta() {
-		$args          = func_get_args()[0] ?? [];
+	public function meta( $args ) {
 		$meta_elements = $args['meta-elements'] ?? [];
 		$should_render = false;
 
@@ -82,7 +84,7 @@ class EntryElements extends Elements {
 		 *
 		 * @since x.x.x
 		 */
-		$this->core->action( 'entry-elements/meta/start' );
+		$args['core']->action( 'entry-elements/meta/start' );
 		?>
 		<div class="vite-post__meta">
 			<?php
@@ -112,15 +114,16 @@ class EntryElements extends Elements {
 		 *
 		 * @since x.x.x
 		 */
-		$this->core->action( 'entry-elements/meta/end' );
+		$args['core']->action( 'entry-elements/meta/end' );
 	}
 
 	/**
 	 * Excerpt.
 	 *
+	 * @param mixed $args Arguments.
 	 * @return void
 	 */
-	public function excerpt() {
+	public function excerpt( $args ) {
 
 		/**
 		 * Action: vite/entry-elements/excerpt/start.
@@ -129,7 +132,7 @@ class EntryElements extends Elements {
 		 *
 		 * @since x.x.x
 		 */
-		$this->core->action( 'entry-elements/excerpt/start' );
+		$args['core']->action( 'entry-elements/excerpt/start' );
 		?>
 		<div class="vite-post__excerpt">
 			<?php the_excerpt(); ?>
@@ -142,15 +145,16 @@ class EntryElements extends Elements {
 		 *
 		 * @since x.x.x
 		 */
-		$this->core->action( 'entry-elements/excerpt/end' );
+		$args['core']->action( 'entry-elements/excerpt/end' );
 	}
 
 	/**
 	 * Featured Image.
 	 *
+	 * @param mixed $args Arguments.
 	 * @return void
 	 */
-	public function featured_image() {
+	public function featured_image( $args ) {
 		$post_type = get_post_type();
 		$type      = $post_type;
 
@@ -173,7 +177,7 @@ class EntryElements extends Elements {
 		 *
 		 * @since x.x.x
 		 */
-		$this->core->action( 'entry-elements/featured-image/start' );
+		$args['core']->action( 'entry-elements/featured-image/start' );
 		?>
 		<div class="vite-post__thumbnail">
 			<?php if ( is_singular( $post_type ) ) : ?>
@@ -195,15 +199,16 @@ class EntryElements extends Elements {
 		 *
 		 * @since x.x.x
 		 */
-		$this->core->action( 'entry-elements/featured-image/end' );
+		$args['core']->action( 'entry-elements/featured-image/end' );
 	}
 
 	/**
 	 * Meta comments.
 	 *
+	 * @param mixed $args Arguments.
 	 * @return void
 	 */
-	public function meta_comments() {
+	public function meta_comments( $args ) {
 		if ( ! post_type_supports( get_post_type(), 'comments' ) ) {
 			return;
 		}
@@ -215,7 +220,7 @@ class EntryElements extends Elements {
 		 *
 		 * @since x.x.x
 		 */
-		$this->core->action( 'entry-elements/meta/comments/start' );
+		$args['core']->action( 'entry-elements/meta/comments/start' );
 		?>
 		<div class="vite-post__meta__comments">
 			<span class="vite-post__meta__icon">
@@ -240,15 +245,16 @@ class EntryElements extends Elements {
 		 *
 		 * @since x.x.x
 		 */
-		$this->core->action( 'entry-elements/meta/comments/end' );
+		$args['core']->action( 'entry-elements/meta/comments/end' );
 	}
 
 	/**
 	 * Title.
 	 *
+	 * @param mixed $args Arguments.
 	 * @return void
 	 */
-	public function title() {
+	public function title( $args ) {
 
 		/**
 		 * Action: vite/entry-elements/title/start.
@@ -257,7 +263,7 @@ class EntryElements extends Elements {
 		 *
 		 * @since x.x.x
 		 */
-		$this->core->action( 'entry-elements/title/start' );
+		$args['core']->action( 'entry-elements/title/start' );
 		?>
 		<div class="vite-post__title">
 			<?php
@@ -277,15 +283,16 @@ class EntryElements extends Elements {
 		 *
 		 * @since x.x.x
 		 */
-		$this->core->action( 'entry-elements/title/end' );
+		$args['core']->action( 'entry-elements/title/end' );
 	}
 
 	/**
 	 * Content.
 	 *
+	 * @param mixed $args Arguments.
 	 * @return void
 	 */
-	public function content() {
+	public function content( $args ) {
 		/**
 		 * Action: vite/entry-elements/content/start.
 		 *
@@ -293,7 +300,7 @@ class EntryElements extends Elements {
 		 *
 		 * @since x.x.x
 		 */
-		$this->core->action( 'entry-elements/content/start' );
+		$args['core']->action( 'entry-elements/content/start' );
 		?>
 		<div class="vite-post__content">
 			<?php
@@ -324,15 +331,16 @@ class EntryElements extends Elements {
 		 *
 		 * @since x.x.x
 		 */
-		$this->core->action( 'entry-elements/content/end' );
+		$args['core']->action( 'entry-elements/content/end' );
 	}
 
 	/**
 	 * Meta.
 	 *
+	 * @param mixed $args Arguments.
 	 * @return void
 	 */
-	public function button() {
+	public function button( $args ) {
 
 		/**
 		 * Action: vite/entry-elements/button/start.
@@ -341,7 +349,7 @@ class EntryElements extends Elements {
 		 *
 		 * @since x.x.x
 		 */
-		$this->core->action( 'entry-elements/button/start' );
+		$args['core']->action( 'entry-elements/button/start' );
 		?>
 		<a href="<?php the_permalink(); ?>" class="vite-post__btn" >
 			<span class="screen-reader-text"><?php the_title(); ?></span>
@@ -356,16 +364,16 @@ class EntryElements extends Elements {
 		 *
 		 * @since x.x.x
 		 */
-		$this->core->action( 'entry-elements/button/end' );
+		$args['core']->action( 'entry-elements/button/end' );
 	}
 
 	/**
 	 * Meta date.
 	 *
+	 * @param mixed $args Arguments.
 	 * @return void
 	 */
-	public function meta_date() {
-		$args = func_get_args()[0] ?? [];
+	public function meta_date( $args ) {
 		$type = $args['type'] ?? 'published';
 		if ( ! in_array( $type, [ 'published', 'updated' ], true ) ) {
 			return;
@@ -388,7 +396,7 @@ class EntryElements extends Elements {
 		 *
 		 * @since x.x.x
 		 */
-		$this->core->action( 'entry-elements/meta/date/start' );
+		$args['core']->action( 'entry-elements/meta/date/start' );
 		?>
 		<div class="vite-post__meta__date">
 			<span class="vite-post__meta__icon">
@@ -428,15 +436,16 @@ class EntryElements extends Elements {
 		 *
 		 * @since x.x.x
 		 */
-		$this->core->action( 'entry-elements/meta/date/end' );
+		$args['core']->action( 'entry-elements/meta/date/end' );
 	}
 
 	/**
 	 * Meta author.
 	 *
+	 * @param mixed $args Arguments.
 	 * @return void
 	 */
-	public function meta_author() {
+	public function meta_author( $args ) {
 
 		/**
 		 * Action: vite/entry-elements/meta/author/start.
@@ -445,7 +454,7 @@ class EntryElements extends Elements {
 		 *
 		 * @since x.x.x
 		 */
-		$this->core->action( 'entry-elements/meta/author/start' );
+		$args['core']->action( 'entry-elements/meta/author/start' );
 		?>
 		<div class="vite-post__meta__author">
 			<span class="vite-post__meta__icon">
@@ -468,16 +477,16 @@ class EntryElements extends Elements {
 				?>
 		</div>
 		<?php
-		$this->core->action( 'entry-elements/meta/author/end' );
+		$args['core']->action( 'entry-elements/meta/author/end' );
 	}
 
 	/**
 	 * Meta tax.
 	 *
+	 * @param mixed $args Arguments.
 	 * @return void
 	 */
-	public function meta_tax() {
-		$args = func_get_args()[0] ?? [];
+	public function meta_tax( $args ) {
 		$type = $args['type'] ?? 'cat';
 		$list = 'cat' === $type ? get_the_category_list( ' ' ) : get_the_tag_list( '', ', ' );
 
@@ -492,7 +501,7 @@ class EntryElements extends Elements {
 		 *
 		 * @since x.x.x
 		 */
-		$this->core->action( "entry-elements/meta/$type/start" );
+		$args['core']->action( "entry-elements/meta/$type/start" );
 		printf(
 		/* translators: %1$s: post link. %2$s: post categories */
 			'<span class="vite-post__meta__%1$s-links">%2$s</span>',
@@ -516,6 +525,6 @@ class EntryElements extends Elements {
 		 *
 		 * @since x.x.x
 		 */
-		$this->core->action( "entry-elements/meta/$type/end" );
+		$args['core']->action( "entry-elements/meta/$type/end" );
 	}
 }

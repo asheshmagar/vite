@@ -4,7 +4,9 @@ namespace Vite\Elements;
 /**
  * Page header elements.
  */
-class PageHeaderElements extends Elements {
+class PageHeaderElements {
+
+	use ElementTrait;
 
 	/**
 	 * Page header elements.
