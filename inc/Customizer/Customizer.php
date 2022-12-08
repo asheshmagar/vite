@@ -361,7 +361,7 @@ class Customizer {
 				'icons'      => vite( 'icon' )->get_icons(),
 				'condition'  => vite( 'core' )->filter( 'customizer/condition', $this->condition ),
 				'conditions' => vite( 'core' )->filter( 'customizer/condition', $this->conditions ),
-				'publicPath' => vite( 'core' )->get_public_path(),
+				'publicPath' => VITE_ASSETS_URI . 'dist/',
 			]
 		);
 		wp_set_script_translations( 'vite-customizer', 'vite', get_template_directory() . '/languages' );
