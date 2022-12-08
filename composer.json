@@ -11,7 +11,8 @@
       "Vite\\Comments\\": "inc/Comments/",
       "Vite\\NavMenu\\": "inc/NavMenu/",
       "Vite\\Performance\\": "inc/Performance/",
-      "Vite\\Elements\\": "inc/Elements/"
+      "Vite\\Elements\\": "inc/Elements/",
+      "Vite\\Traits\\": "inc/Traits/"
     },
     "files": [
       "bootstrap/bootstrap.php"
