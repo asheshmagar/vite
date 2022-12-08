@@ -14,30 +14,11 @@ namespace Vite;
 class TemplateHooks {
 
 	/**
-	 * Holds the instance of this class.
-	 *
-	 * @var null|TemplateHooks
-	 */
-	private static $instance = null;
-
-	/**
 	 * Init.
-	 *
-	 * @return TemplateHooks|null
-	 */
-	public static function init(): ?TemplateHooks {
-		if ( is_null( self::$instance ) ) {
-			self::$instance = new self();
-		}
-		return self::$instance;
-	}
-
-	/**
-	 * Constructor.
 	 *
 	 * @return void
 	 */
-	public function __construct() {
+	public function init() {
 		$core = vite( 'core' );
 
 		$core->add_action( 'vite/the-loop', [ $this, 'content' ] );
