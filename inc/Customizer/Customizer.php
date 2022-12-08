@@ -6,6 +6,8 @@
 namespace Vite\Customizer;
 
 use Vite\Customizer\Type\Control;
+use Vite\Traits\JSON;
+use Vite\Traits\Mods;
 use WP_Customize_Cropped_Image_Control;
 use WP_Customize_Manager;
 use Vite\Customizer\Type\Panel;
@@ -16,6 +18,8 @@ use Vite\DynamicCSS;
  * Customizer class.
  */
 class Customizer {
+
+	use Mods, JSON;
 
 	const STORE      = 'theme_mod';
 	const CAPABILITY = 'edit_theme_options';
@@ -56,13 +60,6 @@ class Customizer {
 	 * @var array
 	 */
 	private $google_fonts = [];
-
-	/**
-	 * Holds setting defaults.
-	 *
-	 * @var array
-	 */
-	private $defaults;
 
 	/**
 	 * Holds control condition.
@@ -202,21 +199,9 @@ class Customizer {
 	 */
 	public function partial_response( array $response ): array {
 		try {
-			$response['viteDynamicCSS'] = vite( 'dynamic-css' )->make()->get();
+			$response['viteDynamicCSS'] = $this->dynamic_css->make()->get();
 		} catch ( \Exception $e ) {} // phpcs:ignore
 		return $response;
-	}
-
-	/**
-	 * Get settings defaults.
-	 *
-	 * @return mixed|void
-	 */
-	public function get_defaults() {
-		if ( ! isset( $this->defaults ) ) {
-			$this->defaults = require __DIR__ . '/defaults/defaults.php';
-		}
-		return vite( 'core' )->filter( 'customizer/defaults', $this->defaults );
 	}
 
 	/**
@@ -231,39 +216,9 @@ class Customizer {
 
 		$this->print_css = true;
 		try {
-			$css = vite( 'dynamic-css' )->make()->get();
+			$css = $this->dynamic_css->make()->get();
 			// echo '<style id="vite-dynamic-css">' . $css . '</style>'; // phpcs:ignore
 		} catch ( \Exception $e ) {} // phpcs:ignore
-	}
-
-	/**
-	 * Get setting.
-	 *
-	 * @param string $key Setting key.
-	 * @param mixed  $default Default.
-	 * @return mixed|string
-	 */
-	public function get_setting( string $key = '', $default = false ) {
-		$settings = get_theme_mod( 'vite' );
-		$defaults = $this->get_defaults();
-		if ( isset( $settings[ $key ] ) ) {
-			return $settings[ $key ];
-		}
-
-		if ( isset( $defaults[ $key ] ) ) {
-			return $defaults[ $key ];
-		}
-
-		return $default;
-	}
-
-	/**
-	 * Get all settings.
-	 *
-	 * @return array
-	 */
-	public function get_settings(): array {
-		return $this->settings;
 	}
 
 	/**
@@ -359,8 +314,8 @@ class Customizer {
 			'_VITE_CUSTOMIZER_',
 			[
 				'icons'      => vite( 'icon' )->get_icons(),
-				'condition'  => vite( 'core' )->filter( 'customizer/condition', $this->condition ),
-				'conditions' => vite( 'core' )->filter( 'customizer/condition', $this->conditions ),
+				'condition'  => $this->filter( 'customizer/condition', $this->condition ),
+				'conditions' => $this->filter( 'customizer/condition', $this->conditions ),
 				'publicPath' => VITE_ASSETS_URI . 'dist/',
 			]
 		);
@@ -405,7 +360,7 @@ class Customizer {
 	 * @return void
 	 */
 	private function add_panels( WP_Customize_Manager $wp_customize ) {
-		$panels = vite( 'core' )->filter( 'customizer/panels', $this->panels );
+		$panels = $this->filter( 'customizer/panels', $this->panels );
 		if ( ! empty( $panels ) ) {
 			foreach ( $panels as $id => $config ) {
 				$wp_customize->add_panel(
@@ -433,7 +388,7 @@ class Customizer {
 	 * @return void
 	 */
 	private function add_sections( WP_Customize_Manager $wp_customize ) {
-		$sections = vite( 'core' )->filter( 'customizer/sections', $this->sections );
+		$sections = $this->filter( 'customizer/sections', $this->sections );
 		if ( ! empty( $sections ) ) {
 			foreach ( $sections as $id => $config ) {
 				$wp_customize->add_section(
@@ -461,8 +416,8 @@ class Customizer {
 	 * @return void
 	 */
 	private function add_settings( WP_Customize_Manager $wp_customize ) {
-		$settings           = vite( 'core' )->filter( 'customizer/settings', $this->settings );
-		$sanitize_callbacks = vite( 'core' )->filter( 'customizer/sanitize/callbacks', $this->sanitize_callbacks() );
+		$settings           = $this->filter( 'customizer/settings', $this->settings );
+		$sanitize_callbacks = $this->filter( 'customizer/sanitize/callbacks', $this->sanitize_callbacks() );
 		if ( ! empty( $settings ) ) {
 			foreach ( $settings as $id => $config ) {
 				if ( ! isset( $config['type'] ) ) {
@@ -594,55 +549,52 @@ class Customizer {
 	 * @return array
 	 */
 	private function get_google_fonts(): array {
-		$fonts_json = VITE_ASSETS_DIR . 'json/google-fonts.json';
-		if ( file_exists( $fonts_json ) && empty( $this->google_fonts ) ) {
-			ob_start();
-			include_once $fonts_json;
-			$this->google_fonts = array_merge(
+		$fonts = $this->json_to_array( VITE_ASSETS_DIR . 'json/google-fonts.json' );
+		$fonts = array_merge(
+			[
 				[
-					[
-						'family'     => 'Default',
-						'variants'   => [
-							'regular',
-							'100',
-							'200',
-							'300',
-							'400',
-							'500',
-							'600',
-							'700',
-							'800',
-							'900',
-						],
-						'value'      => 'default',
-						'defVariant' => 'regular',
-						'id'         => 'default',
-						'label'      => 'Default',
+					'family'     => 'Default',
+					'variants'   => [
+						'regular',
+						'100',
+						'200',
+						'300',
+						'400',
+						'500',
+						'600',
+						'700',
+						'800',
+						'900',
 					],
-					[
-						'family'     => 'Inherit',
-						'variants'   => [
-							'regular',
-							'100',
-							'200',
-							'300',
-							'400',
-							'500',
-							'600',
-							'700',
-							'800',
-							'900',
-						],
-						'value'      => 'inherit',
-						'defVariant' => 'regular',
-						'id'         => 'inherit',
-						'label'      => 'Inherit',
-					],
+					'value'      => 'default',
+					'defVariant' => 'regular',
+					'id'         => 'default',
+					'label'      => 'Default',
 				],
-				json_decode( ob_get_clean(), true )
-			);
-		}
-		return vite( 'core' )->filter( 'customizer/google-fonts', $this->google_fonts );
+				[
+					'family'     => 'Inherit',
+					'variants'   => [
+						'regular',
+						'100',
+						'200',
+						'300',
+						'400',
+						'500',
+						'600',
+						'700',
+						'800',
+						'900',
+					],
+					'value'      => 'inherit',
+					'defVariant' => 'regular',
+					'id'         => 'inherit',
+					'label'      => 'Inherit',
+				],
+			],
+			$fonts
+		);
+
+		return $this->filter( 'customizer/google-fonts', $fonts );
 	}
 
 	/**
