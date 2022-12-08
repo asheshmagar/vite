@@ -8,10 +8,14 @@
 
 namespace Vite;
 
+use Vite\Traits\Mods;
+
 /**
  * Template hooks.
  */
 class TemplateHooks {
+
+	use Mods;
 
 	/**
 	 * Init.
@@ -19,40 +23,38 @@ class TemplateHooks {
 	 * @return void
 	 */
 	public function init() {
-		$core = vite( 'core' );
-
-		$core->add_action( 'vite/the-loop', [ $this, 'content' ] );
-		$core->add_action( 'vite/the-loop/no-posts', [ $this, 'content_none' ] );
-		$core->add_action( 'vite/header', [ $this, 'header' ] );
-		$core->add_action( 'vite/footer', [ $this, 'footer' ] );
-		$core->add_action( 'vite/archive/content', [ $this, 'archive_content' ] );
-		$core->add_action( 'vite/header/end', [ $this, 'archive_page_header' ] );
-		$core->add_action( 'vite/archive/start', [ $this, 'archive_wrapper_open' ] );
-		$core->add_action( 'vite/archive/end', [ $this, 'archive_wrapper_close' ] );
-		$core->add_action( 'vite/archive/end', [ $this, 'pagination_template' ], 11 );
-		$core->add_action( 'vite/single/end', [ $this, 'navigation_template' ] );
-		$core->add_action( 'vite/single/end', [ $this, 'comments_template' ], 11 );
-		$core->add_action( 'vite/page/end', [ $this, 'comments_template' ] );
-		$core->add_action(
+		$this->add_action( 'vite/the-loop', [ $this, 'content' ] );
+		$this->add_action( 'vite/the-loop/no-posts', [ $this, 'content_none' ] );
+		$this->add_action( 'vite/header', [ $this, 'header' ] );
+		$this->add_action( 'vite/footer', [ $this, 'footer' ] );
+		$this->add_action( 'vite/archive/content', [ $this, 'archive_content' ] );
+		$this->add_action( 'vite/header/end', [ $this, 'archive_page_header' ] );
+		$this->add_action( 'vite/archive/start', [ $this, 'archive_wrapper_open' ] );
+		$this->add_action( 'vite/archive/end', [ $this, 'archive_wrapper_close' ] );
+		$this->add_action( 'vite/archive/end', [ $this, 'pagination_template' ], 11 );
+		$this->add_action( 'vite/single/end', [ $this, 'navigation_template' ] );
+		$this->add_action( 'vite/single/end', [ $this, 'comments_template' ], 11 );
+		$this->add_action( 'vite/page/end', [ $this, 'comments_template' ] );
+		$this->add_action(
 			'vite/header/mobile/start',
 			function() {
 				add_filter( 'theme_mod_custom_logo', [ $this, 'change_logo' ] );
 			}
 		);
-		$core->add_action(
+		$this->add_action(
 			'vite/header/mobile/end',
 			function() {
 				remove_filter( 'theme_mod_custom_logo', [ $this, 'change_logo' ] );
 			}
 		);
-		$core->add_action(
+		$this->add_action(
 			'vite/404',
 			function() {
 				get_template_part( 'template-parts/content/content', '404' );
 			}
 		);
-		$core->add_action( 'vite/single/content/content/start', [ $this, 'single_featured_image' ] );
-		$core->add_action( 'vite/single/content/header', [ $this, 'single_header_elements' ] );
+		$this->add_action( 'vite/single/content/content/start', [ $this, 'single_featured_image' ] );
+		$this->add_action( 'vite/single/content/header', [ $this, 'single_header_elements' ] );
 
 		add_filter( 'post_class', [ $this, 'post_class' ], 10, 3 );
 		add_filter( 'body_class', [ $this, 'body_class' ] );
@@ -106,7 +108,7 @@ class TemplateHooks {
 		$classes[] = 'vite';
 
 		if ( is_archive() ) {
-			$archive_layout = vite( 'customizer' )->get_setting( 'archive-layout' );
+			$archive_layout = $this->get_theme_mod( 'archive-layout' );
 			$classes[]      = 'archive-layout-' . $archive_layout;
 		}
 
@@ -120,7 +122,7 @@ class TemplateHooks {
 	 * @return mixed
 	 */
 	public function change_logo( $attachment_id ) {
-		$mobile_logo = vite( 'customizer' )->get_setting( 'mobile-logo' );
+		$mobile_logo = $this->get_theme_mod( 'mobile-logo' );
 		if ( $mobile_logo ) {
 			return $mobile_logo;
 		}
@@ -163,9 +165,9 @@ class TemplateHooks {
 	 * @return void
 	 */
 	public function archive_wrapper_open() {
-		$archive_style           = vite( 'customizer' )->get_setting( 'archive-style' );
-		$archive_columns         = vite( 'customizer' )->get_setting( 'archive-columns' );
-		$is_masonry              = 'grid' === $archive_style && vite( 'customizer' )->get_setting( 'archive-style-masonry' );
+		$archive_style           = $this->get_theme_mod( 'archive-style' );
+		$archive_columns         = $this->get_theme_mod( 'archive-columns' );
+		$is_masonry              = 'grid' === $archive_style && $this->get_theme_mod( 'archive-style-masonry' );
 		$archive_wrapper_classes = [
 			'vite-posts',
 			'vite-posts--' . $archive_style,
@@ -207,7 +209,7 @@ class TemplateHooks {
 	 * @return string[]
 	 */
 	public function post_class( array $classes, array $class, int $post_id ): array {
-		$elements         = vite( 'customizer' )->get_setting( 'archive-elements' );
+		$elements         = $this->get_theme_mod( 'archive-elements' );
 		$visible_elements = array_filter(
 			$elements,
 			function( $element ) {
@@ -268,11 +270,11 @@ class TemplateHooks {
 			return;
 		}
 
-		$archive_title_position = vite( 'customizer' )->get_setting( 'archive-title-position' );
-		$archive_title_elements = vite( 'customizer' )->get_setting( 'archive-title-elements' );
+		$archive_title_position = $this->get_theme_mod( 'archive-title-position' );
+		$archive_title_elements = $this->get_theme_mod( 'archive-title-elements' );
 
 		if ( 'inside' === $archive_title_position ) {
-			vite( 'core' )->add_action(
+			$this->add_action(
 				'vite/archive/start',
 				function() use ( $archive_title_elements ) {
 					get_template_part( 'template-parts/page-header/page-header', '', [ 'elements' => $archive_title_elements ] );
