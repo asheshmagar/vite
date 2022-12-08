@@ -11,7 +11,7 @@
 // Exit if accessed directly.
 defined( 'ABSPATH' ) || exit;
 
-$elements = vite( 'customizer' )->get_setting( 'single-header-elements' );
+$elements = vite( 'core' )->get_theme_mod( 'single-header-elements' );
 $core     = vite( 'core' );
 
 /**

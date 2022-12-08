@@ -8,7 +8,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-$configs = vite( 'customizer' )->get_setting( 'footer' );
+$configs = vite( 'core' )->get_theme_mod( 'footer' );
 ?>
 <footer id="colophon" class="vite-footer"<?php vite( 'seo' )->print_schema_microdata( 'footer' ); ?>>
 	<?php
