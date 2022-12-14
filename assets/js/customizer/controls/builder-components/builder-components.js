@@ -11,6 +11,7 @@ export default memo( ( props ) => {
 				description,
 				inputAttrs: {
 					group: id,
+					context = 'header',
 				},
 				choices,
 			},
@@ -21,7 +22,11 @@ export default memo( ( props ) => {
 	const [ builderItems, setBuilderItems ] = useState( customizer( id ).get() );
 	const [ availableItems, setAvailableItems ] = useState( [] );
 
-	device = 'desktop' === device ? 'desktop' : 'mobile';
+	if ( 'header' === context ) {
+		device = 'desktop' === device ? 'desktop' : 'mobile';
+	} else {
+		device = 'desktop';
+	}
 
 	useEffect( () => {
 		customizer( id ).bind( setBuilderItems );
