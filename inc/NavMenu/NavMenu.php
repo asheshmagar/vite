@@ -106,12 +106,12 @@ class NavMenu {
 	/**
 	 * Render menu.
 	 *
-	 * @param string $type Menu type.
-	 * @param mixed  $menu Menu id or string or WP_Term.
-	 * @param string $context Context header or footer.
+	 * @param string|int $type Menu type.
+	 * @param mixed      $menu Menu id or string or WP_Term.
+	 * @param string     $context Context header or footer.
 	 * @return void
 	 */
-	public function render_menu( string $type = '1', $menu = null, string $context = 'header' ) {
+	public function render_menu( $type = '1', $menu = null, string $context = 'header' ) {
 		$args = [
 			'theme_location'  => "menu-$type",
 			'menu_id'         => "menu-$type",
@@ -124,23 +124,29 @@ class NavMenu {
 			},
 			'walker'          => $this->walker_nav_menu,
 		];
+
 		if ( isset( $menu ) ) {
 			$args['menu'] = $menu;
 		}
 
+		if ( '4' === (string) $type ) {
+			$args['depth'] = 1;
+		}
+
 		$args = $this->filter( "menu/$type/args", $args );
+
 		wp_nav_menu( $args );
 	}
 
 	/**
 	 * Fallback menu.
 	 *
-	 * @param string $type Menu type.
-	 * @param string $context Context header or footer.
+	 * @param string|int $type Menu type.
+	 * @param string     $context Context header or footer.
 	 * @return void
 	 */
-	private function fallback_menu( string $type = '1', string $context = 'header' ) {
-		if ( '3' === $type && $this->is_primary_menu_active() ) {
+	private function fallback_menu( $type = '1', string $context = 'header' ) {
+		if ( '3' === (string) $type && $this->is_primary_menu_active() ) {
 			wp_nav_menu(
 				[
 					'theme_location'  => 'menu-1',
@@ -164,6 +170,7 @@ class NavMenu {
 							'title_li'       => false,
 							'theme_location' => "menu-$type",
 							'walker'         => $this->walker_page,
+							'depth'          => 'header' === $context ? 0 : 1,
 						]
 					);
 				?>

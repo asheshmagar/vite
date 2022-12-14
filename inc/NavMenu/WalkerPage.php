@@ -45,21 +45,18 @@ class WalkerPage extends Walker_Page {
 	 * @return void
 	 */
 	public function start_el( &$output, $data_object, $depth = 0, $args = [], $current_object_id = 0 ) {
-		$indent                = str_repeat( "\t", $depth );
-		$desktop_submenu_icon  = '';
-		$mobile_submenu_toggle = '';
-		$css_class             = [ 'page_item', 'menu-item', 'page-item-' . $data_object->ID, 'vite-nav__item' ];
-		$theme_location        = empty( $args['theme_location'] ) ? '' : $args['theme_location'];
-		$link_wrap_open        = '';
-		$link_wrap_close       = '';
-		$li_attrs              = '';
-		$submenu_icon          = '';
-		$submenu_icon_button   = '';
+		$indent              = str_repeat( "\t", $depth );
+		$css_class           = [ 'page_item', 'menu-item', 'page-item-' . $data_object->ID, 'vite-nav__item' ];
+		$theme_location      = empty( $args['theme_location'] ) ? '' : $args['theme_location'];
+		$link_wrap_open      = '';
+		$link_wrap_close     = '';
+		$li_attrs            = '';
+		$submenu_icon        = '';
+		$submenu_icon_button = '';
 
 		if ( isset( $args['pages_with_children'][ $data_object->ID ] ) ) {
-			$css_class[] = 'vite-nav__item--parent';
-
 			if ( in_array( $theme_location, [ 'menu-1', 'menu-2', 'menu-3' ], true ) ) {
+				$css_class[]         = 'vite-nav__item--parent';
 				$icon                = $this->filter( 'submenu/icon', vite( 'icon' )->get_icon( 'chevron-down', [ 'size' => 10 ] ) );
 				$submenu_icon        = sprintf( '<span class="vite-nav__submenu-icon" role="presentation">%s</span>', $icon );
 				$submenu_icon_button = sprintf(
