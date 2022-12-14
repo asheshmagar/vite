@@ -12,6 +12,9 @@ vite( 'customizer' )->add(
 		'vite[blog]'           => [
 			'title' => __( 'Blog', 'vite' ),
 		],
+		'vite[footer-builder]' => [
+			'title' => __( 'Footer', 'vite' ),
+		],
 	]
 );
 
@@ -113,6 +116,42 @@ vite( 'customizer' )->add(
 		'vite[single]'                  => [
 			'title' => __( 'Single Post', 'vite' ),
 			'panel' => 'vite[blog]',
+		],
+		'vite[footer-builder]'          => [
+			'title' => __( 'Footer', 'vite' ),
+			'panel' => 'vite[footer-builder]',
+		],
+		'vite[footer-builder-settings]' => [
+			'title' => __( 'Footer builder settings', 'vite' ),
+			'panel' => 'vite[footer-builder]',
+		],
+		'vite[footer-html-1]'           => [
+			'title' => __( 'HTML 1', 'vite' ),
+			'panel' => 'vite[footer-builder]',
+		],
+		'vite[footer-html-2]'           => [
+			'title' => __( 'HTML 2', 'vite' ),
+			'panel' => 'vite[footer-builder]',
+		],
+		'vite[footer-top-row]'          => [
+			'title' => __( 'Top row', 'vite' ),
+			'panel' => 'vite[footer-builder]',
+		],
+		'vite[footer-main-row]'         => [
+			'title' => __( 'Main row', 'vite' ),
+			'panel' => 'vite[footer-builder]',
+		],
+		'vite[footer-bottom-row]'       => [
+			'title' => __( 'Bottom', 'vite' ),
+			'panel' => 'vite[footer-builder]',
+		],
+		'vite[footer-socials]'          => [
+			'title' => __( 'Socials', 'vite' ),
+			'panel' => 'vite[footer-builder]',
+		],
+		'vite[footer-menu-4]'           => [
+			'title' => __( 'Footer Menu', 'vite' ),
+			'panel' => 'vite[footer-builder]',
 		],
 	]
 );
