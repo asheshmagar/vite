@@ -115,6 +115,57 @@ class Customizer {
 		add_action( 'wp_print_scripts', [ $this, 'print_dynamic_css' ] );
 		add_action( 'customize_preview_init', [ $this, 'enqueue_preview_script' ] );
 		add_action( 'customize_save_after', [ $this, 'sync_menus' ] );
+		add_filter( 'customizer_widgets_section_args', [ $this, 'modify_widgets_panel' ], 10, 3 );
+		add_filter( 'customize_section_active', array( $this, 'modify_widgets_section_state' ), 100, 2 );
+	}
+
+	/**
+	 * Filters response of WP_Customize_Section::active().
+	 *
+	 * @param bool  $active Whether the Customizer section is active.
+	 * @param mixed $section WP_Customize_Section instance.
+	 * @return bool
+	 */
+	public function modify_widgets_section_state( bool $active, $section ): bool {
+		if (
+			false !== strpos( $section->id, 'header-widget-' ) ||
+			false !== strpos( $section->id, 'footer-widget-' )
+		) {
+			$active = true;
+		}
+		return $active;
+	}
+
+	/**
+	 * Modify widgets panel.
+	 *
+	 * @param array      $section_args Array of Customizer widget section arguments.
+	 * @param string     $section_id   Customizer section ID.
+	 * @param int|string $sidebar_id   Sidebar ID.
+	 */
+	public function modify_widgets_panel( array $section_args, string $section_id, $sidebar_id ): array {
+		$footer_widgets = [
+			'footer-widget-1',
+			'footer-widget-2',
+			'footer-widget-3',
+			'footer-widget-4',
+			'footer-widget-5',
+			'footer-widget-6',
+		];
+		$header_widgets = [
+			'header-widget-1',
+			'header-widget-2',
+		];
+
+		if ( in_array( $sidebar_id, $footer_widgets, true ) ) {
+			$section_args['panel'] = 'vite[footer-builder]';
+		}
+
+		if ( in_array( $sidebar_id, $header_widgets, true ) ) {
+			$section_args['panel'] = 'vite[header-builder]';
+		}
+
+		return $section_args;
 	}
 
 	/**
@@ -141,29 +192,39 @@ class Customizer {
 			return;
 		}
 
-		$primary   = ( $customized['nav_menu_locations[primary]'] ?? ( $customized['vite[header-primary-menu]'] ?? null ) );
-		$secondary = ( $customized['nav_menu_locations[secondary]'] ?? ( $customized['vite[header-secondary-menu]'] ?? null ) );
+		$primary   = ( $customized['nav_menu_locations[menu-1]'] ?? ( $customized['vite[header-menu-1]'] ?? null ) );
+		$secondary = ( $customized['nav_menu_locations[menu-2]'] ?? ( $customized['vite[header-menu-2]'] ?? null ) );
+		$mobile    = ( $customized['nav_menu_locations[menu-3]'] ?? ( $customized['vite[header-menu-3]'] ?? null ) );
 		$locations = get_theme_mod( 'nav_menu_locations' );
 		$vite_mods = get_theme_mod( 'vite' );
 
-		if ( isset( $primary ) || isset( $secondary ) ) {
+		if ( isset( $primary ) || isset( $secondary ) || isset( $mobile ) ) {
 			$primary   = absint( $primary );
 			$secondary = absint( $secondary );
+			$mobile    = absint( $mobile );
 
 			if ( $primary ) {
-				$locations['primary']             = $primary;
-				$vite_mods['header-primary-menu'] = $primary;
+				$locations['menu-1']        = $primary;
+				$vite_mods['header-menu-1'] = $primary;
 			} else {
-				unset( $locations['primary'] );
-				unset( $vite_mods['header-primary-menu'] );
+				unset( $locations['menu-1'] );
+				unset( $vite_mods['header-menu-1'] );
 			}
 
 			if ( $secondary ) {
-				$locations['secondary']             = $secondary;
-				$vite_mods['header-secondary-menu'] = $secondary;
+				$locations['menu-2']        = $secondary;
+				$vite_mods['header-menu-2'] = $secondary;
 			} else {
-				unset( $locations['secondary'] );
-				unset( $vite_mods['header-secondary-menu'] );
+				unset( $locations['menu-2'] );
+				unset( $vite_mods['header-menu-2'] );
+			}
+
+			if ( $mobile ) {
+				$locations['menu-3']        = $mobile;
+				$vite_mods['header-menu-3'] = $mobile;
+			} else {
+				unset( $locations['menu-3'] );
+				unset( $vite_mods['header-menu-3'] );
 			}
 
 			set_theme_mod( 'nav_menu_locations', $locations );
