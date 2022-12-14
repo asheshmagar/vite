@@ -1,6 +1,10 @@
 .vite-footer {
 	background-color: var(--global--color--8);
 
+	p {
+		margin-bottom: 0;
+	}
+
 	&__row--bottom {
 		--container--padding--block: 1.5625rem;
 	}
