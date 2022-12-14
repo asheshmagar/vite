@@ -7,17 +7,20 @@
 
 namespace Vite\Elements;
 
+use Vite\Traits\SmartTags;
+
 /**
  * Builder Elements.
  */
 class BuilderElements {
 
-	use ElementsTrait;
+	use ElementsTrait, SmartTags;
 
 	/**
 	 * Site branding.
 	 *
 	 * @param mixed $args Arguments.
+	 *
 	 * @return void
 	 */
 	public function logo( $args ) {
@@ -33,13 +36,16 @@ class BuilderElements {
 		 */
 		$this->action( 'header/site-branding/start' );
 		?>
-		<div class="vite-brand vite-brand--<?php echo esc_attr( $layout ); ?>"<?php vite( 'seo' )->print_schema_microdata( 'logo' ); ?>>
+		<div
+			class="vite-brand vite-brand--<?php echo esc_attr( $layout ); ?>"<?php vite( 'seo' )->print_schema_microdata( 'logo' ); ?>>
 			<?php the_custom_logo(); ?>
 			<?php if ( in_array( $elements, [ 'logo-title', 'logo-title-description' ], true ) ) : ?>
 				<?php if ( is_front_page() && is_home() ) : ?>
-					<h1 class="vite-brand__title"><a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home"><?php bloginfo( 'name' ); ?></a></h1>
+					<h1 class="vite-brand__title"><a href="<?php echo esc_url( home_url( '/' ) ); ?>"
+													 rel="home"><?php bloginfo( 'name' ); ?></a></h1>
 				<?php else : ?>
-					<p class="vite-brand__title"><a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home"><?php bloginfo( 'name' ); ?></a></p>
+					<p class="vite-brand__title"><a href="<?php echo esc_url( home_url( '/' ) ); ?>"
+													rel="home"><?php bloginfo( 'name' ); ?></a></p>
 				<?php endif; ?>
 			<?php endif; ?>
 			<?php if ( 'logo-title-description' === $elements ) : ?>
@@ -64,6 +70,7 @@ class BuilderElements {
 	 * Render header socials.
 	 *
 	 * @param mixed $args Arguments.
+	 *
 	 * @return void
 	 */
 	public function socials( $args ) {
@@ -92,10 +99,13 @@ class BuilderElements {
 						continue;
 					}
 					?>
-						<li class="vite-social__item">
-							<a <?php print( esc_attr( 'brand' === $color_type && isset( $social['color'] ) ? 'style=color:' . $social['color'] : '' ) ); ?> class="vite-social__link vite-social__link--<?php echo esc_attr( $social['id'] ); ?>" rel="noopener" href=<?php echo esc_url( $this->get_theme_mod( "{$social['id']}-link", '#' ) ); ?>>
+					<li class="vite-social__item">
+						<a <?php print( esc_attr( 'brand' === $color_type && isset( $social['color'] ) ? 'style=color:' . $social['color'] : '' ) ); ?>
+							class="vite-social__link vite-social__link--<?php echo esc_attr( $social['id'] ); ?>"
+							rel="noopener"
+							href=<?php echo esc_url( $this->get_theme_mod( "{$social['id']}-link", '#' ) ); ?>>
 							<?php isset( $social['label'] ) && printf( '<span class="screen-reader-text">%s</span>', esc_html( $social['label'] ) ); ?>
-								<span class="vite-social__icon">
+							<span class="vite-social__icon">
 						<?php
 						vite( 'icon' )->get_icon(
 							$social['id'],
@@ -106,8 +116,8 @@ class BuilderElements {
 						);
 						?>
 						</span>
-							</a>
-						</li>
+						</a>
+					</li>
 					<?php
 				}
 				?>
@@ -129,6 +139,7 @@ class BuilderElements {
 	 * Search form.
 	 *
 	 * @param mixed $args Arguments.
+	 *
 	 * @return void
 	 */
 	public function search( $args ) {
@@ -155,7 +166,8 @@ class BuilderElements {
 		<div class="vite-search">
 			<button class="vite-search__btn" aria-label="<?php esc_attr_e( 'Search modal open button', 'vite' ); ?>">
 				<?php if ( ! empty( $label ) ) : ?>
-					<span class="vite-search__label vite-search__label--pos-<?php esc_attr( $label_position ); ?> vite-search__label--visibility-<?php echo esc_attr( $visibility ); ?>"><?php echo esc_html( $label ); ?></span>
+					<span
+						class="vite-search__label vite-search__label--pos-<?php esc_attr( $label_position ); ?> vite-search__label--visibility-<?php echo esc_attr( $visibility ); ?>"><?php echo esc_html( $label ); ?></span>
 				<?php endif; ?>
 				<span class="vite-search__icon">
 					<?php vite( 'icon' )->get_icon( 'magnifying-glass', [ 'echo' => true ] ); ?>
@@ -194,23 +206,23 @@ class BuilderElements {
 			<div class="vite-modal__action">
 				<button class="vite-modal__btn" <?php esc_attr_e( 'Search modal close button', 'vite' ); ?>>
 					<?php
-						vite( 'icon' )->get_icon(
-							'xmark',
-							[
-								'echo' => true,
-							]
-						)
+					vite( 'icon' )->get_icon(
+						'xmark',
+						[
+							'echo' => true,
+						]
+					)
 					?>
 				</button>
 			</div>
 			<div class="vite-modal__content vite-modal__content--slide-up">
 				<?php
-					get_search_form(
-						[
-							'submit_icon' => true,
-							'context'     => 'modal',
-						]
-					);
+				get_search_form(
+					[
+						'submit_icon' => true,
+						'context'     => 'modal',
+					]
+				);
 				?>
 			</div>
 		</div>
@@ -230,12 +242,13 @@ class BuilderElements {
 	 * Render header html.
 	 *
 	 * @param mixed $args Arguments.
+	 *
 	 * @return void
 	 */
 	public function html( $args ) {
 		$type    = $args['type'] ?? '1';
 		$content = $this->get_theme_mod( "{$args['context']}-html-$type" );
-		$content = $this->parse_smart_tags( $content );
+		$content = $this->parse_smart_tags( (string) $content );
 
 		/**
 		 * Action: vite/$args['context']/html/start
@@ -265,6 +278,7 @@ class BuilderElements {
 	 * Render header button.
 	 *
 	 * @param mixed $args Arguments.
+	 *
 	 * @return void
 	 */
 	public function button( $args ) {
@@ -298,15 +312,15 @@ class BuilderElements {
 		?>
 		<div class="vite-button vite-button--<?php echo esc_attr( $type ); ?>">
 			<?php
-				printf(
-					'<a href="%s" class="vite-button__link vite-button__link--%s" target="%s" %s%s>%s</a>',
-					esc_url( $url ),
-					esc_attr( $style ),
-					esc_attr( $target ? '_blank' : '_self' ),
-					esc_attr( ! empty( $rel ) ? 'rel=' . implode( ' ', $rel ) : '' ),
-					esc_attr( $download ? ' download' : '' ),
-					esc_html( $text )
-				);
+			printf(
+				'<a href="%s" class="vite-button__link vite-button__link--%s" target="%s" %s%s>%s</a>',
+				esc_url( $url ),
+				esc_attr( $style ),
+				esc_attr( $target ? '_blank' : '_self' ),
+				esc_attr( ! empty( $rel ) ? 'rel=' . implode( ' ', $rel ) : '' ),
+				esc_attr( $download ? ' download' : '' ),
+				esc_html( $text )
+			);
 			?>
 		</div>
 		<?php
@@ -325,6 +339,7 @@ class BuilderElements {
 	 * Render trigger.
 	 *
 	 * @param mixed $args Arguments.
+	 *
 	 * @return void
 	 */
 	public function trigger( $args ) {
@@ -339,7 +354,8 @@ class BuilderElements {
 		$this->action( "{$args['context']}/mobile-menu-trigger/start" );
 		?>
 		<div class="vite-mobile-menu">
-			<button class="vite-mobile-menu__btn" aria-label="<?php esc_attr_e( 'Mobile menu modal open button', 'vite' ); ?>">
+			<button class="vite-mobile-menu__btn"
+					aria-label="<?php esc_attr_e( 'Mobile menu modal open button', 'vite' ); ?>">
 				<span class="vite-mobile-menu__icon">
 					<?php vite( 'icon' )->get_icon( 'bars', [ 'echo' => true ] ); ?>
 				</span>
@@ -385,7 +401,8 @@ class BuilderElements {
 		<div data-modal class="vite-modal vite-modal--mobile-menu">
 			<div class="vite-modal__inner">
 				<div class="vite-modal__action">
-					<button class="vite-modal__btn" aria-label="<?php esc_html_e( 'Close mobile menu modal', 'vite' ); ?>">
+					<button class="vite-modal__btn"
+							aria-label="<?php esc_html_e( 'Close mobile menu modal', 'vite' ); ?>">
 						<?php vite( 'icon' )->get_icon( 'xmark', [ 'echo' => true ] ); ?>
 					</button>
 				</div>
@@ -399,10 +416,10 @@ class BuilderElements {
 							$type       = $matches[0] ?? null;
 
 							get_template_part(
-								"template-parts/builder-components/$element_id",
+								"template-parts/builder-elements/$element_id",
 								'',
 								[
-									'type'    => $type,
+									'type'    => (string) $type,
 									'context' => 'header',
 								]
 							);
@@ -429,14 +446,16 @@ class BuilderElements {
 	 * Render menu.
 	 *
 	 * @param mixed $args Arguments.
+	 *
 	 * @return void
 	 */
 	public function menu( $args ) {
-		$type = $args['type'] ?? '1';
-		$menu = null;
+		$type    = $args['type'] ?? '1';
+		$context = $args['context'] ?? 'header';
+		$menu    = null;
 
 		if ( is_customize_preview() ) {
-			$menu = $this->get_theme_mod( "menu-$type", '0' );
+			$menu = $this->get_theme_mod( "$context-menu-$type", '0' );
 		}
 
 		/**
@@ -446,9 +465,11 @@ class BuilderElements {
 		 *
 		 * @since 1.0.0
 		 */
-		$menu = $this->filter( "{$args['context']}/$type/menu", $menu );
+		$menu = $this->filter( "$context/$type/menu", $menu );
 
-		vite( 'nav-menu' )->render_menu( $type, $menu, $args['context'] );
+		$this->action( "$context/$type/menu/start" );
+
+		vite( 'nav-menu' )->render_menu( (string) $type, $menu, $context );
 
 		/**
 		 * Action: vite/$args['context']/$type/menu/end
@@ -457,6 +478,41 @@ class BuilderElements {
 		 *
 		 * @since 1.0.0
 		 */
-		$this->action( "{$args['context']}/$type/menu/end" );
+		$this->action( "$context/$type/menu/end" );
+	}
+
+	/**
+	 * @param $args
+	 *
+	 * @return void
+	 */
+	public function widget( $args ) {
+		$context = $args['context'] ?? 'header';
+		$type    = $args['type'] ?? '1';
+
+		/**
+		 * Action: vite/$context/widget/$type/end
+		 *
+		 * Fires before widget.
+		 *
+		 * @since 1.0.0
+		 */
+		$this->action( "{$context}/widget/$type/start" );
+
+		vite( 'sidebar' )->render_sidebar(
+			[
+				'id'         => "$context-widget-$type",
+				'wrapper_id' => "$context-widget-$type",
+			]
+		);
+
+		/**
+		 * Action: vite/$context/widget/$type/end
+		 *
+		 * Fires after widget.
+		 *
+		 * @since 1.0.0
+		 */
+		$this->action( "$context/widget/$type/end" );
 	}
 }
