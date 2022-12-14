@@ -19,12 +19,13 @@ const Item = ( {
 
 	useEffect( () => {
 		if ( section ) {
-			customizer.section( section ).expanded.bind( setIsActive );
+			customizer.section( section )?.expanded?.bind( setIsActive );
 		}
 	}, [] );
 	return (
 		// eslint-disable-next-line
-		<div className={ `vite-builder-component${ isActive ? ' is-active' : '' }` } onClick={ section ? () => customizer.section( section )?.focus() : null }>
+		<div className={ `vite-builder-component${ isActive ? ' is-active' : '' }` }
+			onClick={ section ? () => customizer.section( section )?.focus() : null }>
 			<span className="vite-builder-component-title">
 				{ choices?.[ device ]?.[ item.id ]?.name }
 			</span>
@@ -42,6 +43,11 @@ const Item = ( {
 	);
 };
 
+const range = ( start, end ) => {
+	const length = end - start + 1;
+	return Array.from( { length }, ( _, i ) => start + i );
+};
+
 export default memo( ( props ) => {
 	const {
 		control: {
@@ -56,14 +62,47 @@ export default memo( ( props ) => {
 			setting,
 		},
 		customizer,
+		context,
 	} = props;
 
-	const [ value, setValue ] = useState( setting.get() );
+	const [ value, setValue ] = useState( setting.get() || {} );
 	const [ open, setOpen ] = useState( false );
+	const [ col, setCol ] = useState( null );
 	const Portal = usePortal( document.querySelector( '.wp-full-overlay' ) );
 	let { device, setDevice } = useDeviceSelector();
 
-	device = 'desktop' === device ? 'desktop' : 'mobile';
+	if ( 'header' === context ) {
+		device = 'desktop' === device ? 'desktop' : 'mobile';
+	} else {
+		device = 'desktop';
+	}
+
+	useEffect( () => {
+		if ( 'footer' !== context ) return;
+		const cols = {};
+
+		for ( const pos of [ 'top', 'main', 'bottom' ] ) {
+			const rowSetting = customizer( `vite[footer-${ pos }-row-cols]` );
+			cols[ pos ] = rowSetting?.get() ?? null;
+
+			rowSetting?.bind( ( v ) => {
+				setCol( prev => ( { ...prev, [ pos ]: v } ) );
+				if ( parseInt( v ) < 6 ) {
+					setValue( prev => {
+						const data = cloneDeep( prev );
+						for ( const i of range( parseInt( v ), 6 ) ) {
+							if ( data?.desktop?.[ pos ]?.[ i ]?.length ) {
+								data.desktop[ pos ][ i ] = [];
+							}
+						}
+						setting.set( data );
+						return data;
+					} );
+				}
+			} );
+		}
+		setCol( cols );
+	}, [] );
 
 	const update = ( row, area, items, screen = 'desktop' ) => {
 		const newValue = cloneDeep( value );
@@ -95,35 +134,38 @@ export default memo( ( props ) => {
 
 	return (
 		<Portal>
-			<div className="vite-builder-portal" data-builder-open={ open } data-builder={ id }>
-				<div className="vite-builder-portal-header">
-					<div className="vite-builder-portal-header-left">
-						<ButtonGroup>
-							{ [ {
-								id: 'desktop',
-								label: __( 'Desktop', 'vite' ),
-							}, {
-								id: 'mobile',
-								label: __( 'Tablet / Mobile', 'vite' ),
-							} ].map( d => (
-								<Button
-									key={ d.id }
-									onClick={ () => setDevice( 'mobile' === d.id ? 'tablet' : d.id ) }
-									icon={ 'mobile' === d.id ? 'tablet' : d.id }
-									className={ device === d.id ? 'active' : '' }
-								>
-									{ d.label }
-								</Button>
-							) ) }
-						</ButtonGroup>
+			<div className="vite-builder-portal" data-builder-open={ open } data-builder={ context }>
+				{ 'header' === context && (
+					<div className="vite-builder-portal-header">
+						<div className="vite-builder-portal-header-left">
+							<ButtonGroup>
+								{ [ {
+									id: 'desktop',
+									label: __( 'Desktop', 'vite' ),
+								}, {
+									id: 'mobile',
+									label: __( 'Tablet / Mobile', 'vite' ),
+								} ].map( d => (
+									<Button
+										key={ d.id }
+										onClick={ () => setDevice( 'mobile' === d.id ? 'tablet' : d.id ) }
+										icon={ 'mobile' === d.id ? 'tablet' : d.id }
+										className={ device === d.id ? 'active' : '' }
+									>
+										{ d.label }
+									</Button>
+								) ) }
+							</ButtonGroup>
+						</div>
 					</div>
-				</div>
+				) }
 				<div className="vite-builder-portal-content">
 					<div className="vite-builder-portal-content-inner" data-desktop={ device }>
-						{ [ 'desktop', 'mobile' ].map( d => (
+						{ ( 'header' === context ? [ 'desktop', 'mobile' ] : [ 'desktop' ] ).map( d => (
 							<Fragment key={ d }>
 								{ 'mobile' === d && (
-									<div className="vite-builder-mobile-offset" style={ { display: 'mobile' !== device ? 'none' : undefined } }>
+									<div className="vite-builder-mobile-offset"
+										style={ { display: 'mobile' !== device ? 'none' : undefined } }>
 										<div className="vite-builder-mobile-offset-inner">
 											<ReactSortable
 												forceFallback={ true }
@@ -150,14 +192,16 @@ export default memo( ( props ) => {
 											>
 												{ value?.offset?.map( ( item ) => (
 													// eslint-disable-next-line jsx-a11y/click-events-have-key-events,jsx-a11y/no-static-element-interactions
-													<div className="vite-builder-component" key={ item.id } onClick={ choices?.mobile?.[ item.id ]?.section ? () => customizer.section( choices.mobile[ item.id ].section )?.focus() : undefined }>
+													<div className="vite-builder-component" key={ item.id }
+														onClick={ choices?.mobile?.[ item.id ]?.section ? () => customizer.section( choices.mobile[ item.id ].section )?.focus() : undefined }>
 														<span className="vite-builder-component-title">
 															{ choices?.[ device ]?.[ item.id ]?.name }
 														</span>
 														<span
 															role="button"
 															tabIndex={ -1 }
-															onKeyDown={ () => {} }
+															onKeyDown={ () => {
+															} }
 															className="vite-builder-component-handle"
 															dangerouslySetInnerHTML={ {
 																__html: sprintf( window?._VITE_CUSTOMIZER_?.icons?.xmark, 'vite-icon', 10, 10 ),
@@ -174,17 +218,22 @@ export default memo( ( props ) => {
 													</div>
 												) ) }
 											</ReactSortable>
-											<Button className="vite-builder-cta" icon={ 'admin-generic' } onClick={ customizer.section( `vite[header-offset]` ) ? customizer.section( `vite[header-offset]` ).focus() : undefined } />
+											<Button className="vite-builder-cta" icon={ 'admin-generic' }
+												onClick={ customizer.section( `vite[header-offset]` ) ? customizer.section( `vite[header-offset]` ).focus() : undefined } />
 										</div>
 									</div>
 								) }
-								<div key={ d } className="vite-builder-rows" style={ { display: d !== device ? 'none' : undefined } }>
+								<div key={ d } className="vite-builder-rows"
+									style={ { display: d !== device ? 'none' : undefined } }>
 									{
-										Object.entries( areas ).map( ( [ row = '', columns = { } ] ) => (
-											<div key={ row } data-row={ row } className="vite-builder-row">
+										Object.entries( areas ).map( ( [ row = '', columns = {} ] ) => (
+											<div key={ row } data-row={ row } className="vite-builder-row"
+												data-cols={ 'footer' === context ? ( col?.[ row ] ?? '' ) : undefined }>
 												<div className="vite-builder-cols">
 													{ Object.keys( columns ).map( ( area ) => (
-														<div className="vite-col" data-col={ area } key={ area }>
+														<div className="vite-col" data-col={ area } key={ area }
+															data-pos={ 'footer' === context ? ( parseInt( area ) === parseInt( col?.[ row ] ?? '' ) ? 'last' : undefined ) : undefined }
+															data-hidden={ 'footer' === context ? ( parseInt( area ) <= parseInt( col?.[ row ] ?? '' ) ) : undefined }>
 															<ReactSortable
 																forceFallback={ true }
 																list={ getAreaItems( row, area, d ) }
@@ -202,13 +251,22 @@ export default memo( ( props ) => {
 																animation={ 150 }
 															>
 																{ getAreaItems( row, area, d ).map( ( item ) => (
-																	<Item key={ item.id } { ...{ row, area, item, device, customizer, remove, choices } } />
+																	<Item key={ item.id } { ...{
+																		row,
+																		area,
+																		item,
+																		device,
+																		customizer,
+																		remove,
+																		choices,
+																	} } />
 																) ) }
 															</ReactSortable>
 														</div>
 													) ) }
 												</div>
-												<Button className="vite-builder-cta" icon={ 'admin-generic' } onClick={ customizer.section( `vite[header-${ row }-row]` ) ? () => customizer.section( `vite[header-${ row }-row]` ).focus() : undefined } />
+												<Button className="vite-builder-cta" icon={ 'admin-generic' }
+													onClick={ 'header' === context ? customizer.section( `vite[header-${ row }-row]` ) ? () => customizer.section( `vite[header-${ row }-row]` ).focus() : undefined : customizer.section( `vite[footer-${ row }-row]` ) ? () => customizer.section( `vite[footer-${ row }-row]` ).focus() : undefined } />
 											</div>
 										) )
 									}
