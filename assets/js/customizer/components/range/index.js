@@ -5,6 +5,13 @@ import './customizer.scss';
 // eslint-disable-next-line no-unused-vars
 const UNITS = [ '-', 'px', 'em', 'rem', '%' ];
 
+const range = ( start, end ) => {
+	start = parseInt( start );
+	end = parseInt( end );
+	const length = end - start + 1;
+	return Array.from( { length }, ( _, i ) => start + i );
+};
+
 export default memo( ( props ) => {
 	let {
 		value,
@@ -15,6 +22,8 @@ export default memo( ( props ) => {
 		max = 300,
 		step = 1,
 		unitPicker = 'dropdown',
+		marks,
+		input,
 		...otherProps
 	} = props;
 
@@ -37,6 +46,11 @@ export default memo( ( props ) => {
 				min={ min }
 				max={ max }
 				step={ step }
+				marks={ marks ? range( min, max ).map( r => ( {
+					label: r,
+					value: r,
+				} ) ) : undefined }
+				withInputField={ input }
 				{ ...otherProps }
 			/>
 			{ units?.length > 0 && (
