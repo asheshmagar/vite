@@ -19,6 +19,7 @@ trait Mods {
 	 *
 	 * @param string $key Theme mod key.
 	 * @param mixed  $default Default.
+	 *
 	 * @return false|mixed|null
 	 */
 	public function get_theme_mod( string $key, $default = false ) {
@@ -142,21 +143,12 @@ trait Mods {
 				],
 				'offset'  => [
 					[
-						'id'       => 'menu-3',
-						'filtered' => true,
+						'id' => 'menu-3',
 					],
 				],
 			],
 			'header-html-1'                  => __( 'Enter HTML.', 'vite' ),
 			'header-html-2'                  => __( 'Enter HTML.', 'vite' ),
-			'footer'                         => [
-				'top'    => [],
-				'middle' => [],
-				'bottom' => [
-					[ 'id' => 'html-1' ],
-				],
-			],
-			'footer-html'                    => __( '{{copyright}} {{year}} {{site-title}}', 'vite' ),
 			'archive-elements'               => [
 				[
 					'id'      => 'meta-1',
@@ -421,6 +413,71 @@ trait Mods {
 				'--link--hover--color'  => 'var(--global--color--1)',
 				'--link--active--color' => 'var(--global--color--1)',
 			],
+			'footer'                         => [
+				'desktop' => [
+					'top'    => [
+						'1' => [],
+						'2' => [],
+						'3' => [],
+					],
+					'main'   => [
+						'1' => [],
+						'2' => [],
+						'3' => [],
+					],
+					'bottom' => [
+						'1' => [],
+						'2' => [ [ 'id' => 'html-1' ] ],
+						'3' => [],
+					],
+				],
+			],
+			'footer-html-1'                  => __( '{{copyright}} {{year}} {{site-title}}', 'vite' ),
+			'footer-html-2'                  => __( 'Enter HTML.', 'vite' ),
+			'footer-top-row-layout'          => 'contained',
+			'footer-top-row-cols'            => 3,
+			'footer-main-row-layout'         => 'contained',
+			'footer-main-row-cols'           => 3,
+			'footer-bottom-row-layout'       => 'contained',
+			'footer-bottom-row-cols'         => 3,
+			'footer-social-links'            => [
+				[
+					'id'      => 'facebook',
+					'value'   => 'facebook',
+					'visible' => true,
+					'label'   => __( 'Facebook', 'vite' ),
+					'color'   => '#3b5998',
+				],
+				[
+					'id'      => 'twitter',
+					'value'   => 'twitter',
+					'visible' => true,
+					'label'   => __( 'Twitter', 'vite' ),
+					'color'   => '#1da1f2',
+				],
+				[
+					'id'      => 'instagram',
+					'value'   => 'instagram',
+					'visible' => true,
+					'label'   => __( 'Instagram', 'vite' ),
+					'color'   => '#517fa4',
+				],
+			],
+			'footer-social-icons-size'       => 20,
+			'footer-social-icons-color-type' => 'custom',
+			'footer-social-icons-colors'     => [
+				'--link--color'        => 'var(--global--color--3)',
+				'--link--hover--color' => 'var(--global--color--1)',
+			],
+			'footer-menu-4-items-spacing'    => [
+				'value' => 14,
+				'unit'  => 'px',
+			],
+			'footer-menu-4-colors'           => [
+				'--link--color'         => 'var(--global--color--3)',
+				'--link--hover--color'  => 'var(--global--color--1)',
+				'--link--active--color' => 'var(--global--color--1)',
+			],
 		];
 
 		return $this->filter( 'theme-mods/defaults', array_merge( $defaults, $header_button_defaults ) );
@@ -430,10 +487,12 @@ trait Mods {
 	 * Get theme mod default.
 	 *
 	 * @param string $key Theme mod key.
+	 *
 	 * @return mixed|null
 	 */
 	public function get_theme_mod_default( string $key ) {
 		$defaults = $this->get_theme_mod_defaults();
+
 		return $defaults[ $key ] ?? null;
 	}
 }
