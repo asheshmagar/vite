@@ -27,14 +27,16 @@ class Sidebar {
 		$sidebars  = $this->filter(
 			'sidebars',
 			[
-				'sidebar-1' => __( 'Sidebar 1', 'vite' ),
-				'sidebar-2' => __( 'Sidebar 2', 'vite' ),
-				'footer-1'  => __( 'Footer 1', 'vite' ),
-				'footer-2'  => __( 'Footer 2', 'vite' ),
-				'footer-3'  => __( 'Footer 3', 'vite' ),
-				'footer-4'  => __( 'Footer 4', 'vite' ),
-				'footer-5'  => __( 'Footer 5', 'vite' ),
-				'footer-6'  => __( 'Footer 6', 'vite' ),
+				'sidebar-1'       => __( 'Sidebar 1', 'vite' ),
+				'sidebar-2'       => __( 'Sidebar 2', 'vite' ),
+				'header-widget-1' => __( 'Header Widget 1', 'vite' ),
+				'header-widget-2' => __( 'Header Widget 2', 'vite' ),
+				'footer-widget-1' => __( 'Footer Widget 1', 'vite' ),
+				'footer-widget-2' => __( 'Footer Widget 2', 'vite' ),
+				'footer-widget-3' => __( 'Footer Widget 3', 'vite' ),
+				'footer-widget-4' => __( 'Footer Widget 4', 'vite' ),
+				'footer-widget-5' => __( 'Footer Widget 5', 'vite' ),
+				'footer-widget-6' => __( 'Footer Widget 6', 'vite' ),
 			]
 		);
 		$title_tag = $this->filter( 'sidebars/title/tag', 'h2' );
@@ -94,8 +96,10 @@ class Sidebar {
 			esc_attr( $wrapper_id ),
 			esc_attr( $wrapper_class )
 		);
+
+		$is_active = ! in_array( $id, [ 'sidebar-1', 'sidebar-2' ], true ) || is_active_sidebar( $id );
 		?>
-			<?php if ( is_active_sidebar( $id ) ) : ?>
+			<?php if ( $is_active ) : ?>
 				<?php dynamic_sidebar( $id ); ?>
 			<?php elseif ( current_user_can( 'edit_theme_options' ) ) : ?>
 				<section class="widget">
