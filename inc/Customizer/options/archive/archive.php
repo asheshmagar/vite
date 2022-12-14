@@ -77,32 +77,38 @@ vite( 'customizer' )->add(
 			],
 		],
 		'vite[archive-layout]'         => [
-			'section'   => 'vite[archive]',
-			'type'      => 'vite-select',
-			'title'     => __( 'Layout', 'vite' ),
-			'default'   => vite( 'core' )->get_theme_mod_defaults()['archive-layout'],
-			'choices'   => [
+			'section'     => 'vite[archive]',
+			'type'        => 'vite-select',
+			'title'       => __( 'Layout', 'vite' ),
+			'default'     => vite( 'core' )->get_theme_mod_defaults()['archive-layout'],
+			'choices'     => [
 				'wide'          => __( 'Wide', 'vite' ),
 				'narrow'        => __( 'Narrow', 'vite' ),
 				'fullwidth'     => __( 'Fullwidth', 'vite' ),
 				'left-sidebar'  => __( 'Left Sidebar', 'vite' ),
 				'right-sidebar' => __( 'Right Sidebar', 'vite' ),
 			],
-			'transport' => 'refresh',
+			'transport'   => 'refresh',
+			'input_attrs' => [
+				'separator' => true,
+			],
 		],
 		'vite[archive-style]'          => [
-			'section' => 'vite[archive]',
-			'type'    => 'vite-select',
-			'title'   => __( 'Style', 'vite' ),
-			'default' => vite( 'core' )->get_theme_mod_defaults()['archive-style'],
-			'choices' => [
+			'section'     => 'vite[archive]',
+			'type'        => 'vite-select',
+			'title'       => __( 'Style', 'vite' ),
+			'default'     => vite( 'core' )->get_theme_mod_defaults()['archive-style'],
+			'choices'     => [
 				'grid' => __( 'Grid', 'vite' ),
 				'list' => __( 'List', 'vite' ),
 			],
-			'partial' => [
+			'partial'     => [
 				'selector'            => '.vite-posts',
 				'container_inclusive' => true,
 				'render_callback'     => $posts_render_callback,
+			],
+			'input_attrs' => [
+				'separator' => true,
 			],
 		],
 		'vite[archive-columns]'        => [
@@ -131,7 +137,8 @@ vite( 'customizer' )->add(
 			'title'     => __( 'Masonry', 'vite' ),
 			'default'   => vite( 'core' )->get_theme_mod_defaults()['archive-style-masonry'],
 			'condition' => [
-				'vite[archive-style]' => 'grid',
+				'vite[archive-style]'    => 'grid',
+				'vite[archive-columns]!' => '1',
 			],
 			'partial'   => [
 				'selector'            => '.vite-posts',
@@ -195,6 +202,7 @@ vite( 'customizer' )->add(
 						'label' => __( 'Comments', 'vite' ),
 					],
 				],
+				'separator'        => true,
 			],
 			'partial'     => [
 				'selector'            => '.vite-posts',
