@@ -24,10 +24,11 @@ $options = [
 		'title'       => __( 'Container narrow width', 'vite' ),
 		'default'     => vite( 'core' )->get_theme_mod_defaults()['container-narrow-width'],
 		'input_attrs' => [
-			'min'   => 428,
-			'max'   => 1028,
-			'step'  => 1,
-			'units' => [ 'px' ],
+			'min'       => 428,
+			'max'       => 1028,
+			'step'      => 1,
+			'units'     => [ 'px' ],
+			'separator' => true,
 		],
 	],
 	'vite[content-spacing]'        => [
@@ -38,6 +39,7 @@ $options = [
 		'input_attrs' => [
 			'units'      => [ 'px', 'rem', 'em' ],
 			'responsive' => true,
+			'separator'  => true,
 		],
 		'selectors'   => [ '.site-content' ],
 		'properties'  => [ 'padding-block' ],

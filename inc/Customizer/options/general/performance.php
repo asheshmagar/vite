@@ -27,6 +27,7 @@ $options = [
 		'default'     => 'inline',
 		'input_attrs' => [
 			'allow_reset' => false,
+			'separator'   => true,
 		],
 	],
 	'vite[local-google-fonts]' => [
@@ -36,6 +37,8 @@ $options = [
 		'default'     => false,
 		'input_attrs' => [
 			'allow_reset' => false,
+			'separator'   => true,
+
 		],
 	],
 	'vite[css-preload]'        => [
@@ -45,6 +48,7 @@ $options = [
 		'default'     => false,
 		'input_attrs' => [
 			'allow_reset' => false,
+			'separator'   => true,
 		],
 	],
 ];

@@ -17,9 +17,12 @@ $options = [
 		],
 	],
 	'vite[buttons-border]'        => [
-		'section' => 'vite[global-buttons]',
-		'type'    => 'vite-border',
-		'title'   => __( 'Border', 'vite' ),
+		'section'     => 'vite[global-buttons]',
+		'type'        => 'vite-border',
+		'title'       => __( 'Border', 'vite' ),
+		'input_attrs' => [
+			'separator' => true,
+		],
 	],
 	'vite[buttons-border-radius]' => [
 		'section'     => 'vite[global-buttons]',
@@ -28,6 +31,7 @@ $options = [
 		'input_attrs' => [
 			'units'      => [ 'px', 'rem', 'em' ],
 			'responsive' => true,
+			'separator'  => true,
 		],
 	],
 ];
