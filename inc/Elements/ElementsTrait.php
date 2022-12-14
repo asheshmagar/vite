@@ -16,6 +16,7 @@ trait ElementsTrait {
 	 *
 	 * @param string $element Element.
 	 * @param array  $args Args.
+	 *
 	 * @return void
 	 */
 	public function render( string $element, array $args = [] ) {
