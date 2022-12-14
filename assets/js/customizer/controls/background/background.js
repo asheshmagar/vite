@@ -2,9 +2,8 @@ import { memo, useState, RawHTML } from '@wordpress/element';
 import { MediaUpload } from '@wordpress/block-editor';
 import { __ } from '@wordpress/i18n';
 import { ViteColorPicker } from '../../components';
-import { Button, ButtonGroup, FocalPointPicker, SelectControl } from '@wordpress/components';
+import { Button, ButtonGroup, FocalPointPicker, SelectControl, Tooltip } from '@wordpress/components';
 import { useDeviceSelector } from '../../hooks';
-import Tab from './tab';
 import { isEqual } from 'lodash';
 
 const TABS = [
@@ -82,18 +81,23 @@ export default memo( ( props ) => {
 			) }
 			<ButtonGroup className="vite-background-tabs">
 				{ TABS.map( tab => (
-					<Tab
+					<Tooltip
 						key={ tab.value }
-						className={ `vite-${ tab.value }${ value?.type === tab.value || ( ! value?.type && 'color' === tab.value ) ? ' is-primary' : '' }` }
-						onClick={ () => {
-							const temp = { ...( value || {} ) };
-							temp.type = tab.value;
-							setting.set( temp );
-							setValue( temp );
-						} }
-						icon={ tab.icon }
-						label={ tab.label }
-					/>
+						text={ tab.label ?? '' }
+						delay={ 100 }
+						position="top center"
+					>
+						<Button
+							className={ `vite-${ tab.value }${ value?.type === tab.value || ( ! value?.type && 'color' === tab.value ) ? ' is-primary' : '' }` }
+							onClick={ () => {
+								const temp = { ...( value || {} ) };
+								temp.type = tab.value;
+								setting.set( temp );
+								setValue( temp );
+							} }
+							icon={ tab.icon }
+						/>
+					</Tooltip>
 				) ) }
 			</ButtonGroup>
 			<div className="vite-control-body">
