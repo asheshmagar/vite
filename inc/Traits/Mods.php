@@ -480,7 +480,48 @@ trait Mods {
 			],
 		];
 
-		return $this->filter( 'theme-mods/defaults', array_merge( $defaults, $header_button_defaults ) );
+		$footer_row_layout_defaults = array_reduce(
+			[ 'top', 'main', 'bottom' ],
+			function( $acc, $curr ) {
+				$acc[ "footer-$curr-row-col-layout" ] = [
+					'1' => [
+						'desktop' => '100',
+						'tablet'  => 'stacked',
+						'mobile'  => 'stacked',
+					],
+					'2' => [
+						'desktop' => '50-50',
+						'tablet'  => 'stacked',
+						'mobile'  => 'stacked',
+					],
+					'3' => [
+						'desktop' => '33-33-33',
+						'tablet'  => 'stacked',
+						'mobile'  => 'stacked',
+					],
+					'4' => [
+						'desktop' => '25-25-25-25',
+						'tablet'  => 'stacked',
+						'mobile'  => 'stacked',
+					],
+					'5' => [
+						'desktop' => '20-20-20-20-20',
+						'tablet'  => 'stacked',
+						'mobile'  => 'stacked',
+					],
+					'6' => [
+						'desktop' => '16-16-16-16-16-16',
+						'tablet'  => 'stacked',
+						'mobile'  => 'stacked',
+					],
+				];
+
+				return $acc;
+			},
+			[]
+		);
+
+		return $this->filter( 'theme-mods/defaults', array_merge( $defaults, $header_button_defaults, $footer_row_layout_defaults ) );
 	}
 
 	/**
