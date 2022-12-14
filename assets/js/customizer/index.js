@@ -109,7 +109,13 @@ const api = wp.customize;
 				if ( ! control ) return true;
 				const setting = control.get();
 				if ( key.startsWith( '!' ) || key.endsWith( '!' ) ) {
+					if ( Array.isArray( value ) ) {
+						return ! value.includes( setting );
+					}
 					return setting !== value;
+				}
+				if ( Array.isArray( value ) ) {
+					return value.includes( setting );
 				}
 				return setting === value;
 			} );
@@ -159,42 +165,41 @@ const api = wp.customize;
 			}
 		} );
 
-		const initHeaderBuilderPanel = ( panel ) => {
-			const builderSection = api.section( 'vite[header-builder]' );
+		for ( const builder of [ 'header', 'footer' ] ) {
+			api.panel( `vite[${ builder }-builder]`, panel => {
+				const builderSection = api.section( `vite[${ builder }-builder]` );
 
-			if ( ! builderSection ) return;
-			const settings = api.section( 'vite[header-builder-settings]' );
+				if ( ! builderSection ) return;
+				const settings = api.section( `vite[${ builder }-builder-settings]` );
 
-			panel.expanded.bind( expanded => {
-				_.each( builderSection.controls(), control => {
-					if ( 'resolved' === control.deferred.embedded.state() ) return;
-					control.renderContent();
-					control.deferred.embedded.resolve();
-					control.container.trigger( 'init' );
-				} );
-
-				if ( expanded ) {
-					$( '.wp-full-overlay' ).attr( 'data-builder', 'active' );
-				} else {
-					$( '.wp-full-overlay' ).removeAttr( 'data-builder' );
-				}
-
-				if ( settings ) {
-					_.each( settings.controls(), control => {
+				panel.expanded.bind( expanded => {
+					_.each( builderSection.controls(), control => {
 						if ( 'resolved' === control.deferred.embedded.state() ) return;
 						control.renderContent();
 						control.deferred.embedded.resolve();
 						control.container.trigger( 'init' );
 					} );
-				}
-			} );
-		};
 
-		api.panel( 'vite[header-builder]', initHeaderBuilderPanel );
+					if ( expanded ) {
+						$( '.wp-full-overlay' ).attr( `data-${ builder }-builder`, 'active' );
+					} else {
+						$( '.wp-full-overlay' ).removeAttr( `data-${ builder }-builder` );
+					}
+
+					if ( settings ) {
+						_.each( settings.controls(), control => {
+							if ( 'resolved' === control.deferred.embedded.state() ) return;
+							control.renderContent();
+							control.deferred.embedded.resolve();
+							control.container.trigger( 'init' );
+						} );
+					}
+				} );
+			} );
+		}
 	} );
 }
 
 for ( const control in controls ) {
 	controls[ control ]();
 }
-
