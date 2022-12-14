@@ -51,7 +51,7 @@ $col_layouts = [
 		'desktop' => [
 			'25-25-25-25' => '25/25/25/25',
 			'50-25-25-25' => '50/25/25/25',
-			'25-50-25-25' => '25/50/25/25',
+			'25-25-25-50' => '25/50/25/25',
 		],
 		'mobile'  => [
 			'stacked' => __( 'Stacked', 'vite' ),
@@ -136,6 +136,7 @@ $row_options = array_reduce(
 			'section'     => "vite[footer-$curr-row]",
 			'type'        => 'vite-adv-select',
 			'title'       => __( 'Layout', 'vite' ),
+			'default'     => $core->get_theme_mod_defaults()[ "footer-$curr-row-col-layout" ],
 			'choices'     => array_map(
 				function( $col ) {
 					return array_merge(
