@@ -19,6 +19,8 @@ export default memo( ( props ) => {
 					max = 300,
 					step = 1,
 					allow_reset: allowReset = true,
+					marks = false,
+					input = true,
 				},
 				default: defaultValue,
 			},
@@ -64,6 +66,8 @@ export default memo( ( props ) => {
 								min={ min }
 								max={ max }
 								step={ step }
+								marks={ marks }
+								input={ input }
 							/>
 						)
 					) )
@@ -79,6 +83,8 @@ export default memo( ( props ) => {
 						min={ min }
 						max={ max }
 						step={ step }
+						marks={ marks }
+						input={ input }
 					/>
 				) }
 			</div>
