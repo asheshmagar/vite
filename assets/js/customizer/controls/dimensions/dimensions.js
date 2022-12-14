@@ -195,12 +195,12 @@ export default memo( ( props ) => {
 							</span>
 						) ) }
 						<span className="vite-dimension-sync" onClick={ () => {
-							const maxSide = Object.entries( value ?? {} )
-								.filter( ( [ k ] ) => ! [ 'unit', 'sync' ].includes( k ) )
-								.reduce( ( acc, [ , v = '' ] ) => {
-									v = isNaN( v ) ? 0 : parseFloat( v );
-									return v > acc ? v : acc;
-								} );
+							// const maxSide = Object.entries( value ?? {} )
+							// 	.filter( ( [ k ] ) => ! [ 'unit', 'sync' ].includes( k ) )
+							// 	.reduce( ( acc, [ , v = '' ] ) => {
+							// 		v = isNaN( v ) ? 0 : parseFloat( v );
+							// 		return v > acc ? v : acc;
+							// 	} );
 							setValue( prev => {
 								prev = {
 									...( prev || {} ),
