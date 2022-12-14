@@ -16,7 +16,14 @@ $options = array_reduce(
 			'partial' => [
 				'selector'        => ".vite-button--$curr",
 				'render_callback' => function() use ( $curr ) {
-					get_template_part( 'template-parts/header/header', 'button', [ 'type' => $curr ] );
+					get_template_part(
+						'template-parts/builder-elements/button',
+						'',
+						[
+							'type'    => $curr,
+							'context' => 'header',
+						]
+					);
 				},
 			],
 		];
@@ -28,7 +35,14 @@ $options = array_reduce(
 			'partial' => [
 				'selector'        => ".vite-button--$curr",
 				'render_callback' => function() use ( $curr ) {
-					get_template_part( 'template-parts/header/header', 'button', [ 'type' => $curr ] );
+					get_template_part(
+						'template-parts/builder-elements/button',
+						'',
+						[
+							'type'    => $curr,
+							'context' => 'header',
+						]
+					);
 				},
 			],
 		];
@@ -40,7 +54,14 @@ $options = array_reduce(
 			'partial' => [
 				'selector'        => ".vite-button--$curr",
 				'render_callback' => function() use ( $curr ) {
-					get_template_part( 'template-parts/header/header', 'button', [ 'type' => $curr ] );
+					get_template_part(
+						'template-parts/builder-elements/button',
+						'',
+						[
+							'type'    => $curr,
+							'context' => 'header',
+						]
+					);
 				},
 			],
 		];
@@ -52,7 +73,14 @@ $options = array_reduce(
 			'partial' => [
 				'selector'        => ".vite-button--$curr",
 				'render_callback' => function() use ( $curr ) {
-					get_template_part( 'template-parts/header/header', 'button', [ 'type' => $curr ] );
+					get_template_part(
+						'template-parts/builder-elements/button',
+						'',
+						[
+							'type'    => $curr,
+							'context' => 'header',
+						]
+					);
 				},
 			],
 		];
@@ -64,7 +92,14 @@ $options = array_reduce(
 			'partial' => [
 				'selector'        => ".vite-button--$curr",
 				'render_callback' => function() use ( $curr ) {
-					get_template_part( 'template-parts/header/header', 'button', [ 'type' => $curr ] );
+					get_template_part(
+						'template-parts/builder-elements/button',
+						'',
+						[
+							'type'    => $curr,
+							'context' => 'header',
+						]
+					);
 				},
 			],
 		];
@@ -76,7 +111,14 @@ $options = array_reduce(
 			'partial' => [
 				'selector'        => ".vite-button--$curr",
 				'render_callback' => function() use ( $curr ) {
-					get_template_part( 'template-parts/header/header', 'button', [ 'type' => $curr ] );
+					get_template_part(
+						'template-parts/builder-elements/button',
+						'',
+						[
+							'type'    => $curr,
+							'context' => 'header',
+						]
+					);
 				},
 			],
 		];
@@ -88,7 +130,14 @@ $options = array_reduce(
 			'partial' => [
 				'selector'        => ".vite-button--$curr",
 				'render_callback' => function() use ( $curr ) {
-					get_template_part( 'template-parts/header/header', 'button', [ 'type' => $curr ] );
+					get_template_part(
+						'template-parts/builder-elements/button',
+						'',
+						[
+							'type'    => $curr,
+							'context' => 'header',
+						]
+					);
 				},
 			],
 			'choices' => [

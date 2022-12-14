@@ -14,7 +14,8 @@ $options = [
 		'partial'     => [
 			'selector'        => '.vite-social',
 			'render_callback' => function () {
-				get_template_part( 'template-parts/header/header', 'socials' );
+				get_template_part( 'template-parts/builder-elements/socials', '', [ 'context' => 'header' ] );
+
 			},
 		],
 		'choices'     => vite( 'core' )->get_social_networks(),
@@ -30,7 +31,8 @@ $options = [
 		'partial'     => [
 			'selector'        => '.vite-social',
 			'render_callback' => function () {
-				get_template_part( 'template-parts/header/header', 'socials' );
+				get_template_part( 'template-parts/builder-elements/socials', '', [ 'context' => 'header' ] );
+
 			},
 		],
 		'input_attrs' => [
@@ -47,7 +49,8 @@ $options = [
 		'partial'   => [
 			'selector'        => '.vite-social',
 			'render_callback' => function () {
-				get_template_part( 'template-parts/header/header', 'socials' );
+				get_template_part( 'template-parts/builder-elements/socials', '', [ 'context' => 'header' ] );
+
 			},
 		],
 		'choices'   => [

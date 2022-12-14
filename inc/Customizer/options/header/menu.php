@@ -22,7 +22,7 @@ $options = array_reduce(
 				'selector'            => ".vite-nav--$curr",
 				'container_inclusive' => true,
 				'render_callback'     => function() use ( $curr ) {
-					get_template_part( 'template-parts/header/header', "menu-$curr" );
+					get_template_part( 'template-parts/builder-elements/menu', '', [ 'type' => $curr ] );
 				},
 			],
 			'input_attrs' => [
@@ -36,7 +36,7 @@ $options = array_reduce(
 			'title'       => __( 'Colors', 'vite' ),
 			'default'     => vite( 'core' )->get_theme_mod_defaults()[ "header-menu-$curr-colors" ],
 			'input_attrs' => [
-				'colors' => [
+				'colors'    => [
 					[
 						'id'    => '--link--color',
 						'label' => __( 'Normal', 'vite' ),
@@ -50,6 +50,8 @@ $options = array_reduce(
 						'label' => __( 'Active', 'vite' ),
 					],
 				],
+				'separator' => true,
+
 			],
 			'selectors'   => [ ".vite-nav--$curr" ],
 			'properties'  => [ '' ],
@@ -62,9 +64,10 @@ $options = array_reduce(
 				'title'       => __( 'Items Spacing', 'vite' ),
 				'default'     => vite( 'core' )->get_theme_mod_defaults()[ "header-menu-$curr-items-spacing" ],
 				'input_attrs' => [
-					'min'  => 0,
-					'max'  => 100,
-					'step' => 1,
+					'min'       => 0,
+					'max'       => 100,
+					'step'      => 1,
+					'separator' => true,
 				],
 				'selectors'   => [ ".vite-nav--$curr" ],
 				'properties'  => [ '--items--spacing: {{value}}px;' ],
@@ -72,15 +75,19 @@ $options = array_reduce(
 		}
 
 		$acc[ "vite[header-menu-$curr-typography]" ] = [
-			'section'    => "vite[header-menu-$curr]",
-			'type'       => 'vite-typography',
-			'title'      => __( 'Typography', 'vite' ),
-//			'default'    => vite( 'core' )->get_theme_mod_defaults()[ "header-menu-$curr-typography" ],
-			'selectors'  => [ ".vite-nav--$curr" ],
-			'properties' => [ '' ],
+			'section'     => "vite[header-menu-$curr]",
+			'type'        => 'vite-typography',
+			'title'       => __( 'Typography', 'vite' ),
+			'selectors'   => [ ".vite-nav--$curr" ],
+			'properties'  => [ '' ],
+			'input_attrs' => [
+				'separator' => true,
+			],
 		];
 
 		return $acc;
 	},
 	[]
 );
+
+vite( 'customizer' )->add( 'settings', $options );

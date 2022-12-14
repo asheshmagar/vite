@@ -12,11 +12,18 @@ $options = array_reduce(
 			'section' => "vite[header-html-$curr]",
 			'type'    => 'vite-editor',
 			'title'   => __( 'HTML', 'vite' ),
-			'default' => vite( 'core' )->get_theme_mod_defaults()[ "header-html-$curr" ],
+			'default' => vite( 'core' )->get_theme_mod_default( "header-html-$curr" ),
 			'partial' => [
-				'selector'        => ".vite-html--$curr",
+				'selector'        => ".vite-header .vite-html--$curr",
 				'render_callback' => function() use ( $curr ) {
-					get_template_part( 'template-parts/header/header', 'html', [ 'type' => $curr ] );
+					get_template_part(
+						'template-parts/builder-elements/html',
+						'',
+						[
+							'type'    => $curr,
+							'context' => 'header',
+						]
+					);
 				},
 			],
 		];

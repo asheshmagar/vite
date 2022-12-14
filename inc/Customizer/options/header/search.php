@@ -14,7 +14,7 @@ $options = [
 		'partial' => [
 			'selector'        => '.vite-search',
 			'render_callback' => function () {
-				get_template_part( 'template-parts/header/header', 'search' );
+				get_template_part( 'template-parts/builder-elements/search', '' );
 			},
 		],
 	],
@@ -26,7 +26,7 @@ $options = [
 		'partial'   => [
 			'selector'        => '.vite-search',
 			'render_callback' => function () {
-				get_template_part( 'template-parts/header/header', 'search' );
+				get_template_part( 'template-parts/builder-elements/search', '' );
 			},
 		],
 		'choices'   => [
@@ -46,7 +46,7 @@ $options = [
 		'partial'     => [
 			'selector'        => '.vite-search',
 			'render_callback' => function () {
-				get_template_part( 'template-parts/header/header', 'search' );
+				get_template_part( 'template-parts/builder-elements/search', '' );
 			},
 		],
 		'choices'     => [
@@ -69,7 +69,7 @@ $options = [
 		'partial' => [
 			'selector'        => '.vite-search',
 			'render_callback' => function () {
-				get_template_part( 'template-parts/header/header', 'search' );
+				get_template_part( 'template-parts/builder-elements/search', '' );
 			},
 		],
 	],
