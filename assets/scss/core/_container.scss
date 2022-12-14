@@ -1,3 +1,6 @@
+$layouts: ( '100': '1fr', '50-50': 'repeat(2, 1fr)', '33-66': '0.33fr 0.66fr', '66-33': '0.66fr 0.33fr', '25-50-25': '0.25fr 0.5fr 0.25fr', '25-25-50': 'repeat(2, 0.25fr) 0.50fr', '50-25-25': '0.50fr repeat(2, 0.25fr)', '33-33-33': 'repeat(3,1fr)', '25-25-25-25': 'repeat(4, 1fr)', '50-25-25-25': '0.50fr repeat(3, 0.25fr)', '25-25-25-50': 'repeat(3, 0.25fr) 0.50fr', '20-20-20-20-20': 'repeat(5, 1fr)', '16-16-16-16-16-16': 'repeat(6, 1fr)' );
+
+
 .vite-container {
 	max-width: var(--container--width);
 	padding: var(--container--padding--block, 0px) var(--container--padding--inline);
@@ -15,5 +18,27 @@
 
 	&--col-lf-even {
 		--grid--columns: 1fr auto 1fr;
+	}
+
+	@each $layout, $p in $layouts {
+		&--#{$layout} {
+			--grid--columns: #{$p};
+		}
+	}
+
+	@include media-query('tablet') {
+		@each $k, $v in ('stacked': '1fr', '50-50': '1fr 1fr') {
+			&--md-#{$k} {
+				--grid--columns: #{$v};
+			}
+		}
+	}
+
+	@include media-query('mobile') {
+		@each $k, $v in ('stacked': '1fr', '50-50': '1fr 1fr') {
+			&--sm-#{$k} {
+				--grid--columns: #{$v};
+			}
+		}
 	}
 }
