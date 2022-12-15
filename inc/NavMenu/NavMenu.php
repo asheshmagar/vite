@@ -133,6 +133,10 @@ class NavMenu {
 			$args['depth'] = 1;
 		}
 
+		if ( vite( 'core' )->get_theme_mod( "header-menu-$type-one-line", false ) ) {
+			$args['container_class'] .= ' vite-nav--one-line';
+		}
+
 		$args = $this->filter( "menu/$type/args", $args );
 
 		wp_nav_menu( $args );
