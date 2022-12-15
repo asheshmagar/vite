@@ -91,8 +91,8 @@ export default memo( ( props ) => {
 					setValue( prev => {
 						const data = cloneDeep( prev );
 						for ( const i of range( parseInt( v ), 6 ) ) {
-							if ( data?.desktop?.[ pos ]?.[ i ]?.length ) {
-								data.desktop[ pos ][ i ] = [];
+							if ( data?.desktop?.[ pos ]?.[ i + 1 ]?.length ) {
+								data.desktop[ pos ][ i + 1 ] = [];
 							}
 						}
 						setting.set( data );
