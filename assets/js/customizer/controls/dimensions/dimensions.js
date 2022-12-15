@@ -1,17 +1,9 @@
 import { memo, useState, RawHTML } from '@wordpress/element';
 import { useDeviceSelector } from '../../hooks';
 import { DEVICES } from '../../constants';
-import { Button, ButtonGroup, Dashicon, Dropdown } from '@wordpress/components';
+import { Button, ButtonGroup, Dropdown } from '@wordpress/components';
 import { isEqual } from 'lodash';
-
-/* eslint-disable jsx-a11y/click-events-have-key-events,jsx-a11y/no-static-element-interactions */
-
-const SIDES = [
-	{ label: 'Top', value: 'top' },
-	{ label: 'Right', value: 'right' },
-	{ label: 'Bottom', value: 'bottom' },
-	{ label: 'Left', value: 'left' },
-];
+import { ViteDimensions } from '../../components';
 
 export default memo( ( props ) => {
 	let {
@@ -28,6 +20,7 @@ export default memo( ( props ) => {
 					min = 0,
 					max = 300,
 					allow_reset: allowReset = true,
+					sides = [ 'top', 'right', 'bottom', 'left' ],
 				},
 				default: defaultValue,
 			},
@@ -109,110 +102,49 @@ export default memo( ( props ) => {
 			<div className="vite-control-body">
 				{ responsive ? (
 					DEVICES.map( ( d ) => (
-						<div key={ d } style={ { display: d === device ? 'grid' : 'none' } } className="vite-dimensions">
-							{ SIDES.map( ( side ) => (
-								<span key={ side.value } className="vite-dimension">
-									<input
-										type="number"
-										value={ value?.[ d ]?.[ side.value ] ?? '' }
-										onChange={ ( e ) => {
-											setValue( prev => {
-												prev = { ...prev,
-													[ d ]: {
-														...( prev?.[ d ] || {} ),
-														...(
-															prev?.[ d ]?.sync ?
-																{
-																	top: e.target.value,
-																	right: e.target.value,
-																	bottom: e.target.value,
-																	left: e.target.value,
-																} : {
-																	[ side.value ]: e.target.value,
-																}
-														),
-													},
-												};
-												setting.set( prev );
-												return prev;
-											} );
-										} }
-										max={ max }
-										min={ min }
-										step={ step }
-									/>
-									<span className="vite-dimension-label">{ side.label }</span>
-								</span>
-							) ) }
-							<span className="vite-dimension-sync" onClick={ () => {
+						<ViteDimensions
+							key={ d }
+							sides={ sides }
+							style={ { display: d === device ? 'grid' : 'none' } }
+							value={ value?.[ d ] ?? {} }
+							onChange={ ( v ) => {
 								setValue( prev => {
-									prev = { ...( prev || {} ),
+									prev = {
+										...( prev || {} ),
 										[ d ]: {
-											...prev?.[ d ],
-											sync: ! prev?.[ d ]?.sync,
+											...( prev?.[ d ] || {} ),
+											...v,
 										},
 									};
 									setting.set( prev );
 									return prev;
 								} );
-							} }>
-								<Dashicon icon={ value?.[ d ]?.sync ? 'lock' : 'unlock' } />
-							</span>
-						</div>
+							} }
+							max={ max }
+							min={ min }
+							step={ step }
+							units={ [] }
+						/>
 					) )
 				) : (
-					<div className="vite-dimensions">
-						{ SIDES.map( ( side ) => (
-							<span key={ side.value } className="vite-dimension">
-								<input
-									type="number"
-									value={ value?.[ side.value ] ?? '' }
-									onChange={ ( e ) => {
-										setValue( prev => {
-											prev = {
-												...prev,
-												...(
-													prev?.sync ?
-														{
-															top: e.target.value,
-															right: e.target.value,
-															bottom: e.target.value,
-															left: e.target.value,
-														} : {
-															[ side.value ]: e.target.value,
-														}
-												),
-											};
-											setting.set( prev );
-											return prev;
-										} );
-									} }
-									max={ max }
-									min={ min }
-									step={ step }
-								/>
-								<span className="vite-dimension-label">{ side.label }</span>
-							</span>
-						) ) }
-						<span className="vite-dimension-sync" onClick={ () => {
-							// const maxSide = Object.entries( value ?? {} )
-							// 	.filter( ( [ k ] ) => ! [ 'unit', 'sync' ].includes( k ) )
-							// 	.reduce( ( acc, [ , v = '' ] ) => {
-							// 		v = isNaN( v ) ? 0 : parseFloat( v );
-							// 		return v > acc ? v : acc;
-							// 	} );
+					<ViteDimensions
+						value={ value ?? {} }
+						onChange={ ( v ) => {
 							setValue( prev => {
 								prev = {
 									...( prev || {} ),
-									sync: ! prev?.sync,
+									...v,
 								};
 								setting.set( prev );
 								return prev;
 							} );
-						} }>
-							<Dashicon icon={ value?.sync ? 'lock' : 'unlock' } />
-						</span>
-					</div>
+						} }
+						max={ max }
+						min={ min }
+						step={ step }
+						sides={ sides }
+						units={ [] }
+					/>
 				) }
 			</div>
 			{ description && (
