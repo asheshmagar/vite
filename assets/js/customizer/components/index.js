@@ -3,3 +3,4 @@ export { default as ViteColorPicker } from './color-picker';
 export { default as ViteRange } from './range';
 export { default as Popover } from './popover';
 export { default as Reset } from './reset';
+export { default as ViteDimensions } from './dimensions';

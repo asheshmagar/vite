@@ -1,0 +1,51 @@
+.vite-dimensions {
+	display: grid;
+	grid-template-columns: repeat(4, 1fr) 30px;
+	grid-gap: 5px;
+
+	&.has-units {
+		grid-template-columns: repeat(4, 1fr) 30px 30px;
+	}
+
+	.vite-units {
+		align-self: start;
+	}
+
+	.vite-dimension {
+		text-align: center;
+
+		&.disabled {
+			opacity: 0.5;
+		}
+
+		.vite-dimension-label {
+			font-size: 11px;
+		}
+
+		input {
+			appearance: none;
+			-moz-appearance: textfield;
+			display: block;
+			width: 100%;
+			text-align: center;
+
+			&::-webkit-outer-spin-button,
+			&::-webkit-inner-spin-button {
+				-webkit-appearance: none;
+				margin: 0;
+			}
+		}
+	}
+
+	.vite-dimension-sync {
+		display: grid;
+		place-items: center;
+		height: 30px;
+		cursor: pointer;
+		.dashicon {
+			font-size: 14px;
+			width: 14px;
+			height: 14px;
+		}
+	}
+}
