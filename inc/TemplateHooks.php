@@ -56,8 +56,32 @@ class TemplateHooks {
 		$this->add_action( 'vite/single/content/content/start', [ $this, 'single_featured_image' ] );
 		$this->add_action( 'vite/single/content/header', [ $this, 'single_header_elements' ] );
 
+		add_action( 'wp_footer', [ $this, 'scroll_to_top' ] );
 		add_filter( 'post_class', [ $this, 'post_class' ], 10, 3 );
 		add_filter( 'body_class', [ $this, 'body_class' ] );
+	}
+
+	/**
+	 * Scroll to top.
+	 *
+	 * @return void
+	 */
+	public function scroll_to_top() {
+		?>
+		<div class="vite-modal vite-modal--scroll-to-top">
+			<button aria-label="<?php esc_html_e( 'Scroll to top', 'vite' ); ?>">
+				<?php
+				vite( 'icon' )->get_icon(
+					'arrow-up',
+					[
+						'echo' => true,
+						'size' => 13,
+					]
+				);
+				?>
+			</button>
+		</div>
+		<?php
 	}
 
 	/**
