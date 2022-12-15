@@ -1,7 +1,8 @@
 import { RawHTML, memo, useState } from '@wordpress/element';
-import { ViteColorPicker, ViteRange } from '../../components';
+import { ViteColorPicker, ViteDimensions } from '../../components';
 import { Button, SelectControl } from '@wordpress/components';
 import { isEqual } from 'lodash';
+import { __ } from '@wordpress/i18n';
 
 const COLOR_STATES = [
 	{ label: 'Normal', value: 'normal' },
@@ -33,6 +34,8 @@ export default memo( ( props ) => {
 				default: defaultValue,
 				inputAttrs: {
 					allow_reset: allowReset = true,
+					allow_hover: allowHover = true,
+					sides = [ 'top', 'right', 'bottom', 'left' ],
 				},
 			},
 		},
@@ -77,7 +80,7 @@ export default memo( ( props ) => {
 						<div className="vite-border-colors">
 							<span>Color</span>
 							<div className="vite-border-colors-inner">
-								{ COLOR_STATES.map( s => (
+								{ COLOR_STATES.filter( c => ! allowHover ? c.value !== 'hover' : true ).map( s => (
 									<ViteColorPicker
 										key={ s?.value }
 										value={ value?.color?.[ s.value ] ?? '' }
@@ -100,18 +103,21 @@ export default memo( ( props ) => {
 							</div>
 						</div>
 						<div className="vite-border-width">
-							<span>Width</span>
-							<ViteRange
-								onChange={ val => {
+							<span>{ __( 'Width' ) }</span>
+							<ViteDimensions
+								onChange={ ( val ) => {
 									setValue( prev => {
-										prev = { ...( prev || {} ), width: val };
+										prev = { ...( prev || {} ), width: {
+											...( prev?.width || {} ),
+											...val,
+										} };
 										setting.set( prev );
 										return prev;
 									} );
 								} }
-								value={ value?.width ?? '' }
+								value={ value?.width ?? {} }
 								units={ [ 'px', 'em', 'rem' ] }
-								noUnits={ false }
+								sides={ sides }
 							/>
 						</div>
 					</>
