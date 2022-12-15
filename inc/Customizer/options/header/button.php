@@ -47,11 +47,11 @@ $options = array_reduce(
 			],
 		];
 		$acc[ "vite[header-button-$curr-target]" ]        = [
-			'section' => "vite[header-button-$curr]",
-			'type'    => 'vite-toggle',
-			'title'   => __( 'Open in new tab', 'vite' ),
-			'default' => vite( 'core' )->get_theme_mod_defaults()[ "header-button-$curr-target" ],
-			'partial' => [
+			'section'     => "vite[header-button-$curr]",
+			'type'        => 'vite-toggle',
+			'title'       => __( 'Open in new tab', 'vite' ),
+			'default'     => vite( 'core' )->get_theme_mod_defaults()[ "header-button-$curr-target" ],
+			'partial'     => [
 				'selector'        => ".vite-button--$curr",
 				'render_callback' => function() use ( $curr ) {
 					get_template_part(
@@ -63,6 +63,9 @@ $options = array_reduce(
 						]
 					);
 				},
+			],
+			'input_attrs' => [
+				'separator' => true,
 			],
 		];
 		$acc[ "vite[header-button-$curr-nofollow]" ]      = [
@@ -123,11 +126,11 @@ $options = array_reduce(
 			],
 		];
 		$acc[ "vite[header-button-$curr-style]" ]         = [
-			'section' => "vite[header-button-$curr]",
-			'type'    => 'vite-buttonset',
-			'title'   => __( 'Style', 'vite' ),
-			'default' => vite( 'core' )->get_theme_mod_defaults()[ "header-button-$curr-style" ],
-			'partial' => [
+			'section'     => "vite[header-button-$curr]",
+			'type'        => 'vite-buttonset',
+			'title'       => __( 'Style', 'vite' ),
+			'default'     => vite( 'core' )->get_theme_mod_defaults()[ "header-button-$curr-style" ],
+			'partial'     => [
 				'selector'        => ".vite-button--$curr",
 				'render_callback' => function() use ( $curr ) {
 					get_template_part(
@@ -140,9 +143,12 @@ $options = array_reduce(
 					);
 				},
 			],
-			'choices' => [
+			'choices'     => [
 				'filled'   => __( 'Filled', 'vite' ),
 				'outlined' => __( 'Outlined', 'vite' ),
+			],
+			'input_attrs' => [
+				'separator' => true,
 			],
 		];
 		$acc[ "vite[header-button-$curr-font-colors]" ]   = [
@@ -151,7 +157,7 @@ $options = array_reduce(
 			'title'       => __( 'Font colors', 'vite' ),
 			'default'     => vite( 'core' )->get_theme_mod_defaults()[ "header-button-$curr-font-colors" ],
 			'input_attrs' => [
-				'colors' => [
+				'colors'    => [
 					[
 						'id'    => '--button--color',
 						'label' => __( 'Normal', 'vite' ),
@@ -161,6 +167,7 @@ $options = array_reduce(
 						'label' => __( 'Hover', 'vite' ),
 					],
 				],
+				'separator' => true,
 			],
 			'selectors'   => [ ".vite-button--$curr .vite-button__link" ],
 			'properties'  => [ '' ],
@@ -198,6 +205,7 @@ $options = array_reduce(
 					'rem',
 				],
 				'responsive' => true,
+				'separator'  => true,
 			],
 			'selectors'   => [ ".vite-button--$curr .vite-button__link" ],
 			'properties'  => [ '--button--border--radius' ],
