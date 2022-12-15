@@ -37,6 +37,10 @@ vite( 'customizer' )->add(
 			'title' => __( 'Button', 'vite' ),
 			'panel' => 'vite[general]',
 		],
+		'vite[scroll-to-top]'           => [
+			'title' => __( 'Scroll To Top', 'vite' ),
+			'panel' => 'vite[general]',
+		],
 		'vite[socials]'                 => [
 			'title' => __( 'Social Accounts Links', 'vite' ),
 			'panel' => 'vite[general]',
