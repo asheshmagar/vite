@@ -33,13 +33,14 @@ $options = [
 	],
 	'vite[content-spacing]'        => [
 		'section'     => 'vite[global-layout]',
-		'type'        => 'vite-slider',
+		'type'        => 'vite-dimensions',
 		'title'       => __( 'Content spacing', 'vite' ),
 		'default'     => vite( 'core' )->get_theme_mod_defaults()['content-spacing'],
 		'input_attrs' => [
 			'units'      => [ 'px', 'rem', 'em' ],
 			'responsive' => true,
 			'separator'  => true,
+			'sides'      => [ 'top', 'bottom' ],
 		],
 		'selectors'   => [ '.site-content' ],
 		'properties'  => [ 'padding-block' ],
