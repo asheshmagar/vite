@@ -57,7 +57,7 @@ $options = array_reduce(
 			'properties'  => [ '' ],
 		];
 
-		if ( in_array( $curr, [ '1', '2' ], true ) ) {
+		if ( in_array( (string) $curr, [ '1', '2' ], true ) ) {
 			$acc[ "vite[header-menu-$curr-items-spacing]" ] = [
 				'section'     => "vite[header-menu-$curr]",
 				'type'        => 'vite-slider',
@@ -68,9 +68,20 @@ $options = array_reduce(
 					'max'       => 100,
 					'step'      => 1,
 					'separator' => true,
+					'units'     => [ 'px' ],
 				],
 				'selectors'   => [ ".vite-nav--$curr" ],
 				'properties'  => [ '--items--spacing: {{value}}px;' ],
+			];
+
+			$acc[ "vite[header-menu-$curr-one-line]" ] = [
+				'section'     => "vite[header-menu-$curr]",
+				'type'        => 'vite-toggle',
+				'title'       => __( 'One Line', 'vite' ),
+				'default'     => false,
+				'input_attrs' => [
+					'separator' => true,
+				],
 			];
 		}
 
