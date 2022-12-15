@@ -19,11 +19,11 @@ class Sanitize {
 	/**
 	 * Sanitize radio.
 	 *
-	 * @param string               $input Input from customizer.
+	 * @param mixed                $input Input from customizer.
 	 * @param WP_Customize_Setting $setting Settings.
 	 * @return string
 	 */
-	public function sanitize_radio( string $input, WP_Customize_Setting $setting ): string {
+	public function sanitize_radio( $input, WP_Customize_Setting $setting ) {
 		$input   = sanitize_text_field( $input );
 		$choices = $setting->manager->get_control( $setting->id )->choices;
 
@@ -37,9 +37,9 @@ class Sanitize {
 	/**
 	 * Sanitize color.
 	 *
-	 * @param string|array         $input Input.
+	 * @param mixed                $input Input.
 	 * @param WP_Customize_Setting $setting Settings.
-	 * @return string|array
+	 * @return mixed
 	 */
 	public function sanitize_color( $input, WP_Customize_Setting $setting ) {
 		$sanitize = function( $color ) use ( $setting ) {
@@ -83,11 +83,11 @@ class Sanitize {
 	/**
 	 * Sanitize text.
 	 *
-	 * @param string               $input Input.
+	 * @param mixed                $input Input.
 	 * @param WP_Customize_Setting $setting Settings.
 	 * @return string
 	 */
-	public function sanitize_input( string $input, WP_Customize_Setting $setting ): string {
+	public function sanitize_input( $input, WP_Customize_Setting $setting ) {
 		$type = $setting->manager->get_control( $setting->id )->input_attrs['type'] ?? 'text';
 
 		switch ( $type ) {
@@ -115,8 +115,8 @@ class Sanitize {
 	/**
 	 * Sanitize buttonset.
 	 *
-	 * @param string|array $input Input.
-	 * @return array|string
+	 * @param mixed $input Input.
+	 * @return mixed|string
 	 */
 	public function sanitize_buttonset( $input ) {
 		if ( is_array( $input ) ) {
@@ -128,11 +128,12 @@ class Sanitize {
 	/**
 	 * Sanitize border.
 	 *
-	 * @param array                $input Input.
+	 * @param mixed                $input Input.
 	 * @param WP_Customize_Setting $setting Settings.
-	 * @return array
+	 * @return mixed
 	 */
-	public function sanitize_border( array $input, WP_Customize_Setting $setting ): array {
+	public function sanitize_border( $input, WP_Customize_Setting $setting ) {
+		$value         = [];
 		$border_styles = [
 			'none',
 			'solid',
@@ -146,31 +147,26 @@ class Sanitize {
 		];
 
 		if ( isset( $input['style'] ) && in_array( $input['style'], $border_styles, true ) ) {
-			$input['style'] = sanitize_text_field( $input['style'] );
-		} else {
-			$input['style'] = 'none';
+			$value['style'] = sanitize_text_field( $input['style'] );
 		}
 		if ( isset( $input['color'] ) ) {
-			$input['color'] = $this->sanitize_color( $input['color'], $setting );
+			$value['color'] = $this->sanitize_color( $input['color'], $setting );
 		}
 		if ( isset( $input['width'] ) ) {
-			$input['width'] = $this->sanitize_slider( $input['width'] );
-		}
-		if ( isset( $input['radius'] ) ) {
-			$input['width'] = $this->sanitize_slider( $input['width'] );
+			$value['width'] = $this->sanitize_dimensions( $input['width'] );
 		}
 
-		return $input;
+		return $value;
 	}
 
 	/**
 	 * Sanitize background.
 	 *
-	 * @param array                $input Input.
+	 * @param mixed                $input Input.
 	 * @param WP_Customize_Setting $setting Settings.
-	 * @return array
+	 * @return mixed
 	 */
-	public function sanitize_background( array $input, WP_Customize_Setting $setting ): array {
+	public function sanitize_background( $input, WP_Customize_Setting $setting ) {
 		if ( isset( $input['type'] ) && in_array( $input['type'], [ 'color', 'gradient', 'image' ], true ) ) {
 			$input['type'] = sanitize_text_field( $input['type'] );
 		} else {
@@ -198,9 +194,9 @@ class Sanitize {
 	 * Sanitize checkbox.
 	 *
 	 * @param mixed $input Input.
-	 * @return bool
+	 * @return mixed
 	 */
-	public function sanitize_checkbox( $input ): bool {
+	public function sanitize_checkbox( $input ) {
 		return 1 === $input || '1' === $input || true === (bool) $input;
 	}
 
@@ -218,10 +214,10 @@ class Sanitize {
 	/**
 	 * Sanitize sortable.
 	 *
-	 * @param array $input Input.
-	 * @return array
+	 * @param mixed $input Input.
+	 * @return mixed
 	 */
-	public function sanitize_sortable( array $input ): array {
+	public function sanitize_sortable( $input ) {
 		foreach ( $input as $i => $val ) {
 			foreach ( $val as $k => $v ) {
 				switch ( $k ) {
@@ -243,10 +239,10 @@ class Sanitize {
 	/**
 	 * Sanitize typography.
 	 *
-	 * @param array $input Input.
-	 * @return array
+	 * @param mixed $input Input.
+	 * @return mixed
 	 */
-	public function sanitize_typography( array $input ): array {
+	public function sanitize_typography( $input ) {
 		foreach ( $input as $key => $value ) {
 			switch ( $key ) {
 				case 'family':
@@ -279,6 +275,7 @@ class Sanitize {
 	 * @return mixed|array
 	 */
 	public function sanitize_dimensions( $input ) {
+		$value    = [];
 		$sanitize = function( $arr ) {
 			foreach ( [ 'top', 'right', 'bottom', 'left', 'unit', 'sync' ] as $k ) {
 				if ( 'sync' === $k ) {
@@ -297,11 +294,11 @@ class Sanitize {
 		$values = array_values( $input );
 
 		if ( isset( $values[0] ) && is_array( $values[0] ) ) {
-			$input = array_map( $sanitize, $input );
+			$value = array_map( $sanitize, $input );
 		} else {
-			$input = $sanitize( $input );
+			$value = $sanitize( (array) $input );
 		}
 
-		return $input;
+		return $value;
 	}
 }
