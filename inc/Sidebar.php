@@ -49,8 +49,8 @@ class Sidebar {
 						'name'          => $name,
 						'id'            => $id,
 						'description'   => __( 'Add widgets here..', 'vite' ),
-						'before_widget' => '<section id="%1$s" class="widget %2$s">',
-						'after_widget'  => '</section>',
+						'before_widget' => '',
+						'after_widget'  => '',
 						'before_title'  => sprintf( '<%s class="widget-title">', $this->filter( "sidebar/$id/title/tag", $title_tag ) ),
 						'after_title'   => sprintf( '</%s>', $this->filter( "sidebar/$id/title/tag", $title_tag ) ),
 					]
@@ -74,6 +74,7 @@ class Sidebar {
 				'wrapper_class' => 'widget-area',
 				'should_render' => true,
 				'wrapper_tag'   => 'aside',
+				'widget_tag'    => 'section',
 			]
 		);
 		$id            = $args['id'] ?? '';
@@ -81,6 +82,7 @@ class Sidebar {
 		$wrapper_class = $args['wrapper_class'] ?? 'widget-area';
 		$should_render = $args['should_render'] ?? true;
 		$wrapper_tag   = $args['wrapper_tag'] ?? 'aside';
+		$widget_tag    = $args['widget_tag'] ?? 'section';
 
 		if ( ! $should_render ) {
 			return;
@@ -100,7 +102,9 @@ class Sidebar {
 		$is_active = ! in_array( $id, [ 'sidebar-1', 'sidebar-2' ], true ) || is_active_sidebar( $id );
 		?>
 			<?php if ( $is_active ) : ?>
+				<?php printf( '<%s class="widget">', esc_attr( $widget_tag ) ); ?>
 				<?php dynamic_sidebar( $id ); ?>
+				<?php printf( '</%s>', esc_attr( $widget_tag ) ); ?>
 			<?php elseif ( current_user_can( 'edit_theme_options' ) ) : ?>
 				<section class="widget">
 					<h2 class="widget-title"><?php echo esc_html( $this->get_sidebar_title( $id ) ); ?></h2>
