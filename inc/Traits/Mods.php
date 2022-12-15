@@ -149,6 +149,18 @@ trait Mods {
 			],
 			'header-html-1'                  => __( 'Enter HTML.', 'vite' ),
 			'header-html-2'                  => __( 'Enter HTML.', 'vite' ),
+			'header-html-1-alignment'        => [
+				'desktop' => 'left',
+				'mobile'  => 'left',
+				'tablet'  => 'left',
+			],
+			'header-html-2-alignment'        => [
+				'desktop' => 'left',
+				'mobile'  => 'left',
+				'tablet'  => 'left',
+			],
+			'header-html-1-display'          => [ 'desktop', 'mobile', 'tablet' ],
+			'header-html-2-display'          => [ 'desktop', 'mobile', 'tablet' ],
 			'archive-elements'               => [
 				[
 					'id'      => 'meta-1',
@@ -291,12 +303,29 @@ trait Mods {
 				'tablet',
 				'mobile',
 			],
-			'container-wide-width'           => 1200,
-			'container-narrow-width'         => 728,
+			'container-wide-width'           => [
+				'value' => 1200,
+				'unit'  => 'px',
+			],
+			'container-narrow-width'         => [
+				'value' => 728,
+				'unit'  => 'px',
+			],
 			'content-spacing'                => [
 				'desktop' => [
-					'value' => 4,
-					'unit'  => 'rem',
+					'top'    => 4,
+					'right'  => 'auto',
+					'bottom' => 4,
+					'left'   => 'auto',
+					'unit'   => 'rem',
+				],
+				'tablet'  => [
+					'right' => 'auto',
+					'left'  => 'auto',
+				],
+				'mobile'  => [
+					'right' => 'auto',
+					'left'  => 'auto',
 				],
 			],
 			'buttons-padding'                => [
@@ -307,13 +336,51 @@ trait Mods {
 					'left'   => 20,
 					'unit'   => 'px',
 				],
+				'tablet'  => [
+					'top'    => 10,
+					'right'  => 20,
+					'bottom' => 10,
+					'left'   => 20,
+					'unit'   => 'px',
+				],
+				'mobile'  => [
+					'top'    => 10,
+					'right'  => 20,
+					'bottom' => 10,
+					'left'   => 20,
+					'unit'   => 'px',
+				],
 			],
-			'buttons-border'                 => [
-				'radius' => [
-					'desktop' => [
-						'value' => 2,
-						'unit'  => 'px',
-					],
+			'buttons-colors'                 => [
+				'--button--color'        => 'var(--global--color--8)',
+				'--button--hover--color' => 'var(--global--color--8)',
+			],
+			'buttons-bg-colors'              => [
+				'--button--bg--color'        => 'var(--global--color--1)',
+				'--button--hover--bg--color' => 'var(--global--color--2)',
+			],
+			'buttons-border'                 => [],
+			'buttons-border-radius'          => [
+				'desktop' => [
+					'top'    => 2,
+					'right'  => 2,
+					'bottom' => 2,
+					'left'   => 2,
+					'unit'   => 'px',
+				],
+				'tablet'  => [
+					'top'    => 2,
+					'right'  => 2,
+					'bottom' => 2,
+					'left'   => 2,
+					'unit'   => 'px',
+				],
+				'mobile'  => [
+					'top'    => 2,
+					'right'  => 2,
+					'bottom' => 2,
+					'left'   => 2,
+					'unit'   => 'px',
 				],
 			],
 			'header-site-branding-elements'  => 'logo-title',
@@ -432,8 +499,20 @@ trait Mods {
 					],
 				],
 			],
-			'footer-html-1'                  => __( '{{copyright}} {{year}} {{site-title}}', 'vite' ),
+			'footer-html-1'                  => '{{copyright}} {{year}} {{site-title}} | {{theme-author}}',
 			'footer-html-2'                  => __( 'Enter HTML.', 'vite' ),
+			'footer-html-1-alignment'        => [
+				'desktop' => 'center',
+				'mobile'  => 'center',
+				'tablet'  => 'center',
+			],
+			'footer-html-2-alignment'        => [
+				'desktop' => 'center',
+				'mobile'  => 'center',
+				'tablet'  => 'center',
+			],
+			'footer-html-1-display'          => [ 'desktop', 'mobile', 'tablet' ],
+			'footer-html-2-display'          => [ 'desktop', 'mobile', 'tablet' ],
 			'footer-top-row-layout'          => 'contained',
 			'footer-top-row-cols'            => 3,
 			'footer-main-row-layout'         => 'contained',
@@ -477,6 +556,91 @@ trait Mods {
 				'--link--color'         => 'var(--global--color--3)',
 				'--link--hover--color'  => 'var(--global--color--1)',
 				'--link--active--color' => 'var(--global--color--1)',
+			],
+			'footer-top-row-height'          => [
+				'desktop' => [
+					'value' => 70,
+					'unit'  => 'px',
+				],
+			],
+			'footer-main-row-height'         => [
+				'desktop' => [
+					'value' => 70,
+					'unit'  => 'px',
+				],
+			],
+			'footer-bottom-row-height'       => [
+				'desktop' => [
+					'value' => 70,
+					'unit'  => 'px',
+				],
+			],
+			'scroll-to-top'                  => true,
+			'scroll-to-top-position'         => 'right',
+			'scroll-to-top-right-offset'     => [
+				'desktop' => [
+					'value' => 30,
+					'unit'  => 'px',
+				],
+				'tablet'  => [
+					'value' => 30,
+					'unit'  => 'px',
+				],
+				'mobile'  => [
+					'value' => 30,
+					'unit'  => 'px',
+				],
+			],
+			'scroll-to-top-left-offset'      => [
+				'desktop' => [
+					'value' => 30,
+					'unit'  => 'px',
+				],
+				'tablet'  => [
+					'value' => 30,
+					'unit'  => 'px',
+				],
+				'mobile'  => [
+					'value' => 30,
+					'unit'  => 'px',
+				],
+			],
+			'scroll-to-top-bottom-offset'    => [
+				'desktop' => [
+					'value' => 30,
+					'unit'  => 'px',
+				],
+				'tablet'  => [
+					'value' => 30,
+					'unit'  => 'px',
+				],
+				'mobile'  => [
+					'value' => 30,
+					'unit'  => 'px',
+				],
+			],
+			'scroll-to-top-icon-size'        => 13,
+			'scroll-to-top-button-size'      => [
+				'desktop' => [
+					'value' => 40,
+					'unit'  => 'px',
+				],
+				'tablet'  => [
+					'value' => 40,
+					'unit'  => 'px',
+				],
+				'mobile'  => [
+					'value' => 40,
+					'unit'  => 'px',
+				],
+			],
+			'scroll-to-top-border'           => [],
+			'scroll-to-top-radius'           => [
+				'top'    => 2,
+				'right'  => 2,
+				'bottom' => 2,
+				'left'   => 2,
+				'unit'   => 'px',
 			],
 		];
 
