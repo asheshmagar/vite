@@ -501,8 +501,10 @@ class BuilderElements {
 
 		vite( 'sidebar' )->render_sidebar(
 			[
-				'id'         => "$context-widget-$type",
-				'wrapper_id' => "$context-widget-$type",
+				'id'          => "$context-widget-$type",
+				'wrapper_id'  => "$context-widget-$type",
+				'wrapper_tag' => 'div',
+				'widget_tag'  => 'div',
 			]
 		);
 
