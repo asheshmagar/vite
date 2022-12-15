@@ -2,6 +2,6 @@
 
 namespace Vite\Compatibility;
 
-class Base {
+class Compatibility {
 
 }
