@@ -16,8 +16,16 @@
 .vite-border-colors,
 .vite-border-width {
 	> span {
-		font-size: 12px;
+		font-size: 11px;
+		text-transform: uppercase;
 		font-weight: 500;
+	}
+}
+
+.vite-border-width {
+	> span {
+		margin-bottom: 10px;
+		display: inline-block;
 	}
 }
 
