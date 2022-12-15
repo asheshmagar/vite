@@ -124,11 +124,12 @@ $row_options = array_reduce(
 				},
 			],
 			'input_attrs' => [
-				'min'   => 1,
-				'max'   => 6,
-				'step'  => 1,
-				'marks' => true,
-				'input' => false,
+				'min'       => 1,
+				'max'       => 6,
+				'step'      => 1,
+				'marks'     => true,
+				'input'     => false,
+				'separator' => true,
 			],
 		];
 
@@ -172,20 +173,51 @@ $row_options = array_reduce(
 		];
 
 		$acc[ "vite[footer-$curr-row-col-alignment]" ] = [
-			'section' => "vite[footer-$curr-row]",
-			'type'    => 'vite-buttonset',
-			'title'   => __( 'Vertical Alignment', 'vite' ),
-			'choices' => [
+			'section'     => "vite[footer-$curr-row]",
+			'type'        => 'vite-buttonset',
+			'title'       => __( 'Vertical Alignment', 'vite' ),
+			'choices'     => [
 				'flex-start' => __( 'Top', 'vite' ),
 				'center'     => __( 'Middle', 'vite' ),
 				'flex-end'   => __( 'Bottom', 'vite' ),
 			],
-			'partial' => [
+			'partial'     => [
 				'selector'            => '.vite-footer',
 				'container_inclusive' => true,
 				'render_callback'     => function() {
 					get_template_part( 'template-parts/footer/footer', '' );
 				},
+			],
+			'input_attrs' => [
+				'separator' => true,
+			],
+		];
+
+		$acc[ "vite[footer-$curr-row-height]" ] = [
+			'section'     => "vite[footer-$curr-row]",
+			'type'        => 'vite-slider',
+			'title'       => __( 'Height', 'vite' ),
+			'default'     => $core->get_theme_mod_defaults()[ "footer-$curr-row-height" ],
+			'input_attrs' => [
+				'min'        => 0,
+				'max'        => 400,
+				'step'       => 1,
+				'units'      => [ 'px' ],
+				'responsive' => true,
+				'separator'  => true,
+			],
+			'selectors'   => [ '.vite-header [data-row="top"] > .container' ],
+			'properties'  => [ '--min--height' ],
+		];
+
+		$acc[ "vite[footer-$curr-row-border]" ] = [
+			'section'     => "vite[footer-$curr-row]",
+			'type'        => 'vite-border',
+			'title'       => __( 'Border', 'vite' ),
+			'input_attrs' => [
+				'sides'       => [ 'top', 'bottom' ],
+				'allow_hover' => false,
+				'separator'   => true,
 			],
 		];
 
@@ -297,6 +329,15 @@ $options = [
 		'input_attrs' => [
 			'group'   => 'vite[footer]',
 			'context' => 'footer',
+		],
+	],
+	'vite[footer-background]'         => [
+		'section'     => 'vite[footer-builder-settings]',
+		'type'        => 'vite-background',
+		'title'       => __( 'Background', 'vite' ),
+		'selectors'   => [ '.vite-footer' ],
+		'input_attrs' => [
+			'separator' => true,
 		],
 	],
 ];
