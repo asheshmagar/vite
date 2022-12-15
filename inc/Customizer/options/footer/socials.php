@@ -36,29 +36,33 @@ $options = [
 			},
 		],
 		'input_attrs' => [
-			'min'  => 10,
-			'max'  => 100,
-			'step' => 1,
+			'min'       => 10,
+			'max'       => 100,
+			'step'      => 1,
+			'separator' => true,
 		],
 	],
 	'vite[footer-social-icons-color-type]' => [
-		'section'   => 'vite[footer-socials]',
-		'type'      => 'vite-buttonset',
-		'title'     => __( 'Icons Color Type', 'vite' ),
-		'default'   => vite( 'core' )->get_theme_mod_defaults()['footer-social-icons-color-type'],
-		'partial'   => [
+		'section'     => 'vite[footer-socials]',
+		'type'        => 'vite-buttonset',
+		'title'       => __( 'Icons Color Type', 'vite' ),
+		'default'     => vite( 'core' )->get_theme_mod_defaults()['footer-social-icons-color-type'],
+		'partial'     => [
 			'selector'        => '.vite-footer .vite-social',
 			'render_callback' => function () {
 				get_template_part( 'template-parts/builder-elements/socials', '', [ 'context' => 'footer' ] );
 
 			},
 		],
-		'choices'   => [
+		'choices'     => [
 			'custom' => __( 'Custom', 'vite' ),
 			'brand'  => __( 'Brand', 'vite' ),
 		],
-		'condition' => [
+		'condition'   => [
 			'vite[footer-social-links]!' => [],
+		],
+		'input_attrs' => [
+			'separator' => true,
 		],
 	],
 	'vite[footer-social-icons-colors]'     => [
@@ -67,7 +71,7 @@ $options = [
 		'title'       => __( 'Icons Colors', 'vite' ),
 		'default'     => vite( 'core' )->get_theme_mod_defaults()['footer-social-icons-colors'],
 		'input_attrs' => [
-			'colors' => [
+			'colors'    => [
 				[
 					'id'    => '--link--color',
 					'label' => __( 'Normal', 'vite' ),
@@ -77,6 +81,7 @@ $options = [
 					'label' => __( 'Hover', 'vite' ),
 				],
 			],
+			'separator' => true,
 		],
 		'condition'   => [
 			'vite[footer-social-icons-color-type]' => 'custom',
@@ -90,13 +95,31 @@ $options = [
 		'type'        => 'vite-slider',
 		'title'       => __( 'Icons Spacing', 'vite' ),
 		'input_attrs' => [
-			'min'   => 0,
-			'max'   => 100,
-			'step'  => 1,
-			'units' => [ 'px', 'rem', 'em' ],
+			'min'       => 0,
+			'max'       => 100,
+			'step'      => 1,
+			'units'     => [ 'px', 'rem', 'em' ],
+			'separator' => true,
+		],
+		'selectors'   => [ '.vite-footer .vite-social__list' ],
+		'properties'  => [ 'gap' ],
+	],
+	'vite[footer-social-icons-margin]'     => [
+		'section'     => 'vite[footer-socials]',
+		'type'        => 'vite-dimensions',
+		'title'       => __( 'Margin', 'vite' ),
+		'input_attrs' => [
+			'units'      => [
+				'px',
+				'%',
+				'em',
+				'rem',
+			],
+			'responsive' => true,
+			'separator'  => true,
 		],
 		'selectors'   => [ '.vite-footer .vite-social' ],
-		'properties'  => [ 'gap' ],
+		'properties'  => [ 'margin' ],
 	],
 ];
 
