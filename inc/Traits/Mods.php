@@ -577,21 +577,7 @@ trait Mods {
 			],
 			'scroll-to-top'                  => true,
 			'scroll-to-top-position'         => 'right',
-			'scroll-to-top-right-offset'     => [
-				'desktop' => [
-					'value' => 30,
-					'unit'  => 'px',
-				],
-				'tablet'  => [
-					'value' => 30,
-					'unit'  => 'px',
-				],
-				'mobile'  => [
-					'value' => 30,
-					'unit'  => 'px',
-				],
-			],
-			'scroll-to-top-left-offset'      => [
+			'scroll-to-top-edge-offset'      => [
 				'desktop' => [
 					'value' => 30,
 					'unit'  => 'px',
