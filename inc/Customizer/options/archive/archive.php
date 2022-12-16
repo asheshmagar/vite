@@ -112,23 +112,26 @@ vite( 'customizer' )->add(
 			],
 		],
 		'vite[archive-columns]'        => [
-			'section'   => 'vite[archive]',
-			'type'      => 'vite-buttonset',
-			'title'     => __( 'Columns', 'vite' ),
-			'default'   => vite( 'core' )->get_theme_mod_defaults()['archive-columns'],
-			'choices'   => [
+			'section'     => 'vite[archive]',
+			'type'        => 'vite-buttonset',
+			'title'       => __( 'Columns', 'vite' ),
+			'default'     => vite( 'core' )->get_theme_mod_defaults()['archive-columns'],
+			'choices'     => [
 				'1' => __( '1', 'vite' ),
 				'2' => __( '2', 'vite' ),
 				'3' => __( '3', 'vite' ),
 				'4' => __( '4', 'vite' ),
 			],
-			'condition' => [
+			'condition'   => [
 				'vite[archive-style]' => 'grid',
 			],
-			'partial'   => [
+			'partial'     => [
 				'selector'            => '.vite-posts',
 				'container_inclusive' => true,
 				'render_callback'     => $posts_render_callback,
+			],
+			'input_attrs' => [
+				'cols' => 4,
 			],
 		],
 		'vite[archive-style-masonry]'  => [
@@ -209,6 +212,27 @@ vite( 'customizer' )->add(
 				'container_inclusive' => false,
 				'render_callback'     => function() {
 					vite( 'core' )->the_loop();
+				},
+			],
+		],
+		'vite[archive-pagination]'     => [
+			'section'     => 'vite[archive]',
+			'type'        => 'vite-buttonset',
+			'title'       => __( 'Pagination', 'vite' ),
+			'default'     => 'numbered',
+			'choices'     => [
+				'numbered'        => __( 'Numbered', 'vite' ),
+				'infinite-scroll' => __( 'Infinite Scroll', 'vite' ),
+			],
+			'input_attrs' => [
+				'cols'      => 2,
+				'separator' => true,
+			],
+			'partial'     => [
+				'selector'            => '.vite-pagination',
+				'container_inclusive' => true,
+				'render_callback'     => function() {
+					get_template_part( 'template-parts/pagination/pagination', '' );
 				},
 			],
 		],
