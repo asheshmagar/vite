@@ -89,6 +89,49 @@ $header_elements = $core->filter(
 	]
 );
 
+$row_options = array_reduce(
+	[ 'top', 'main', 'bottom' ],
+	function( $acc, $curr ) use ( $core ) {
+		$acc[ "vite[header-$curr-row-layout]" ] = [
+			'section'     => "vite[header-$curr-row]",
+			'type'        => 'vite-buttonset',
+			'title'       => __( 'Layout', 'vite' ),
+			'default'     => $core->get_theme_mod_defaults()['header-top-row-layout'],
+			'choices'     => [
+				'contained'  => __( 'Contained', 'vite' ),
+				'full-width' => __( 'Full width', 'vite' ),
+			],
+			'partial'     => [
+				'selector'            => '.vite-header',
+				'container_inclusive' => true,
+				'render_callback'     => function() {
+					get_template_part( 'template-parts/header/header', '' );
+				},
+			],
+			'input_attrs' => [
+				'cols' => 2,
+			],
+		];
+		$acc[ "vite[header-$curr-row-height]" ] = [
+			'section'     => "vite[header-$curr-row]",
+			'type'        => 'vite-slider',
+			'title'       => __( 'Height', 'vite' ),
+			'default'     => $core->get_theme_mod_defaults()[ "header-$curr-row-height" ],
+			'input_attrs' => [
+				'min'        => 0,
+				'max'        => 400,
+				'step'       => 1,
+				'units'      => [ 'px' ],
+				'responsive' => true,
+			],
+			'selectors'   => [ '.vite-header [data-row="top"] > .container' ],
+			'properties'  => [ '--min--height' ],
+		];
+		return $acc;
+	},
+	[]
+);
+
 $options = [
 	'vite[header]'                    => [
 		'section'     => 'vite[header-builder]',
@@ -134,102 +177,6 @@ $options = [
 		'input_attrs' => [
 			'group' => 'vite[header]',
 		],
-	],
-	'vite[header-top-row-layout]'     => [
-		'section' => 'vite[header-top-row]',
-		'type'    => 'vite-buttonset',
-		'title'   => __( 'Layout', 'vite' ),
-		'default' => $core->get_theme_mod_defaults()['header-top-row-layout'],
-		'choices' => [
-			'contained'  => __( 'Contained', 'vite' ),
-			'full-width' => __( 'Full width', 'vite' ),
-		],
-		'partial' => [
-			'selector'            => '.vite-header',
-			'container_inclusive' => true,
-			'render_callback'     => function() {
-				get_template_part( 'template-parts/header/header', '' );
-			},
-		],
-	],
-	'vite[header-top-row-height]'     => [
-		'section'     => 'vite[header-top-row]',
-		'type'        => 'vite-slider',
-		'title'       => __( 'Height', 'vite' ),
-		'default'     => $core->get_theme_mod_defaults()['header-top-row-height'],
-		'input_attrs' => [
-			'min'        => 0,
-			'max'        => 400,
-			'step'       => 1,
-			'units'      => [ 'px' ],
-			'responsive' => true,
-		],
-		'selectors'   => [ '.vite-header [data-row="top"] > .container' ],
-		'properties'  => [ '--min--height' ],
-	],
-	'vite[header-main-row-layout]'    => [
-		'section' => 'vite[header-main-row]',
-		'type'    => 'vite-buttonset',
-		'title'   => __( 'Layout', 'vite' ),
-		'default' => $core->get_theme_mod_defaults()['header-main-row-layout'],
-		'choices' => [
-			'contained'  => __( 'Contained', 'vite' ),
-			'full-width' => __( 'Full width', 'vite' ),
-		],
-		'partial' => [
-			'selector'            => '.vite-header',
-			'container_inclusive' => true,
-			'render_callback'     => function() {
-				get_template_part( 'template-parts/header/header', '' );
-			},
-		],
-	],
-	'vite[header-main-row-height]'    => [
-		'section'     => 'vite[header-main-row]',
-		'type'        => 'vite-slider',
-		'title'       => __( 'Height', 'vite' ),
-		'default'     => $core->get_theme_mod_defaults()['header-main-row-height'],
-		'input_attrs' => [
-			'min'        => 0,
-			'max'        => 400,
-			'step'       => 1,
-			'units'      => [ 'px' ],
-			'responsive' => true,
-		],
-		'selectors'   => [ '.vite-header [data-row="main"] > .container' ],
-		'properties'  => [ '--min--height' ],
-	],
-	'vite[header-bottom-row-layout]'  => [
-		'section' => 'vite[header-bottom-row]',
-		'type'    => 'vite-buttonset',
-		'title'   => __( 'Layout', 'vite' ),
-		'default' => $core->get_theme_mod_defaults()['header-bottom-row-layout'],
-		'choices' => [
-			'contained'  => __( 'Contained', 'vite' ),
-			'full-width' => __( 'Full width', 'vite' ),
-		],
-		'partial' => [
-			'selector'            => '.vite-header',
-			'container_inclusive' => true,
-			'render_callback'     => function() {
-				get_template_part( 'template-parts/header/header', '' );
-			},
-		],
-	],
-	'vite[header-bottom-row-height]'  => [
-		'section'     => 'vite[header-bottom-row]',
-		'type'        => 'vite-slider',
-		'title'       => __( 'Height', 'vite' ),
-		'default'     => $core->get_theme_mod_defaults()['header-bottom-row-height'],
-		'input_attrs' => [
-			'min'        => 0,
-			'max'        => 400,
-			'step'       => 1,
-			'units'      => [ 'px' ],
-			'responsive' => true,
-		],
-		'selectors'   => [ '.vite-header [data-row="bottom"] > .container' ],
-		'properties'  => [ '--min--height' ],
 	],
 	'vite[header-sticky]'             => [
 		'section'     => 'vite[header-builder-settings]',
@@ -313,4 +260,4 @@ $options = [
 	],
 ];
 
-vite( 'customizer' )->add( 'settings', $options );
+vite( 'customizer' )->add( 'settings', array_merge( $options, $row_options ) );
