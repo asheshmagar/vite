@@ -1,5 +1,5 @@
 import { memo, useState, useCallback, useEffect, Fragment } from '@wordpress/element';
-import { cloneDeep, isEqual } from 'lodash';
+import { cloneDeep, isEqual, range } from 'lodash';
 import { usePortal, useDeviceSelector } from '../../hooks';
 import { ReactSortable } from 'react-sortablejs';
 import { sprintf, __ } from '@wordpress/i18n';
@@ -41,11 +41,6 @@ const Item = ( {
 			/>
 		</div>
 	);
-};
-
-const range = ( start, end ) => {
-	const length = end - start + 1;
-	return Array.from( { length }, ( _, i ) => start + i );
 };
 
 export default memo( ( props ) => {
