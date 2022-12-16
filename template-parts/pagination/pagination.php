@@ -14,7 +14,7 @@ $core = vite( 'core' );
  *
  * @since x.x.x
  */
-$pagination_args = $core->filter(
+$pagination_args    = $core->filter(
 	'pagination/args',
 	[
 		'mid_size'  => 3,
@@ -31,6 +31,7 @@ $pagination_args = $core->filter(
 		'class'     => 'vite-pagination',
 	]
 );
+$is_infinite_scroll = 'infinite-scroll' === $core->get_theme_mod( 'archive-pagination', 'numbered' );
 
 /**
  * Action: vite/pagination/start
@@ -49,9 +50,9 @@ if ( $pagination ) {
 	$pagination = str_replace( 'class="next page-numbers"', 'class="vite-pagination__link vite-pagination__link--next"', $pagination );
 	$pagination = str_replace( 'class="prev page-numbers"', 'class="vite-pagination__link vite-pagination__link--prev"', $pagination );
 	?>
-	<nav class="vite-pagination" aria-label="<?php esc_attr_e( 'Posts', 'vite' ); ?>">
+	<nav class="vite-pagination<?php echo( esc_attr( $pagination ? ' vite-pagination--infinite-scroll' : '' ) ); ?>" aria-label="<?php esc_attr_e( 'Posts', 'vite' ); ?>">
 		<h2 class="screen-reader-text"><?php esc_html_e( 'Posts navigation', 'vite' ); ?></h2>
-		<div class="vite-pagination__links">
+		<div class="vite-pagination__links"<?php echo( $is_infinite_scroll ? ' style=display:none' : '' ); ?>>
 			<?php
 				echo wp_kses(
 					$pagination,
@@ -82,6 +83,23 @@ if ( $pagination ) {
 				);
 			?>
 		</div>
+		<?php if ( $is_infinite_scroll ) : ?>
+			<div class="vite-pagination__status" style="display: none">
+				<div class="infinite-scroll-request">
+					<?php
+					vite( 'icon' )->get_icon(
+						'spinner',
+						[
+							'size' => 20,
+							'echo' => true,
+						]
+					);
+					?>
+				</div>
+				<p class="infinite-scroll-last"><?php esc_html_e( 'No more posts to load!', 'vite' ); ?></p>
+				<p class="infinite-scroll-error"><?php esc_html_e( 'Error loading posts!', 'vite' ); ?></p>
+			</div>
+		<?php endif; ?>
 	</nav>
 	<?php
 }
