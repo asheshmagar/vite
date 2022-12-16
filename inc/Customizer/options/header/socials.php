@@ -12,7 +12,7 @@ $options = [
 		'title'       => __( 'Socials Links', 'vite' ),
 		'default'     => vite( 'core' )->get_theme_mod_defaults()['header-social-links'],
 		'partial'     => [
-			'selector'        => '.vite-social',
+			'selector'        => '.vite-header .vite-social',
 			'render_callback' => function () {
 				get_template_part( 'template-parts/builder-elements/socials', '', [ 'context' => 'header' ] );
 
@@ -29,7 +29,7 @@ $options = [
 		'title'       => __( 'Icons Size', 'vite' ),
 		'default'     => vite( 'core' )->get_theme_mod_defaults()['header-social-icons-size'],
 		'partial'     => [
-			'selector'        => '.vite-social',
+			'selector'        => '.vite-header .vite-social',
 			'render_callback' => function () {
 				get_template_part( 'template-parts/builder-elements/socials', '', [ 'context' => 'header' ] );
 
@@ -48,7 +48,7 @@ $options = [
 		'title'       => __( 'Icons Color Type', 'vite' ),
 		'default'     => vite( 'core' )->get_theme_mod_defaults()['header-social-icons-color-type'],
 		'partial'     => [
-			'selector'        => '.vite-social',
+			'selector'        => '.vite-header .vite-social',
 			'render_callback' => function () {
 				get_template_part( 'template-parts/builder-elements/socials', '', [ 'context' => 'header' ] );
 
@@ -63,6 +63,7 @@ $options = [
 		],
 		'input_attrs' => [
 			'separator' => true,
+			'cols'      => 2,
 		],
 	],
 	'vite[header-social-icons-colors]'     => [
