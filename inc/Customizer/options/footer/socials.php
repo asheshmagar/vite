@@ -63,6 +63,7 @@ $options = [
 		],
 		'input_attrs' => [
 			'separator' => true,
+			'cols'      => 2,
 		],
 	],
 	'vite[footer-social-icons-colors]'     => [

@@ -94,20 +94,23 @@ $row_options = array_reduce(
 	[ 'top', 'main', 'bottom' ],
 	function( $acc, $curr ) use ( $core, $col_layouts ) {
 		$acc[ "vite[footer-$curr-row-layout]" ] = [
-			'section' => "vite[footer-$curr-row]",
-			'type'    => 'vite-buttonset',
-			'title'   => __( 'Layout', 'vite' ),
-			'default' => $core->get_theme_mod_defaults()[ "footer-$curr-row-layout" ],
-			'choices' => [
+			'section'     => "vite[footer-$curr-row]",
+			'type'        => 'vite-buttonset',
+			'title'       => __( 'Layout', 'vite' ),
+			'default'     => $core->get_theme_mod_defaults()[ "footer-$curr-row-layout" ],
+			'choices'     => [
 				'contained'  => __( 'Contained', 'vite' ),
 				'full-width' => __( 'Full width', 'vite' ),
 			],
-			'partial' => [
+			'partial'     => [
 				'selector'            => '.vite-footer',
 				'container_inclusive' => true,
 				'render_callback'     => function() {
 					get_template_part( 'template-parts/footer/footer', '' );
 				},
+			],
+			'input_attrs' => [
+				'cols' => 2,
 			],
 		];
 
