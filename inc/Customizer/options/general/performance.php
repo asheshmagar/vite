@@ -28,6 +28,7 @@ $options = [
 		'input_attrs' => [
 			'allow_reset' => false,
 			'separator'   => true,
+			'cols'        => 2,
 		],
 	],
 	'vite[local-google-fonts]' => [

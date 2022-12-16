@@ -26,6 +26,7 @@ $options = [
 		'default'     => 'json-ld',
 		'input_attrs' => [
 			'allow_reset' => false,
+			'cols'      => 2,
 		],
 		'condition'   => [
 			'vite[schema-markup]' => true,
