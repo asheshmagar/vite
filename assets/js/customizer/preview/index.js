@@ -1,5 +1,26 @@
 import $ from 'jquery';
 import _ from 'lodash';
+import './customizer-preview.scss';
+
+const api = wp.customize;
+
+{
+	$( document ).ready( () => {
+		api.selectiveRefresh.bind( 'partial-content-rendered', ( placement ) => {
+			if ( ! window?._VITE_ ) return;
+			if ( -1 !== placement?.partial?.id?.indexOf( 'archive' ) ) {
+				_VITE_.initMasonryInfiniteScroll();
+			}
+			if ( -1 !== placement?.partial?.id?.indexOf( 'header' ) ) {
+				_VITE_.initNavigation();
+				_VITE_.initModals();
+			}
+			if ( -1 !== placement?.partial?.id?.indexOf( 'scroll-to-top' ) ) {
+				_VITE_.initScrollToTop();
+			}
+		} );
+	} );
+}
 
 {
 	let SETTINGS = window._VITE_CUSTOMIZER_PREVIEW_?.settings || {};
@@ -24,8 +45,6 @@ import _ from 'lodash';
 		'bottom',
 		'left',
 	];
-
-	const api = wp.customize;
 
 	const isObject = ( value ) => Object.prototype.toString.call( value ) === '[object Object]';
 
