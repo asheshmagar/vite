@@ -12,7 +12,7 @@
 defined( 'ABSPATH' ) || exit;
 
 $elements = vite( 'core' )->get_theme_mod( 'page-header-elements' );
-$core	 = vite( 'core' );
+$core     = vite( 'core' );
 
 /**
  * Action: vite/page/content/start.
@@ -35,7 +35,6 @@ $core->action( 'page/content/start' );
 	 * @since x.x.x
 	 */
 	$core->action( 'page/content/header', $elements );
-	vite( 'entry-elements' )->render_entry_elements( $elements );
 	?>
 	</div>
 	<div class="vite-post__content">
