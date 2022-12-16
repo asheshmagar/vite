@@ -54,7 +54,8 @@ class TemplateHooks {
 			}
 		);
 		$this->add_action( 'vite/single/content/content/start', [ $this, 'single_featured_image' ] );
-		$this->add_action( 'vite/single/content/header', [ $this, 'single_header_elements' ] );
+		$this->add_action( 'vite/single/content/header', [ $this, 'header_elements' ] );
+		$this->add_action( 'vite/page/content/header', [ $this, 'header_elements' ] );
 
 		add_action( 'wp_footer', [ $this, 'scroll_to_top' ] );
 		add_filter( 'post_class', [ $this, 'post_class' ], 10, 3 );
@@ -67,21 +68,7 @@ class TemplateHooks {
 	 * @return void
 	 */
 	public function scroll_to_top() {
-		?>
-		<div class="vite-modal vite-modal--scroll-to-top">
-			<button aria-label="<?php esc_html_e( 'Scroll to top', 'vite' ); ?>">
-				<?php
-				vite( 'icon' )->get_icon(
-					'arrow-up',
-					[
-						'echo' => true,
-						'size' => 13,
-					]
-				);
-				?>
-			</button>
-		</div>
-		<?php
+		get_template_part( 'template-parts/scroll-to-top/scroll-to-top', '' );
 	}
 
 	/**
@@ -90,7 +77,7 @@ class TemplateHooks {
 	 * @param mixed $elements Elements.
 	 * @return void
 	 */
-	public function single_header_elements( $elements ) {
+	public function header_elements( $elements ) {
 		get_template_part( 'template-parts/entry/entry', '', [ 'elements' => $elements ] );
 	}
 
@@ -169,6 +156,12 @@ class TemplateHooks {
 	 * @return void
 	 */
 	public function pagination_template() {
+		global $wp_query;
+
+		if ( $wp_query->max_num_pages <= 1 ) {
+			return;
+		}
+
 		get_template_part( 'template-parts/pagination/pagination', '' );
 	}
 
@@ -192,6 +185,7 @@ class TemplateHooks {
 		$archive_style           = $this->get_theme_mod( 'archive-style' );
 		$archive_columns         = $this->get_theme_mod( 'archive-columns' );
 		$is_masonry              = 'grid' === $archive_style && $this->get_theme_mod( 'archive-style-masonry' );
+		$is_infinite_scroll      = 'infinite-scroll' === $this->get_theme_mod( 'archive-pagination', 'numbered' );
 		$archive_wrapper_classes = [
 			'vite-posts',
 			'vite-posts--' . $archive_style,
@@ -207,6 +201,10 @@ class TemplateHooks {
 
 		if ( ! have_posts() ) {
 			$archive_wrapper_classes = [ 'vite-posts' ];
+		}
+
+		if ( $is_infinite_scroll ) {
+			$archive_wrapper_classes[] = 'vite-posts--infinite-scroll';
 		}
 
 		printf(
