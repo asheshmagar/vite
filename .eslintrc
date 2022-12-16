@@ -28,6 +28,7 @@
 		"document": true,
 		"_VITE_CUSTOMIZER_": true,
 		"_VITE_CUSTOMIZER_PREVIEW_": true,
+		"_VITE_": true,
 		"FormData": true
 	},
 	"plugins": [
