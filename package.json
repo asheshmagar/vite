@@ -70,6 +70,8 @@
     "webpackbar": "^5.0.2"
   },
   "dependencies": {
+    "imagesloaded": "^5.0.0",
+    "infinite-scroll": "^4.0.1",
     "masonry-layout": "^4.2.2",
     "normalize.css": "^8.0.1",
     "rc-trigger": "^5.3.1",
