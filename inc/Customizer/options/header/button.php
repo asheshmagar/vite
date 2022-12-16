@@ -149,6 +149,7 @@ $options = array_reduce(
 			],
 			'input_attrs' => [
 				'separator' => true,
+				'cols'      => 2,
 			],
 		];
 		$acc[ "vite[header-button-$curr-font-colors]" ]   = [

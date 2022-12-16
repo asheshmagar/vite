@@ -8,7 +8,7 @@
 $options = array_reduce(
 	[ 1, 2 ],
 	function( $acc, $curr ) {
-		$acc[ "vite[header-html-$curr]" ] = [
+		$acc[ "vite[header-html-$curr]" ]            = [
 			'section' => "vite[header-html-$curr]",
 			'type'    => 'vite-editor',
 			'title'   => __( 'HTML', 'vite' ),
@@ -102,7 +102,7 @@ $options = array_reduce(
 			'type'        => 'vite-color',
 			'title'       => __( 'Link Colors', 'vite' ),
 			'input_attrs' => [
-				'colors'    => [
+				'colors' => [
 					[
 						'id'    => 'normal',
 						'label' => __( 'Normal', 'vite' ),
