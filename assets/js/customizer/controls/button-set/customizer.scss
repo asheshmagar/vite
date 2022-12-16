@@ -1,9 +1,14 @@
 .vite-button-set-control {
 	.components-button-group {
-		display: flex;
+		display: grid;
+
+		@for $i from 1 through 6 {
+			&.cols-#{$i} {
+				grid-template-columns: repeat(#{$i}, 1fr);
+			}
+		}
 
 		> .components-button {
-			flex: 1;
 			justify-content: center;
 
 			&.is-primary {
