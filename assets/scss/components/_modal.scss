@@ -58,11 +58,20 @@
 		height: 50px;
 	}
 
-	&--scroll-to-top {
+	&--stt {
 		top: auto;
-		left: auto;
-		right: 30px;
-		bottom: 30px;
+		bottom: var(--stt--bottom--offset, 30px);
+		background-color: transparent;
+
+		&--pos-right {
+			left: auto;
+			right: var(--stt--edge--offset, 30px);
+		}
+
+		&--pos-left {
+			left: var(--stt--edge--offset, 30px);
+			right: auto;
+		}
 
 		button {
 			height: 40px;
