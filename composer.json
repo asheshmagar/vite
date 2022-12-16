@@ -15,7 +15,7 @@
       "Vite\\Traits\\": "inc/Traits/"
     },
     "files": [
-      "bootstrap/bootstrap.php"
+      "bootstrap/app.php"
     ]
   },
   "require": {
