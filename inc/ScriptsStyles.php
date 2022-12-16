@@ -55,7 +55,7 @@ class ScriptsStyles {
 		wp_register_script( 'vite-customizer-preview', VITE_ASSETS_URI . 'dist/customizer-preview.js', array_merge( $customizer_preview_asset['dependencies'], [ 'customize-preview' ] ), $customizer_preview_asset['version'], true );
 
 		wp_register_style( 'vite-customizer', VITE_ASSETS_URI . 'dist/customizer.css', [ 'wp-components' ], $customizer_asset['version'] );
-		wp_register_style( 'vite-customizer-preview', false, false, '1.0.0' );
+		wp_register_style( 'vite-customizer-preview', VITE_ASSETS_URI . 'dist/customizer-preview.css', [], '1.0.0' );
 
 		foreach ( self::STYLES as $handle => $file ) {
 			wp_register_style( $handle, VITE_ASSETS_URI . 'dist/' . $file, [], VITE_VERSION );
