@@ -5,16 +5,6 @@ import './customizer.scss';
 const api = wp.customize;
 
 {
-	api.bind( 'preview-ready', () => {
-		api.selectiveRefresh.bind( 'render-partials-response', res => {
-			if ( ! res?.viteDynamicCSS ) return;
-			const $style = $( '#vite-dynamic-css' );
-			$style.html( res.viteDynamicCSS );
-		} );
-	} );
-}
-
-{
 	api.bind( 'ready', () => {
 		let values = {};
 		const toStyles = val => {
