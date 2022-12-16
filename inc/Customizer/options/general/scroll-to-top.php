@@ -6,6 +6,7 @@
  */
 
 $core = vite( 'core' );
+$icon = vite( 'icon' );
 
 $options = [
 	'vite[scroll-to-top]'               => [
@@ -13,6 +14,147 @@ $options = [
 		'type'    => 'vite-toggle',
 		'title'   => __( 'Enable', 'vite' ),
 		'default' => $core->get_theme_mod_defaults()['scroll-to-top'],
+		'partial' => [
+			'selector'            => '.vite-modal--stt',
+			'container_inclusive' => true,
+			'render_callback'     => function() {
+				get_template_part( 'template-parts/scroll-to-top/scroll-to-top' );
+			},
+		],
+	],
+	'vite[scroll-to-top-icon]'          => [
+		'section'     => 'vite[scroll-to-top]',
+		'type'        => 'vite-buttonset',
+		'title'       => __( 'Icon', 'vite' ),
+		'default'     => 'arrow-up',
+		'choices'     => [
+			'arrow-up'          => $icon->get_icon(
+				'arrow-up',
+				[
+					'echo' => false,
+					'size' => 15,
+				]
+			),
+			'angle-up'          => $icon->get_icon(
+				'angle-up',
+				[
+					'echo' => false,
+					'size' => 15,
+				]
+			),
+			'arrow-up-long'     => $icon->get_icon(
+				'arrow-up-long',
+				[
+					'echo' => false,
+					'size' => 15,
+				]
+			),
+			'caret-up'          => $icon->get_icon(
+				'caret-up',
+				[
+					'echo' => false,
+					'size' => 15,
+				]
+			),
+			'chevron-up'        => $icon->get_icon(
+				'chevron-up',
+				[
+					'echo' => false,
+					'size' => 15,
+				]
+			),
+			'circle-arrow-up'   => $icon->get_icon(
+				'circle-arrow-up',
+				[
+					'echo' => false,
+					'size' => 15,
+				]
+			),
+			'circle-chevron-up' => $icon->get_icon(
+				'circle-chevron-up',
+				[
+					'echo' => false,
+					'size' => 15,
+				]
+			),
+			'circle-up'         => $icon->get_icon(
+				'circle-up',
+				[
+					'echo' => false,
+					'size' => 15,
+				]
+			),
+			'square-caret-up'   => $icon->get_icon(
+				'square-caret-up',
+				[
+					'echo' => false,
+					'size' => 15,
+				]
+			),
+			'turn-up'           => $icon->get_icon(
+				'turn-up',
+				[
+					'echo' => false,
+					'size' => 15,
+				]
+			),
+		],
+		'input_attrs' => [
+			'icon'      => true,
+			'cols'      => 5,
+			'separator' => true,
+		],
+		'partial'     => [
+			'selector'            => '.vite-modal--stt',
+			'container_inclusive' => true,
+			'render_callback'     => function() {
+				get_template_part( 'template-parts/scroll-to-top/scroll-to-top' );
+			},
+		],
+		'condition'   => [
+			'vite[scroll-to-top]' => true,
+		],
+	],
+	'vite[scroll-top-icon-color]'       => [
+		'section'     => 'vite[scroll-to-top]',
+		'type'        => 'vite-color',
+		'title'       => __( 'Icon Colors', 'vite' ),
+		'input_attrs' => [
+			'colors'    => [
+				[
+					'id'    => 'normal',
+					'label' => __( 'Normal', 'vite' ),
+				],
+				[
+					'id'    => 'hover',
+					'label' => __( 'Hover', 'vite' ),
+				],
+			],
+			'separator' => true,
+		],
+		'condition'   => [
+			'vite[scroll-to-top]' => true,
+		],
+	],
+	'vite[scroll-top-bg-color]'         => [
+		'section'     => 'vite[scroll-to-top]',
+		'type'        => 'vite-color',
+		'title'       => __( 'Background Colors', 'vite' ),
+		'input_attrs' => [
+			'colors' => [
+				[
+					'id'    => 'normal',
+					'label' => __( 'Normal', 'vite' ),
+				],
+				[
+					'id'    => 'hover',
+					'label' => __( 'Hover', 'vite' ),
+				],
+			],
+		],
+		'condition'   => [
+			'vite[scroll-to-top]' => true,
+		],
 	],
 	'vite[scroll-to-top-position]'      => [
 		'section'     => 'vite[scroll-to-top]',
@@ -28,36 +170,28 @@ $options = [
 		],
 		'input_attrs' => [
 			'separator' => true,
+			'cols'      => 2,
+		],
+		'partial'     => [
+			'selector'            => '.vite-modal--stt',
+			'container_inclusive' => true,
+			'render_callback'     => function() {
+				get_template_part( 'template-parts/scroll-to-top/scroll-to-top' );
+			},
 		],
 	],
-	'vite[scroll-to-top-left-offset]'   => [
+	'vite[scroll-to-top-edge-offset]'   => [
 		'section'     => 'vite[scroll-to-top]',
 		'type'        => 'vite-slider',
-		'title'       => __( 'Left offset', 'vite' ),
-		'default'     => $core->get_theme_mod_defaults()['scroll-to-top-left-offset'],
+		'title'       => __( 'Edge offset', 'vite' ),
+		'default'     => $core->get_theme_mod_defaults()['scroll-to-top-edge-offset'],
 		'input_attrs' => [
 			'units'      => [ 'px' ],
 			'responsive' => true,
 			'separator'  => true,
 		],
 		'condition'   => [
-			'vite[scroll-to-top]'          => true,
-			'vite[scroll-to-top-position]' => 'left',
-		],
-	],
-	'vite[scroll-to-top-right-offset]'  => [
-		'section'     => 'vite[scroll-to-top]',
-		'type'        => 'vite-slider',
-		'title'       => __( 'Right offset', 'vite' ),
-		'default'     => $core->get_theme_mod_defaults()['scroll-to-top-right-offset'],
-		'input_attrs' => [
-			'units'      => [ 'px' ],
-			'responsive' => true,
-			'separator'  => true,
-		],
-		'condition'   => [
-			'vite[scroll-to-top]'          => true,
-			'vite[scroll-to-top-position]' => 'right',
+			'vite[scroll-to-top]' => true,
 		],
 	],
 	'vite[scroll-to-top-bottom-offset]' => [
@@ -98,6 +232,13 @@ $options = [
 		],
 		'condition'   => [
 			'vite[scroll-to-top]' => true,
+		],
+		'partial'     => [
+			'selector'            => '.vite-modal--stt',
+			'container_inclusive' => true,
+			'render_callback'     => function() {
+				get_template_part( 'template-parts/scroll-to-top/scroll-to-top' );
+			},
 		],
 	],
 	'vite[scroll-to-top-border]'        => [
