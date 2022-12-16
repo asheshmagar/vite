@@ -1,8 +1,9 @@
-import { memo, useState, RawHTML } from '@wordpress/element';
+import { memo, useState } from '@wordpress/element';
 import { ButtonGroup, Button } from '@wordpress/components';
-import { isEqual } from 'lodash';
+import { isEqual, range } from 'lodash';
 import { useDeviceSelector } from '../../hooks';
 import { DEVICES } from '../../constants';
+import { RawHTML } from '../../components';
 
 export default memo( ( props ) => {
 	const {
@@ -16,6 +17,8 @@ export default memo( ( props ) => {
 					multiple = false,
 					allow_reset: allowReset = true,
 					responsive = false,
+					icon = false,
+					cols = 3,
 				},
 				default: defaultValue,
 			},
@@ -46,8 +49,8 @@ export default memo( ( props ) => {
 				{ responsive ? (
 					DEVICES.map( ( d ) => (
 						device === d && (
-							<ButtonGroup key={ d }>
-								{ Object.keys( choices ).map( ( choice ) => (
+							<ButtonGroup key={ d } className={ `cols-${ cols }` }>
+								{ Object.keys( choices ).map( ( choice, i, arr ) => (
 									<Button
 										key={ choice }
 										isPrimary={ value?.[ d ] === choice }
@@ -58,17 +61,31 @@ export default memo( ( props ) => {
 											setValue( temp );
 											setting.set( temp );
 										} }
+										style={ {
+											marginTop: cols > i ? undefined : '-1px',
+											marginLeft: arr.length > cols ? ( range( cols, arr.length, cols ).some( r => r === i ) ? '0px' : undefined ) : undefined,
+										} }
 									>
-										{ choices[ choice ] }
+										{ icon ? (
+											<RawHTML tag="span" className="vite-icon-wrap">
+												{ choices[ choice ] }
+											</RawHTML>
+										) : (
+											choices[ choice ]
+										) }
 									</Button>
 								) ) }
 							</ButtonGroup>
 						)
 					) )
 				) : (
-					<ButtonGroup>
-						{ Object.entries( choices ).map( ( [ key, val ] ) => (
+					<ButtonGroup className={ `cols-${ cols }` }>
+						{ Object.entries( choices ).map( ( [ key, val ], i, arr ) => (
 							<Button
+								style={ {
+									marginTop: cols > i ? undefined : '-1px',
+									marginLeft: arr.length > cols ? ( range( cols, arr.length, cols ).some( r => r === i ) ? '0px' : undefined ) : undefined,
+								} }
 								key={ key }
 								onClick={ () => {
 									if ( multiple ) {
@@ -88,7 +105,13 @@ export default memo( ( props ) => {
 								variant={ multiple ? ( value?.includes( key ) ? 'primary' : 'secondary' ) : ( value === key ? 'primary' : 'secondary' ) }
 								className={ key }
 							>
-								{ val }
+								{ icon ? (
+									<RawHTML tag="span" className="vite-icon-wrap">
+										{ val }
+									</RawHTML>
+								) : (
+									val
+								) }
 							</Button>
 						) ) }
 					</ButtonGroup>
