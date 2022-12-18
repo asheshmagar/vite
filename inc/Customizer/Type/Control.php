@@ -19,8 +19,7 @@ use WP_Customize_Manager;
 class Control extends WP_Customize_Control {
 
 	const ADDITIONAL_PROPERTIES = [
-		'selectors',
-		'properties',
+		'css',
 		'fonts',
 	];
 
