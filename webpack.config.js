@@ -15,6 +15,7 @@ module.exports = ( _, args ) => ( {
 		header: resolve( process.cwd(), 'assets/scss', 'header.scss' ),
 		content: resolve( process.cwd(), 'assets/scss', 'content.scss' ),
 		footer: resolve( process.cwd(), 'assets/scss', 'footer.scss' ),
+		all: resolve( process.cwd(), 'assets/scss', 'all.scss' ),
 		frontend: resolve( process.cwd(), 'assets/js/frontend', 'index.js' ),
 	},
 	output: {
