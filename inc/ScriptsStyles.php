@@ -21,10 +21,10 @@ class ScriptsStyles {
 	use Hook;
 
 	const STYLES = [
-		'vite-global'  => 'global.css',
-		'vite-header'  => 'header.css',
-		'vite-content' => 'content.css',
-		'vite-footer'  => 'footer.css',
+		'global'  => 'global.css',
+		'header'  => 'header.css',
+		'content' => 'content.css',
+		'footer'  => 'footer.css',
 	];
 
 	/**
@@ -58,8 +58,8 @@ class ScriptsStyles {
 		wp_register_style( 'vite-customizer-preview', VITE_ASSETS_URI . 'dist/customizer-preview.css', [], '1.0.0' );
 
 		foreach ( self::STYLES as $handle => $file ) {
-			wp_register_style( $handle, VITE_ASSETS_URI . 'dist/' . $file, [], VITE_VERSION );
-			wp_style_add_data( $handle, 'precache', true );
+			wp_register_style( "vite-$handle", VITE_ASSETS_URI . 'dist/' . $file, [], VITE_VERSION );
+			wp_style_add_data( "vite-$handle", 'precache', true );
 		}
 	}
 
@@ -69,17 +69,31 @@ class ScriptsStyles {
 	 * @return void
 	 */
 	public function enqueue() {
-		$handles = $this->filter( 'style/handles', array_keys( static::STYLES ) );
+		$handles     = $this->filter( 'style/handles', array_keys( static::STYLES ) );
+		$dynamic_css = vite( 'customizer' )->dynamic_css->get();
 
 		if ( ! empty( $handles ) ) {
 			foreach ( $handles as $handle ) {
-				wp_enqueue_style( $handle );
+				wp_enqueue_style( "vite-$handle" );
+
+				if ( $dynamic_css[ $handle ] ) {
+					wp_add_inline_style( "vite-$handle", $dynamic_css[ $handle ] );
+				}
+
+//				add_action(
+//					'wp_head',
+//					function() use ( $handle ) {
+//						$upload_dir = wp_get_upload_dir();
+//						$file       = $upload_dir['basedir'] . '/vite/' . static::STYLES[ $handle ];
+//						file_exists( $file ) && wp_enqueue_style( "vite-dynamic-$handle", "{$upload_dir['baseurl']}/vite/$handle.css", [], filemtime( $file ) );
+//					},
+//					999
+//				);
 			}
 		}
 
 		wp_enqueue_script( 'vite-script' );
 		wp_localize_script( 'vite-script', '_VITE_', [ 'publicPath' => VITE_ASSETS_URI . 'dist/' ] );
-		vite( 'customizer' )->dynamic_css->enqueue();
 	}
 
 	/**
