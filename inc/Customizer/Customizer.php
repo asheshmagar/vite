@@ -6,13 +6,13 @@
 namespace Vite\Customizer;
 
 use Vite\Customizer\Type\Control;
+use Vite\DynamicCSS;
 use Vite\Traits\JSON;
 use Vite\Traits\Mods;
 use WP_Customize_Cropped_Image_Control;
 use WP_Customize_Manager;
 use Vite\Customizer\Type\Panel;
 use Vite\Customizer\Type\Section;
-use Vite\DynamicCSS;
 
 /**
  * Customizer class.
@@ -93,7 +93,7 @@ class Customizer {
 	 * Constructor.
 	 *
 	 * @param DynamicCSS $dynamic_css Instance of DynamicCSS.
-	 * @param Sanitize   $sanitize Instance of DynamicCSS.
+	 * @param Sanitize $sanitize Instance of DynamicCSS.
 	 */
 	public function __construct( DynamicCSS $dynamic_css, Sanitize $sanitize ) {
 		$this->dynamic_css = $dynamic_css;
@@ -239,7 +239,7 @@ class Customizer {
 	 */
 	public function after_wp_init() {
 		$this->include();
-		$this->dynamic_css->init_css_data( $this->settings );
+		$this->dynamic_css->init( $this->settings );
 	}
 
 	/**
@@ -260,7 +260,7 @@ class Customizer {
 	 */
 	public function partial_response( array $response ): array {
 		try {
-			$response['viteDynamicCSS'] = $this->dynamic_css->make()->get();
+//			$response['viteDynamicCSS'] = $this->dynamic_css->make()->get();
 		} catch ( \Exception $e ) {} // phpcs:ignore
 		return $response;
 	}
@@ -276,10 +276,6 @@ class Customizer {
 		}
 
 		$this->print_css = true;
-		try {
-			$css = $this->dynamic_css->make()->get();
-			// echo '<style id="vite-dynamic-css">' . $css . '</style>'; // phpcs:ignore
-		} catch ( \Exception $e ) {} // phpcs:ignore
 	}
 
 	/**
@@ -349,6 +345,7 @@ class Customizer {
 	 * @return void
 	 */
 	public function save_dynamic_css() {
+		$this->dynamic_css->save();
 	}
 
 	/**
@@ -394,7 +391,7 @@ class Customizer {
 			'vite-customizer-preview',
 			'_VITE_CUSTOMIZER_PREVIEW_',
 			[
-				'settings' => $this->settings,
+				'configs' => $this->dynamic_css->configs,
 			]
 		);
 		wp_enqueue_style( 'vite-customizer-preview' );
