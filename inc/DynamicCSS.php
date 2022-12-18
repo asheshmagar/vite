@@ -1,14 +1,10 @@
 <?php
 /**
- * Class CSS.
  *
- * @package Vite
- * @since x.x.x
  */
 
 namespace Vite;
 
-use Vite\Traits\Hook;
 use Vite\Traits\Mods;
 
 /**
@@ -17,12 +13,6 @@ use Vite\Traits\Mods;
 class DynamicCSS {
 
 	use Mods;
-	const STATES = [
-		'normal',
-		'hover',
-		'active',
-		'focus',
-	];
 
 	const DEVICES = [
 		'desktop',
@@ -37,108 +27,515 @@ class DynamicCSS {
 		'left',
 	];
 
-	/**
-	 * CSS data.
-	 *
-	 * @var array $css_data
-	 */
-	public $css_data = [];
-
-	/**
-	 * Context.
-	 *
-	 * Either customizer or meta.
-	 *
-	 * @var string
-	 */
-	public $context = 'customizer';
-
-	/**
-	 * CSS.
-	 *
-	 * @var string[]
-	 */
-	private $css = [
-		'desktop' => '',
-		'tablet'  => '',
-		'mobile'  => '',
+	const RADIUS_SIDES = [
+		'top-left',
+		'top-right',
+		'bottom-right',
+		'bottom-left',
 	];
 
 	/**
-	 * Holds fonts.
+	 * Configs.
 	 *
 	 * @var array
 	 */
-	private $fonts = [];
+	public $configs = [];
 
 	/**
-	 * Init CSS data.
+	 * Contexts.
 	 *
-	 * @param array $settings Customizer settings.
-	 * @return void
+	 * @var string[]
 	 */
-	public function init_css_data( array $settings = [] ) {
-		if ( empty( $settings ) ) {
-			return;
-		}
-		foreach ( $settings as $key => $setting ) {
-			if ( isset( $setting['selectors'] ) ) {
-				$this->css_data[ $key ] = $setting;
+	private $contexts = [
+		'global'  => 'vite-global',
+		'header'  => 'vite-header',
+		'content' => 'vite-content',
+		'footer'  => 'vite-footer',
+	];
+
+	/**
+	 * Holds generated CSS.
+	 *
+	 * @var string[]
+	 */
+	private $css_data = [
+		'global'  => [
+			'desktop' => [],
+			'tablet'  => [],
+			'mobile'  => [],
+		],
+		'header'  => [
+			'desktop' => [],
+			'tablet'  => [],
+			'mobile'  => [],
+		],
+		'content' => [
+			'desktop' => [],
+			'tablet'  => [],
+			'mobile'  => [],
+		],
+		'footer'  => [
+			'desktop' => [],
+			'tablet'  => [],
+			'mobile'  => [],
+		],
+	];
+
+	private $css = [
+		'all'     => '',
+		'global'  => '',
+		'header'  => '',
+		'content' => '',
+		'footer'  => '',
+	];
+
+	/**
+	 * Holds google fonts.
+	 *
+	 * @var array
+	 */
+	private $google_fonts = [];
+
+	/**
+	 * Initialize.
+	 *
+	 * @param array $settings Settings.
+	 */
+	public function init( array $settings = [] ): DynamicCSS {
+		if ( ! empty( $settings ) ) {
+			foreach ( $settings as $key => $setting ) {
+				if ( isset( $setting['css'] ) ) {
+					$this->configs[ $key ]         = $setting['css'];
+					$this->configs[ $key ]['type'] = $setting['type'] ?? '';
+				}
 			}
 		}
+		return $this;
 	}
 
 	/**
 	 * Get CSS.
 	 *
-	 * @return string
+	 * @return string[]
 	 */
-	public function get(): string {
-		$css = '';
+	public function get(): array {
+		return $this->generate()->make();
+	}
 
-		foreach ( $this->css as $k => $v ) {
-			if ( empty( $v ) ) {
+	public function save() {
+		$this->generate()->make();
+		$this->save_to_file();
+	}
+
+	/**
+	 * Generate.
+	 */
+	private function generate(): ?DynamicCSS {
+		if ( empty( $this->configs ) ) {
+			return null;
+		}
+		foreach ( $this->configs as $key => $config ) {
+			$context = $config['context'] ?? 'global';
+			$type    = $config['type'] ?? '';
+
+			if ( empty( $type ) ) {
 				continue;
 			}
-			switch ( $k ) {
-				case 'desktop':
-					$css .= $v;
-					break;
-				case 'tablet':
-					$css .= sprintf( '@media (max-width: 1024px) { %s }', $v );
-					break;
-				case 'mobile':
-					$css .= sprintf( '@media (max-width: 767px) { %s }', $v );
-					break;
+
+			preg_match( '/\[([^]]*)]/', $key, $match );
+
+			$key     = $match[1] ?? $key;
+			$value   = $this->get_theme_mod( $key );
+			$default = $this->get_theme_mod_default( $key );
+
+			if ( empty( $value ) || $this->is_default( $value, $default ) ) {
+				continue;
 			}
+
+			$selector = $config['selector'] ?? '';
+			$property = $config['property'] ?? '';
+
+			switch ( $type ) {
+				case 'vite-dimensions':
+					$pattern = $config['pattern'] ?? '%property-%side';
+					$this->append( $this->responsive_dimensions( $selector, $property, $value, $pattern ), $context );
+					break;
+				case 'vite-typography':
+					$this->append( $this->typography( $selector, $value ), $context );
+					break;
+				case 'vite-color':
+					$this->append( $this->color( $selector, $property, $value ), $context );
+					break;
+				case 'vite-background':
+					$this->append( $this->background( $selector, $value ), $context );
+					break;
+				case 'vite-border':
+					$this->append( $this->border( $selector, $value ), $context );
+					break;
+				case 'vite-slider':
+					$this->append( $this->range( $selector, $property, $value ), $context );
+					break;
+				default:
+					$this->append( $this->common( $selector, $property, $value ), $context );
+			}
+		}
+
+		return $this;
+	}
+
+	/**
+	 * Typography.
+	 *
+	 * @param string|string[] $selector CSS selector.
+	 * @param array           $typography Typography saved settings.
+	 * @return string[]
+	 */
+	private function typography( $selector, array $typography = [] ): array {
+		$css = [
+			'desktop' => '',
+			'tablet'  => '',
+			'mobile'  => '',
+		];
+
+		$selector = is_array( $selector ) ? implode( ',', $selector ) : $selector;
+
+		foreach ( self::DEVICES as $device ) {
+			if ( 'desktop' === $device ) {
+				if ( ! empty( $typography['family'] ) ) {
+					$family = $typography['family'];
+					if ( ! in_array( $family, [ 'Default', 'Inherit' ], true ) ) {
+						if ( ! isset( $this->google_fonts[ $family ] ) ) {
+							$this->google_fonts[ $family ] = [];
+						}
+						$this->google_fonts[ $family ][] = (int) $typography['weight'] ?? 400;
+					}
+					$css[ $device ] .= sprintf( 'font-family:%s;', $family );
+				}
+
+				! empty( $typography['weight'] ) && $css[ $device ]    .= sprintf( 'font-weight:%s;', $typography['weight'] );
+				! empty( $typography['transform'] ) && $css[ $device ] .= 'text-transform: ' . $typography['transform'] . ';';
+				! empty( $typography['style'] ) && $css[ $device ]     .= 'font-style: ' . $typography['style'] . ';';
+			}
+
+			! empty( $typography['size'][ $device ]['value'] ) && $css[ $device ] .= 'font-size: ' . $typography['size'][ $device ]['value'] . ( $typography['size'][ $device ]['unit'] ?? 'px' ) . ';';
+
+			$line_height_unit = $typography['lineHeight'][ $device ]['unit'] ?? '';
+			$line_height_unit = '-' === $line_height_unit ? '' : $line_height_unit;
+
+			! empty( $typography['lineHeight'][ $device ]['value'] ) && $css[ $device ]    .= 'line-height: ' . $typography['lineHeight'][ $device ]['value'] . $line_height_unit . ';';
+			! empty( $typography['letterSpacing'][ $device ]['value'] ) && $css[ $device ] .= 'letter-spacing: ' . $typography['letterSpacing'][ $device ]['value'] . ( $typography['letterSpacing'][ $device ]['unit'] ?? 'px' ) . ';';
+		}
+
+		return [
+			'desktop' => $this->attach( $selector, $css['desktop'] ),
+			'tablet'  => $this->attach( $selector, $css['tablet'] ),
+			'mobile'  => $this->attach( $selector, $css['mobile'] ),
+		];
+	}
+
+	/**
+	 * Border.
+	 *
+	 * @param string|string[] $selector CSS selector.
+	 * @param array           $border Border saved settings.
+	 * @return string[]
+	 */
+	private function border( $selector, array $border ): array {
+		$css = [
+			'desktop' => [],
+			'tablet'  => [],
+			'mobile'  => [],
+		];
+		if ( ! isset( $border['style'] ) || 'none' === $border['style'] ) {
+			return $css;
+		}
+
+		$properties       = '';
+		$properties_hover = '';
+
+		$properties .= 'border-style: ' . $border['style'] . ';';
+
+		! empty( $border['color']['normal'] ) && $properties      .= 'border-color: ' . $border['color']['normal'] . ';';
+		! empty( $border['color']['hover'] ) && $properties_hover .= 'border-color: ' . $border['color']['hover'] . ';';
+
+		$properties .= implode( '', array_values( $this->dimensions( '', 'border', $border['width'], '%property-%side-width' ) ) );
+
+		$css['desktop'] = array_merge( $this->attach( $selector, $properties ), $this->attach( $selector, $properties_hover, 'hover' ) );
+		return $css;
+	}
+
+	/**
+	 * Dimensions.
+	 *
+	 * @param string|string[] $selector CSS selector.
+	 * @param string|string[] $property CSS property.
+	 * @param array           $dimensions Saved dimensions.
+	 * @param string          $pattern CSS property pattern.
+	 * @return array
+	 */
+	private function dimensions( $selector, $property, array $dimensions, string $pattern = '%property-%side' ): array {
+		$selector = is_array( $selector ) ? implode( ',', $selector ) : $selector;
+		$property = is_array( $property ) ? $property : [ $property ];
+		$css      = '';
+		$sides    = static::SIDES;
+
+		if ( count( array_intersect( static::RADIUS_SIDES, array_keys( $dimensions ) ) ) ) {
+			$sides = static::RADIUS_SIDES;
+		}
+
+		foreach ( $property as $prop ) {
+			foreach ( $sides as $side ) {
+				$css_prop = str_replace( [ '%property', '%side' ], [ $prop, $side ], $pattern );
+				$unit     = $dimensions['unit'] ?? 'px';
+				( isset( $dimensions[ $side ] ) && 'auto' !== $dimensions[ $side ] ) && $css .= $css_prop . ': ' . $dimensions[ $side ] . $unit . ';';
+			}
+		}
+
+		if ( ! empty( $css ) ) {
+			return $this->attach( $selector, $css );
+		}
+
+		return [ '' => '' ];
+	}
+
+	/**
+	 * Responsive dimensions.
+	 *
+	 * @param string|string[] $selector CSS selector.
+	 * @param string|string[] $property CSS property.
+	 * @param array           $dimensions Saved dimensions.
+	 * @param string          $pattern CSS property pattern.
+	 * @return array
+	 */
+	private function responsive_dimensions( $selector, $property, array $dimensions, string $pattern = '%property-%side' ): array {
+		$css = [
+			'desktop' => [],
+			'tablet'  => [],
+			'mobile'  => [],
+		];
+
+		if ( count( array_intersect( static::DEVICES, array_keys( $dimensions ) ) ) ) {
+			foreach ( static::DEVICES as $device ) {
+				if ( ! empty( $dimensions[ $device ] ) ) {
+					$css[ $device ] = $this->dimensions( $selector, $property, $dimensions[ $device ], $pattern );
+				}
+			}
+		} else {
+			$css['desktop'] = $this->dimensions( $selector, $property, $dimensions, $pattern );
 		}
 
 		return $css;
 	}
 
 	/**
-	 * Enqueue dynamic CSS and font styles.
+	 * Background.
 	 *
-	 * @return void
+	 * @param string|string[] $selector CSS selector.
+	 * @param array           $background Background saved settings.
+	 * @return string[]
 	 */
-	public function enqueue() {
-		$css       = $this->make()->get();
-		$fonts_url = vite( 'performance' )->get_local_fonts_url( $this->fonts );
+	private function background( $selector, array $background ): array {
+		$css = [
+			'desktop' => '',
+			'tablet'  => '',
+			'mobile'  => '',
+		];
 
-		if ( ! empty( $fonts_url ) ) {
-			wp_enqueue_style( 'vite-font', $fonts_url, [], VITE_VERSION );
+		if ( ! isset( $background['type'] ) ) {
+			return $css;
 		}
 
-		if ( ! empty( $css ) ) {
-			wp_add_inline_style( 'vite-style', $this->minify( $css ) );
+		if ( 'color' === $background['type'] ) {
+			! empty( $background['color'] ) && $css['desktop'] .= 'background-color: ' . $background['color'] . ';';
+		} elseif ( 'gradient' === $background['type'] ) {
+			! empty( $gradient ) && $css['desktop'] .= 'background: ' . $gradient . ';';
+		} elseif ( 'image' === $background['type'] ) {
+			! empty( $background['image'] ) && $css['desktop'] .= 'background-image: url(' . $background['image'] . ');';
+			! empty( $background['color'] ) && $css['desktop'] .= 'background-color: ' . $background['color'] . ';';
+			foreach ( static::DEVICES as $device ) {
+				! empty( $background['position'][ $device ] ) && $css[ $device ]   .= 'background-position: ' . $background['position'][ $device ] . ';';
+				! empty( $background['repeat'][ $device ] ) && $css[ $device ]     .= 'background-repeat: ' . $background['repeat'][ $device ] . ';';
+				! empty( $background['size'][ $device ] ) && $css[ $device ]       .= 'background-size: ' . $background['size'][ $device ] . ';';
+				! empty( $background['attachment'][ $device ] ) && $css[ $device ] .= 'background-attachment: ' . $background['attachment'][ $device ] . ';';
+			}
 		}
+
+		return [
+			'desktop' => ! empty( $css['desktop'] ) ? $this->attach( $selector, $css['desktop'] ) : [],
+			'tablet'  => ! empty( $css['tablet'] ) ? $this->attach( $selector, $css['tablet'] ) : [],
+			'mobile'  => ! empty( $css['mobile'] ) ? $this->attach( $selector, $css['mobile'] ) : [],
+		];
 	}
 
 	/**
-	 * Check if it is default.
+	 * Range.
 	 *
-	 * @param mixed $value Theme mod value.
-	 * @param mixed $default Theme mod default.
+	 * @param string|string[]  $selector CSS selector.
+	 * @param string|string[]  $property CSS property.
+	 * @param int|string|array $range Saved range.
+	 * @return string[]
+	 */
+	private function range( $selector, $property, $range ): array {
+		$css = [
+			'desktop' => '',
+			'tablet'  => '',
+			'mobile'  => '',
+		];
+
+		if ( ! is_array( $range ) || empty( $selector ) || empty( $property ) ) {
+			return $css;
+		}
+
+		$property = is_array( $property ) ? $property : [ $property ];
+
+		if ( count( array_intersect( static::DEVICES, array_keys( $range ) ) ) ) {
+			foreach ( static::DEVICES as $device ) {
+				if ( ! empty( $range[ $device ]['value'] ) ) {
+					$prop = array_reduce(
+						$property,
+						function( $acc, $curr ) use ( $device, $range ) {
+							$acc .= $curr . ': ' . $range[ $device ]['value'] . ( $range[ $device ]['unit'] ?? 'px' ) . ';';
+							return $acc;
+						},
+						''
+					);
+
+					$css[ $device ] .= $prop;
+				}
+			}
+		} else {
+			if ( ! empty( $range['value'] ) ) {
+				$prop           = array_reduce(
+					$property,
+					function( $acc, $curr ) use ( $range ) {
+						$acc .= $curr . ': ' . $range['value'] . ( $range['unit'] ?? 'px' ) . ';';
+						return $acc;
+					},
+					''
+				);
+				$css['desktop'] = $prop;
+			}
+		}
+
+		return [
+			'desktop' => ! empty( $css['desktop'] ) ? $this->attach( $selector, $css['desktop'] ) : [],
+			'tablet'  => ! empty( $css['tablet'] ) ? $this->attach( $selector, $css['tablet'] ) : [],
+			'mobile'  => ! empty( $css['mobile'] ) ? $this->attach( $selector, $css['mobile'] ) : [],
+		];
+	}
+
+	/**
+	 * Color.
+	 *
+	 * @param string|string[] $selector CSS selector.
+	 * @param string|string[] $property CSS property.
+	 * @param string|array    $color Color saved settings.
+	 * @return string[]
+	 */
+	private function color( $selector, $property, $color ): array {
+		$css = [
+			'desktop' => '',
+			'tablet'  => '',
+			'mobile'  => '',
+		];
+		if ( empty( $color ) ) {
+			return $css;
+		}
+
+		$temp = [];
+		if ( is_array( $color ) ) {
+			foreach ( $color as $k => $v ) {
+				if ( ! empty( $v ) ) {
+					$css['desktop'] = array_merge( $temp, $this->attach( $selector, ( $this->str_starts_with( '--', $k ) ? $k : $property ) . ': ' . $v . ';', ( $this->str_starts_with( '--', $k ) ? 'normal' : $k ) ) );
+				}
+			}
+		} else {
+			$css['desktop'] = $this->attach( $selector, ( $property . ': ' . $color . ';' ) );
+		}
+
+		return $css;
+	}
+
+	/**
+	 * Common.
+	 *
+	 * @param string|string[] $selector CSS selector.
+	 * @param string|string[] $property CSS property.
+	 * @param string|array    $value Saved settings.
+	 * @return array|string[]
+	 */
+	private function common( $selector, $property, $value ): array {
+		if ( empty( $value ) ) {
+			return [
+				'desktop' => [],
+				'tablet'  => [],
+				'mobile'  => [],
+			];
+		}
+
+		if ( is_array( $value ) && count( array_intersect( static::DEVICES, array_keys( $value ) ) ) ) {
+			$css = [
+				'desktop' => [],
+				'tablet'  => [],
+				'mobile'  => [],
+			];
+
+			foreach ( static::DEVICES as $device ) {
+				if ( ! empty( $value[ $device ] ) ) {
+					$css[ $device ] = array_merge( $css[ $device ], $this->attach( $selector, $property . ': ' . $value[ $device ] . ';' ) );
+				}
+			}
+
+			return $css;
+		}
+
+		return [
+			'desktop' => $this->attach( $selector, $property . ': ' . $value . ';' ),
+			'tablet'  => [],
+			'mobile'  => [],
+		];
+	}
+
+	/**
+	 * Attach selector and properties to make valid CSS.
+	 *
+	 * @param string|string[] $selector CSS selector.
+	 * @param string          $properties CSS properties.
+	 * @param string          $state CSS state.
+	 */
+	private function attach( $selector, string $properties, string $state = 'normal' ): array {
+		$state    = 'normal' === $state ? '' : ':' . $state;
+		$selector = is_array( $selector ) ? $selector : [ $selector ];
+
+		if ( empty( $selector ) || empty( $properties ) ) {
+			return [ '' => '' ];
+		}
+
+		$i = 1;
+
+		$selector = array_reduce(
+			$selector,
+			function( $acc, $curr ) use ( $state, $selector, &$i ) {
+				if ( count( $selector ) === $i ) {
+					$acc .= $curr . $state;
+				} else {
+					$acc .= $curr . $state . ',';
+				}
+				$i++;
+				return $acc;
+			},
+			''
+		);
+		return [
+			$selector => $properties,
+		];
+	}
+
+	/**
+	 * Check if the value default value.
+	 *
+	 * @param mixed $value Saved value.
+	 * @param mixed $default Default value.
 	 * @return bool
 	 */
 	private function is_default( $value, $default ): bool {
@@ -151,449 +548,89 @@ class DynamicCSS {
 	}
 
 	/**
-	 * Make css.
+	 * Append CSS.
 	 *
-	 * @return $this
+	 * @param array  $css_data CSS data.
+	 * @param string $context Context.
+	 * @return void
 	 */
-	public function make(): DynamicCSS {
-		if ( ! empty( $this->css_data ) ) {
-			foreach ( $this->css_data as $id => $d ) {
-				$type = $d['type'] ?? '';
-				preg_match( '/\[([^]]*)]/', $id, $match );
+	private function append( array $css_data, string $context ) {
+		if ( empty( $css_data ) ) {
+			return;
+		}
 
-				$value   = $this->get_theme_mod( $match[1] );
-				$default = $this->get_theme_mod_default( (string) $match[1] );
-
-				if ( empty( $value ) || $this->is_default( $value, $default ) ) {
-					continue;
-				}
-
-				switch ( $type ) {
-					case 'vite-dimensions':
-						if ( is_array( $value ) ) {
-							if ( $this->array_some(
-								function( $a ) {
-									return in_array( $a, static::SIDES, true );
-								},
-								array_keys( $value )
-							) ) {
-								$this->css['desktop'] .= $this->make_css( $d['selectors'], $d['properties'], $this->dimension_css( $value ) );
-							} elseif ( $this->array_some(
-								function( $a ) {
-									return in_array( $a, static::DEVICES, true );
-								},
-								array_keys( $value )
-							) ) {
-								foreach ( static::DEVICES as $device ) {
-									if ( isset( $value[ $device ] ) ) {
-										$this->css[ $device ] .= $this->make_css( $d['selectors'], $d['properties'], $this->dimension_css( $value[ $device ] ) );
-									}
-								}
-							}
-						}
-						break;
-					case 'vite-slider':
-						if ( is_array( $value ) ) {
-							if ( $this->array_some(
-								function( $a ) {
-									return in_array( $a, static::DEVICES, true );
-								},
-								array_keys( $value )
-							) ) {
-								foreach ( static::DEVICES as $device ) {
-									if ( isset( $value[ $device ] ) ) {
-										$values = $value[ $device ];
-										if ( is_scalar( $values ) ) {
-											$this->css[ $device ] .= $this->make_css( $d['selectors'], $d['properties'], $values );
-										} else {
-											if ( isset( $values['value'] ) ) {
-												$unit                  = $values['unit'] ?? ( $d['input_attrs']['defaultUnit'] ?? 'px' );
-												$unit                  = '-' === $unit ? '' : $unit;
-												$this->css[ $device ] .= $this->make_css( $d['selectors'], $d['properties'], "{$values['value']}$unit" );
-											}
-										}
-									}
-								}
-							} else {
-								if ( isset( $value['value'] ) ) {
-									$unit                  = $value['unit'] ?? ( $d['input_attrs']['defaultUnit'] ?? 'px' );
-									$unit                  = '-' === $unit ? '' : $unit;
-									$this->css['desktop'] .= $this->make_css( $d['selectors'], $d['properties'], "{$value['value']}$unit" );
-								}
-							}
-						} else {
-							$this->css['desktop'] .= $this->make_css( $d['selectors'], $d['properties'], $value );
-						}
-						break;
-					case 'vite-background':
-						$type = $value['type'] ?? 'color';
-
-						if ( 'color' === $type && isset( $value['color'] ) ) {
-							$this->css['desktop'] .= $this->make_css( $d['selectors'], [], "background-color: {$value['color']};" );
-						} elseif ( 'gradient' === $type && isset( $value['gradient'] ) ) {
-							$this->css['desktop'] .= $this->make_css( $d['selectors'], [], "background: {$value['gradient']};" );
-						} else {
-							unset( $value['gradient'] );
-							unset( $value['type'] );
-
-							$desktop = [];
-							$tablet  = [];
-							$mobile  = [];
-
-							foreach ( static::DEVICES as $device ) {
-								foreach ( $value  as $k => $v ) {
-									if ( isset( $v ) && is_scalar( $v ) ) {
-										$desktop[ $k ] = $v;
-										continue;
-									}
-
-									if ( isset( $v[ $device ] ) ) {
-										${$device}[ $k ] = $v[ $device ];
-									}
-								}
-							}
-
-							if ( ! empty( $tablet ) ) {
-								$this->css['tablet'] .= $this->make_css( $d['selectors'], [], $this->background_css( $tablet ) );
-							}
-							if ( ! empty( $mobile ) ) {
-								$this->css['mobile'] .= $this->make_css( $d['selectors'], [], $this->background_css( $mobile ) );
-							}
-							if ( ! empty( $desktop ) ) {
-								$this->css['desktop'] .= $this->make_css( $d['selectors'], [], $this->background_css( $desktop ) );
-							}
-						}
-						break;
-					case 'vite-typography':
-						$desktop = [];
-						$tablet  = [];
-						$mobile  = [];
-
-						foreach ( static::DEVICES as $device ) {
-							foreach ( $value as $k => $v ) {
-								if ( isset( $v ) && is_scalar( $v ) ) {
-									$desktop[ $k ] = $v;
-									continue;
-								}
-								if ( isset( $v[ $device ] ) ) {
-									${$device}[ $k ] = $v[ $device ];
-								}
-							}
-						}
-
-						if ( ! empty( $desktop ) ) {
-							$this->css['desktop'] .= $this->make_css( $d['selectors'], [], $this->typography_css( $desktop ) );
-						}
-
-						if ( ! empty( $tablet ) ) {
-							$this->css['tablet'] .= $this->make_css( $d['selectors'], [], $this->typography_css( $tablet ) );
-						}
-
-						if ( ! empty( $mobile ) ) {
-							$this->css['mobile'] .= $this->make_css( $d['selectors'], [], $this->typography_css( $mobile ) );
-						}
-						break;
-					case 'vite-border':
-						if ( isset( $value['color']['hover'] ) ) {
-							$this->css['desktop'] .= $this->make_css(
-								array_map(
-									function( $s ) {
-										return $s . ':hover';
-									},
-									$d['selectors']
-								),
-								[ 'border-color' ],
-								$value['color']['hover']
-							);
-						}
-						$this->css['desktop'] .= $this->make_css( $d['selectors'], [], $this->border_css( $value ) );
-						break;
-					default:
-						if ( is_array( $value ) ) {
-							if ( $this->array_some(
-								function( $a ) {
-									return in_array( $a, static::DEVICES, true );
-								},
-								array_keys( $value )
-							) ) {
-								foreach ( static::DEVICES as $device ) {
-									if ( isset( $value[ $device ] ) ) {
-										$this->css[ $device ] .= $this->make_css( $d['selectors'], $d['properties'], (string) $value[ $device ] );
-									}
-								}
-							}
-
-							if ( $this->array_some(
-								function( $a ) {
-									return in_array( $a, static::STATES, true );
-								},
-								array_keys( $value )
-							) ) {
-								foreach ( $value as $k => $v ) {
-									$this->css['desktop'] .= $this->make_css(
-										array_map(
-											function( $s ) use ( $k ) {
-												if ( empty( $k ) || ! in_array( $k, static::STATES, true ) ) {
-													return false;
-												}
-												if ( 'normal' === $k ) {
-													return $s;
-												}
-												return "$s:$k";
-											},
-											$d['selectors']
-										),
-										$d['properties'],
-										(string) $v
-									);
-								}
-							}
-							if ( ':root' === $d['selectors'][0] ) {
-								$css = "{$d['selectors'][0]} {";
-								foreach ( $value as $k => $v ) {
-									$css .= "$k: $v;";
-								}
-								$css                  .= '}';
-								$this->css['desktop'] .= $css;
-							}
-						} else {
-							$this->css['desktop'] .= $this->make_css( $d['selectors'], $d['properties'], (string) $value );
-						}
+		foreach ( $css_data as $d => $css ) {
+			if ( empty( $css ) ) {
+				continue;
+			}
+			foreach ( $css as $selector => $properties ) {
+				if ( isset( $this->css_data[ $context ][ $d ][ $selector ] ) ) {
+					$this->css_data[ $context ][ $d ][ $selector ] .= $properties;
+				} else {
+					$this->css_data[ $context ][ $d ][ $selector ] = $properties;
 				}
 			}
 		}
-
-		return $this;
 	}
 
 	/**
 	 * Make CSS.
 	 *
-	 * @param array  $selectors Array of selectors.
-	 * @param array  $properties Array of properties.
-	 * @param string $value  Value.
-	 * @return string
+	 * @return string[]
 	 */
-	private function make_css( array $selectors, array $properties, string $value ): string {
-		if ( empty( $value ) ) {
-			return '';
-		}
-
-		if ( ! empty( $properties ) ) {
-			$properties[] = '';
-			return sprintf( '%s { %s }', implode( ',', $selectors ), implode( ": $value;", $properties ) );
-		}
-
-		return sprintf( '%s { %s }', implode( ',', $selectors ), $value );
-	}
-
-	/**
-	 * Dimension CSS
-	 *
-	 * @param array $value Saved value.
-	 * @return string
-	 */
-	private function dimension_css( array $value = [] ): string {
-		$unit = $value['unit'] ?? 'px';
-
-		$css  = ( $value['top'] ?? 0 ) . $unit;
-		$css .= ' ' . ( $value['right'] ?? 0 ) . $unit;
-		$css .= ' ' . ( $value['bottom'] ?? 0 ) . $unit;
-		$css .= ' ' . ( $value['left'] ?? 0 ) . $unit;
-
-		return $css;
-	}
-
-	/**
-	 * Border CSS.
-	 *
-	 * @param array $value Border value.
-	 * @return string
-	 */
-	private function border_css( array $value = [] ): string {
-		$css = '';
-
-		if ( isset( $value['radius'] ) ) {
-			$radius = $value['radius'];
-
-			if ( ! empty( $radius['value'] ) ) {
-				$radius['unit'] = $radius['unit'] ?? 'px';
-				$css           .= "border-radius: {$radius['value']}{$radius['unit']};";
-			}
-		}
-
-		if ( isset( $value['style'] ) && 'none' !== $value['style'] ) {
-			$css .= "border-style: {$value['style']};";
-
-			if ( isset( $value['width'] ) ) {
-				$width = $value['width'];
-
-				if ( ! empty( $width['value'] ) ) {
-					$width['unit'] = $width['unit'] ?? 'px';
-					$css          .= "border-width: {$width['value']}{$width['unit']};";
-				}
-			}
-
-			if ( isset( $value['color']['normal'] ) ) {
-				$css .= "border-color: {$value['color']['normal']};";
-			}
-		}
-
-		return $css;
-	}
-
-	/**
-	 * Typography CSS.
-	 *
-	 * @param array $value Typography value.
-	 * @return string
-	 */
-	private function typography_css( array $value = [] ):string {
-		$css = '';
-		if ( ! empty( $value['family'] ) ) {
-			if ( 'System Default' === $value['family'] ) {
-				$css .= 'font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;';
-			} else {
-				$css .= "font-family: {$value['family']};";
-
-				if ( ! isset( $this->fonts[ $value['family'] ] ) ) {
-					$this->fonts[ $value['family'] ] = [];
-				}
-
-				$weight = $value['weight'] ?? '400';
-
-				if ( ! in_array( $weight, $this->fonts[ $value['family'] ], true ) ) {
-					$this->fonts[ $value['family'] ][] = "$weight";
+	private function make(): array {
+		foreach ( $this->css_data as $context => $data ) {
+			foreach ( $data as $device => $css_data ) {
+				if ( ! empty( $css_data ) ) {
+					if ( 'desktop' === $device ) {
+						foreach ( $css_data as $selector => $properties ) {
+							if ( ! empty( $selector ) && ! empty( $properties ) ) {
+								$this->css[ $context ] .= $this->minify( $selector . '{' . $properties . '}' );
+							}
+						}
+					}
+					if ( 'tablet' === $device ) {
+						foreach ( $css_data as $selector => $properties ) {
+							if ( ! empty( $selector ) && ! empty( $properties ) ) {
+								$this->css[ $context ] .= '@media(max-width:1024px){' . $this->minify( $selector . '{' . $properties . '}' ) . '}';
+							}
+						}
+					}
+					if ( 'mobile' === $device ) {
+						foreach ( $css_data as $selector => $properties ) {
+							if ( ! empty( $selector ) && ! empty( $properties ) ) {
+								$this->css[ $context ] .= '@media(max-width:767px){' . $this->minify( $selector . '{' . $properties . '}' ) . '}';
+							}
+						}
+					}
 				}
 			}
 		}
 
-		if ( ! empty( $value['weight'] ) ) {
-			$css .= "font-weight: {$value['weight']};";
-		}
+		$this->css['all'] = $this->css['global'] . $this->css['content'] . $this->css['footer'] . $this->css['header'] . $this->css['content'];
 
-		if ( ! empty( $value['size'] ) ) {
-			$size = $value['size'];
-			if ( ! empty( $size['value'] ) ) {
-				$size['unit'] = $size['unit'] ?? 'px';
-				$css         .= "font-size: {$size['value']}{$size['unit']};";
-			}
-		}
-
-		if ( ! empty( $value['style'] ) ) {
-			$css .= "font-style: {$value['style']};";
-		}
-
-		if ( ! empty( $value['lineHeight'] ) ) {
-			$line_height = $value['lineHeight'];
-
-			if ( ! empty( $line_height['value'] ) ) {
-				$line_height['unit'] = $line_height['unit'] ?? '';
-				$line_height['unit'] = '-' === $line_height['unit'] ? '' : $line_height['unit'];
-				$css                .= "line-height: {$line_height['value']}{$line_height['unit']};";
-			}
-		}
-		if ( ! empty( $value['letterSpacing'] ) ) {
-			$letter_spacing = $value['letterSpacing'];
-			if ( ! empty( $letter_spacing['value'] ) ) {
-				$letter_spacing['unit'] = $letter_spacing['unit'] ?? 'px';
-				$css                   .= "letter-spacing: {$letter_spacing['value']}{$letter_spacing['unit']};";
-			}
-		}
-		if ( ! empty( $value['transform'] ) ) {
-			$css .= "text-transform: {$value['transform']};";
-		}
-
-		return $css;
+		return $this->css;
 	}
 
 	/**
-	 * Background CSS.
+	 * Check if the string starts with the given substring.
 	 *
-	 * @param array $value Saved value.
-	 * @return string
-	 */
-	private function background_css( array $value = [] ): string {
-		$css = '';
-
-		if ( ! empty( $value['image'] ) ) {
-			$css  = 'background: url(' . $value['image'] . ') ';
-			$css .= ( $value['position'] ?? '50% 50%' ) . '/';
-			$css .= ( $value['size'] ?? 'auto' ) . ' ';
-			$css .= ( $value['repeat'] ?? 'repeat' ) . ' ';
-			$css .= ( $value['attachment'] ?? 'scroll' ) . ' ';
-			$css .= $value['color'] ?? '';
-		} else {
-			if ( isset( $value['position'] ) ) {
-				$css .= "background-position: {$value['position']};";
-			}
-			if ( isset( $value['size'] ) ) {
-				$css .= "background-size: {$value['size']};";
-			}
-			if ( isset( $value['repeat'] ) ) {
-				$css .= "background-repeat: {$value['repeat']};";
-			}
-			if ( isset( $value['attachment'] ) ) {
-				$css .= "background-attachment: {$value['attachment']};";
-			}
-		}
-
-		return $css;
-	}
-
-	/**
-	 * Array some.
-	 *
-	 * JS Array.some() equivalent.
-	 *
-	 * @param callable $callback callback.
-	 * @param array    $array Array.
+	 * @param string $needle Needle.
+	 * @param string $haystack Haystack.
 	 * @return bool
 	 */
-	private function array_some( callable $callback, array $array ): bool {
-		foreach ( $array as $arr ) {
-			if ( call_user_func( $callback, $arr ) === true ) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-	/**
-	 * Save CSS in file system.
-	 *
-	 * @return void
-	 */
-	public function save() {
-		$css = $this->filter( 'dynamic/css', $this->get() );
-
-		if ( empty( $css ) ) {
-			return;
-		}
-
-		$css = $this->minify( $css );
-
-		global $wp_filesystem;
-		$upload_dir_url = wp_upload_dir();
-		$upload_dir     = trailingslashit( $upload_dir_url['basedir'] ) . 'vite/';
-		$filename       = 'vite-dynamic.css';
-
-		! $wp_filesystem && require_once ABSPATH . 'wp-admin/includes/file.php';
-
-		WP_Filesystem( false, $upload_dir_url['basedir'], true );
-
-		! $wp_filesystem->is_dir( $upload_dir ) && $wp_filesystem->mkdir( $upload_dir );
-
-		$wp_filesystem->put_contents( "$upload_dir$filename", $css );
+	private function str_starts_with( string $needle, string $haystack ): bool {
+		$length = strlen( $needle );
+		return substr( $haystack, 0, $length ) === $needle;
 	}
 
 	/**
 	 * Minify CSS.
 	 *
-	 * @param string $css CSS to minify.
+	 * @param string $css CSS.
 	 * @return array|string|string[]|null
 	 */
-	public function minify( string $css ) {
+	private function minify( string $css ) {
 		return preg_replace(
 			[
 				'#("(?:[^"\\\]++|\\\.)*+"|\'(?:[^\'\\\\]++|\\\.)*+\')|/\*(?!!)(?>.*?\*/)|^\s*|\s*$#s',
@@ -623,5 +660,23 @@ class DynamicCSS {
 			],
 			$css
 		);
+	}
+
+	private function save_to_file() {
+		foreach ( $this->css as $key => $value ) {
+			$this->create_file( "$key.css", $value );
+		}
+	}
+
+	private function create_file( $filename, $content ) {
+		global $wp_filesystem;
+		$upload_dir_url = wp_upload_dir();
+		$upload_dir     = trailingslashit( $upload_dir_url['basedir'] ) . 'vite/';
+
+		! $wp_filesystem && require_once ABSPATH . 'wp-admin/includes/file.php';
+		WP_Filesystem( false, $upload_dir_url['basedir'], true );
+		! $wp_filesystem->is_dir( $upload_dir ) && $wp_filesystem->mkdir( $upload_dir );
+
+		return $wp_filesystem->put_contents( "$upload_dir$filename", $content );
 	}
 }
