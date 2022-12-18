@@ -622,17 +622,17 @@ trait Mods {
 			],
 			'scroll-to-top-border'           => [],
 			'scroll-to-top-radius'           => [
-				'top'    => 2,
-				'right'  => 2,
-				'bottom' => 2,
-				'left'   => 2,
-				'unit'   => 'px',
+				'top-left'     => 2,
+				'top-right'    => 2,
+				'bottom-left'  => 2,
+				'bottom-right' => 2,
+				'unit'         => 'px',
 			],
 		];
 
 		$footer_row_layout_defaults = array_reduce(
 			[ 'top', 'main', 'bottom' ],
-			function( $acc, $curr ) {
+			function ( $acc, $curr ) {
 				$acc[ "footer-$curr-row-col-layout" ] = [
 					'1' => [
 						'desktop' => '100',
@@ -685,5 +685,39 @@ trait Mods {
 		$defaults = $this->get_theme_mod_defaults();
 
 		return $defaults[ $key ] ?? null;
+	}
+
+	/**
+	 * Set theme mod.
+	 *
+	 * @param string $key Theme mod key.
+	 * @param mixed  $value Theme mod value.
+	 *
+	 * @return void
+	 */
+	public function set_theme_mod( string $key, $value ) {
+		$mods         = get_theme_mod( 'vite' );
+		$mods[ $key ] = $value;
+
+		set_theme_mod( 'vite', $mods );
+	}
+
+	/**
+	 * Remove theme mod.
+	 *
+	 * @param string      $key Theme mod key.
+	 * @param bool|string $migrate Migration key.
+	 * @return void
+	 */
+	public function remove_theme_mod( string $key, $migrate = false ) {
+		$mods = get_theme_mod( 'vite' );
+
+		if ( $migrate && is_string( $migrate ) ) {
+			$mods[ $migrate ] = $mods[ $key ];
+		}
+
+		unset( $mods[ $key ] );
+
+		set_theme_mod( 'vite', $mods );
 	}
 }
