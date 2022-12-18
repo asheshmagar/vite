@@ -31,6 +31,21 @@ $options = [
 			'cols'        => 2,
 		],
 	],
+	'vite[cache-dynamic-css]'  => [
+		'title'       => __( 'Cache dynamic CSS', 'vite' ),
+		'type'        => 'vite-toggle',
+		'default'     => true,
+		'section'     => 'vite[performance]',
+		'input_attrs' => [
+			'allow_reset' => false,
+			'separator'   => true,
+			'cols'        => 2,
+		],
+		'description' => __( 'Cache inline CSS. Improves performance if enabled.', 'vite' ),
+		'condition'   => [
+			'vite[dynamic-css-output]' => 'inline',
+		],
+	],
 	'vite[local-google-fonts]' => [
 		'title'       => __( 'Local Google Fonts', 'vite' ),
 		'type'        => 'vite-toggle',
@@ -39,7 +54,6 @@ $options = [
 		'input_attrs' => [
 			'allow_reset' => false,
 			'separator'   => true,
-
 		],
 	],
 	'vite[css-preload]'        => [

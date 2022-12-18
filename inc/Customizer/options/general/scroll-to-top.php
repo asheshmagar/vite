@@ -122,11 +122,11 @@ $options = [
 		'input_attrs' => [
 			'colors'    => [
 				[
-					'id'    => 'normal',
+					'id'    => '--button--color',
 					'label' => __( 'Normal', 'vite' ),
 				],
 				[
-					'id'    => 'hover',
+					'id'    => '--button--hover--color',
 					'label' => __( 'Hover', 'vite' ),
 				],
 			],
@@ -134,6 +134,10 @@ $options = [
 		],
 		'condition'   => [
 			'vite[scroll-to-top]' => true,
+		],
+		'css'         => [
+			'selector' => '.vite-modal--stt',
+			'context'  => 'global',
 		],
 	],
 	'vite[scroll-top-bg-color]'         => [
@@ -143,17 +147,21 @@ $options = [
 		'input_attrs' => [
 			'colors' => [
 				[
-					'id'    => 'normal',
+					'id'    => '--button--bg--color',
 					'label' => __( 'Normal', 'vite' ),
 				],
 				[
-					'id'    => 'hover',
+					'id'    => '--button--hover--bg--color',
 					'label' => __( 'Hover', 'vite' ),
 				],
 			],
 		],
 		'condition'   => [
 			'vite[scroll-to-top]' => true,
+		],
+		'css'         => [
+			'selector' => '.vite-modal--stt',
+			'context'  => 'global',
 		],
 	],
 	'vite[scroll-to-top-position]'      => [
@@ -193,6 +201,11 @@ $options = [
 		'condition'   => [
 			'vite[scroll-to-top]' => true,
 		],
+		'css'         => [
+			'selector' => '.vite-modal--stt',
+			'property' => '--stt--edge--offset',
+			'context'  => 'global',
+		],
 	],
 	'vite[scroll-to-top-bottom-offset]' => [
 		'section'     => 'vite[scroll-to-top]',
@@ -207,6 +220,11 @@ $options = [
 		'condition'   => [
 			'vite[scroll-to-top]' => true,
 		],
+		'css'         => [
+			'selector' => '.vite-modal--stt',
+			'property' => '--stt--bottom--offset',
+			'context'  => 'global',
+		],
 	],
 	'vite[scroll-to-top-button-size]'   => [
 		'section'     => 'vite[scroll-to-top]',
@@ -220,6 +238,11 @@ $options = [
 		],
 		'condition'   => [
 			'vite[scroll-to-top]' => true,
+		],
+		'css'         => [
+			'selector' => '.vite-modal--stt .vite-modal--stt__btn',
+			'property' => [ 'height', 'width' ],
+			'context'  => 'global',
 		],
 	],
 	'vite[scroll-to-top-icon-size]'     => [
@@ -252,6 +275,11 @@ $options = [
 		'condition'   => [
 			'vite[scroll-to-top]' => true,
 		],
+		'css'         => [
+			'selector' => '.vite-modal--stt .vite-modal--stt__btn',
+			'property' => 'border',
+			'context'  => 'global',
+		],
 	],
 	'vite[scroll-to-top-radius]'        => [
 		'section'     => 'vite[scroll-to-top]',
@@ -261,9 +289,16 @@ $options = [
 		'input_attrs' => [
 			'units'     => [ 'px', 'rem', 'em', '%' ],
 			'separator' => true,
+			'sides'     => [ 'top-left', 'top-right', 'bottom-right', 'bottom-left' ],
 		],
 		'condition'   => [
 			'vite[scroll-to-top]' => true,
+		],
+		'css'         => [
+			'selector' => '.vite-modal--stt .vite-modal--stt__btn',
+			'property' => 'border',
+			'pattern'  => '%property-%side-radius',
+			'context'  => 'global',
 		],
 	],
 ];
