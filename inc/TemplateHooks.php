@@ -203,7 +203,7 @@ class TemplateHooks {
 			$archive_wrapper_classes = [ 'vite-posts' ];
 		}
 
-		if ( $is_infinite_scroll ) {
+		if ( $is_infinite_scroll && ! is_customize_preview() ) {
 			$archive_wrapper_classes[] = 'vite-posts--infinite-scroll';
 		}
 
