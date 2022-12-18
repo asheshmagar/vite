@@ -16,8 +16,8 @@ class PreviewStyles {
 		this.#init();
 	}
 
-	#attach( selector, properties, state = 'normal' ) {
-		if ( ! selector || ! properties ) return {};
+	#attach( selector = '', properties, state = 'normal' ) {
+		if ( ! properties ) return {};
 
 		state = 'normal' === state ? '' : `:${ state }`;
 		selector = Array.isArray( selector ) ? selector : [ selector ];
@@ -76,9 +76,9 @@ class PreviewStyles {
 
 	#border( selector, border ) {
 		const css = {
-			desktop: '',
-			tablet: '',
-			mobile: '',
+			desktop: {},
+			tablet: {},
+			mobile: {},
 		};
 
 		if ( ! border?.style || 'none' === border.style ) return css;
@@ -90,8 +90,12 @@ class PreviewStyles {
 		if ( border?.color?.normal ) properties += `border-color: ${ border.color.normal };`;
 		if ( border?.color?.hover ) propertiesHover += `border-color: ${ border.color.hover };`;
 
-		properties += Object.value( this.#dimensions( '', 'border', border?.width, '%property-%side-width' ) ).join( '' );
-		css.desktop = [ ...( this.#attach( selector, properties ) ), ...( this.#attach( selector, propertiesHover, 'hover' ) ) ];
+		if ( border?.width ) {
+			properties += Object.values( this.#dimensions( '', 'border', border?.width ?? {}, '%property-%side-width' ) ?? {} ).join( '' );
+		}
+		css.desktop = {
+			...( this.#attach( selector, properties ) ?? {} ), ...( this.#attach( selector, propertiesHover, 'hover' ) ?? {} ),
+		};
 
 		return css;
 	}
@@ -109,7 +113,10 @@ class PreviewStyles {
 			for ( const side of sides ) {
 				const cssProp = pattern.replace( '%property', prop ).replace( '%side', side );
 				const unit = dimensions?.unit ?? 'px';
-				if ( dimensions?.side && 'auto' !== dimensions?.side ) css += `${ cssProp }: ${ dimensions.side }${ unit };`;
+				const value = dimensions?.[ side.toString() ] ?? undefined;
+				if ( ! isUndefined( value ) && ! isNull( value ) && 'auto' !== value ) {
+					css += `${ cssProp }: ${ value }${ unit };`;
+				}
 			}
 		}
 
@@ -183,8 +190,8 @@ class PreviewStyles {
 			for ( const device of this.#devices ) {
 				if ( range?.[ device ]?.value ) {
 					const props = property.reduce( ( acc, prop ) => {
-						prop += `${ prop }: ${ range[ device ].value }${ range?.[ device ]?.unit ?? 'px' };`;
-						return prop;
+						acc += `${ prop }: ${ range[ device ].value }${ range?.[ device ]?.unit ?? 'px' };`;
+						return acc;
 					}, '' );
 					css[ device ] += props;
 				}
@@ -192,8 +199,8 @@ class PreviewStyles {
 		} else {
 			if ( range?.value ) { // eslint-disable-line no-lonely-if
 				const props = property.reduce( ( acc, prop ) => {
-					prop += `${ prop }: ${ range.value }${ range?.unit ?? 'px' };`;
-					return prop;
+					acc += `${ prop }: ${ range.value }${ range?.unit ?? 'px' };`;
+					return acc;
 				}, '' );
 				css.desktop += props;
 			}
@@ -208,19 +215,26 @@ class PreviewStyles {
 
 	#color( selector, property, color ) {
 		const css = {
-			desktop: '',
-			tablet: '',
-			mobile: '',
+			desktop: {},
+			tablet: {},
+			mobile: {},
 		};
 
-		if ( ! color?.value ) return css;
+		if ( ! color ) return css;
 
 		if ( isObject( color ) ) {
 			for ( const key in color ) {
-				if ( color[ key ] ) {
-					css.desktop = {
-						...( this.#attach( selector, key.startsWith( '--' ) ? key : property ) + ':' + color[ key ] + ';', key.startsWith( '--' ) ? 'normal' : key ),
-					};
+				const value = color[ key.toString() ];
+				if ( value ) {
+					const attached = this.#attach( selector, ( key.startsWith( '--' ) ? key : property ) + ':' + value + ';', key.startsWith( '--' ) ? 'normal' : key );
+
+					for	( const s in attached ) {
+						if ( css.desktop[ s ] ) {
+							css.desktop[ s ] += attached[ s ];
+						} else {
+							css.desktop[ s ] = attached[ s ];
+						}
+					}
 				}
 			}
 		} else {
@@ -232,9 +246,9 @@ class PreviewStyles {
 
 	#common( selector, property, value ) {
 		const css = {
-			desktop: [],
-			tablet: [],
-			mobile: [],
+			desktop: {},
+			tablet: {},
+			mobile: {},
 		};
 
 		if ( ! value ) return css;
@@ -243,7 +257,15 @@ class PreviewStyles {
 			if ( Object.keys( value ).some( d => this.#devices.includes( d ) ) ) {
 				for ( const device of this.#devices ) {
 					if ( value[ device ] ) {
-						css[ device ] = this.#attach( selector, property + ':' + value[ device ] + ';' );
+						const attached = this.#attach( selector, property + ':' + value[ device ] + ';' );
+
+						for	( const s in attached ) {
+							if ( css[ device ][ s ] ) {
+								css[ device ][ s ] += attached[ s ];
+							} else {
+								css[ device ][ s ] = attached[ s ];
+							}
+						}
 					}
 				}
 				return css;
