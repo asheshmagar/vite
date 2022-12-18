@@ -9,6 +9,13 @@ const SIDES = [
 	{ label: 'Left', value: 'left' },
 ];
 
+const RADIUS_SIDES = [
+	{ label: 'Top Left', value: 'top-left' },
+	{ label: 'Top Right', value: 'top-right' },
+	{ label: 'Bottom Right', value: 'bottom-right' },
+	{ label: 'Bottom Left', value: 'bottom-left' },
+];
+
 export default memo( props => {
 	const {
 		value = {},
@@ -25,7 +32,7 @@ export default memo( props => {
 	if ( ! sides?.length ) return null;
 	return (
 		<div className={ `vite-dimensions${ units?.length > 0 ? ' has-units' : '' }` } { ...otherProps }>
-			{ SIDES.map( side => (
+			{ ( sides.some( s => [ 'top-left', 'top-right', 'bottom-right', 'bottom-left' ].includes( s ) ) ? RADIUS_SIDES : SIDES ).map( side => (
 				<span key={ side.value } className={ `vite-dimension${ ! sides?.includes( side.value ) ? ' disabled' : '' }` }>
 					<input
 						type={ sides?.includes( side.value ) ? 'number' : 'text' }
