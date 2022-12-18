@@ -133,6 +133,10 @@ class Sanitize {
 	 * @return mixed
 	 */
 	public function sanitize_border( $input, WP_Customize_Setting $setting ) {
+		if ( empty( $input ) ) {
+			return $input;
+		}
+
 		$value         = [];
 		$border_styles = [
 			'none',
@@ -167,6 +171,9 @@ class Sanitize {
 	 * @return mixed
 	 */
 	public function sanitize_background( $input, WP_Customize_Setting $setting ) {
+		if ( empty( $input ) ) {
+			return $input;
+		}
 		if ( isset( $input['type'] ) && in_array( $input['type'], [ 'color', 'gradient', 'image' ], true ) ) {
 			$input['type'] = sanitize_text_field( $input['type'] );
 		} else {
@@ -218,6 +225,9 @@ class Sanitize {
 	 * @return mixed
 	 */
 	public function sanitize_sortable( $input ) {
+		if ( empty( $input ) ) {
+			return $input;
+		}
 		foreach ( $input as $i => $val ) {
 			foreach ( $val as $k => $v ) {
 				switch ( $k ) {
@@ -243,6 +253,9 @@ class Sanitize {
 	 * @return mixed
 	 */
 	public function sanitize_typography( $input ) {
+		if ( empty( $input ) ) {
+			return $input;
+		}
 		foreach ( $input as $key => $value ) {
 			switch ( $key ) {
 				case 'family':
@@ -275,7 +288,9 @@ class Sanitize {
 	 * @return mixed|array
 	 */
 	public function sanitize_dimensions( $input ) {
-		$value    = [];
+		if ( empty( $input ) ) {
+			return $input;
+		}
 		$sanitize = function( $arr ) {
 			foreach ( [ 'top', 'right', 'bottom', 'left', 'unit', 'sync' ] as $k ) {
 				if ( 'sync' === $k ) {
