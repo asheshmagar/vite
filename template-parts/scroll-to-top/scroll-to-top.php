@@ -17,7 +17,7 @@ $icon      = $core->get_theme_mod( 'scroll-to-top-icon', 'arrow-up' );
 $icon_size = $core->get_theme_mod( 'scroll-to-top-icon-size', 13 );
 ?>
 <div class="vite-modal vite-modal--stt vite-modal--stt--pos-<?php echo esc_attr( $position ); ?>">
-	<button aria-label="<?php esc_html_e( 'Scroll to top', 'vite' ); ?>">
+	<button class="vite-modal--stt__btn" aria-label="<?php esc_html_e( 'Scroll to top', 'vite' ); ?>">
 		<?php
 		vite( 'icon' )->get_icon(
 			$icon,
