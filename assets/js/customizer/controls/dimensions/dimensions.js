@@ -8,6 +8,7 @@ import { ViteDimensions } from '../../components';
 export default memo( ( props ) => {
 	let {
 		control: {
+			id,
 			setting,
 			params: {
 				label,
@@ -15,7 +16,7 @@ export default memo( ( props ) => {
 				inputAttrs: {
 					responsive = false,
 					units = [ 'px', 'em', 'rem' ],
-					defaultUnit = 'px',
+					default_unit: defaultUnit = 'px',
 					step = 1,
 					min = 0,
 					max = 300,
@@ -28,6 +29,8 @@ export default memo( ( props ) => {
 	} = props;
 	const [ value, setValue ] = useState( setting.get() ?? {} );
 	const { device, DeviceSelector } = useDeviceSelector();
+
+	sides = -1 !== id.indexOf( 'radius' ) ? [ 'top-left', 'top-right', 'bottom-right', 'bottom-left' ] : sides;
 
 	const unit = responsive ? ( value?.[ device ]?.unit || defaultUnit ) : ( value?.unit || defaultUnit );
 
@@ -114,6 +117,7 @@ export default memo( ( props ) => {
 										[ d ]: {
 											...( prev?.[ d ] || {} ),
 											...v,
+											unit: prev?.[ d ]?.unit || defaultUnit,
 										},
 									};
 									setting.set( prev );
@@ -134,6 +138,7 @@ export default memo( ( props ) => {
 								prev = {
 									...( prev || {} ),
 									...v,
+									unit: prev?.unit || defaultUnit,
 								};
 								setting.set( prev );
 								return prev;
