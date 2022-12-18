@@ -9,7 +9,7 @@ namespace Vite;
 
 defined( 'ABSPATH' ) || exit;
 
-use Vite\Traits\Hook;
+use Vite\Traits\Mods;
 
 /**
  * Class Styles
@@ -18,7 +18,7 @@ use Vite\Traits\Hook;
  */
 class ScriptsStyles {
 
-	use Hook;
+	use Mods;
 
 	const STYLES = [
 		'global'  => 'global.css',
@@ -69,26 +69,36 @@ class ScriptsStyles {
 	 * @return void
 	 */
 	public function enqueue() {
-		$handles     = $this->filter( 'style/handles', array_keys( static::STYLES ) );
-		$dynamic_css = vite( 'customizer' )->dynamic_css->get();
+		$handles                 = $this->filter( 'style/handles', array_keys( static::STYLES ) );
+		$dynamic_css             = vite( 'customizer' )->dynamic_css->get();
+		$remote_google_fonts_url = $this->get_theme_mod( 'google-fonts-url', '' );
+		$is_local_google_fonts   = $this->get_theme_mod( 'local-google-fonts', false );
+		$dynamic_css_output      = $this->get_theme_mod( 'dynamic-css-output', 'inline' );
+
+		if ( ! empty( $remote_google_fonts_url ) ) {
+			if ( $is_local_google_fonts ) {
+				$remote_google_fonts_url = vite( 'performance' )->local_font->get( $remote_google_fonts_url );
+			}
+			wp_enqueue_style( 'vite-google-fonts', $remote_google_fonts_url, [], VITE_VERSION );
+		}
 
 		if ( ! empty( $handles ) ) {
 			foreach ( $handles as $handle ) {
 				wp_enqueue_style( "vite-$handle" );
 
 				if ( $dynamic_css[ $handle ] ) {
-					wp_add_inline_style( "vite-$handle", $dynamic_css[ $handle ] );
+					'inline' === $dynamic_css_output && wp_add_inline_style( "vite-$handle", $dynamic_css[ $handle ] );
 				}
 
-//				add_action(
-//					'wp_head',
-//					function() use ( $handle ) {
-//						$upload_dir = wp_get_upload_dir();
-//						$file       = $upload_dir['basedir'] . '/vite/' . static::STYLES[ $handle ];
-//						file_exists( $file ) && wp_enqueue_style( "vite-dynamic-$handle", "{$upload_dir['baseurl']}/vite/$handle.css", [], filemtime( $file ) );
-//					},
-//					999
-//				);
+				'file' === $dynamic_css_output && add_action(
+					'wp_head',
+					function() use ( $handle ) {
+						$upload_dir = wp_get_upload_dir();
+						$file       = $upload_dir['basedir'] . '/vite/' . static::STYLES[ $handle ];
+						file_exists( $file ) && wp_enqueue_style( "vite-dynamic-$handle", "{$upload_dir['baseurl']}/vite/$handle.css", [], filemtime( $file ) );
+					},
+					2
+				);
 			}
 		}
 
