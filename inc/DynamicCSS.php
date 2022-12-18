@@ -81,6 +81,11 @@ class DynamicCSS {
 		],
 	];
 
+	/**
+	 * Holds all parsed CSS.
+	 *
+	 * @var string[]
+	 */
 	private $css = [
 		'all'     => '',
 		'global'  => '',
@@ -119,12 +124,57 @@ class DynamicCSS {
 	 * @return string[]
 	 */
 	public function get(): array {
-		return $this->generate()->make();
+		$is_cached = $this->get_theme_mod( 'cache-dynamic-css', true );
+		if ( $is_cached ) {
+			$css = $this->get_theme_mod( 'cached-dynamic-css' );
+			if ( ! empty( $css ) ) {
+				return $css;
+			}
+		}
+		return $this->generate()->make()->css;
 	}
 
+	/**
+	 * Save.
+	 *
+	 * @return void
+	 */
 	public function save() {
-		$this->generate()->make();
-		$this->save_to_file();
+		$make = $this->generate()->make();
+		$this->set_theme_mod( 'cached-dynamic-css', $make->css );
+		$make->save_fonts()->save_to_file();
+	}
+
+	/**
+	 * Save fonts.
+	 *
+	 * @return DynamicCSS
+	 */
+	private function save_fonts(): DynamicCSS {
+		if ( ! empty( $this->google_fonts ) ) {
+			$fonts     = $this->google_fonts;
+			$families  = array_keys( $fonts );
+			$fonts_url = add_query_arg(
+				[
+					'family'  => implode(
+						'|',
+						array_map(
+							function( $f ) use ( $fonts ) {
+								return str_replace( ' ', '+', $f ) . ':' . implode( ',', array_unique( $fonts[ $f ] ) );
+							},
+							$families
+						)
+					),
+					'display' => 'swap',
+				],
+				'https://fonts.googleapis.com/css'
+			);
+			$this->action( 'local-fonts/cleanup' ); // Delete fonts folder on customize save.
+			vite( 'performance' )->local_font->get( $fonts_url ); // Download fonts locally.
+			$this->set_theme_mod( 'google-fonts-url', $fonts_url ); // Save google fonts url.
+		}
+
+		return $this;
 	}
 
 	/**
@@ -207,7 +257,7 @@ class DynamicCSS {
 						if ( ! isset( $this->google_fonts[ $family ] ) ) {
 							$this->google_fonts[ $family ] = [];
 						}
-						$this->google_fonts[ $family ][] = (int) $typography['weight'] ?? 400;
+						$this->google_fonts[ $family ][] = (int) ( $typography['weight'] ?? 400 );
 					}
 					$css[ $device ] .= sprintf( 'font-family:%s;', $family );
 				}
@@ -434,19 +484,25 @@ class DynamicCSS {
 	 */
 	private function color( $selector, $property, $color ): array {
 		$css = [
-			'desktop' => '',
-			'tablet'  => '',
-			'mobile'  => '',
+			'desktop' => [],
+			'tablet'  => [],
+			'mobile'  => [],
 		];
 		if ( empty( $color ) ) {
 			return $css;
 		}
 
-		$temp = [];
 		if ( is_array( $color ) ) {
 			foreach ( $color as $k => $v ) {
 				if ( ! empty( $v ) ) {
-					$css['desktop'] = array_merge( $temp, $this->attach( $selector, ( $this->str_starts_with( '--', $k ) ? $k : $property ) . ': ' . $v . ';', ( $this->str_starts_with( '--', $k ) ? 'normal' : $k ) ) );
+					$attached = $this->attach( $selector, ( $this->str_starts_with( '--', $k ) ? $k : $property ) . ': ' . $v . ';', ( $this->str_starts_with( '--', $k ) ? 'normal' : $k ) );
+					foreach ( $attached as $key => $val ) {
+						if ( array_key_exists( $key, $css['desktop'] ) ) {
+							$css['desktop'][ $key ] .= $val;
+						} else {
+							$css['desktop'][ $key ] = $val;
+						}
+					}
 				}
 			}
 		} else {
@@ -482,7 +538,14 @@ class DynamicCSS {
 
 			foreach ( static::DEVICES as $device ) {
 				if ( ! empty( $value[ $device ] ) ) {
-					$css[ $device ] = array_merge( $css[ $device ], $this->attach( $selector, $property . ': ' . $value[ $device ] . ';' ) );
+					$attached = $this->attach( $selector, $property . ': ' . $value[ $device ] . ';' );
+					foreach ( $attached as $k => $v ) {
+						if ( array_key_exists( $k, $css[ $device ] ) ) {
+							$css[ $device ][ $k ] .= $v;
+						} else {
+							$css[ $device ][ $k ] = $v;
+						}
+					}
 				}
 			}
 
@@ -576,9 +639,9 @@ class DynamicCSS {
 	/**
 	 * Make CSS.
 	 *
-	 * @return string[]
+	 * @return DynamicCSS
 	 */
-	private function make(): array {
+	private function make(): DynamicCSS {
 		foreach ( $this->css_data as $context => $data ) {
 			foreach ( $data as $device => $css_data ) {
 				if ( ! empty( $css_data ) ) {
@@ -609,7 +672,7 @@ class DynamicCSS {
 
 		$this->css['all'] = $this->css['global'] . $this->css['content'] . $this->css['footer'] . $this->css['header'] . $this->css['content'];
 
-		return $this->css;
+		return $this;
 	}
 
 	/**
@@ -662,13 +725,26 @@ class DynamicCSS {
 		);
 	}
 
-	private function save_to_file() {
+	/**
+	 * Save to file.
+	 *
+	 * @return DynamicCSS
+	 */
+	private function save_to_file(): DynamicCSS {
 		foreach ( $this->css as $key => $value ) {
 			$this->create_file( "$key.css", $value );
 		}
+		return $this;
 	}
 
-	private function create_file( $filename, $content ) {
+	/**
+	 * Create file.
+	 *
+	 * @param string $filename Filename.
+	 * @param mixed  $content Content.
+	 * @return mixed
+	 */
+	private function create_file( string $filename, $content ) {
 		global $wp_filesystem;
 		$upload_dir_url = wp_upload_dir();
 		$upload_dir     = trailingslashit( $upload_dir_url['basedir'] ) . 'vite/';
