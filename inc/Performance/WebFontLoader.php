@@ -590,7 +590,7 @@ class WebFontLoader {
 	 * @since 1.1.0
 	 * @return bool
 	 */
-	private function delete_fonts_folder(): bool {
+	public function delete_fonts_folder(): bool {
 		return $this->get_filesystem()->delete( $this->get_fonts_folder(), true );
 	}
 
