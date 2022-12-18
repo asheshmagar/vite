@@ -6,7 +6,7 @@
  */
 
 $options = [
-	'vite[mobile-logo]'                   => [
+	'vite[mobile-logo]'                        => [
 		'section'     => 'vite[header-logo]',
 		'type'        => 'image',
 		'title'       => __( 'Mobile Logo', 'vite' ),
@@ -17,7 +17,7 @@ $options = [
 			'separator' => true,
 		],
 	],
-	'vite[header-site-branding-elements]' => [
+	'vite[header-site-branding-elements]'      => [
 		'section'     => 'vite[header-logo]',
 		'type'        => 'vite-select',
 		'title'       => __( 'Elements', 'vite' ),
@@ -38,7 +38,7 @@ $options = [
 		],
 		'priority'    => 2,
 	],
-	'vite[header-site-branding-layout]'   => [
+	'vite[header-site-branding-layout]'        => [
 		'section'   => 'vite[header-logo]',
 		'type'      => 'vite-select',
 		'title'     => __( 'Layout', 'vite' ),
@@ -57,7 +57,7 @@ $options = [
 			'vite[header-site-branding-elements]' => [ 'logo-title', 'logo-title-description' ],
 		],
 	],
-	'vite[header-site-title-colors]'      => [
+	'vite[header-site-title-colors]'           => [
 		'section'     => 'vite[header-logo]',
 		'type'        => 'vite-color',
 		'title'       => __( 'Site title colors', 'vite' ),
@@ -78,7 +78,7 @@ $options = [
 		'selectors'   => [ '.vite-brand__title a' ],
 		'properties'  => [ '' ],
 	],
-	'vite[header-site-title-typography]'  => [
+	'vite[header-site-title-typography]'       => [
 		'default'     => vite( 'core' )->get_theme_mod_defaults()['header-site-title-typography'],
 		'section'     => 'vite[header-logo]',
 		'type'        => 'vite-typography',
@@ -86,7 +86,14 @@ $options = [
 		'input_attrs' => [
 			'separator' => true,
 		],
-		'selectors'   => [ '.vite-brand__title' ],
+	],
+	'vite[header-site-description-typography]' => [
+		'section'     => 'vite[header-logo]',
+		'type'        => 'vite-typography',
+		'title'       => __( 'Site description typography', 'vite' ),
+		'input_attrs' => [
+			'separator' => true,
+		],
 	],
 ];
 

@@ -207,9 +207,18 @@ $options = array_reduce(
 				],
 				'responsive' => true,
 				'separator'  => true,
+				'sides'      => [
+					'top-left',
+					'top-right',
+					'bottom-right',
+					'bottom-left',
+				],
 			],
-			'selectors'   => [ ".vite-button--$curr .vite-button__link" ],
-			'properties'  => [ '--button--border--radius' ],
+			'css'         => [
+				'selector' => ".vite-button--$curr .vite-button__link",
+				'property' => 'border',
+				'pattern'  => '%property-%side-radius',
+			],
 		];
 
 		return $acc;

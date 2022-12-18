@@ -48,10 +48,12 @@ $options = [
 				],
 			],
 			'separator' => true,
-
 		],
-		'selectors'   => [ '.vite-nav--4' ],
-		'properties'  => [ '' ],
+		'css'         => [
+			'selector' => '.vite-nav--4',
+			'context'  => 'footer',
+			'property' => 'color',
+		],
 	],
 	'vite[footer-menu-4-items-spacing]' => [
 		'section'     => 'vite[footer-menu-4]',
@@ -65,8 +67,11 @@ $options = [
 			'separator' => true,
 			'units'     => [ 'px' ],
 		],
-		'selectors'   => [ '.vite-nav--4' ],
-		'properties'  => [ '--items--spacing: {{value}}px;' ],
+		'css'         => [
+			'selector' => '.vite-nav--4',
+			'context'  => 'footer',
+			'property' => '--items--spacing',
+		],
 	],
 	'vite[footer-menu-4-typography]'    => [
 		'section'     => 'vite[footer-menu-4]',
@@ -75,6 +80,10 @@ $options = [
 		'selectors'   => [ '.vite-nav--4' ],
 		'properties'  => [ '' ],
 		'input_attrs' => [ 'separator' => true ],
+		'css'         => [
+			'selector' => '.vite-nav--4',
+			'context'  => 'footer',
+		],
 	],
 ];
 

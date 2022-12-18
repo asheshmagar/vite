@@ -119,8 +119,11 @@ $options = [
 			'responsive' => true,
 			'separator'  => true,
 		],
-		'selectors'   => [ '.vite-footer .vite-social' ],
-		'properties'  => [ 'margin' ],
+		'css'         => [
+			'selector' => '.vite-footer .vite-social',
+			'property' => 'margin',
+			'context'  => 'footer',
+		],
 	],
 ];
 

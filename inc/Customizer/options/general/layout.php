@@ -17,6 +17,11 @@ $options = [
 			'step'  => 1,
 			'units' => [ 'px' ],
 		],
+		'css'         => [
+			'selector' => ':root',
+			'property' => '--full--width',
+			'context'  => 'global',
+		],
 	],
 	'vite[container-narrow-width]' => [
 		'section'     => 'vite[global-layout]',
@@ -30,6 +35,11 @@ $options = [
 			'units'     => [ 'px' ],
 			'separator' => true,
 		],
+		'css'         => [
+			'selector' => ':root',
+			'property' => '--narrow--width',
+			'context'  => 'global',
+		],
 	],
 	'vite[content-spacing]'        => [
 		'section'     => 'vite[global-layout]',
@@ -37,13 +47,17 @@ $options = [
 		'title'       => __( 'Content spacing', 'vite' ),
 		'default'     => vite( 'core' )->get_theme_mod_defaults()['content-spacing'],
 		'input_attrs' => [
-			'units'      => [ 'px', 'rem', 'em' ],
-			'responsive' => true,
-			'separator'  => true,
-			'sides'      => [ 'top', 'bottom' ],
+			'units'        => [ 'px', 'rem', 'em' ],
+			'responsive'   => true,
+			'separator'    => true,
+			'sides'        => [ 'top', 'bottom' ],
+			'default_unit' => 'rem',
 		],
-		'selectors'   => [ '.site-content' ],
-		'properties'  => [ 'padding-block' ],
+		'css'         => [
+			'selector' => '.vite-content',
+			'property' => 'padding',
+			'context'  => 'content',
+		],
 	],
 ];
 

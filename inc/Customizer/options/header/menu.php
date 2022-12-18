@@ -51,10 +51,7 @@ $options = array_reduce(
 					],
 				],
 				'separator' => true,
-
 			],
-			'selectors'   => [ ".vite-nav--$curr" ],
-			'properties'  => [ '' ],
 		];
 
 		if ( in_array( (string) $curr, [ '1', '2' ], true ) ) {
@@ -70,8 +67,6 @@ $options = array_reduce(
 					'separator' => true,
 					'units'     => [ 'px' ],
 				],
-				'selectors'   => [ ".vite-nav--$curr" ],
-				'properties'  => [ '--items--spacing: {{value}}px;' ],
 			];
 
 			$acc[ "vite[header-menu-$curr-one-line]" ] = [

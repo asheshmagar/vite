@@ -47,8 +47,10 @@ $options = [
 			],
 		],
 		'section'     => 'vite[global-colors]',
-		'selectors'   => [ ':root' ],
-		'properties'  => [ '' ],
+		'css'         => [
+			'selector' => ':root',
+			'context'  => 'global',
+		],
 	],
 	'vite[text-color]'     => [
 		'section'     => 'vite[global-colors]',
@@ -65,8 +67,10 @@ $options = [
 			'separator' => true,
 		],
 		'transport'   => 'postMessage',
-		'selectors'   => [ ':root' ],
-		'properties'  => [ '' ],
+		'css'         => [
+			'selector' => ':root',
+			'context'  => 'global',
+		],
 	],
 	'vite[link-colors]'    => [
 		'section'     => 'vite[global-colors]',
@@ -87,8 +91,10 @@ $options = [
 			],
 		],
 		'transport'   => 'postMessage',
-		'selectors'   => [ ':root' ],
-		'properties'  => [ '' ],
+		'css'         => [
+			'selector' => ':root',
+			'context'  => 'global',
+		],
 	],
 	'vite[heading-color]'  => [
 		'section'     => 'vite[global-colors]',
@@ -105,8 +111,10 @@ $options = [
 			],
 		],
 		'transport'   => 'postMessage',
-		'selectors'   => [ ':root' ],
-		'properties'  => [ '' ],
+		'css'         => [
+			'selector' => ':root',
+			'context'  => 'global',
+		],
 	],
 	'vite[button-colors]'  => [
 		'section'     => 'vite[global-colors]',
@@ -135,8 +143,10 @@ $options = [
 			],
 		],
 		'transport'   => 'postMessage',
-		'selectors'   => [ ':root' ],
-		'properties'  => [ '' ],
+		'css'         => [
+			'selector' => ':root',
+			'context'  => 'global',
+		],
 	],
 	'vite[border-color]'   => [
 		'section'     => 'vite[global-colors]',
@@ -153,8 +163,10 @@ $options = [
 			],
 		],
 		'transport'   => 'postMessage',
-		'selectors'   => [ ':root' ],
-		'properties'  => [ '' ],
+		'css'         => [
+			'selector' => ':root',
+			'context'  => 'global',
+		],
 	],
 ];
 

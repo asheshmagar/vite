@@ -124,8 +124,10 @@ $row_options = array_reduce(
 				'units'      => [ 'px' ],
 				'responsive' => true,
 			],
-			'selectors'   => [ '.vite-header [data-row="top"] > .container' ],
-			'properties'  => [ '--min--height' ],
+			'css'         => [
+				'selector' => ".vite-header__row-$curr",
+				'property' => '--min--height',
+			],
 		];
 		return $acc;
 	},

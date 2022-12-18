@@ -88,8 +88,6 @@ $options = [
 			'vite[header-social-icons-color-type]' => 'custom',
 			'vite[header-social-links]!'           => [],
 		],
-		'selectors'   => [ '.vite-social a' ],
-		'properties'  => [ '' ],
 	],
 	'vite[header-social-icons-spacing]'    => [
 		'section'     => 'vite[header-socials]',
@@ -102,8 +100,6 @@ $options = [
 			'units'     => [ 'px', 'rem', 'em' ],
 			'separator' => true,
 		],
-		'selectors'   => [ '.vite-social' ],
-		'properties'  => [ 'gap' ],
 	],
 	'vite[header-social-icons-margin]'     => [
 		'section'     => 'vite[header-socials]',
@@ -119,8 +115,6 @@ $options = [
 			'responsive' => true,
 			'separator'  => true,
 		],
-		'selectors'   => [ '.vite-header .vite-social' ],
-		'properties'  => [ 'margin' ],
 	],
 ];
 

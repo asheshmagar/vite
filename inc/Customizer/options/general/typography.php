@@ -20,10 +20,12 @@ $options = array_reduce(
 	array_keys( $elements ),
 	function( $acc, $curr ) use ( $elements ) {
 		$acc[ "vite[$curr-typography]" ] = [
-			'section'   => 'vite[global-typography]',
-			'type'      => 'vite-typography',
-			'title'     => $elements[ $curr ],
-			'selectors' => [ 'body' ],
+			'section' => 'vite[global-typography]',
+			'type'    => 'vite-typography',
+			'title'   => $elements[ $curr ],
+			'css'     => [
+				'selector' => 'base' === $curr ? 'body' : ( 'headings' === $curr ? 'h1, h2, h3, h4, h5, h6' : $curr ),
+			],
 		];
 
 		if ( 'base' !== $curr ) {
