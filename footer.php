@@ -22,7 +22,7 @@ $core = vite( 'core' );
 					 *
 					 * @since x.x.x
 					 */
-					vite( 'core' )->action( 'content/end' );
+					$core->action( 'content/end' );
 				?>
 			</div>
 		<?php
