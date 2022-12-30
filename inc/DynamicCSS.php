@@ -169,8 +169,6 @@ class DynamicCSS {
 				],
 				'https://fonts.googleapis.com/css'
 			);
-			$this->action( 'local-fonts/cleanup' ); // Delete fonts folder on customize save.
-			vite( 'performance' )->local_font->get( $fonts_url ); // Download fonts locally.
 			$this->set_theme_mod( 'google-fonts-url', $fonts_url ); // Save google fonts url.
 		}
 
@@ -207,8 +205,7 @@ class DynamicCSS {
 
 			switch ( $type ) {
 				case 'vite-dimensions':
-					$pattern = $config['pattern'] ?? '%property-%side';
-					$this->append( $this->responsive_dimensions( $selector, $property, $value, $pattern ), $context );
+					$this->append( $this->responsive_dimensions( $selector, $property, $value ), $context );
 					break;
 				case 'vite-typography':
 					$this->append( $this->typography( $selector, $value ), $context );
@@ -253,7 +250,7 @@ class DynamicCSS {
 			if ( 'desktop' === $device ) {
 				if ( ! empty( $typography['family'] ) ) {
 					$family = $typography['family'];
-					if ( ! in_array( $family, [ 'Default', 'Inherit' ], true ) ) {
+					if ( ! in_array( $family, [ 'default', 'inherit' ], true ) ) {
 						if ( ! isset( $this->google_fonts[ $family ] ) ) {
 							$this->google_fonts[ $family ] = [];
 						}
@@ -262,9 +259,10 @@ class DynamicCSS {
 					$css[ $device ] .= sprintf( 'font-family:%s;', $family );
 				}
 
-				! empty( $typography['weight'] ) && $css[ $device ]    .= sprintf( 'font-weight:%s;', $typography['weight'] );
-				! empty( $typography['transform'] ) && $css[ $device ] .= 'text-transform: ' . $typography['transform'] . ';';
-				! empty( $typography['style'] ) && $css[ $device ]     .= 'font-style: ' . $typography['style'] . ';';
+				! empty( $typography['weight'] ) && $css[ $device ]     .= sprintf( 'font-weight:%s;', $typography['weight'] );
+				! empty( $typography['transform'] ) && $css[ $device ]  .= 'text-transform: ' . $typography['transform'] . ';';
+				! empty( $typography['style'] ) && $css[ $device ]      .= 'font-style: ' . $typography['style'] . ';';
+				! empty( $typography['decoration'] ) && $css[ $device ] .= 'text-decoration: ' . $typography['decoration'] . ';';
 			}
 
 			! empty( $typography['size'][ $device ]['value'] ) && $css[ $device ] .= 'font-size: ' . $typography['size'][ $device ]['value'] . ( $typography['size'][ $device ]['unit'] ?? 'px' ) . ';';
@@ -308,7 +306,7 @@ class DynamicCSS {
 		! empty( $border['color']['normal'] ) && $properties      .= 'border-color: ' . $border['color']['normal'] . ';';
 		! empty( $border['color']['hover'] ) && $properties_hover .= 'border-color: ' . $border['color']['hover'] . ';';
 
-		$properties .= implode( '', array_values( $this->dimensions( '', 'border', $border['width'], '%property-%side-width' ) ) );
+		$properties .= implode( '', array_values( $this->dimensions( '', 'border', $border['width'] ) ) );
 
 		$css['desktop'] = array_merge( $this->attach( $selector, $properties ), $this->attach( $selector, $properties_hover, 'hover' ) );
 		return $css;
@@ -320,10 +318,9 @@ class DynamicCSS {
 	 * @param string|string[] $selector CSS selector.
 	 * @param string|string[] $property CSS property.
 	 * @param array           $dimensions Saved dimensions.
-	 * @param string          $pattern CSS property pattern.
 	 * @return array
 	 */
-	private function dimensions( $selector, $property, array $dimensions, string $pattern = '%property-%side' ): array {
+	private function dimensions( $selector, $property, array $dimensions ): array {
 		$selector = is_array( $selector ) ? implode( ',', $selector ) : $selector;
 		$property = is_array( $property ) ? $property : [ $property ];
 		$css      = '';
@@ -333,12 +330,26 @@ class DynamicCSS {
 			$sides = static::RADIUS_SIDES;
 		}
 
+		if ( ! count( array_intersect( $sides, array_keys( $dimensions ) ) ) ) {
+			return [ '' => '' ];
+		}
+
 		foreach ( $property as $prop ) {
-			foreach ( $sides as $side ) {
-				$css_prop = str_replace( [ '%property', '%side' ], [ $prop, $side ], $pattern );
-				$unit     = $dimensions['unit'] ?? 'px';
-				( isset( $dimensions[ $side ] ) && 'auto' !== $dimensions[ $side ] ) && $css .= $css_prop . ': ' . $dimensions[ $side ] . $unit . ';';
-			}
+			$i    = 0;
+			$css .= "$prop:" . array_reduce(
+				$sides,
+				function( $acc, $curr ) use ( &$dimensions, &$i, &$prop ) {
+					$unit = $dimensions['unit'] ?? 'px';
+					$s    = $dimensions[ $curr ] ?? '0';
+					$s    = ( false !== strpos( $prop, 'padding' ) && 'auto' === $s ) ? '0' : $s;
+					$s    = is_numeric( $s ) ? $s . $unit : $s;
+					$acc .= $s . ( $i < 3 ? ' ' : ';' );
+
+					$i++;
+					return $acc;
+				},
+				''
+			);
 		}
 
 		if ( ! empty( $css ) ) {
@@ -354,10 +365,9 @@ class DynamicCSS {
 	 * @param string|string[] $selector CSS selector.
 	 * @param string|string[] $property CSS property.
 	 * @param array           $dimensions Saved dimensions.
-	 * @param string          $pattern CSS property pattern.
 	 * @return array
 	 */
-	private function responsive_dimensions( $selector, $property, array $dimensions, string $pattern = '%property-%side' ): array {
+	private function responsive_dimensions( $selector, $property, array $dimensions ): array {
 		$css = [
 			'desktop' => [],
 			'tablet'  => [],
@@ -367,11 +377,11 @@ class DynamicCSS {
 		if ( count( array_intersect( static::DEVICES, array_keys( $dimensions ) ) ) ) {
 			foreach ( static::DEVICES as $device ) {
 				if ( ! empty( $dimensions[ $device ] ) ) {
-					$css[ $device ] = $this->dimensions( $selector, $property, $dimensions[ $device ], $pattern );
+					$css[ $device ] = $this->dimensions( $selector, $property, $dimensions[ $device ] );
 				}
 			}
 		} else {
-			$css['desktop'] = $this->dimensions( $selector, $property, $dimensions, $pattern );
+			$css['desktop'] = $this->dimensions( $selector, $property, $dimensions );
 		}
 
 		return $css;
@@ -495,7 +505,7 @@ class DynamicCSS {
 		if ( is_array( $color ) ) {
 			foreach ( $color as $k => $v ) {
 				if ( ! empty( $v ) ) {
-					$attached = $this->attach( $selector, ( $this->str_starts_with( '--', $k ) ? $k : $property ) . ': ' . $v . ';', ( $this->str_starts_with( '--', $k ) ? 'normal' : $k ) );
+					$attached = $this->attach( $selector, ( $this->str_starts_with( '--', $k ) ? $k : $property ) . ":$v;", ( $this->str_starts_with( '--', $k ) ? 'normal' : $k ) );
 					foreach ( $attached as $key => $val ) {
 						if ( array_key_exists( $key, $css['desktop'] ) ) {
 							$css['desktop'][ $key ] .= $val;
@@ -506,7 +516,7 @@ class DynamicCSS {
 				}
 			}
 		} else {
-			$css['desktop'] = $this->attach( $selector, ( $property . ': ' . $color . ';' ) );
+			$css['desktop'] = $this->attach( $selector, ( "$property:$color;" ) );
 		}
 
 		return $css;
