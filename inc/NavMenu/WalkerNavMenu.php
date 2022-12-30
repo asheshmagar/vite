@@ -74,25 +74,30 @@ class WalkerNavMenu extends Walker_Nav_Menu {
 		$wrap_close          = '';
 
 		if (
-			in_array( $args->menu_id, [ 'menu-1', 'menu-2', 'menu-3' ], true ) &&
-			(
+			in_array( $args->menu_id, [ 'menu-1', 'menu-2', 'menu-3' ], true )
+		) {
+			if (
 				in_array( 'menu-item-has-children', (array) $menu_item->classes, true ) ||
 				in_array( 'page_item_has_children', (array) $menu_item->classes, true )
-			)
-		) {
-			$classes[]           = 'vite-nav__item--parent';
-			$icon                = $this->filter( 'submenu/icon', vite( 'icon' )->get_icon( 'chevron-down', [ 'size' => 10 ] ) );
-			$submenu_icon        = sprintf( '<span class="vite-nav__submenu-icon" role="presentation">%s</span>', $icon );
-			$submenu_icon_button = sprintf(
-				'<button aria-expanded="false" aria-label="%s" class="vite-nav__submenu-toggle%s">%s</button>',
-				esc_attr__( 'Open sub menu', 'vite' ),
-				'menu-3' !== $args->menu_id ? ' vite-nav__submenu-toggle--hidden' : '',
-				'menu-3' !== $args->menu_id ? '' : $icon
-			);
-			if ( 'menu-3' === $args->menu_id ) {
-				$wrap_open    = '<div class="vite-nav__item-inner">';
-				$wrap_close   = '</div>';
-				$submenu_icon = '';
+			) {
+				$classes[]           = 'vite-nav__item--parent';
+				$icon                = $this->filter( 'submenu/icon', vite( 'icon' )->get_icon( 'chevron-down', [ 'size' => 10 ] ) );
+				$submenu_icon        = sprintf( '<span class="vite-nav__submenu-icon" role="presentation">%s</span>', $icon );
+				$submenu_icon_button = sprintf(
+					'<button aria-expanded="false" aria-label="%s" class="vite-nav__submenu-toggle%s">%s</button>',
+					esc_attr__( 'Open sub menu', 'vite' ),
+					'menu-3' !== $args->menu_id ? ' vite-nav__submenu-toggle--hidden' : '',
+					'menu-3' !== $args->menu_id ? '' : $icon
+				);
+				if ( 'menu-3' === $args->menu_id ) {
+					$wrap_open    = '<div class="vite-nav__item-inner">';
+					$wrap_close   = '</div>';
+					$submenu_icon = '';
+				}
+			}
+
+			if ( in_array( 'current-menu-item', (array) $menu_item->classes, true ) ) {
+				$classes[] = 'vite-nav__item--active';
 			}
 		}
 
