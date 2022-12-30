@@ -319,31 +319,9 @@ trait Mods {
 					'left'   => 'auto',
 					'unit'   => 'rem',
 				],
-				'tablet'  => [
-					'right' => 'auto',
-					'left'  => 'auto',
-				],
-				'mobile'  => [
-					'right' => 'auto',
-					'left'  => 'auto',
-				],
 			],
 			'buttons-padding'                => [
 				'desktop' => [
-					'top'    => 10,
-					'right'  => 20,
-					'bottom' => 10,
-					'left'   => 20,
-					'unit'   => 'px',
-				],
-				'tablet'  => [
-					'top'    => 10,
-					'right'  => 20,
-					'bottom' => 10,
-					'left'   => 20,
-					'unit'   => 'px',
-				],
-				'mobile'  => [
 					'top'    => 10,
 					'right'  => 20,
 					'bottom' => 10,
@@ -362,20 +340,6 @@ trait Mods {
 			'buttons-border'                 => [],
 			'buttons-border-radius'          => [
 				'desktop' => [
-					'top'    => 2,
-					'right'  => 2,
-					'bottom' => 2,
-					'left'   => 2,
-					'unit'   => 'px',
-				],
-				'tablet'  => [
-					'top'    => 2,
-					'right'  => 2,
-					'bottom' => 2,
-					'left'   => 2,
-					'unit'   => 'px',
-				],
-				'mobile'  => [
 					'top'    => 2,
 					'right'  => 2,
 					'bottom' => 2,
@@ -582,25 +546,9 @@ trait Mods {
 					'value' => 30,
 					'unit'  => 'px',
 				],
-				'tablet'  => [
-					'value' => 30,
-					'unit'  => 'px',
-				],
-				'mobile'  => [
-					'value' => 30,
-					'unit'  => 'px',
-				],
 			],
 			'scroll-to-top-bottom-offset'    => [
 				'desktop' => [
-					'value' => 30,
-					'unit'  => 'px',
-				],
-				'tablet'  => [
-					'value' => 30,
-					'unit'  => 'px',
-				],
-				'mobile'  => [
 					'value' => 30,
 					'unit'  => 'px',
 				],
@@ -608,14 +556,6 @@ trait Mods {
 			'scroll-to-top-icon-size'        => 13,
 			'scroll-to-top-button-size'      => [
 				'desktop' => [
-					'value' => 40,
-					'unit'  => 'px',
-				],
-				'tablet'  => [
-					'value' => 40,
-					'unit'  => 'px',
-				],
-				'mobile'  => [
 					'value' => 40,
 					'unit'  => 'px',
 				],
