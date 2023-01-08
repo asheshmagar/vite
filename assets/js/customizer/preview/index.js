@@ -2,9 +2,8 @@ import $ from 'jquery';
 import './customizer-preview.scss';
 import PreviewStyles from './preview-styles';
 
-const api = wp.customize;
-
 $( document ).ready( () => {
+	const api = wp.customize;
 	api.selectiveRefresh.bind( 'partial-content-rendered', ( placement ) => {
 		if ( ! window?._VITE_ ) return;
 		if ( -1 !== placement?.partial?.id?.indexOf( 'archive' ) ) {
