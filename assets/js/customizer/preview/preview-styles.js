@@ -1,11 +1,10 @@
-import { isEmpty, isNull, isObject, isUndefined, uniq } from 'lodash';
+import { isEmpty, isNull, isObject, isUndefined, uniq, isFinite } from 'lodash';
 import $ from 'jquery';
 
 class PreviewStyles {
 	#devices = [ 'desktop', 'tablet', 'mobile' ];
 	#sides = [ 'top', 'right', 'bottom', 'left' ];
 	#radiusSides = [ 'top-left', 'top-right', 'bottom-right', 'bottom-left' ];
-	#css = '';
 	#fonts = {};
 	#configs;
 	#api;
@@ -44,18 +43,23 @@ class PreviewStyles {
 		for ( const device of this.#devices ) {
 			if ( 'desktop' === device ) {
 				if ( typography?.family ) {
-					const family = typography.family;
-					if ( ! [ 'Default', 'Inherit' ].includes( family ) ) {
+					let family = typography.family;
+					if ( ! [ 'default', 'inherit' ].includes( family ) ) {
 						if ( ! this.#fonts?.[ family ] ) {
 							this.#fonts[ family ] = [];
 						}
 						this.#fonts[ family ]?.push( typography?.weight ?? 400 );
+					} else if ( 'default' === family ) {
+						family = '-apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"';
+					} else if ( 'inherit' === family ) {
+						family = 'inherit';
 					}
 					css[ device ] += `font-family: ${ family };`;
 				}
 				if ( typography?.weight ) css[ device ] += `font-weight: ${ typography.weight };`;
 				if ( typography?.style ) css[ device ] += `font-style: ${ typography.style };`;
 				if ( typography?.transform ) css[ device ] += `text-transform: ${ typography.transform };`;
+				if ( typography?.decoration ) css[ device ] += `text-decoration: ${ typography.transform };`;
 			}
 
 			if ( typography?.size?.[ device ]?.value ) css[ device ] += `font-size: ${ typography.size[ device ].value }${ typography?.size?.[ device ]?.unit ?? 'px' };`;
@@ -91,7 +95,7 @@ class PreviewStyles {
 		if ( border?.color?.hover ) propertiesHover += `border-color: ${ border.color.hover };`;
 
 		if ( border?.width ) {
-			properties += Object.values( this.#dimensions( '', 'border', border?.width ?? {}, '%property-%side-width' ) ?? {} ).join( '' );
+			properties += Object.values( this.#dimensions( '', 'border-width', border?.width ?? {} ) ?? {} ).join( '' );
 		}
 		css.desktop = {
 			...( this.#attach( selector, properties ) ?? {} ), ...( this.#attach( selector, propertiesHover, 'hover' ) ?? {} ),
@@ -100,7 +104,7 @@ class PreviewStyles {
 		return css;
 	}
 
-	#dimensions( selector, property, dimensions, pattern = '%property-%side' ) {
+	#dimensions( selector, property, dimensions ) {
 		selector = Array.isArray( selector ) ? selector.join( ', ' ) : selector;
 		property = Array.isArray( property ) ? property : [ property ];
 		let css = '', sides = this.#sides;
@@ -109,23 +113,30 @@ class PreviewStyles {
 			sides = this.#radiusSides;
 		}
 
+		if	( ! Object.keys( dimensions ).some( d => sides.includes( d ) ) ) {
+			return { '': '' };
+		}
+
 		for ( const prop of property ) {
-			for ( const side of sides ) {
-				const cssProp = pattern.replace( '%property', prop ).replace( '%side', side );
+			const props = [ ...sides ].reduce( ( acc, curr, i, arr ) => {
 				const unit = dimensions?.unit ?? 'px';
-				const value = dimensions?.[ side.toString() ] ?? undefined;
-				if ( ! isUndefined( value ) && ! isNull( value ) && 'auto' !== value ) {
-					css += `${ cssProp }: ${ value }${ unit };`;
-				}
-			}
+				let val = dimensions?.[ curr ] ?? '0';
+				val = -1 !== prop.indexOf( 'padding' ) && 'auto' === val ? '0' : val;
+				val = isFinite( val ) ? val + unit : val;
+				acc += val + ( arr?.length - 1 === i ? ';' : ' ' );
+				return acc;
+			}, '' );
+			css += `${ prop }: ` + props;
 		}
 
 		if ( css ) {
 			return this.#attach( selector, css );
 		}
+
+		return { '': '' };
 	}
 
-	#responsiveDimensions( selector, property, dimensions, pattern = '%property-%side' ) {
+	#responsiveDimensions( selector, property, dimensions ) {
 		const css = {
 			desktop: {},
 			tablet: {},
@@ -135,11 +146,11 @@ class PreviewStyles {
 		if ( Object.keys( dimensions ).some( d => this.#devices.includes( d ) ) ) {
 			for ( const device of this.#devices ) {
 				if ( dimensions?.[ device ] ) {
-					css[ device ] = this.#dimensions( selector, property, dimensions[ device ], pattern );
+					css[ device ] = this.#dimensions( selector, property, dimensions[ device ] );
 				}
 			}
 		} else {
-			css.desktop = this.#dimensions( selector, property, dimensions, pattern );
+			css.desktop = this.#dimensions( selector, property, dimensions );
 		}
 
 		return css;
@@ -162,10 +173,10 @@ class PreviewStyles {
 			if ( background?.color ) css.desktop += `background-color: ${ background.color };`;
 			if ( background?.image ) css.desktop += `background-image: url( ${ background.image } );`;
 			for ( const device of this.#devices ) {
-				if ( background?.position?.device ) css[ device ] += `background-position: ${ background.position.device };`;
-				if ( background?.size?.device ) css[ device ] += `background-size: ${ background.size.device };`;
-				if ( background?.repeat?.device ) css[ device ] += `background-repeat: ${ background.repeat.device };`;
-				if ( background?.attachment?.device ) css[ device ] += `background-attachment: ${ background.attachment.device };`;
+				if ( background?.position?.[ device ] ) css[ device ] += `background-position: ${ background.position[ device ] };`;
+				if ( background?.size?.[ device ] ) css[ device ] += `background-size: ${ background.size[ device ] };`;
+				if ( background?.repeat?.[ device ] ) css[ device ] += `background-repeat: ${ background.repeat[ device ] };`;
+				if ( background?.attachment?.[ device ] ) css[ device ] += `background-attachment: ${ background.attachment[ device ] };`;
 			}
 		}
 
@@ -330,13 +341,13 @@ class PreviewStyles {
 	#init() {
 		if ( isEmpty( this.#configs ) ) return;
 		for ( const key in this.#configs ) {
-			const { selector = '', property = '', type, pattern = '%property-%side' } = this.#configs[ key ];
+			const { selector = '', property = '', type } = this.#configs[ key ];
 			this.#api( key, value => {
 				value.bind( newValue => {
 					if ( isNull( newValue ) || isUndefined( newValue ) ) return;
 					switch ( type ) {
 						case 'vite-dimensions':
-							this.#makeCSS( key, this.#responsiveDimensions( selector, property, newValue, pattern ) );
+							this.#makeCSS( key, this.#responsiveDimensions( selector, property, newValue ) );
 							break;
 						case 'vite-border':
 							this.#makeCSS( key, this.#border( selector, newValue ) );
