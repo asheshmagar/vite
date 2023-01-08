@@ -54,7 +54,7 @@ export default memo( ( props ) => {
 						device === d && (
 							<ViteRange
 								key={ d }
-								value={ value?.[ d ] ?? '' }
+								value={ value?.[ d ] ?? ( value?.desktop ?? {} ) }
 								onChange={ val => {
 									const temp = { ...value };
 									temp[ d ] = val;

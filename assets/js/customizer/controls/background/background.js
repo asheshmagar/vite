@@ -46,7 +46,7 @@ export default memo( ( props ) => {
 		},
 		customizer,
 	} = props;
-	const [ value, setValue ] = useState( setting.get() );
+	const [ value, setValue ] = useState( setting.get() || {} );
 	const { device, DeviceSelector } = useDeviceSelector();
 
 	let position = {
@@ -90,10 +90,14 @@ export default memo( ( props ) => {
 						<Button
 							className={ `vite-${ tab.value }${ value?.type === tab.value || ( ! value?.type && 'color' === tab.value ) ? ' is-primary' : '' }` }
 							onClick={ () => {
-								const temp = { ...( value || {} ) };
-								temp.type = tab.value;
-								setting.set( temp );
-								setValue( temp );
+								setValue( prev => {
+									prev = {
+										...( prev ?? {} ),
+										type: tab.value,
+									};
+									setting.set( prev );
+									return prev;
+								} );
 							} }
 							icon={ tab.icon }
 						/>
@@ -105,12 +109,14 @@ export default memo( ( props ) => {
 					<ViteColorPicker
 						value={ value?.color || '' }
 						onChange={ val => {
-							const temp = {
-								...( value || {} ),
-								color: val,
-							};
-							setting.set( temp );
-							setValue( temp );
+							setValue( prev => {
+								prev = {
+									...( prev ?? {} ),
+									color: val,
+								};
+								setting.set( prev );
+								return prev;
+							} );
 						} }
 						customizer={ customizer }
 						control={ control }
@@ -120,22 +126,31 @@ export default memo( ( props ) => {
 					<ViteColorPicker
 						value={ value?.gradient || '' }
 						onChange={ val => {
-							const temp = { ...( value || {} ), gradient: val };
-							setting.set( temp );
-							setValue( temp );
+							setValue( prev => {
+								prev = {
+									...( prev ?? {} ),
+									gradient: val,
+								};
+								setting.set( prev );
+								return prev;
+							} );
 						} }
 						type="gradient"
 						customizer={ customizer }
 						control={ control }
 					/>
 				) }
-
 				{ value?.type === 'image' && (
 					<MediaUpload
 						onSelect={ imgData => {
-							const newVal = { ...value, image: imgData.url };
-							setValue( newVal );
-							setting.set( newVal );
+							setValue( prev => {
+								prev = {
+									...( prev ?? {} ),
+									image: imgData.url,
+								};
+								setting.set( prev );
+								return prev;
+							} );
 						} }
 						allowedTypes={ [ 'image' ] }
 						render={ ( { open } ) => (
@@ -147,15 +162,17 @@ export default memo( ( props ) => {
 											url={ value.image }
 											value={ position }
 											onChange={ ( { x, y } ) => {
-												const temp = {
-													...( value || {} ),
-													position: {
-														...( value?.position || {} ),
-														[ device ]: `${ ( parseFloat( x.toString() ) * 100 ).toFixed( 2 ) }% ${ ( parseFloat( y.toString() ) * 100 ).toFixed( 2 ) }%`,
-													},
-												};
-												setting.set( temp );
-												setValue( temp );
+												setValue( prev => {
+													prev = {
+														...( prev ?? {} ),
+														position: {
+															...( prev?.position ?? {} ),
+															[ device ]: `${ ( parseFloat( x.toString() ) * 100 ).toFixed( 2 ) }% ${ ( parseFloat( y.toString() ) * 100 ).toFixed( 2 ) }%`,
+														},
+													};
+													setting.set( prev );
+													return prev;
+												} );
 											} }
 										/>
 										<div className="actions">
@@ -168,9 +185,14 @@ export default memo( ( props ) => {
 											<button
 												onClick={ ( e ) => {
 													e.preventDefault();
-													const newVal = { ...value, image: undefined };
-													setValue( newVal );
-													setting.set( newVal );
+													setValue( prev => {
+														prev = {
+															...( prev ?? {} ),
+															image: undefined,
+														};
+														setting.set( prev );
+														return prev;
+													} );
 												} }
 												className="button"
 											>
@@ -183,15 +205,17 @@ export default memo( ( props ) => {
 											<SelectControl
 												className="vite-select"
 												onChange={ val => {
-													const temp = {
-														...( value || {} ),
-														repeat: {
-															...( value?.repeat || {} ),
-															[ device ]: val,
-														},
-													};
-													setting.set( temp );
-													setValue( temp );
+													setValue( prev => {
+														prev = {
+															...( prev ?? {} ),
+															repeat: {
+																...( prev?.repeat ?? {} ),
+																[ device ]: val,
+															},
+														};
+														setting.set( prev );
+														return prev;
+													} );
 												} }
 												value={ value?.repeat?.[ device ] ?? 'repeat' }
 												options={ REPEATS }
@@ -203,15 +227,17 @@ export default memo( ( props ) => {
 											<SelectControl
 												className="vite-select"
 												onChange={ val => {
-													const temp = {
-														...( value || {} ),
-														size: {
-															...( value?.size || {} ),
-															[ device ]: val,
-														},
-													};
-													setting.set( temp );
-													setValue( temp );
+													setValue( prev => {
+														prev = {
+															...( prev ?? {} ),
+															size: {
+																...( prev?.size ?? {} ),
+																[ device ]: val,
+															},
+														};
+														setting.set( prev );
+														return prev;
+													} );
 												} }
 												value={ value?.size?.[ device ] ?? 'auto' }
 												options={ SIZES }
@@ -223,15 +249,17 @@ export default memo( ( props ) => {
 											<SelectControl
 												className="vite-select"
 												onChange={ val => {
-													const temp = {
-														...( value || {} ),
-														attachment: {
-															...( value?.attachment || {} ),
-															[ device ]: val,
-														},
-													};
-													setting.set( temp );
-													setValue( temp );
+													setValue( prev => {
+														prev = {
+															...( prev ?? {} ),
+															attachment: {
+																...( prev?.attachment ?? {} ),
+																[ device ]: val,
+															},
+														};
+														setting.set( prev );
+														return prev;
+													} );
 												} }
 												value={ value?.attachment?.[ device ] ?? 'scroll' }
 												options={ ATTACHMENTS }

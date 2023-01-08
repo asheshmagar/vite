@@ -20,6 +20,12 @@ const FONT_STYLES = [
 	{ label: __( 'Oblique', 'vite' ), value: 'oblique' },
 ];
 
+const TEXT_DECORATIONS = [
+	{ label: __( 'None', 'vite' ), value: 'none' },
+	{ label: __( 'Underline', 'vite' ), value: 'underline' },
+	{ label: __( 'Overline', 'vite' ), value: 'overline' },
+];
+
 export default memo( ( props ) => {
 	const {
 		control: {
@@ -136,7 +142,7 @@ export default memo( ( props ) => {
 									<DeviceSelector dropdown={ false } />
 									<ViteRange
 										unitPicker="select"
-										value={ value?.size?.[ device ] || '' }
+										value={ value?.size?.[ device ] ?? ( value?.size?.desktop ?? '' ) }
 										onChange={ val => {
 											const temp = {
 												...( value || {} ),
@@ -158,7 +164,7 @@ export default memo( ( props ) => {
 									<DeviceSelector dropdown={ false } />
 									<ViteRange
 										unitPicker="select"
-										value={ value?.lineHeight?.[ device ] || '' }
+										value={ value?.lineHeight?.[ device ] ?? ( value?.lineHeight?.desktop ?? '' ) }
 										onChange={ val => {
 											const temp = {
 												...( value || {} ),
@@ -180,7 +186,7 @@ export default memo( ( props ) => {
 									<DeviceSelector dropdown={ false } />
 									<ViteRange
 										unitPicker="select"
-										value={ value?.letterSpacing?.[ device ] || '' }
+										value={ value?.letterSpacing?.[ device ] ?? ( value?.letterSpacing?.desktop ?? '' ) }
 										onChange={ val => {
 											const temp = {
 												...( value || {} ),
@@ -225,6 +231,21 @@ export default memo( ( props ) => {
 											setValue( temp );
 										} }
 										options={ TEXT_TRANSFORMS }
+									/>
+								</div>
+								<div className="text-decoration">
+									<span>{ __( 'Decoration' ) }</span>
+									<SelectControl
+										value={ value?.decoration ?? 'none' }
+										onChange={ val => {
+											const temp = {
+												...( value || {} ),
+												transform: val,
+											};
+											setting.set( temp );
+											setValue( temp );
+										} }
+										options={ TEXT_DECORATIONS }
 									/>
 								</div>
 							</div>

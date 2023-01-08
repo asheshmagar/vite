@@ -53,8 +53,8 @@ export default memo( ( props ) => {
 								{ Object.keys( choices ).map( ( choice, i, arr ) => (
 									<Button
 										key={ choice }
-										isPrimary={ value?.[ d ] === choice }
-										isSecondary={ value?.[ d ] !== choice }
+										isPrimary={ ( value?.[ d ] ?? value?.desktop ) === choice }
+										isSecondary={ ( value?.[ d ] ?? value?.desktop ) !== choice }
 										onClick={ () => {
 											const temp = { ...value };
 											temp[ d ] = choice;

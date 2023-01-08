@@ -32,7 +32,7 @@ export default memo( ( props ) => {
 
 	sides = -1 !== id.indexOf( 'radius' ) ? [ 'top-left', 'top-right', 'bottom-right', 'bottom-left' ] : sides;
 
-	const unit = responsive ? ( value?.[ device ]?.unit || defaultUnit ) : ( value?.unit || defaultUnit );
+	const unit = responsive ? ( value?.[ device ]?.unit ?? ( value?.desktop?.unit ?? 'px' ) ) : ( value?.unit || defaultUnit );
 
 	max = [ 'em', 'rem' ].includes( unit ) ? 20 : ( [ 'vh', '%' ].includes( unit ) ? 100 : max );
 	step = [ 'em', 'rem' ].includes( unit ) ? 0.01 : step;
@@ -109,7 +109,7 @@ export default memo( ( props ) => {
 							key={ d }
 							sides={ sides }
 							style={ { display: d === device ? 'grid' : 'none' } }
-							value={ value?.[ d ] ?? {} }
+							value={ value?.[ d ] ?? ( value?.desktop ?? {} ) }
 							onChange={ ( v ) => {
 								setValue( prev => {
 									prev = {
