@@ -1,5 +1,13 @@
 __webpack_public_path__ = window._VITE_.publicPath; // eslint-disable-line
-import { $, $$ } from './utils';
+
+import {
+	$,
+	$$,
+	handleModal,
+	handleScrollToTop,
+	handleTrapFocus,
+	domReady,
+} from './utils';
 
 if ( ! window._VITE_ ) {
 	window._VITE = {};
@@ -10,70 +18,69 @@ window._VITE_ = {
 	initScrollToTop() {
 		const scrollTop = $( '.vite-modal--stt' );
 		if ( ! scrollTop ) return;
-		import( './scroll-to-top' ).then( ( { default: scrollToTop } ) => {
-			scrollToTop( {
-				button: scrollTop.querySelector( 'button' ),
-				showButton: ( { button } ) => button.closest( '.vite-modal' )?.classList?.add( 'vite-modal--open' ),
-				hideButton: ( { button } ) => button.closest( '.vite-modal' )?.classList?.remove( 'vite-modal--open' ),
-				showOnLoad: true,
-			} );
+		handleScrollToTop( {
+			button: scrollTop.querySelector( 'button' ),
+			showButton: ( { button } ) => button.closest( '.vite-modal' )?.classList?.add( 'vite-modal--open' ),
+			hideButton: ( { button } ) => button.closest( '.vite-modal' )?.classList?.remove( 'vite-modal--open' ),
+			showOnLoad: true,
 		} );
 	},
 	initModals() {
 		const modals = [ ...( $$( '.vite-modal' ) ) ];
 		if ( ! modals.length ) return;
 
-		import( './handle-modal' ).then( ( { default: handleModal } ) => {
+		const searchModal = $( '.vite-modal--search' );
+		const mobileMenuModal = $( '.vite-modal--mobile-menu' );
+
+		if ( ! searchModal && ! mobileMenuModal ) return;
+
+		if ( searchModal ) {
 			// Handle search toggle and modal.
-			const searchModal = $( '.vite-modal--search' );
-			if ( searchModal ) {
-				handleModal( {
-					modalEl: searchModal,
-					openModalEl: $$( '.vite-search__btn' ),
-					closeModalEl: searchModal.querySelector( '.vite-modal__btn' ),
-					onOpen: ( { modalEl } ) => {
-						const timeout = setTimeout( async() => {
-							clearTimeout( timeout );
-							modalEl.querySelector( '.vite-search-form__input' )?.focus();
-							const { default: loopFocus } = await import( './loop-focus' );
-							loopFocus( modalEl );
-						}, 200 );
-					},
-					onClose: ( { openModalEl } ) => {
-						if ( openModalEl.length ) {
-							openModalEl?.[ 1 ]?.focus();
-						} else {
-							openModalEl?.focus();
+			handleModal( {
+				modalEl: searchModal,
+				openModalEl: $$( '.vite-search__btn' ),
+				closeModalEl: searchModal.querySelector( '.vite-modal__btn' ),
+				onOpen: ( { modalEl } ) => {
+					const timeout = setTimeout( () => {
+						clearTimeout( timeout );
+						modalEl.querySelector( '.vite-search-form__input' )?.focus();
+						handleTrapFocus( modalEl );
+					}, 200 );
+				},
+				onClose: ( { openModalEl } ) => {
+					if ( openModalEl.length ) {
+						openModalEl?.[ 1 ]?.focus();
+					} else {
+						openModalEl?.focus();
+					}
+				},
+			} );
+		}
+
+		// Handle mobile menu toggle and modal.
+		if ( mobileMenuModal ) {
+			handleModal( {
+				modalEl: mobileMenuModal,
+				openModalEl: $( '.vite-mobile-menu__btn' ),
+				closeModalEl: mobileMenuModal.querySelector( '.vite-modal__btn' ),
+				onOpen: ( { modalEl, closeModalEl } ) => {
+					const timeout = setTimeout( () => {
+						clearTimeout( timeout );
+						closeModalEl?.focus();
+						handleTrapFocus( modalEl );
+					}, 100 );
+					$( '.vite-modal--mobile-menu' )?.addEventListener( 'click', e => {
+						if (
+							e.target === modalEl ||
+							( e.target?.closest( '.menu' ) && ! e.target?.closest( '.vite-nav__submenu-toggle' ) )
+						) {
+							closeModalEl?.click();
 						}
-					},
-				} );
-			}
-			// Handle mobile menu toggle and modal.
-			const mobileMenuModal = $( '.vite-modal--mobile-menu' );
-			if ( mobileMenuModal ) {
-				handleModal( {
-					modalEl: mobileMenuModal,
-					openModalEl: $( '.vite-mobile-menu__btn' ),
-					closeModalEl: mobileMenuModal.querySelector( '.vite-modal__btn' ),
-					onOpen: ( { modalEl, closeModalEl } ) => {
-						const timeout = setTimeout( () => {
-							clearTimeout( timeout );
-							closeModalEl?.focus();
-							import( './loop-focus' ).then( res => res.default( modalEl ) );
-						}, 100 );
-						$( '.vite-modal--mobile-menu' )?.addEventListener( 'click', e => {
-							if (
-								e.target === modalEl ||
-								( e.target?.closest( '.menu' ) && ! e.target?.closest( '.vite-nav__submenu-toggle' ) )
-							) {
-								closeModalEl?.click();
-							}
-						} );
-					},
-					onClose: ( { openModalEl } ) => openModalEl?.focus(),
-				} );
-			}
-		} );
+					} );
+				},
+				onClose: ( { openModalEl } ) => openModalEl?.focus(),
+			} );
+		}
 	},
 	initNavigation() {
 		const menus = [ ...( $$( '.vite-nav--1, .vite-nav--2' ) ) ];
@@ -213,12 +220,12 @@ window._VITE_ = {
 		}
 	},
 	init() {
-		import( './dom-ready' ).then( ( { default: domReady } ) => domReady( () => {
+		domReady( () => {
 			this.initNavigation();
 			this.initModals();
 			this.initScrollToTop();
 			this.initMasonryInfiniteScroll();
-		} ) );
+		} );
 	},
 };
 
