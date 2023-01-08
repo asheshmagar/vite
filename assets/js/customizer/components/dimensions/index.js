@@ -1,5 +1,6 @@
 import { memo } from '@wordpress/element';
 import { Button, ButtonGroup, Dashicon, Dropdown } from '@wordpress/components';
+import { withInstanceId, compose } from '@wordpress/compose';
 import './customizer.scss';
 
 const SIDES = [
@@ -16,8 +17,12 @@ const RADIUS_SIDES = [
 	{ label: 'Bottom Left', value: 'bottom-left' },
 ];
 
-export default memo( props => {
+export default compose( [
+	withInstanceId,
+	memo,
+] )( props => {
 	const {
+		instanceId,
 		value = {},
 		onChange,
 		step = 1,
@@ -45,8 +50,9 @@ export default memo( props => {
 						min={ min }
 						step={ step }
 						value={ value?.[ side.value ] ?? '' }
+						id={ `vite-dimension-${ side.value }-${ instanceId }` }
 					/>
-					<span className="vite-dimension-label">{ side.label }</span>
+					<label htmlFor={ `vite-dimension-${ side.value }-${ instanceId }` } className="vite-dimension-label">{ side.label }</label>
 				</span>
 			) ) }
 			{ /* eslint-disable-next-line jsx-a11y/click-events-have-key-events,jsx-a11y/no-static-element-interactions */ }
