@@ -16,10 +16,12 @@
 
 		&.disabled {
 			opacity: 0.5;
+			pointer-events: none;
 		}
 
 		.vite-dimension-label {
 			font-size: 11px;
+			white-space: nowrap;
 		}
 
 		input {
