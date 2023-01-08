@@ -1,5 +1,5 @@
 import { ColorPicker, Tooltip, GradientPicker, ColorPalette } from '@wordpress/components';
-import { memo } from '@wordpress/element';
+import { memo, Fragment } from '@wordpress/element';
 import './customizer.scss';
 import { Popover } from '../../components';
 import { noop } from 'lodash';
@@ -31,52 +31,64 @@ export default memo( ( props ) => {
 		}
 		return variable;
 	};
+
+	const LabelWithTooltip = ( { title = '', children } ) => {
+		const Component = '' !== title.trim() ? Tooltip : Fragment;
+		return (
+			<Component
+				text={ title }
+				delay={ 100 }
+				position="top center"
+			>
+				{ children }
+			</Component>
+		);
+	};
+
 	return (
 		<div className="vite-color-picker">
 			<Popover
 				popupClassName={ 'vite-color-picker-popup' }
 				action={ [ 'click' ] }
-				popup={
-					<>
-						{ control.id !== 'vite[global-palette]' && (
-							<div className="vite-color-picker-palette">
-								<ColorPalette
-									onChange={ ( color ) => onChange( color ) }
-									value={ value }
-									colors={ palette }
-									disableCustomColors={ true }
-									clearable={ false }
+				popup={ () => {
+					return (
+						<>
+							{ ( control.id !== 'vite[global-palette]' && 'color' === type ) && (
+								<div className="vite-color-picker-palette">
+									<ColorPalette
+										onChange={ ( color ) => onChange( color ) }
+										value={ value }
+										colors={ palette }
+										disableCustomColors={ true }
+										clearable={ false }
+									/>
+								</div>
+							) }
+							{ 'color' === type && (
+								<ColorPicker
+									color={ variableToColor( value ) }
+									onChangeComplete={ ( val ) => {
+										const { hex, rgb } = val;
+										let newColor = hex;
+										if ( rgb.a !== 1 ) {
+											newColor = `rgba(${ rgb.r },${ rgb.g },${ rgb.b },${ rgb.a })`;
+										}
+										onChange( newColor );
+									} }
 								/>
-							</div>
-						) }
-						{ 'color' === type && (
-							<ColorPicker
-								color={ variableToColor( value ) }
-								onChangeComplete={ ( val ) => {
-									const { hex, rgb } = val;
-									let newColor = hex;
-									if ( rgb.a !== 1 ) {
-										newColor = `rgba(${ rgb.r },${ rgb.g },${ rgb.b },${ rgb.a })`;
-									}
-									onChange( newColor );
-								} }
-							/>
-						) }
-						{ 'gradient' === type && (
-							<GradientPicker
-								value={ value }
-								onChange={ ( val ) => onChange( val ) }
-							/>
-						) }
-					</>
-				}
+							) }
+							{ 'gradient' === type && (
+								<GradientPicker
+									value={ value }
+									onChange={ ( val ) => onChange( val ) }
+								/>
+							) }
+						</>
+					);
+				} }
 			>
 				<span style={ { display: 'inline-block' } }>
-					<Tooltip
-						text={ label }
-						delay={ 100 }
-						position="top center"
-					>
+					<LabelWithTooltip title={ label }>
 						<span
 							style={ {
 								height: 24,
@@ -88,7 +100,7 @@ export default memo( ( props ) => {
 								cursor: 'pointer',
 							} }
 						/>
-					</Tooltip>
+					</LabelWithTooltip>
 				</span>
 			</Popover>
 		</div>
