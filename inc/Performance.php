@@ -3,7 +3,7 @@
  *
  */
 
-namespace Vite\Performance;
+namespace Vite;
 
 use Vite\Traits\Mods;
 
@@ -78,36 +78,5 @@ class Performance {
 			10,
 			2
 		);
-	}
-
-	/**
-	 * Get local font.
-	 *
-	 * @param array $fonts Array of fonts.
-	 * @return string
-	 */
-	public function get_local_fonts_url( array $fonts = [] ): string {
-		if ( empty( $fonts ) ) {
-			return '';
-		}
-
-		$families  = array_keys( $fonts );
-		$fonts_url = add_query_arg(
-			[
-				'family'  => implode(
-					'|',
-					array_map(
-						function( $f ) use ( $fonts ) {
-							return $f . ':' . implode( ',', $fonts[ $f ] );
-						},
-						$families
-					)
-				),
-				'display' => 'swap',
-			],
-			'https://fonts.googleapis.com/css'
-		);
-
-		return $this->filter( 'performance/local-fonts/url', $this->local_font->get( $fonts_url ) );
 	}
 }

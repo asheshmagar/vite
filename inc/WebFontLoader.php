@@ -3,7 +3,7 @@
  *
  */
 
-namespace Vite\Performance;
+namespace Vite;
 
 use Vite\Traits\Hook;
 use WP_Filesystem_Base;
