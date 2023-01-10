@@ -8,6 +8,6 @@ export default memo( ( props ) => {
 	const cssClass = `hidden-field-${ name }`;
 
 	return (
-		<input type="hidden" className={ cssClass } data-name={ name } value={ JSON.stringify( value ) } />
+		<input type="hidden" className={ cssClass } value={ JSON.stringify( value ) } />
 	);
 } );
