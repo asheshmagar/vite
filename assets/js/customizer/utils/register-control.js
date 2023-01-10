@@ -1,7 +1,7 @@
 import $ from 'jquery';
 import { render } from '@wordpress/element';
 
-export default ( type, Component ) => {
+const registerControl = ( type, Component ) => {
 	( wp.customize.controlConstructor[ type ] = wp.customize.Control.extend( {
 		initialize( id, params ) {
 			const control = this,
@@ -24,7 +24,6 @@ export default ( type, Component ) => {
 				args.params.content = args.params.content.replace( 'class=', 'data-separator class=' );
 			}
 
-			control.propertyElements = [];
 			wp.customize.Control.prototype.initialize.call( control, id, args );
 		},
 		ready() {
@@ -69,3 +68,5 @@ export default ( type, Component ) => {
 		},
 	} ) );
 };
+
+export default registerControl;
