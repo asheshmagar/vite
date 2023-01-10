@@ -1,6 +1,7 @@
 import $ from 'jquery';
 import * as controls from './controls';
 import './customizer.scss';
+import { reset } from './utils';
 
 const api = wp.customize;
 
@@ -30,16 +31,7 @@ const api = wp.customize;
 			} );
 		} );
 
-		api.state.create( 'vite-tab' );
-		api.state( 'vite-tab' ).set( 'general' );
-		$( '#customize-theme-controls' ).on( 'click', '.customize-section-back', () => api.state( 'vite-tab' ).set( 'general' ) );
-
-		const getControl = ( id ) => {
-			if ( 'vite-tab' === id ) {
-				return api.state( 'vite-tab' );
-			}
-			return api( id );
-		};
+		const getControl = ( id ) => api( id );
 
 		const analyzeConditions = ( conditions = {} ) => {
 			const relation = conditions.relation ?? 'AND';
@@ -113,7 +105,7 @@ const api = wp.customize;
 			return results.every( result => result );
 		};
 
-		[ 'conditions', 'condition' ].forEach( c => {
+		for ( const c of [ 'conditions', 'condition' ] ) {
 			if ( window._VITE_CUSTOMIZER_?.[ c ] ) {
 				for ( const id in window._VITE_CUSTOMIZER_[ c ] ) {
 					const init = ( element ) => {
@@ -153,9 +145,9 @@ const api = wp.customize;
 					api.control( id, init );
 				}
 			}
-		} );
+		}
 
-		for ( const builder of [ 'header', 'footer' ] ) {
+		const initBuilder = ( builder ) => {
 			api.panel( `vite[${ builder }-builder]`, panel => {
 				const builderSection = api.section( `vite[${ builder }-builder]` );
 
@@ -186,6 +178,10 @@ const api = wp.customize;
 					}
 				} );
 			} );
+		};
+
+		for ( const builder of [ 'header', 'footer' ] ) {
+			initBuilder( builder );
 		}
 	} );
 }
@@ -193,3 +189,5 @@ const api = wp.customize;
 for ( const control in controls ) {
 	controls[ control ]();
 }
+
+reset();
