@@ -194,6 +194,10 @@ $row_options = array_reduce(
 			'input_attrs' => [
 				'separator' => true,
 			],
+			'css'         => [
+				'selector' => ".vite-footer__col-$curr",
+				'property' => 'align-items',
+			],
 		];
 
 		$acc[ "vite[footer-$curr-row-height]" ] = [
@@ -212,7 +216,6 @@ $row_options = array_reduce(
 			'css'         => [
 				'selector' => ".vite-footer__row--$curr",
 				'property' => '--container--min--height',
-				'context'  => 'header',
 			],
 		];
 
@@ -227,7 +230,6 @@ $row_options = array_reduce(
 			],
 			'css'         => [
 				'selector' => ".vite-footer__row--$curr",
-				'context'  => 'header',
 			],
 		];
 
@@ -347,7 +349,6 @@ $options = [
 		'title'       => __( 'Background', 'vite' ),
 		'css'         => [
 			'selector' => '.vite-footer',
-			'context'  => 'footer',
 		],
 		'input_attrs' => [
 			'separator' => true,
