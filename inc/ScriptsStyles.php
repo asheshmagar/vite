@@ -57,10 +57,8 @@ class ScriptsStyles {
 		wp_register_style( 'vite-customizer', VITE_ASSETS_URI . 'dist/customizer.css', [ 'wp-components' ], $customizer_asset['version'] );
 		wp_register_style( 'vite-customizer-preview', VITE_ASSETS_URI . 'dist/customizer-preview.css', [], '1.0.0' );
 
-		foreach ( self::STYLES as $handle => $file ) {
-			wp_register_style( "vite-$handle", VITE_ASSETS_URI . 'dist/' . $file, [], VITE_VERSION );
-			wp_style_add_data( "vite-$handle", 'precache', true );
-		}
+		wp_register_style( 'vite-style', VITE_ASSETS_URI . 'dist/style.css', [], VITE_VERSION );
+		wp_style_add_data( 'vite-style', 'precache', true );
 	}
 
 	/**
@@ -69,10 +67,9 @@ class ScriptsStyles {
 	 * @return void
 	 */
 	public function enqueue() {
-		$handles                 = $this->filter( 'style/handles', array_keys( static::STYLES ) );
-		$dynamic_css             = vite( 'customizer' )->dynamic_css->get();
 		$remote_google_fonts_url = $this->get_theme_mod( 'google-fonts-url', '' );
 		$is_local_google_fonts   = $this->get_theme_mod( 'local-google-fonts', false );
+		$dynamic_css             = vite( 'customizer' )->dynamic_css->get();
 		$dynamic_css_output      = $this->get_theme_mod( 'dynamic-css-output', 'inline' );
 
 		if ( ! empty( $remote_google_fonts_url ) ) {
@@ -82,24 +79,10 @@ class ScriptsStyles {
 			wp_enqueue_style( 'vite-google-fonts', $remote_google_fonts_url, [], VITE_VERSION );
 		}
 
-		if ( ! empty( $handles ) ) {
-			foreach ( $handles as $handle ) {
-				wp_enqueue_style( "vite-$handle" );
+		wp_enqueue_style( 'vite-style' );
 
-				if ( $dynamic_css[ $handle ] ) {
-					'inline' === $dynamic_css_output && wp_add_inline_style( "vite-$handle", $dynamic_css[ $handle ] );
-				}
-
-				'file' === $dynamic_css_output && add_action(
-					'wp_head',
-					function() use ( $handle ) {
-						$upload_dir = wp_get_upload_dir();
-						$file       = $upload_dir['basedir'] . '/vite/' . static::STYLES[ $handle ];
-						file_exists( $file ) && wp_enqueue_style( "vite-dynamic-$handle", "{$upload_dir['baseurl']}/vite/$handle.css", [], filemtime( $file ) );
-					},
-					2
-				);
-			}
+		if ( ! empty( $dynamic_css ) ) {
+			'inline' === $dynamic_css_output && wp_add_inline_style( 'vite-style', $dynamic_css );
 		}
 
 		wp_enqueue_script( 'vite-script' );
