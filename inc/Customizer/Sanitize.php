@@ -45,11 +45,11 @@ class Sanitize {
 		$sanitize = function( $color ) use ( $setting ) {
 			$color = sanitize_text_field( $color );
 
-			if ( false !== strpos( $color, 'var(--' ) ) {
+			if ( str_contains( $color, 'var(--' ) ) {
 				return $color;
 			}
 
-			if ( false !== strpos( $color, 'rgba' ) ) {
+			if ( str_contains( $color, 'rgba' ) ) {
 				$color = str_replace( ' ', '', $color );
 
 				sscanf( $color, 'rgba(%d,%d,%d,%f)', $red, $green, $blue, $alpha );
@@ -116,7 +116,7 @@ class Sanitize {
 	 * Sanitize buttonset.
 	 *
 	 * @param mixed $input Input.
-	 * @return mixed|string
+	 * @return array|string
 	 */
 	public function sanitize_buttonset( $input ) {
 		if ( is_array( $input ) ) {
@@ -201,9 +201,9 @@ class Sanitize {
 	 * Sanitize checkbox.
 	 *
 	 * @param mixed $input Input.
-	 * @return mixed
+	 * @return bool
 	 */
-	public function sanitize_checkbox( $input ) {
+	public function sanitize_checkbox( $input ): bool {
 		return 1 === $input || '1' === $input || true === (bool) $input;
 	}
 
@@ -236,9 +236,10 @@ class Sanitize {
 						$input[ $i ][ $k ] = sanitize_text_field( $input[ $i ][ $k ] );
 						break;
 					case 'visible':
-					case 'chosen':
-					case 'selected':
 						$input[ $i ][ $k ] = (bool) $input[ $i ][ $k ];
+						break;
+					default:
+						unset( $input[ $i ][ $k ] );
 						break;
 				}
 			}
