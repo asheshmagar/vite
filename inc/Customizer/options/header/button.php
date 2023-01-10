@@ -160,18 +160,20 @@ $options = array_reduce(
 			'input_attrs' => [
 				'colors'    => [
 					[
-						'id'    => '--button--color',
+						'id'    => '--button-color',
 						'label' => __( 'Normal', 'vite' ),
 					],
 					[
-						'id'    => '--button--hover--color',
+						'id'    => '--button-hover-color',
 						'label' => __( 'Hover', 'vite' ),
 					],
 				],
 				'separator' => true,
 			],
-			'selectors'   => [ ".vite-button--$curr .vite-button__link" ],
-			'properties'  => [ '' ],
+			'css' => [
+				'selector' => ".vite-button--$curr .vite-button__link",
+				'property' => 'color',
+			],
 		];
 		$acc[ "vite[header-button-$curr-button-colors]" ] = [
 			'section'     => "vite[header-button-$curr]",
@@ -181,17 +183,19 @@ $options = array_reduce(
 			'input_attrs' => [
 				'colors' => [
 					[
-						'id'    => '--button--bg--color',
+						'id'    => '--button-bg-color',
 						'label' => __( 'Normal', 'vite' ),
 					],
 					[
-						'id'    => '--button--hover--bg--color',
+						'id'    => '--button-hover-bg-color',
 						'label' => __( 'Hover', 'vite' ),
 					],
 				],
 			],
-			'selectors'   => [ ".vite-button--$curr .vite-button__link" ],
-			'properties'  => [ '' ],
+			'css' => [
+				'selector' => ".vite-button--$curr .vite-button__link",
+				'property' => 'color',
+			],
 		];
 		$acc[ "vite[header-button-$curr-radius]" ]        = [
 			'section'     => "vite[header-button-$curr]",
@@ -217,7 +221,6 @@ $options = array_reduce(
 			'css'         => [
 				'selector' => ".vite-button--$curr .vite-button__link",
 				'property' => 'border',
-				'pattern'  => '%property-%side-radius',
 			],
 		];
 
