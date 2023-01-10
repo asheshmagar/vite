@@ -38,11 +38,11 @@ $options = array_reduce(
 			'input_attrs' => [
 				'colors'    => [
 					[
-						'id'    => '--link--color',
+						'id'    => '--link-color',
 						'label' => __( 'Normal', 'vite' ),
 					],
 					[
-						'id'    => '--link--hover--color',
+						'id'    => '--link-hover-color',
 						'label' => __( 'Hover', 'vite' ),
 					],
 					[
@@ -51,6 +51,10 @@ $options = array_reduce(
 					],
 				],
 				'separator' => true,
+			],
+			'css'         => [
+				'selector' => ".vite-nav--$curr",
+				'property' => 'color',
 			],
 		];
 
@@ -67,15 +71,9 @@ $options = array_reduce(
 					'separator' => true,
 					'units'     => [ 'px' ],
 				],
-			];
-
-			$acc[ "vite[header-menu-$curr-one-line]" ] = [
-				'section'     => "vite[header-menu-$curr]",
-				'type'        => 'vite-toggle',
-				'title'       => __( 'One Line', 'vite' ),
-				'default'     => false,
-				'input_attrs' => [
-					'separator' => true,
+				'css'         => [
+					'selector' => ".vite-nav--$curr .vite-nav__link",
+					'property' => '--padding--inline',
 				],
 			];
 		}
@@ -88,6 +86,9 @@ $options = array_reduce(
 			'properties'  => [ '' ],
 			'input_attrs' => [
 				'separator' => true,
+			],
+			'css'         => [
+				'selector' => ".vite-nav--$curr",
 			],
 		];
 
