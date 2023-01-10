@@ -9,6 +9,7 @@ defined( 'ABSPATH' ) || exit;
 
 $submit_icon = (bool) ( $args['submit_icon'] ?? false );
 $context     = $args['context'] ?? 'normal';
+$icon_size   = $args['icon_size'] ?? 24;
 $core        = vite( 'core' );
 
 $core->action( 'search-form/start' );
@@ -23,9 +24,10 @@ $core->action( 'search-form/start' );
 		<?php
 		if ( $submit_icon ) {
 			vite( 'icon' )->get_icon(
-				'magnifying-glass',
+				'vite-search',
 				[
 					'echo' => true,
+					'size' => $icon_size,
 				]
 			);
 		}
