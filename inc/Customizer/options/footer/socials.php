@@ -74,11 +74,11 @@ $options = [
 		'input_attrs' => [
 			'colors'    => [
 				[
-					'id'    => '--link--color',
+					'id'    => '--link-color',
 					'label' => __( 'Normal', 'vite' ),
 				],
 				[
-					'id'    => '--link--hover--color',
+					'id'    => '--link-hover-color',
 					'label' => __( 'Hover', 'vite' ),
 				],
 			],
@@ -122,7 +122,6 @@ $options = [
 		'css'         => [
 			'selector' => '.vite-footer .vite-social',
 			'property' => 'margin',
-			'context'  => 'footer',
 		],
 	],
 ];
