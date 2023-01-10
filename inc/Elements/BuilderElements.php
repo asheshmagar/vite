@@ -99,7 +99,7 @@ class BuilderElements {
 					}
 					?>
 					<li class="vite-social__item">
-						<a <?php print( esc_attr( 'brand' === $color_type && isset( $social['color'] ) ? 'style=color:' . $social['color'] : '' ) ); ?>
+						<a <?php print( esc_attr( 'brand' === $color_type && isset( $social['color'] ) ? 'style=--link-color:' . $social['color'] : '' ) ); ?>
 							class="vite-social__link vite-social__link--<?php echo esc_attr( $social['id'] ); ?>"
 							rel="noopener"
 							href=<?php echo esc_url( $this->get_theme_mod( "{$social['id']}-link", '#' ) ); ?>>
@@ -142,11 +142,12 @@ class BuilderElements {
 	 * @return void
 	 */
 	public function search( $args ) {
-		$label            = $this->get_theme_mod( "{$args['context']}-search-label" );
-		$label_visibility = $this->get_theme_mod( "{$args['context']}-search-label-visibility" );
-		$label_position   = $this->get_theme_mod( "{$args['context']}-search-label-position" );
-		$in_modal         = $args['in_modal'] ?? false;
-		$visibility       = 'none';
+		$context               = $args['context'];
+		$label                 = $this->get_theme_mod( "$context-search-label" );
+		$label_visibility      = $this->get_theme_mod( "$context-search-label-visibility" );
+		$label_position        = $this->get_theme_mod( "$context-search-label-position" );
+		$visibility            = 'none';
+		$in_mobile_menu_offset = $args['in_mobile_menu_offset'] ?? false;
 
 		if ( count( $label_visibility ) === 3 ) {
 			$visibility = 'all';
@@ -155,16 +156,16 @@ class BuilderElements {
 		}
 
 		/**
-		 * Action: vite/$args['context']/search/start
+		 * Action: vite/$context/search/start
 		 *
 		 * Fires before header search.
 		 *
 		 * @since 1.0.0
 		 */
-		$this->action( "{$args['context']}/search/start" );
+		$this->action( "$context/search/start" );
 		?>
 		<div class="vite-search">
-			<?php if ( ! $in_modal ) : ?>
+			<?php if ( ! $in_mobile_menu_offset ) : ?>
 			<button class="vite-search__btn" aria-label="<?php esc_attr_e( 'Search modal open button', 'vite' ); ?>">
 				<?php if ( ! empty( $label ) ) : ?>
 					<span
@@ -186,9 +187,10 @@ class BuilderElements {
 				<?php
 				get_search_form(
 					[
-						'submit_icon' => true,
-						'context'     => 'modal',
-						'icon_size'   => 15,
+						'submit_icon'           => true,
+						'context'               => 'modal',
+						'icon_size'             => 15,
+						'in_mobile_menu_offset' => $in_mobile_menu_offset,
 					]
 				);
 				?>
@@ -204,7 +206,7 @@ class BuilderElements {
 		 * @since 1.0.0
 		 */
 		$this->action( "{$args['context']}/search/end" );
-		! $in_modal && add_action( 'wp_footer', [ $this, 'search_modal' ], 11 );
+		! $in_mobile_menu_offset && add_action( 'wp_footer', [ $this, 'search_modal' ], 11 );
 	}
 
 	/**
@@ -424,7 +426,15 @@ class BuilderElements {
 				<div class="vite-modal__action">
 					<button class="vite-modal__btn"
 							aria-label="<?php esc_html_e( 'Close mobile menu modal', 'vite' ); ?>">
-						<?php vite( 'icon' )->get_icon( 'xmark', [ 'echo' => true, 'size' => 20 ] ); ?>
+						<?php
+						vite( 'icon' )->get_icon(
+							'xmark',
+							[
+								'echo' => true,
+								'size' => 20,
+							]
+						);
+						?>
 					</button>
 				</div>
 				<div class="vite-modal__content">
@@ -440,9 +450,9 @@ class BuilderElements {
 								"template-parts/builder-elements/$element_id",
 								'',
 								[
-									'type'     => (string) $type,
-									'context'  => 'header',
-									'in_modal' => true,
+									'type'    => (string) $type,
+									'context' => 'header',
+									'in_mobile_menu_offset' => true,
 								]
 							);
 							echo '</div>';

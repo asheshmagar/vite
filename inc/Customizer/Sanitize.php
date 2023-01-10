@@ -233,6 +233,8 @@ class Sanitize {
 				switch ( $k ) {
 					case 'id':
 					case 'label':
+					case 'value':
+					case 'color':
 						$input[ $i ][ $k ] = sanitize_text_field( $input[ $i ][ $k ] );
 						break;
 					case 'visible':

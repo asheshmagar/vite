@@ -7,10 +7,15 @@
 
 defined( 'ABSPATH' ) || exit;
 
-$submit_icon = (bool) ( $args['submit_icon'] ?? false );
-$context     = $args['context'] ?? 'normal';
-$icon_size   = $args['icon_size'] ?? 24;
-$core        = vite( 'core' );
+$submit_icon           = (bool) ( $args['submit_icon'] ?? false );
+$context               = $args['context'] ?? 'normal';
+$icon_size             = $args['icon_size'] ?? 24;
+$core                  = vite( 'core' );
+$in_mobile_menu_offset = $args['in_mobile_menu_offset'] ?? false;
+
+if ( $in_mobile_menu_offset ) {
+	$context = 'normal';
+}
 
 $core->action( 'search-form/start' );
 ?>
