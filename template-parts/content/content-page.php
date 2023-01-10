@@ -49,10 +49,10 @@ $core->action( 'page/content/start' );
 		$core->action( 'page/content' );
 		the_content();
 		wp_link_pages(
-			array(
-				'before' => '<div class="page-links">' . __( 'Pages:', 'vite' ),
+			[
+				'before' => '<div class="page-links">' . __( 'Pages', 'vite' ),
 				'after'  => '</div>',
-			)
+			]
 		);
 		?>
 	</div>
