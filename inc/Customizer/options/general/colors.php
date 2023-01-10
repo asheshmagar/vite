@@ -13,35 +13,35 @@ $options = [
 		'input_attrs' => [
 			'colors' => [
 				[
-					'id'    => '--global--color--1',
+					'id'    => '--color-0',
 					'label' => __( 'Color 1', 'vite' ),
 				],
 				[
-					'id'    => '--global--color--2',
+					'id'    => '--color-1',
 					'label' => __( 'Color 2', 'vite' ),
 				],
 				[
-					'id'    => '--global--color--3',
+					'id'    => '--color-2',
 					'label' => __( 'Color 3', 'vite' ),
 				],
 				[
-					'id'    => '--global--color--4',
+					'id'    => '--color-3',
 					'label' => __( 'Color 4', 'vite' ),
 				],
 				[
-					'id'    => '--global--color--5',
+					'id'    => '--color-4',
 					'label' => __( 'Color 6', 'vite' ),
 				],
 				[
-					'id'    => '--global--color--6',
+					'id'    => '--color-6',
 					'label' => __( 'Color 6', 'vite' ),
 				],
 				[
-					'id'    => '--global--color--7',
+					'id'    => '--color-5',
 					'label' => __( 'Color 7', 'vite' ),
 				],
 				[
-					'id'    => '--global--color--8',
+					'id'    => '--color-7',
 					'label' => __( 'Color 8', 'vite' ),
 				],
 			],
@@ -81,11 +81,11 @@ $options = [
 			'separator' => true,
 			'colors'    => [
 				[
-					'id'    => '--link--color',
+					'id'    => '--link-color',
 					'label' => __( 'Normal', 'vite' ),
 				],
 				[
-					'id'    => '--link--hover--color',
+					'id'    => '--link-hover-color',
 					'label' => __( 'Hover', 'vite' ),
 				],
 			],
@@ -125,19 +125,19 @@ $options = [
 			'separator' => true,
 			'colors'    => [
 				[
-					'id'    => '--button--color',
+					'id'    => '--button-color',
 					'label' => __( 'Normal', 'vite' ),
 				],
 				[
-					'id'    => '--button--hover--color',
+					'id'    => '--button-hover-color',
 					'label' => __( 'Hover', 'vite' ),
 				],
 				[
-					'id'    => '--button--bg--color',
+					'id'    => '--button-bg-color',
 					'label' => __( 'Normal background', 'vite' ),
 				],
 				[
-					'id'    => '--button--hover--bg--color',
+					'id'    => '--button-hover-bg-color',
 					'label' => __( 'Hover background', 'vite' ),
 				],
 			],
@@ -157,7 +157,7 @@ $options = [
 			'separator' => true,
 			'colors'    => [
 				[
-					'id'    => '--border--color',
+					'id'    => '--border-color',
 					'label' => __( 'Border color', 'vite' ),
 				],
 			],

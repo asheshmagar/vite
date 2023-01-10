@@ -122,11 +122,11 @@ $options = [
 		'input_attrs' => [
 			'colors'    => [
 				[
-					'id'    => '--button--color',
+					'id'    => '--button-color',
 					'label' => __( 'Normal', 'vite' ),
 				],
 				[
-					'id'    => '--button--hover--color',
+					'id'    => '--button-hover-color',
 					'label' => __( 'Hover', 'vite' ),
 				],
 			],
@@ -147,11 +147,11 @@ $options = [
 		'input_attrs' => [
 			'colors' => [
 				[
-					'id'    => '--button--bg--color',
+					'id'    => '--button-bg-color',
 					'label' => __( 'Normal', 'vite' ),
 				],
 				[
-					'id'    => '--button--hover--bg--color',
+					'id'    => '--button-hover-bg-color',
 					'label' => __( 'Hover', 'vite' ),
 				],
 			],
