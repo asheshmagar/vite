@@ -259,6 +259,9 @@ $options = [
 		'input_attrs' => [
 			'separator' => true,
 		],
+		'css' => [
+			'selector' => '.vite-header',
+		],
 	],
 ];
 
