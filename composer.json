@@ -4,18 +4,11 @@
   "license": "2.0",
   "autoload": {
     "psr-4": {
-      "Vite\\": "inc/",
-      "Vite\\ServiceProvider\\": "inc/ServiceProvider/",
-      "Vite\\Customizer\\Type\\": "inc/Customizer/Type/",
-      "Vite\\Customizer\\": "inc/Customizer/",
-      "Vite\\Comments\\": "inc/Comments/",
-      "Vite\\NavMenu\\": "inc/NavMenu/",
-      "Vite\\Performance\\": "inc/Performance/",
-      "Vite\\Elements\\": "inc/Elements/",
-      "Vite\\Traits\\": "inc/Traits/"
+      "Vite\\": "inc/"
     },
     "files": [
-      "bootstrap/app.php"
+      "bootstrap/app.php",
+      "inc/Compat.php"
     ]
   },
   "require": {
