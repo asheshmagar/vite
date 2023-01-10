@@ -57,45 +57,45 @@ trait Mods {
 
 		$defaults = [
 			'global-palette'                 => [
-				'--global--color--1' => '#2271b1',
-				'--global--color--2' => '#135e96',
-				'--global--color--3' => '#100c08',
-				'--global--color--4' => '#353f4a',
-				'--global--color--5' => '#e7ebfd',
-				'--global--color--6' => '#f2f5f7',
-				'--global--color--7' => '#eaf0f6',
-				'--global--color--8' => '#ffffff',
+				'--color-0' => '#2271b1',
+				'--color-1' => '#135e96',
+				'--color-2' => '#100c08',
+				'--color-3' => '#353f4a',
+				'--color-4' => '#e7ebfd',
+				'--color-6' => '#f2f5f7',
+				'--color-5' => '#eaf0f6',
+				'--color-7' => '#ffffff',
 			],
 			'link-colors'                    => [
-				'--link--color'        => 'var(--global--color--3)',
-				'--link--hover--color' => 'var(--global--color--1)',
+				'--link-color'       => 'var(--color-2)',
+				'--link-hover-color' => 'var(--color-0)',
 			],
 			'heading-color'                  => [
-				'--heading--color' => 'var(--global--color--3)',
+				'--heading--color' => 'var(--color-2)',
 			],
 			'text-color'                     => [
-				'--text--color' => 'var(--global--color--4)',
+				'--text--color' => 'var(--color-3)',
 			],
 			'accent-color'                   => [
-				'--accent--color' => 'var(--global--color--1)',
+				'--accent--color' => 'var(--color-0)',
 			],
 			'button-colors'                  => [
-				'--button--color'            => 'var(--global--color--8)',
-				'--button--hover--color'     => 'var(--global--color--8)',
-				'--button--bg--color'        => 'var(--global--color--1)',
-				'--button--hover--bg--color' => 'var(--global--color--2)',
+				'--button-color'          => 'var(--color-7)',
+				'--button-hover-color'    => 'var(--color-7)',
+				'--button-bg-color'       => 'var(--color-0)',
+				'--button-hover-bg-color' => 'var(--color-1)',
 			],
 			'border-color'                   => [
-				'--border--color' => 'var(--global--color--6)',
+				'--border-color' => 'var(--color-6)',
 			],
 			'header-background-color'        => [
-				'--header--background--color' => 'var(--global--color--8)',
+				'--header-bg-color' => 'var(--color-7)',
 			],
 			'site-background-color'          => [
-				'--site--background--color' => 'var(--global--color--5)',
+				'--site-bg-color' => 'var(--color-4)',
 			],
 			'footer-background-color'        => [
-				'--footer--background--color' => 'var(--global--color--8)',
+				'--footer-bg-color' => 'var(--color-7)',
 			],
 			'header'                         => [
 				'desktop' => [
@@ -286,7 +286,7 @@ trait Mods {
 			'header-main-row-layout'         => 'contained',
 			'header-bottom-row-layout'       => 'contained',
 			'header-background'              => [
-				'color' => 'var(--global--color--8)',
+				'color' => 'var(--color-7)',
 				'type'  => 'color',
 			],
 			'header-sticky'                  => false,
@@ -330,12 +330,12 @@ trait Mods {
 				],
 			],
 			'buttons-colors'                 => [
-				'--button--color'        => 'var(--global--color--8)',
-				'--button--hover--color' => 'var(--global--color--8)',
+				'--button-color'       => 'var(--color-7)',
+				'--button-hover-color' => 'var(--color-7)',
 			],
 			'buttons-bg-colors'              => [
-				'--button--bg--color'        => 'var(--global--color--1)',
-				'--button--hover--bg--color' => 'var(--global--color--2)',
+				'--button-bg-color'       => 'var(--color-0)',
+				'--button-hover-bg-color' => 'var(--color-1)',
 			],
 			'buttons-border'                 => [],
 			'buttons-border-radius'          => [
@@ -390,24 +390,24 @@ trait Mods {
 			'header-social-icons-size'       => 20,
 			'header-social-icons-color-type' => 'custom',
 			'header-social-icons-colors'     => [
-				'--link--color'        => 'var(--global--color--3)',
-				'--link--hover--color' => 'var(--global--color--1)',
+				'--link-color'       => 'var(--color-2)',
+				'--link-hover-color' => 'var(--color-0)',
 			],
 			'header-button-1-font-colors'    => [
-				'--button--color'        => 'var(--global--color--8)',
-				'--button--hover--color' => 'var(--button--color)',
+				'--button-color'       => 'var(--color-7)',
+				'--button-hover-color' => 'var(--button-color)',
 			],
 			'header-button-2-font-colors'    => [
-				'--button--color'        => 'var(--global--color--1)',
-				'--button--hover--color' => 'var(--button--color)',
+				'--button-color'       => 'var(--color-0)',
+				'--button-hover-color' => 'var(--button-color)',
 			],
 			'header-button-1-button-colors'  => [
-				'--button--bg--color'        => 'var(--global--color--1)',
-				'--button--hover--bg--color' => 'var(--global--color--2)',
+				'--button-bg-color'       => 'var(--color-0)',
+				'--button-hover-bg-color' => 'var(--color-1)',
 			],
 			'header-button-2-button-colors'  => [
-				'--button--bg--color'        => 'var(--global--color--1)',
-				'--button--hover--bg--color' => 'var(--global--color--2)',
+				'--button-bg-color'       => 'var(--color-0)',
+				'--button-hover-bg-color' => 'var(--color-1)',
 			],
 			'header-button-1-radius'         => [
 				'desktop' => [
@@ -430,19 +430,19 @@ trait Mods {
 				'unit'  => 'px',
 			],
 			'header-menu-1-colors'           => [
-				'--link--color'         => 'var(--global--color--3)',
-				'--link--hover--color'  => 'var(--global--color--1)',
-				'--link--active--color' => 'var(--global--color--1)',
+				'--link-color'          => 'var(--color-2)',
+				'--link-hover-color'    => 'var(--color-0)',
+				'--link--active--color' => 'var(--color-0)',
 			],
 			'header-menu-2-colors'           => [
-				'--link--color'         => 'var(--global--color--3)',
-				'--link--hover--color'  => 'var(--global--color--1)',
-				'--link--active--color' => 'var(--global--color--1)',
+				'--link-color'          => 'var(--color-2)',
+				'--link-hover-color'    => 'var(--color-0)',
+				'--link--active--color' => 'var(--color-0)',
 			],
 			'header-menu-3-colors'           => [
-				'--link--color'         => 'var(--global--color--3)',
-				'--link--hover--color'  => 'var(--global--color--1)',
-				'--link--active--color' => 'var(--global--color--1)',
+				'--link-color'          => 'var(--color-2)',
+				'--link-hover-color'    => 'var(--color-0)',
+				'--link--active--color' => 'var(--color-0)',
 			],
 			'footer'                         => [
 				'desktop' => [
@@ -509,17 +509,17 @@ trait Mods {
 			'footer-social-icons-size'       => 20,
 			'footer-social-icons-color-type' => 'custom',
 			'footer-social-icons-colors'     => [
-				'--link--color'        => 'var(--global--color--3)',
-				'--link--hover--color' => 'var(--global--color--1)',
+				'--link-color'       => 'var(--color-2)',
+				'--link-hover-color' => 'var(--color-0)',
 			],
 			'footer-menu-4-items-spacing'    => [
 				'value' => 14,
 				'unit'  => 'px',
 			],
 			'footer-menu-4-colors'           => [
-				'--link--color'         => 'var(--global--color--3)',
-				'--link--hover--color'  => 'var(--global--color--1)',
-				'--link--active--color' => 'var(--global--color--1)',
+				'--link-color'          => 'var(--color-2)',
+				'--link-hover-color'    => 'var(--color-0)',
+				'--link--active--color' => 'var(--color-0)',
 			],
 			'footer-top-row-height'          => [
 				'desktop' => [
