@@ -52,7 +52,7 @@ defined( 'ABSPATH' ) || exit;
 					if ( 3 === $col_count || in_array( 'center', $col_keys, true ) ) {
 						$container_class = 'lf-even';
 					} elseif ( 2 === $col_count ) {
-							$container_class = '2';
+						$container_class = '2';
 					}
 				}
 				?>
@@ -81,6 +81,7 @@ defined( 'ABSPATH' ) || exit;
 												[
 													'type' => $element_type,
 													'context' => 'header',
+													'device' => $device,
 												]
 											);
 										?>
