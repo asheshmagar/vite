@@ -5,43 +5,9 @@
  * @package Vite
  */
 
+$selector = '.button, .vite-button__link, button, input[type=submit], input[type=button], input[type=reset], .comment-reply-link, #cancel-comment-reply-link, .wp-block-button .wp-block-button__link';
+
 $options = [
-	'vite[buttons-color]'         => [
-		'section'     => 'vite[global-buttons]',
-		'type'        => 'vite-color',
-		'title'       => __( 'Colors', 'vite' ),
-		'default'     => vite( 'core' )->get_theme_mod_defaults()['buttons-colors'],
-		'input_attrs' => [
-			'colors' => [
-				[
-					'id'    => '--button--color',
-					'label' => __( 'Normal', 'vite' ),
-				],
-				[
-					'id'    => '--button--hover--color',
-					'label' => __( 'Hover', 'vite' ),
-				],
-			],
-		],
-	],
-	'vite[buttons-bg-color]'      => [
-		'section'     => 'vite[global-buttons]',
-		'type'        => 'vite-color',
-		'title'       => __( 'Background Colors', 'vite' ),
-		'default'     => vite( 'core' )->get_theme_mod_defaults()['buttons-bg-colors'],
-		'input_attrs' => [
-			'colors' => [
-				[
-					'id'    => '--button--bg--color',
-					'label' => __( 'Normal', 'vite' ),
-				],
-				[
-					'id'    => '--button--hover--bg--color',
-					'label' => __( 'Hover', 'vite' ),
-				],
-			],
-		],
-	],
 	'vite[buttons-padding]'       => [
 		'section'     => 'vite[global-buttons]',
 		'type'        => 'vite-dimensions',
@@ -50,7 +16,10 @@ $options = [
 		'input_attrs' => [
 			'units'      => [ 'px', 'rem', 'em' ],
 			'responsive' => true,
-			'separator'  => true,
+		],
+		'css'         => [
+			'selector' => ':root',
+			'property' => '--button--padding',
 		],
 	],
 	'vite[buttons-border]'        => [
@@ -60,6 +29,10 @@ $options = [
 		'default'     => vite( 'core' )->get_theme_mod_defaults()['buttons-border'],
 		'input_attrs' => [
 			'separator' => true,
+		],
+		'css'         => [
+			'selector' => $selector,
+			'property' => 'border',
 		],
 	],
 	'vite[buttons-border-radius]' => [
@@ -72,6 +45,10 @@ $options = [
 			'responsive' => true,
 			'separator'  => true,
 		],
+		'css'         => [
+			'selector' => ':root',
+			'property' => '--button--border--radius',
+		],
 	],
 	'vite[buttons-typography]'    => [
 		'section'     => 'vite[global-buttons]',
@@ -79,6 +56,9 @@ $options = [
 		'title'       => __( 'Typography', 'vite' ),
 		'input_attrs' => [
 			'separator' => true,
+		],
+		'css'         => [
+			'selector' => $selector,
 		],
 	],
 ];
