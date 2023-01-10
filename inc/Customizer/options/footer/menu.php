@@ -35,11 +35,11 @@ $options = [
 		'input_attrs' => [
 			'colors'    => [
 				[
-					'id'    => '--link--color',
+					'id'    => '--link-color',
 					'label' => __( 'Normal', 'vite' ),
 				],
 				[
-					'id'    => '--link--hover--color',
+					'id'    => '--link-hover-color',
 					'label' => __( 'Hover', 'vite' ),
 				],
 				[
@@ -51,7 +51,6 @@ $options = [
 		],
 		'css'         => [
 			'selector' => '.vite-nav--4',
-			'context'  => 'footer',
 			'property' => 'color',
 		],
 	],
@@ -69,7 +68,6 @@ $options = [
 		],
 		'css'         => [
 			'selector' => '.vite-nav--4',
-			'context'  => 'footer',
 			'property' => '--items--spacing',
 		],
 	],
@@ -82,7 +80,6 @@ $options = [
 		'input_attrs' => [ 'separator' => true ],
 		'css'         => [
 			'selector' => '.vite-nav--4',
-			'context'  => 'footer',
 		],
 	],
 ];
