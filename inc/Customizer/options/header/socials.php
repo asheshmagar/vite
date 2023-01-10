@@ -74,11 +74,11 @@ $options = [
 		'input_attrs' => [
 			'colors'    => [
 				[
-					'id'    => '--link--color',
+					'id'    => '--link-color',
 					'label' => __( 'Normal', 'vite' ),
 				],
 				[
-					'id'    => '--link--hover--color',
+					'id'    => '--link-hover-color',
 					'label' => __( 'Hover', 'vite' ),
 				],
 			],
@@ -87,6 +87,10 @@ $options = [
 		'condition'   => [
 			'vite[header-social-icons-color-type]' => 'custom',
 			'vite[header-social-links]!'           => [],
+		],
+		'css' => [
+			'selector' => '.vite-header .vite-social',
+			'property' => 'color',
 		],
 	],
 	'vite[header-social-icons-spacing]'    => [
@@ -99,6 +103,10 @@ $options = [
 			'step'      => 1,
 			'units'     => [ 'px', 'rem', 'em' ],
 			'separator' => true,
+		],
+		'css' => [
+			'selector' => '.vite-header .vite-social__list',
+			'property' => 'gap',
 		],
 	],
 	'vite[header-social-icons-margin]'     => [
@@ -114,6 +122,10 @@ $options = [
 			],
 			'responsive' => true,
 			'separator'  => true,
+		],
+		'css' => [
+			'selector' => '.vite-header .vite-social',
+			'property' => 'margin',
 		],
 	],
 ];
