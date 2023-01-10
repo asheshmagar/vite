@@ -11,9 +11,11 @@ class PageHeaderElements {
 	/**
 	 * Page header elements.
 	 *
+	 * @param array $args Template args.
+	 *
 	 * @return void
 	 */
-	public function page_header( $args ) {
+	public function page_header( array $args ) {
 		$elements = $args['elements'] ?? [];
 
 		if ( empty( $elements ) ) {
