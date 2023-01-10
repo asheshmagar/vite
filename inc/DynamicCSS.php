@@ -42,57 +42,22 @@ class DynamicCSS {
 	public $configs = [];
 
 	/**
-	 * Contexts.
-	 *
-	 * @var string[]
-	 */
-	private $contexts = [
-		'global'  => 'vite-global',
-		'header'  => 'vite-header',
-		'content' => 'vite-content',
-		'footer'  => 'vite-footer',
-	];
-
-	/**
 	 * Holds generated CSS.
 	 *
 	 * @var string[]
 	 */
 	private $css_data = [
-		'global'  => [
-			'desktop' => [],
-			'tablet'  => [],
-			'mobile'  => [],
-		],
-		'header'  => [
-			'desktop' => [],
-			'tablet'  => [],
-			'mobile'  => [],
-		],
-		'content' => [
-			'desktop' => [],
-			'tablet'  => [],
-			'mobile'  => [],
-		],
-		'footer'  => [
-			'desktop' => [],
-			'tablet'  => [],
-			'mobile'  => [],
-		],
+		'desktop' => [],
+		'tablet'  => [],
+		'mobile'  => [],
 	];
 
 	/**
 	 * Holds all parsed CSS.
 	 *
-	 * @var string[]
+	 * @var string
 	 */
-	private $css = [
-		'all'     => '',
-		'global'  => '',
-		'header'  => '',
-		'content' => '',
-		'footer'  => '',
-	];
+	private $css = '';
 
 	/**
 	 * Holds google fonts.
@@ -121,9 +86,9 @@ class DynamicCSS {
 	/**
 	 * Get CSS.
 	 *
-	 * @return string[]
+	 * @return string
 	 */
-	public function get(): array {
+	public function get(): string {
 		$is_cached = $this->get_theme_mod( 'cache-dynamic-css', true );
 		if ( $is_cached ) {
 			$css = $this->get_theme_mod( 'cached-dynamic-css' );
@@ -131,7 +96,7 @@ class DynamicCSS {
 				return $css;
 			}
 		}
-		return $this->generate()->make()->css;
+		return $this->process()->make()->css;
 	}
 
 	/**
@@ -140,9 +105,12 @@ class DynamicCSS {
 	 * @return void
 	 */
 	public function save() {
-		$make = $this->generate()->make();
-		$this->set_theme_mod( 'cached-dynamic-css', $make->css );
-		$make->save_fonts()->save_to_file();
+		$this
+			->process()
+			->make()
+			->set_theme_mod( 'cached-dynamic-css', $this->css )
+			->save_fonts()
+			->save_to_file();
 	}
 
 	/**
@@ -176,15 +144,14 @@ class DynamicCSS {
 	}
 
 	/**
-	 * Generate.
+	 * Process.
 	 */
-	private function generate(): ?DynamicCSS {
+	private function process(): DynamicCSS {
 		if ( empty( $this->configs ) ) {
-			return null;
+			return $this;
 		}
 		foreach ( $this->configs as $key => $config ) {
-			$context = $config['context'] ?? 'global';
-			$type    = $config['type'] ?? '';
+			$type = $config['type'] ?? '';
 
 			if ( empty( $type ) ) {
 				continue;
@@ -205,25 +172,25 @@ class DynamicCSS {
 
 			switch ( $type ) {
 				case 'vite-dimensions':
-					$this->append( $this->responsive_dimensions( $selector, $property, $value ), $context );
+					$this->append( $this->responsive_dimensions( $selector, $property, $value ) );
 					break;
 				case 'vite-typography':
-					$this->append( $this->typography( $selector, $value ), $context );
+					$this->append( $this->typography( $selector, $value ) );
 					break;
 				case 'vite-color':
-					$this->append( $this->color( $selector, $property, $value ), $context );
+					$this->append( $this->color( $selector, $property, $value ) );
 					break;
 				case 'vite-background':
-					$this->append( $this->background( $selector, $value ), $context );
+					$this->append( $this->background( $selector, $value ) );
 					break;
 				case 'vite-border':
-					$this->append( $this->border( $selector, $value ), $context );
+					$this->append( $this->border( $selector, $value ) );
 					break;
 				case 'vite-slider':
-					$this->append( $this->range( $selector, $property, $value ), $context );
+					$this->append( $this->range( $selector, $property, $value ) );
 					break;
 				default:
-					$this->append( $this->common( $selector, $property, $value ), $context );
+					$this->append( $this->common( $selector, $property, $value ) );
 			}
 		}
 
@@ -255,6 +222,7 @@ class DynamicCSS {
 							$this->google_fonts[ $family ] = [];
 						}
 						$this->google_fonts[ $family ][] = (int) ( $typography['weight'] ?? 400 );
+						$family                          = "$family, serif";
 					}
 					$css[ $device ] .= sprintf( 'font-family:%s;', $family );
 				}
@@ -341,7 +309,7 @@ class DynamicCSS {
 				function( $acc, $curr ) use ( &$dimensions, &$i, &$prop ) {
 					$unit = $dimensions['unit'] ?? 'px';
 					$s    = $dimensions[ $curr ] ?? '0';
-					$s    = ( false !== strpos( $prop, 'padding' ) && 'auto' === $s ) ? '0' : $s;
+					$s    = ( str_contains( $prop, 'padding' ) && 'auto' === $s ) ? '0' : $s;
 					$s    = is_numeric( $s ) ? $s . $unit : $s;
 					$acc .= $s . ( $i < 3 ? ' ' : ';' );
 
@@ -505,7 +473,7 @@ class DynamicCSS {
 		if ( is_array( $color ) ) {
 			foreach ( $color as $k => $v ) {
 				if ( ! empty( $v ) ) {
-					$attached = $this->attach( $selector, ( $this->str_starts_with( '--', $k ) ? $k : $property ) . ":$v;", ( $this->str_starts_with( '--', $k ) ? 'normal' : $k ) );
+					$attached = $this->attach( $selector, ( str_starts_with( $k, '--' ) ? $k : $property ) . ":$v;", ( str_starts_with( $k, '--' ) ? 'normal' : $k ) );
 					foreach ( $attached as $key => $val ) {
 						if ( array_key_exists( $key, $css['desktop'] ) ) {
 							$css['desktop'][ $key ] .= $val;
@@ -623,11 +591,10 @@ class DynamicCSS {
 	/**
 	 * Append CSS.
 	 *
-	 * @param array  $css_data CSS data.
-	 * @param string $context Context.
+	 * @param array $css_data CSS data.
 	 * @return void
 	 */
-	private function append( array $css_data, string $context ) {
+	private function append( array $css_data ) {
 		if ( empty( $css_data ) ) {
 			return;
 		}
@@ -637,10 +604,10 @@ class DynamicCSS {
 				continue;
 			}
 			foreach ( $css as $selector => $properties ) {
-				if ( isset( $this->css_data[ $context ][ $d ][ $selector ] ) ) {
-					$this->css_data[ $context ][ $d ][ $selector ] .= $properties;
+				if ( isset( $this->css_data[ $d ][ $selector ] ) ) {
+					$this->css_data[ $d ][ $selector ] .= $properties;
 				} else {
-					$this->css_data[ $context ][ $d ][ $selector ] = $properties;
+					$this->css_data[ $d ][ $selector ] = $properties;
 				}
 			}
 		}
@@ -652,49 +619,33 @@ class DynamicCSS {
 	 * @return DynamicCSS
 	 */
 	private function make(): DynamicCSS {
-		foreach ( $this->css_data as $context => $data ) {
-			foreach ( $data as $device => $css_data ) {
-				if ( ! empty( $css_data ) ) {
-					if ( 'desktop' === $device ) {
-						foreach ( $css_data as $selector => $properties ) {
-							if ( ! empty( $selector ) && ! empty( $properties ) ) {
-								$this->css[ $context ] .= $this->minify( $selector . '{' . $properties . '}' );
-							}
+		foreach ( $this->css_data as $device => $css_data ) {
+			if ( ! empty( $css_data ) ) {
+				if ( 'desktop' === $device ) {
+					foreach ( $css_data as $selector => $properties ) {
+						if ( ! empty( $selector ) && ! empty( $properties ) ) {
+							$this->css .= $this->minify( $selector . '{' . $properties . '}' );
 						}
 					}
-					if ( 'tablet' === $device ) {
-						foreach ( $css_data as $selector => $properties ) {
-							if ( ! empty( $selector ) && ! empty( $properties ) ) {
-								$this->css[ $context ] .= '@media(max-width:1024px){' . $this->minify( $selector . '{' . $properties . '}' ) . '}';
-							}
+				}
+				if ( 'tablet' === $device ) {
+					foreach ( $css_data as $selector => $properties ) {
+						if ( ! empty( $selector ) && ! empty( $properties ) ) {
+							$this->css .= '@media(max-width:1024px){' . $this->minify( $selector . '{' . $properties . '}' ) . '}';
 						}
 					}
-					if ( 'mobile' === $device ) {
-						foreach ( $css_data as $selector => $properties ) {
-							if ( ! empty( $selector ) && ! empty( $properties ) ) {
-								$this->css[ $context ] .= '@media(max-width:767px){' . $this->minify( $selector . '{' . $properties . '}' ) . '}';
-							}
+				}
+				if ( 'mobile' === $device ) {
+					foreach ( $css_data as $selector => $properties ) {
+						if ( ! empty( $selector ) && ! empty( $properties ) ) {
+							$this->css .= '@media(max-width:767px){' . $this->minify( $selector . '{' . $properties . '}' ) . '}';
 						}
 					}
 				}
 			}
 		}
 
-		$this->css['all'] = $this->css['global'] . $this->css['content'] . $this->css['footer'] . $this->css['header'] . $this->css['content'];
-
 		return $this;
-	}
-
-	/**
-	 * Check if the string starts with the given substring.
-	 *
-	 * @param string $needle Needle.
-	 * @param string $haystack Haystack.
-	 * @return bool
-	 */
-	private function str_starts_with( string $needle, string $haystack ): bool {
-		$length = strlen( $needle );
-		return substr( $haystack, 0, $length ) === $needle;
 	}
 
 	/**
@@ -741,9 +692,22 @@ class DynamicCSS {
 	 * @return DynamicCSS
 	 */
 	private function save_to_file(): DynamicCSS {
-		foreach ( $this->css as $key => $value ) {
-			$this->create_file( "$key.css", $value );
-		}
+		$this->create_file( 'vite-style.css', $this->css );
+		return $this;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @param string $key Theme mod key.
+	 * @param mixed  $value Theme mod value.
+	 */
+	public function set_theme_mod( string $key, $value ): DynamicCSS {
+		$mods         = get_theme_mod( 'vite' );
+		$mods[ $key ] = $value;
+
+		set_theme_mod( 'vite', $mods );
+
 		return $this;
 	}
 
