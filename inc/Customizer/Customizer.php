@@ -9,10 +9,10 @@ use Vite\Customizer\Type\Control;
 use Vite\DynamicCSS;
 use Vite\Traits\JSON;
 use Vite\Traits\Mods;
-use WP_Customize_Cropped_Image_Control;
-use WP_Customize_Manager;
 use Vite\Customizer\Type\Panel;
 use Vite\Customizer\Type\Section;
+use WP_Customize_Cropped_Image_Control;
+use WP_Customize_Manager;
 
 /**
  * Customizer class.
@@ -93,7 +93,7 @@ class Customizer {
 	 * Constructor.
 	 *
 	 * @param DynamicCSS $dynamic_css Instance of DynamicCSS.
-	 * @param Sanitize $sanitize Instance of DynamicCSS.
+	 * @param Sanitize   $sanitize Instance of DynamicCSS.
 	 */
 	public function __construct( DynamicCSS $dynamic_css, Sanitize $sanitize ) {
 		$this->dynamic_css = $dynamic_css;
@@ -110,13 +110,54 @@ class Customizer {
 		add_action( 'customize_register', [ $this, 'customize_register' ] );
 		add_action( 'customize_register', [ $this, 'override_controls' ] );
 		add_action( 'customize_controls_enqueue_scripts', [ $this, 'enqueue_control_script' ] );
-		add_action( 'customize_save_after', [ $this, 'save_dynamic_css' ] );
 		add_filter( 'customize_render_partials_response', [ $this, 'partial_response' ] );
 		add_action( 'wp_print_scripts', [ $this, 'print_dynamic_css' ] );
 		add_action( 'customize_preview_init', [ $this, 'enqueue_preview_script' ] );
-		add_action( 'customize_save_after', [ $this, 'sync_menus' ] );
+		add_action( 'customize_save_after', [ $this, 'after_save' ] );
 		add_filter( 'customizer_widgets_section_args', [ $this, 'modify_widgets_panel' ], 10, 3 );
 		add_filter( 'customize_section_active', array( $this, 'modify_widgets_section_state' ), 100, 2 );
+		add_action( 'wp_ajax_vite-reset-customizer', array( $this, 'reset_settings' ) );
+	}
+
+	/**
+	 * After customizer save.
+	 *
+	 * @param WP_Customize_Manager $wp_customize Instance of WP_Customize_Manager.
+	 * @return void
+	 */
+	public function after_save( WP_Customize_Manager $wp_customize ) {
+		$this->dynamic_css->save();
+		$this->sync( $wp_customize );
+	}
+
+	/**
+	 * Reset settings.
+	 *
+	 * @return void
+	 */
+	public function reset_settings() {
+		check_ajax_referer( 'vite-reset', 'nonce' );
+		global $wp_customize;
+
+		if ( ! $wp_customize || ! $wp_customize->is_preview() ) {
+			wp_send_json_error();
+		}
+
+		$settings = $wp_customize->settings();
+
+		$this->action( 'customizer-reset/before' );
+
+		foreach ( $settings as $setting ) {
+			remove_theme_mod( $setting->id );
+		}
+
+		remove_theme_mod( 'vite' );
+
+		$this->dynamic_css->save(); // Save dynamic css.
+		$this->action( 'local-fonts/cleanup' ); // Trigger action to clean up local fonts.
+		$this->action( 'customizer-reset/after' );
+
+		wp_send_json_success();
 	}
 
 	/**
@@ -128,8 +169,8 @@ class Customizer {
 	 */
 	public function modify_widgets_section_state( bool $active, $section ): bool {
 		if (
-			false !== strpos( $section->id, 'header-widget-' ) ||
-			false !== strpos( $section->id, 'footer-widget-' )
+			str_contains( $section->id, 'header-widget-' ) ||
+			str_contains( $section->id, 'footer-widget-' )
 		) {
 			$active = true;
 		}
@@ -176,7 +217,7 @@ class Customizer {
 	 * @param WP_Customize_Manager $wp_customize Instance of WP_Customize_Manager.
 	 * @return void
 	 */
-	public function sync_menus( WP_Customize_Manager $wp_customize ) {
+	private function sync( WP_Customize_Manager $wp_customize ) {
 		$action = 'save-customize_' . $wp_customize->get_stylesheet();
 		if ( ! check_ajax_referer( $action, 'nonce', false ) ) {
 			wp_send_json_error( 'invalid_nonce' );
@@ -192,6 +233,7 @@ class Customizer {
 			return;
 		}
 
+		// Sync menus.
 		$primary   = ( $customized['nav_menu_locations[menu-1]'] ?? ( $customized['vite[header-menu-1]'] ?? null ) );
 		$secondary = ( $customized['nav_menu_locations[menu-2]'] ?? ( $customized['vite[header-menu-2]'] ?? null ) );
 		$mobile    = ( $customized['nav_menu_locations[menu-3]'] ?? ( $customized['vite[header-menu-3]'] ?? null ) );
@@ -230,6 +272,18 @@ class Customizer {
 			set_theme_mod( 'nav_menu_locations', $locations );
 			set_theme_mod( 'vite', $vite_mods );
 		}
+
+		// Sync google fonts.
+		if ( $this->get_theme_mod( 'local-google-fonts' ) ) {
+			$fonts_url = $this->get_theme_mod( 'google-fonts-url' );
+			foreach ( array_keys( $customized ) as $key ) {
+				if ( str_contains( $key, 'vite' ) && str_contains( $key, 'typography' ) ) {
+					$this->action( 'local-fonts/cleanup' ); // Delete fonts folder on customize save.
+					vite( 'performance' )->local_font->get( $fonts_url ); // Download fonts locally.
+					break;
+				}
+			}
+		}
 	}
 
 	/**
@@ -260,7 +314,7 @@ class Customizer {
 	 */
 	public function partial_response( array $response ): array {
 		try {
-//			$response['viteDynamicCSS'] = $this->dynamic_css->make()->get();
+			// $response['viteDynamicCSS'] = $this->dynamic_css->make()->get();
 		} catch ( \Exception $e ) {} // phpcs:ignore
 		return $response;
 	}
@@ -344,7 +398,7 @@ class Customizer {
 	 *
 	 * @return void
 	 */
-	public function save_dynamic_css() {
+	private function save_dynamic_css() {
 		$this->dynamic_css->save();
 	}
 
@@ -375,6 +429,8 @@ class Customizer {
 				'condition'  => $this->filter( 'customizer/condition', $this->condition ),
 				'conditions' => $this->filter( 'customizer/condition', $this->conditions ),
 				'publicPath' => VITE_ASSETS_URI . 'dist/',
+				'resetNonce' => wp_create_nonce( 'vite-reset' ),
+				'ajaxURL'    => admin_url( 'admin-ajax.php' ),
 			]
 		);
 		wp_set_script_translations( 'vite-customizer', 'vite', get_template_directory() . '/languages' );
@@ -563,11 +619,43 @@ class Customizer {
 							'capability'  => static::CAPABILITY,
 							'input_attrs' => $config['input_attrs'] ?? [],
 							'fonts'       => 'vite-typography' === $config['type'] ? $this->get_google_fonts() : null,
-							'selectors'   => $config['selectors'] ?? null,
-							'properties'  => $config['properties'] ?? null,
 						]
 					)
 				);
+
+				$sub_controls = $config['input_attrs']['sub_controls'] ?? null;
+				if ( isset( $sub_controls ) ) {
+					foreach ( $sub_controls as $sub_id => $sub_control_config ) {
+						$wp_customize->add_setting(
+							$sub_id,
+							[
+								'default'           => $sub_control_config['default'] ?? '',
+								'transport'         => $sub_control_config['transport'] ?? static::TRANSPORT,
+								'type'              => static::STORE,
+								'sanitize_callback' => $sanitize_callbacks[ $sub_control_config['type'] ] ?? null,
+							]
+						);
+						$wp_customize->add_control(
+							new Control(
+								$wp_customize,
+								$sub_id,
+								[
+									'label'       => $sub_control_config['title'] ?? '',
+									'title'       => $sub_control_config['title'] ?? '',
+									'description' => $sub_control_config['description'] ?? '',
+									'section'     => $sub_control_config['section'] ?? ( $config['section'] ?? '' ),
+									'settings'    => $sub_id,
+									'type'        => 'vite-hidden',
+									'choices'     => $sub_control_config['choices'] ?? [],
+									'priority'    => $sub_control_config['priority'] ?? static::PRIORITY,
+									'capability'  => static::CAPABILITY,
+									'input_attrs' => $sub_control_config['input_attrs'] ?? [],
+									'fonts'       => 'vite-typography' === $sub_control_config['type'] ? $this->get_google_fonts() : null,
+								]
+							)
+						);
+					}
+				}
 			}
 		}
 	}
