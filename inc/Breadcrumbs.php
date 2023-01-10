@@ -7,7 +7,6 @@
 
 namespace Vite;
 
-
 defined( 'ABSPATH' ) || exit;
 
 use Vite\Traits\Mods;
@@ -1023,7 +1022,7 @@ class Breadcrumbs {
 		}
 
 		// Map the rewrite tags if there's a `%` in the slug.
-		if ( 'post' !== $post_type && ! empty( $post_type_object->rewrite['slug'] ) && false !== strpos( $post_type_object->rewrite['slug'], '%' ) ) {
+		if ( 'post' !== $post_type && ! empty( $post_type_object->rewrite['slug'] ) && str_contains( $post_type_object->rewrite['slug'], '%' ) ) {
 			$this->map_rewrite_tags( $post_id, $post_type_object->rewrite['slug'] );
 		}
 	}
