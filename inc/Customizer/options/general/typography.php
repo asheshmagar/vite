@@ -28,6 +28,19 @@ $options = array_reduce(
 			],
 		];
 
+		if ( 'base' === $curr ) {
+			$acc[ "vite[$curr-typography]" ]['default'] = [
+				'font-family' => 'default',
+				'font-size'   => [
+					'desktop' => [
+						'value' => 16,
+						'unit'  => 'px',
+					],
+				],
+				'font-weight' => 400,
+			];
+		}
+
 		if ( 'base' !== $curr ) {
 			$acc[ "vite[$curr-typography]" ]['input_attrs'] = [
 				'separator' => true,
