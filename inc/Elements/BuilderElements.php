@@ -145,6 +145,7 @@ class BuilderElements {
 		$label            = $this->get_theme_mod( "{$args['context']}-search-label" );
 		$label_visibility = $this->get_theme_mod( "{$args['context']}-search-label-visibility" );
 		$label_position   = $this->get_theme_mod( "{$args['context']}-search-label-position" );
+		$in_modal         = $args['in_modal'] ?? false;
 		$visibility       = 'none';
 
 		if ( count( $label_visibility ) === 3 ) {
@@ -163,15 +164,35 @@ class BuilderElements {
 		$this->action( "{$args['context']}/search/start" );
 		?>
 		<div class="vite-search">
+			<?php if ( ! $in_modal ) : ?>
 			<button class="vite-search__btn" aria-label="<?php esc_attr_e( 'Search modal open button', 'vite' ); ?>">
 				<?php if ( ! empty( $label ) ) : ?>
 					<span
 						class="vite-search__label vite-search__label--pos-<?php esc_attr( $label_position ); ?> vite-search__label--visibility-<?php echo esc_attr( $visibility ); ?>"><?php echo esc_html( $label ); ?></span>
 				<?php endif; ?>
 				<span class="vite-search__icon">
-					<?php vite( 'icon' )->get_icon( 'magnifying-glass', [ 'echo' => true ] ); ?>
+					<?php
+					vite( 'icon' )->get_icon(
+						'vite-search',
+						[
+							'echo' => true,
+							'size' => 20,
+						]
+					);
+					?>
 				</span>
 			</button>
+			<?php else : ?>
+				<?php
+				get_search_form(
+					[
+						'submit_icon' => true,
+						'context'     => 'modal',
+						'icon_size'   => 15,
+					]
+				);
+				?>
+			<?php endif; ?>
 		</div>
 		<?php
 
@@ -183,7 +204,7 @@ class BuilderElements {
 		 * @since 1.0.0
 		 */
 		$this->action( "{$args['context']}/search/end" );
-		add_action( 'wp_footer', [ $this, 'search_modal' ], 11 );
+		! $in_modal && add_action( 'wp_footer', [ $this, 'search_modal' ], 11 );
 	}
 
 	/**
@@ -209,6 +230,7 @@ class BuilderElements {
 						'xmark',
 						[
 							'echo' => true,
+							'size' => 20,
 						]
 					)
 					?>
@@ -312,7 +334,7 @@ class BuilderElements {
 		<div class="vite-button vite-button--<?php echo esc_attr( $type ); ?>">
 			<?php
 			printf(
-				'<a href="%s" class="vite-button__link vite-button__link--%s" target="%s" %s%s>%s</a>',
+				'<a href="%s" role="button" class="vite-button__link vite-button__link--%s" target="%s" %s%s>%s</a>',
 				esc_url( $url ),
 				esc_attr( $style ),
 				esc_attr( $target ? '_blank' : '_self' ),
@@ -402,7 +424,7 @@ class BuilderElements {
 				<div class="vite-modal__action">
 					<button class="vite-modal__btn"
 							aria-label="<?php esc_html_e( 'Close mobile menu modal', 'vite' ); ?>">
-						<?php vite( 'icon' )->get_icon( 'xmark', [ 'echo' => true ] ); ?>
+						<?php vite( 'icon' )->get_icon( 'xmark', [ 'echo' => true, 'size' => 20 ] ); ?>
 					</button>
 				</div>
 				<div class="vite-modal__content">
@@ -418,8 +440,9 @@ class BuilderElements {
 								"template-parts/builder-elements/$element_id",
 								'',
 								[
-									'type'    => (string) $type,
-									'context' => 'header',
+									'type'     => (string) $type,
+									'context'  => 'header',
+									'in_modal' => true,
 								]
 							);
 							echo '</div>';
@@ -481,11 +504,13 @@ class BuilderElements {
 	}
 
 	/**
-	 * @param $args
+	 * Widget area.
+	 *
+	 * @param array $args Arguments.
 	 *
 	 * @return void
 	 */
-	public function widget( $args ) {
+	public function widget( array $args ) {
 		$context = $args['context'] ?? 'header';
 		$type    = $args['type'] ?? '1';
 
