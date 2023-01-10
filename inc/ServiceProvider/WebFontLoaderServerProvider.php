@@ -10,7 +10,7 @@ namespace Vite\ServiceProvider;
 
 defined( 'ABSPATH' ) || exit;
 
-use Vite\Performance\WebFontLoader;
+use Vite\WebFontLoader;
 use League\Container\ServiceProvider\AbstractServiceProvider;
 
 /**

@@ -10,8 +10,8 @@ namespace Vite\ServiceProvider;
 
 defined( 'ABSPATH' ) || exit;
 
-use Vite\Performance\Performance;
 use League\Container\ServiceProvider\AbstractServiceProvider;
+use Vite\Performance;
 
 /**
  * Theme service provider.
