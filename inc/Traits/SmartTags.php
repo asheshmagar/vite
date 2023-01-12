@@ -1,17 +1,23 @@
 <?php
+/**
+ * SmartTags.
+ *
+ * @package Vite
+ */
 
 namespace VIte\Traits;
 
 trait SmartTags {
 
+	use Hook;
+
 	/**
-	 * Parse smart tags.
+	 * Get smart tags.
 	 *
-	 * @param string $content Content.
-	 * @return array|string|string[]
+	 * @return mixed|null
 	 */
-	public function parse_smart_tags( string $content = '' ) {
-		$smart_tags = [
+	public function get_smart_tags() {
+		return $this->filter( 'smart/tags', [
 			'{{site-title}}'   => get_bloginfo( 'name' ),
 			'{{site-url}}'     => home_url(),
 			'{{year}}'         => date_i18n( 'Y' ),
@@ -21,12 +27,16 @@ trait SmartTags {
 			'{{copyright}}'    => 'Copyright &copy;',
 			/* Translators: %s: Theme author. */
 			'{{theme-author}}' => sprintf( __( 'Powered by %s' ), '<a href="https://wpvite.com" rel="nofollow noopener" target="_blank">Vite</a>' ),
-		];
+		] );
+	}
 
-		foreach ( $smart_tags as $tag => $value ) {
-			$content = str_replace( $tag, $value, $content );
-		}
-
-		return $content;
+	/**
+	 * Parse smart tags.
+	 *
+	 * @param string $content Content.
+	 * @return string
+	 */
+	public function parse_smart_tags( string $content = '' ): string {
+		return strtr( $content, $this->get_smart_tags() ?? [] );
 	}
 }
