@@ -1,7 +1,3 @@
-.site-content {
-	padding-block: 4rem;
-}
-
 .vite-posts {
 	--gutter: 2em;
 	--columns--3: 3;
@@ -39,7 +35,7 @@
 	}
 
 	.vite-post {
-		--post--padding: 20px;
+		--post-padding: 20px;
 		margin-bottom: var(--gutter);
 
 		&--thumbnail-first {
@@ -51,18 +47,35 @@
 		}
 
 		&__thumbnail {
-			margin-left: calc(var(--post--padding) * -1);
-			margin-right: calc(var(--post--padding) * -1);
+			margin-left: calc(var(--post-padding) * -1);
+			margin-right: calc(var(--post-padding) * -1);
 		}
 
-		&__inner {
-			display: flex;
-			flex-direction: column;
-			gap: 10px;
+		&__thumbnail-inner {
+			position: relative;
 
-			h2, p {
-				margin: 0;
+			@each $w, $h in $aspect_ratios {
+				&--#{$w}x#{$h} {
+					padding-top: calc(#{$h} / #{$w} * 100%);
+				}
+			}
+
+			:where(img) {
+				position: absolute;
+				top: 0;
+				left: 0;
+				height: 100%;
+				width: 100%;
+				object-fit: cover;
 			}
 		}
+	}
+
+	:where(.vite-post__inner > *:not(:last-child)) {
+		margin-bottom: 1rem;
+	}
+
+	:where(h2, p) {
+		--typography-spacing-vertical: 0;
 	}
 }
