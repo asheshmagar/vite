@@ -1,0 +1,59 @@
+pre,
+code,
+kbd,
+samp {
+	font-size: 0.875em;
+	font-family: var(--font-family);
+}
+
+pre {
+	-ms-overflow-style: scrollbar;
+	overflow: auto;
+	padding: 1.5em;
+}
+
+pre,
+code,
+kbd {
+	border-radius: var(--border-radius, 2px);
+	background-color: var(--code-bg-color, #edf0f3);
+	color: var(--code-color, #73828c);
+}
+
+code,
+kbd {
+	display: inline-block;
+	padding: 0.375rem 0.5rem;
+}
+
+pre {
+	display: block;
+	margin-bottom: var(--spacing);
+	overflow-x: auto;
+
+	> code {
+		display: block;
+		padding: var(--spacing);
+		background: none;
+		font-size: 14px;
+		line-height: var(--line-height);
+	}
+}
+
+code {
+	b {
+		font-weight: var(--font-weight);
+	}
+
+	i {
+		font-style: normal;
+	}
+
+	u {
+		text-decoration: none;
+	}
+
+	em {
+		font-style: normal;
+	}
+}
