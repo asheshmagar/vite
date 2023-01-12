@@ -6,8 +6,10 @@ import { __ } from '@wordpress/i18n';
 const api = wp.customize;
 
 const ResetButton = () => {
-	const [ isOpen, setOpen ] = useState( false );
-	const [ isResetting, setIsResetting ] = useState( false );
+	const [ state, setState ] = useState( {
+		open: false,
+		resetting: false,
+	} );
 
 	const reset = ( e ) => {
 		$.ajax( {
@@ -20,31 +22,41 @@ const ResetButton = () => {
 			method: 'POST',
 			beforeSend() {
 				$( e.target ).addClass( 'is-busy' );
-				setIsResetting( true );
+				setState( prev => ( {
+					...prev,
+					resetting: true,
+				} ) );
 			},
 			complete() {
 				api.state( 'saved' ).set( true );
-				window.location.reload();
 				$( e.target ).removeClass( 'is-busy' );
-				setOpen( false );
-				setIsResetting( true );
+				setState( {
+					resetting: false,
+					open: false,
+				} );
 			},
 		} );
 	};
 	return (
 		<>
-			<Button isSecondary isBusy={ isResetting } onClick={ e => {
+			<Button isSecondary disabled={ state.resetting } isBusy={ state.resetting } onClick={ e => {
 				e.preventDefault();
-				setOpen( true );
+				setState( prev => ( {
+					...prev,
+					open: true,
+				} ) );
 			} }>
 				Reset
 			</Button>
 			<ConfirmDialog
 				title={ __( 'Reset Settings', 'vite' ) }
 				confirmButtonText={ __( 'Reset', 'vite' ) }
-				isOpen={ isOpen }
+				isOpen={ state.open }
 				onConfirm={ reset }
-				onCancel={ () => setOpen( false ) }
+				onCancel={ () => setState( prev => ( {
+					...prev,
+					open: false,
+				} ) ) }
 			>
 				{ __( 'Are you sure you want to reset all settings? This will reset all settings to default values.', 'vite' ) }
 			</ConfirmDialog>
