@@ -1,0 +1,30 @@
+.vite-site {
+	display: flex;
+	flex-direction: column;
+	min-height: calc(100vh - var(--admin-bar-height, 0px));
+}
+
+.vite-content {
+	flex: 1;
+	padding-top: 4rem;
+	padding-bottom: 4rem;
+}
+
+.single {
+	.entry-header,
+	.entry-thumbnail {
+		margin-bottom: 2em;
+	}
+}
+
+.page-content,
+.comment-content,
+.vite-post__content {
+	--link-color: var(--color-0);
+	--link-hover-color: var(--color-1);
+	--link-text-decoration: underline;
+
+	> :last-child {
+		margin-bottom: 0;
+	}
+}
