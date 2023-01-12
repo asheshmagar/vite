@@ -1,3 +1,19 @@
+@mixin media-query($breakpoint) {
+	@if $breakpoint == 'mobile' {
+		@media (max-width: 767px) {
+			@content;
+		}
+	} @else if $breakpoint == 'tablet' {
+		@media (max-width: 1023px) {
+			@content;
+		}
+	} @else if $breakpoint == 'desktop' {
+		@media (min-width: 1024px) {
+			@content;
+		}
+	}
+}
+
 @mixin animation($name, $duration: 1s, $timing-function: ease, $delay: 0s, $iteration-count: 1, $direction: normal, $fill-mode: none, $play-state: running) {
 	animation: $name;
 	animation-duration: $duration;
@@ -7,4 +23,16 @@
 	animation-direction: $direction;
 	animation-fill-mode: $fill-mode;
 	animation-play-state: $play-state;
+}
+
+@mixin keyframes($name) {
+	@keyframes #{$name} {
+		@content;
+	}
+}
+
+@mixin where($selector) {
+	:where(#{$selector}) {
+		@content;
+	}
 }
