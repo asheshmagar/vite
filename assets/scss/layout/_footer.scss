@@ -1,11 +1,7 @@
 .vite-footer {
-	background-color: var(--global--color--8);
-
-	p {
-		margin-bottom: 0;
-	}
+	background-color: var(--color-7);
 
 	&__row {
-		--container--min--height: 70px;
+		--container-min-height: 70px;
 	}
 }
