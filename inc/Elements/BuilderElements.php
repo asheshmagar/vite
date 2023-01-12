@@ -14,7 +14,14 @@ use Vite\Traits\SmartTags;
  */
 class BuilderElements {
 
-	use ElementsTrait, SmartTags;
+	use ElementsTrait, SmartTags {
+		SmartTags::filter insteadof ElementsTrait;
+		SmartTags::action insteadof ElementsTrait;
+		SmartTags::add_action insteadof ElementsTrait;
+		SmartTags::add_filter insteadof ElementsTrait;
+		SmartTags::remove_action insteadof ElementsTrait;
+		SmartTags::remove_filter insteadof ElementsTrait;
+	}
 
 	/**
 	 * Site branding.
