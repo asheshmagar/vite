@@ -33,13 +33,18 @@ export default memo( ( props ) => {
 	};
 
 	const LabelWithTooltip = ( { title = '', children } ) => {
-		const Component = '' !== title.trim() ? Tooltip : Fragment;
+		let Component = Fragment;
+		let componentProps = {};
+		if ( '' !== title.trim() ) {
+			Component = Tooltip;
+			componentProps = {
+				text: title,
+				delay: 100,
+				position: 'top center',
+			};
+		}
 		return (
-			<Component
-				text={ title }
-				delay={ 100 }
-				position="top center"
-			>
+			<Component { ...componentProps }>
 				{ children }
 			</Component>
 		);
