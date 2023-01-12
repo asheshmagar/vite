@@ -1,8 +1,10 @@
 import $ from 'jquery';
 import { render } from '@wordpress/element';
 
+const api = wp.customize;
+
 const registerControl = ( type, Component ) => {
-	( wp.customize.controlConstructor[ type ] = wp.customize.Control.extend( {
+	( api.controlConstructor[ type ] = api.Control.extend( {
 		initialize( id, params ) {
 			const control = this,
 				args = params || {};
@@ -10,7 +12,7 @@ const registerControl = ( type, Component ) => {
 			args.params = args?.params || {};
 			args.params.type = args.params?.type ? args.params.type : 'vite';
 
-			wp.customize.Control.prototype.initialize.call( control, id, params );
+			api.Control.prototype.initialize.call( control, id, params );
 			control.container[ 0 ].classList.remove( 'customize-control' );
 
 			if ( ! args.params?.content ) {
@@ -24,11 +26,11 @@ const registerControl = ( type, Component ) => {
 				args.params.content = args.params.content.replace( 'class=', 'data-separator class=' );
 			}
 
-			wp.customize.Control.prototype.initialize.call( control, id, args );
+			api.Control.prototype.initialize.call( control, id, args );
 		},
 		ready() {
 			const control = this;
-			wp.customize.Control.prototype.ready.call( control );
+			api.Control.prototype.ready.call( control );
 			control.deferred.embedded.done();
 		},
 		embed() {
@@ -37,8 +39,8 @@ const registerControl = ( type, Component ) => {
 
 			if ( ! section ) return;
 
-			wp.customize.section( section, sec => {
-				if ( sec.expanded() || wp.customize.settings.autofocus.control === control.id ) {
+			api.section( section, sec => {
+				if ( sec.expanded() || api.settings.autofocus.control === control.id ) {
 					control.actuallyEmbed();
 				} else {
 					sec.expanded.bind( expanded => {
@@ -57,7 +59,7 @@ const registerControl = ( type, Component ) => {
 		focus( args ) {
 			const control = this;
 			control.actuallyEmbed();
-			wp.customize.Control.prototype.focus.call( control, args );
+			api.Control.prototype.focus.call( control, args );
 		},
 		renderContent() {
 			const control = this;
