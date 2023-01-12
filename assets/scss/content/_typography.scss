@@ -1,0 +1,108 @@
+b,
+strong {
+	font-weight: bold;
+}
+
+sub,
+sup {
+	position: relative;
+	font-size: 0.75em;
+	line-height: 0;
+	vertical-align: baseline;
+}
+
+sub {
+	bottom: -0.25em;
+}
+
+sup {
+	top: -0.5em;
+}
+
+address,
+blockquote,
+dl,
+figure,
+form,
+ol,
+p,
+pre,
+table,
+ul {
+	margin-top: 0;
+	margin-bottom: var(--typography-spacing-vertical, 2rem);
+	color: var(--text-color);
+	font-style: normal;
+	font-weight: var(--font-weight);
+	font-size: var(--font-size);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	margin-top: 0;
+	margin-bottom: var(--typography-spacing-vertical);
+	color: var(--headings-color);
+	font-weight: var(--font-weight);
+	font-size: var(--font-size);
+}
+
+small {
+	font-size: var(--font-size);
+}
+
+:where(dl, ol, ul) {
+	padding-right: 0;
+	padding-left: var(--spacing);
+	padding-inline-start: var(--spacing);
+	padding-inline-end: 0;
+
+	li {
+		margin-bottom: calc(var(--typography-spacing-vertical) * 0.25);
+	}
+}
+
+:where(dl, ol, ul) {
+	:is(dl, ol, ul) {
+		margin: calc(var(--typography-spacing-vertical) * 0.25) 0 0;
+	}
+}
+
+ul li {
+	list-style: square;
+}
+
+mark {
+	padding: 0.125rem 0.25rem;
+	background-color: var(--mark-background-color, rgb(209, 194, 132));
+	vertical-align: baseline;
+}
+
+blockquote {
+	--border-color: var(--color-0);
+	display: block;
+	margin: var(--typography-spacing-vertical) 0;
+	padding: var(--spacing);
+	border-right: none;
+	border-left: 0.25rem solid var(--border-color);
+	border-inline-start: 0.25rem solid var(--border-color);
+	border-inline-end: none;
+
+	footer {
+		margin-top: calc(var(--typography-spacing-vertical) * 0.5);
+		color: var(--border-color);
+	}
+}
+
+abbr[title] {
+	border-bottom: 1px dotted;
+	text-decoration: none;
+	cursor: help;
+}
+
+ins {
+	text-decoration: none;
+}
