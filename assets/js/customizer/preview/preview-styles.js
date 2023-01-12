@@ -342,33 +342,31 @@ class PreviewStyles {
 		if ( isEmpty( this.#configs ) ) return;
 		for ( const key in this.#configs ) {
 			const { selector = '', property = '', type } = this.#configs[ key ];
-			this.#api( key, value => {
-				value.bind( newValue => {
-					if ( isNull( newValue ) || isUndefined( newValue ) ) return;
-					switch ( type ) {
-						case 'vite-dimensions':
-							this.#makeCSS( key, this.#responsiveDimensions( selector, property, newValue ) );
-							break;
-						case 'vite-border':
-							this.#makeCSS( key, this.#border( selector, newValue ) );
-							break;
-						case 'vite-typography':
-							this.#makeCSS( key, this.#typography( selector, newValue ) );
-							break;
-						case 'vite-color':
-							this.#makeCSS( key, this.#color( selector, property, newValue ) );
-							break;
-						case 'vite-background':
-							this.#makeCSS( key, this.#background( selector, newValue ) );
-							break;
-						case 'vite-slider':
-							this.#makeCSS( key, this.#range( selector, property, newValue ) );
-							break;
-						default:
-							this.#makeCSS( key, this.#common( selector, property, newValue ) );
-					}
-					this.#fontCSS();
-				} );
+			this.#api( key ).bind( value => {
+				if ( isNull( value ) || isUndefined( value ) ) return;
+				switch ( type ) {
+					case 'vite-dimensions':
+						this.#makeCSS( key, this.#responsiveDimensions( selector, property, value ) );
+						break;
+					case 'vite-border':
+						this.#makeCSS( key, this.#border( selector, value ) );
+						break;
+					case 'vite-typography':
+						this.#makeCSS( key, this.#typography( selector, value ) );
+						break;
+					case 'vite-color':
+						this.#makeCSS( key, this.#color( selector, property, value ) );
+						break;
+					case 'vite-background':
+						this.#makeCSS( key, this.#background( selector, value ) );
+						break;
+					case 'vite-slider':
+						this.#makeCSS( key, this.#range( selector, property, value ) );
+						break;
+					default:
+						this.#makeCSS( key, this.#common( selector, property, value ) );
+				}
+				this.#fontCSS();
 			} );
 		}
 	}
