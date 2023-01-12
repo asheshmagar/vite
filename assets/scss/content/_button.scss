@@ -1,0 +1,45 @@
+button,
+[type="button"],
+[type="reset"],
+[type="submit"] {
+	-webkit-appearance: button;
+}
+
+[role="button"] {
+	display: inline-block;
+	text-decoration: none;
+}
+
+button,
+input[type="submit"],
+input[type="button"],
+input[type="reset"],
+[role="button"] {
+	--font-size: 14px;
+	font-size: var(--font-size);
+	padding: var(--button-padding);
+	border-radius: var(--button-border-radius);
+	background-color: var(--button-bg-color);
+	color: var(--button-color);
+	border-width: 0;
+	cursor: pointer;
+	transition: all var(--transition);
+
+	&:is([aria-current], :hover, :active, :focus) {
+		--button-background-color: var(--button-hover-bg-color);
+		--button-color: var(--button-hover-color);
+	}
+
+	&:is([class*="outline"]) {
+		--button-color: var(--color-0);
+		--button-bg-color: var(--color-7);
+		border: 1px solid var(--color-0);
+	}
+}
+
+:where(button, [type="submit"], [type="button"], [type="reset"], [role="button"], .button)[disabled],
+:where(fieldset[disabled]) :is(button, [type="submit"], [type="button"], [type="reset"], [role="button"]),
+a[role="button"]:not([href]) {
+	opacity: 0.5;
+	pointer-events: none;
+}
