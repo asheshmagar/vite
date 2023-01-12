@@ -1,0 +1,52 @@
+:root {
+	--font-family: system-ui, -apple-system, "Segoe UI", "Roboto", "Ubuntu",
+	"Cantarell", "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
+	"Segoe UI Symbol", "Noto Color Emoji";
+	--line-height: 1.5;
+	--font-weight: inherit;
+	--font-size: 16px;
+	--text-transform: none;
+	--text-decoration: none;
+	--width: 1200px;
+	--narrow-width: 728px;
+	--container-width: clamp(256px, 100%, var(--width));
+	--container-narrow-width: clamp(256px, 100%, var(--narrow-width));
+	--container-inline-spacing: 1rem;
+	--color-0: #2271b1;
+	--color-1: #135e96;
+	--color-2: #100c08;
+	--color-3: #353f4a;
+	--color-4: #e7ebfd;
+	--color-5: #f2f5f7;
+	--color-6: #eaf0f6;
+	--color-7: #ffffff;
+	--border-color: var(--color-4);
+	--link-color: var(--color-2);
+	--link-hover-color: var(--color-0);
+	--link-active-color: var(--color-0);
+	--button-color: var(--color-7);
+	--button-hover-color: var(--button-color);
+	--button-bg-color: var(--color-0);
+	--button-hover-bg-color: var(--color-1);
+	--button-padding: 10px 20px;
+	--button-border-radius: 2px;
+	--headings-color: var(--color-2);
+	--text-color: var(--color-3);
+	--accent-color: var(--color-0);
+	--border-radius: 0.25rem;
+	--border-width: 1px;
+	--outline-width: 1px;
+	--spacing: 1rem;
+	--transition: 0.2s ease-in-out;
+	--typography-spacing-vertical: 1.5rem;
+	--form-element-spacing-vertical: 0.75rem;
+	--form-element-spacing-horizontal: 1rem;
+	--form-element-border-radius: 2px;
+	--form-element-border-width: 1px;
+	--form-element-border-color: var(--color-4);
+	--form-element-border-color-focus: var(--color-0);
+	--form-element-border-color-error: #dc3545;
+	--form-element-bg-color: var(--color-7);
+	--form-element-bg-color-focus: var(--color-7);
+	--form-element-color: var(--color-2);
+}
