@@ -1,3 +1,20 @@
+.vite-navigation {
+	margin-top: 40px;
+	display: flex;
+
+	&__link {
+		flex: 1;
+		display: inline-flex;
+		align-items: center;
+		gap: 5px;
+		text-decoration: underline;
+
+		&--next {
+			justify-content: flex-end;
+		}
+	}
+}
+
 .vite-pagination {
 	margin-top: 4rem;
 
@@ -6,13 +23,13 @@
 		min-height: 40px;
 		display: inline-grid;
 		place-items: center;
-		border-radius: var(--button--border--radius);
+		border-radius: var(--button-border-radius);
 		margin-right: 10px;
 
 		&:hover,
 		&--current {
-			background-color: var(--button--bg--color);
-			color: var(--button--color);
+			background-color: var(--button-bg-color);
+			color: var(--button-color);
 		}
 
 		&--next {
