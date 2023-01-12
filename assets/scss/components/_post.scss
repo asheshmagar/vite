@@ -1,0 +1,54 @@
+$aspect_ratios: (1:1, 3:2, 4:3, 16:9);
+
+.vite-post {
+	padding: var(--post-padding, 40px);
+	border-radius: 2px;
+	background-color: var(--color-7);
+
+	&__title {
+		:where(h1) {
+			--typography-spacing-vertical: 0.5rem;
+		}
+	}
+
+	&__meta,
+	&__btn {
+		text-transform: uppercase;
+		font-size: 12px;
+		font-weight: 500;
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		--link-color: var(--color-3);
+	}
+
+	&__meta__separator {
+		margin-inline: 5px;
+	}
+
+	&__meta__icon {
+		display: inline-flex;
+	}
+
+	&__btn {
+		gap: 5px;
+		text-decoration: underline;
+		align-self: flex-start;
+	}
+
+	&__icon {
+		display: inline-flex;
+	}
+
+	&__meta {
+		:where(> div) {
+
+		}
+	}
+}
+
+.single {
+	:where(.vite-post > *:not(:last-child)) {
+		margin-bottom: 2.5rem;
+	}
+}
