@@ -20,13 +20,6 @@ class ScriptsStyles {
 
 	use Mods;
 
-	const STYLES = [
-		'global'  => 'global.css',
-		'header'  => 'header.css',
-		'content' => 'content.css',
-		'footer'  => 'footer.css',
-	];
-
 	/**
 	 * Init.
 	 *
@@ -36,6 +29,29 @@ class ScriptsStyles {
 		add_action( 'init', [ $this, 'register' ], PHP_INT_MAX );
 		add_action( 'wp_enqueue_scripts', [ $this, 'enqueue' ] );
 		add_action( 'wp_head', [ $this, 'remove_no_js' ], 2 );
+		add_filter( 'script_loader_tag', [ $this, 'defer_scripts' ], 10, 2 );
+	}
+
+	/**
+	 * Defer scripts if not deferred.
+	 *
+	 * @param string $tag    The `<script>` tag for the enqueued script.
+	 * @param string $handle The script's registered handle.
+	 *
+	 * @return array|string|string[]
+	 */
+	public function defer_scripts( string $tag, string $handle ) {
+		if ( ! $this->filter( 'defer/scripts', true ) ) {
+			return $tag;
+		}
+
+		$defer_scripts = $this->filter( 'defer/scripts/list', [ 'vite-script' ] );
+
+		if ( in_array( $handle, $defer_scripts, true ) && ! preg_match( '/\s+(defer|async)\s*=\s*(["\'])\s*\2\s*/', $tag ) ) {
+			return str_replace( ' src', ' defer src', $tag );
+		}
+
+		return $tag;
 	}
 
 	/**
@@ -48,7 +64,7 @@ class ScriptsStyles {
 		$customizer_preview_asset = $this->get_asset( 'customizer-preview' );
 		$meta_asset               = $this->get_asset( 'meta' );
 
-		wp_register_script( 'vite-script', VITE_ASSETS_URI . 'dist/frontend.js', [], VITE_VERSION, true );
+		wp_register_script( 'vite-script', VITE_ASSETS_URI . 'dist/frontend.js', [], VITE_VERSION );
 		wp_register_script( 'vite-customizer', VITE_ASSETS_URI . 'dist/customizer.js', $customizer_asset['dependencies'], $customizer_asset['version'], true );
 		wp_register_script( 'vite-meta', VITE_ASSETS_URI . 'dist/meta.js', $meta_asset['dependencies'], $meta_asset['version'], true );
 		wp_register_script( 'vite-meta-preview', VITE_ASSETS_URI . 'dist/meta-preview.js', [ 'wp-components' ], $meta_asset['version'], true );
