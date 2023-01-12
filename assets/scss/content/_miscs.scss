@@ -1,0 +1,15 @@
+hr {
+	height: 0;
+	border: 0;
+	border-top: 1px solid var(--muted-border-color);
+	color: inherit;
+}
+
+[hidden],
+template {
+	display: none;
+}
+
+canvas {
+	display: inline-block;
+}
