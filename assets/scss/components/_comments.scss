@@ -1,12 +1,19 @@
 .comment-reply-link,
 #cancel-comment-reply-link {
-	font-size: 12px;
-	--button--padding: 8px 15px;
+	--text-transform: uppercase;
+	--button-padding: 8px 15px;
+	--font-size: 12px;
+	padding: var(--button-padding);
+	border-radius: var(--button-border-radius);
+	color: var(--button-color);
+	background-color: var(--button-bg-color);
+	font-size: var(--font-size);
+	text-transform: var(--text-transform);
 }
 
 .vite-comments {
-	padding: var(--post--padding, 40px);
-	background-color: var(--global--color--8);
+	padding: var(--post-padding, 40px);
+	background-color: var(--color-7);
 	margin-top: 40px;
 
 	&__title {
@@ -40,21 +47,21 @@
 
 	&__header {
 		margin-bottom: 1.25em;
-		--link--color: var(--global--color--4);
+		--link--color: var(--color-3);
 	}
 
 	&__meta {
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
-		color: var(--global--color--4);
+		color: var(--color-2);
 
 		.avatar {
 			border-radius: 50%;
 		}
 
 		&-edit {
-			color: var(--global--color--1);
+			color: var(--color-1);
 		}
 	}
 
@@ -68,7 +75,7 @@
 }
 
 .vite-comment-respond {
-	border-top: 1px solid var(--global--color--5);
+	border-top: 1px solid var(--color-4);
 	padding-top: 2em;
 
 	&__title {
