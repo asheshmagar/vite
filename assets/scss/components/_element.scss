@@ -1,0 +1,15 @@
+.vite-element {
+	display: flex;
+	height: 100%;
+	align-items: center;
+
+	&--mobile-menu {
+		width: 100%;
+	}
+}
+
+.vite-html {
+	> *:last-child {
+		--typography-spacing-vertical: 0;
+	}
+}
