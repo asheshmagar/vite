@@ -1,0 +1,46 @@
+
+:where(audio, canvas, iframe, img, svg, video) {
+	vertical-align: middle;
+}
+
+audio,
+video {
+	display: inline-block;
+}
+
+audio:not([controls]) {
+	display: none;
+	height: 0;
+}
+
+:where(iframe) {
+	border-style: none;
+}
+
+img {
+	max-width: 100%;
+	height: auto;
+	border-style: none;
+}
+
+:where(svg:not([fill])) {
+	fill: currentColor;
+}
+
+svg:not(:root) {
+	overflow: hidden;
+}
+
+.vite-iframe-embed {
+	height: 0;
+	position: relative;
+	padding-bottom: 56.25%;
+
+	:where(iframe) {
+		position: absolute;
+		top: 0;
+		right: 0;
+		width: 100%;
+		height: 100%;
+	}
+}
