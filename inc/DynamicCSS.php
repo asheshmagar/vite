@@ -274,7 +274,7 @@ class DynamicCSS {
 		! empty( $border['color']['normal'] ) && $properties      .= 'border-color: ' . $border['color']['normal'] . ';';
 		! empty( $border['color']['hover'] ) && $properties_hover .= 'border-color: ' . $border['color']['hover'] . ';';
 
-		$properties .= implode( '', array_values( $this->dimensions( '', 'border', $border['width'] ) ) );
+		! empty( $border['width'] ) && $properties .= implode( '', array_values( $this->dimensions( '', 'border', $border['width'] ) ) );
 
 		$css['desktop'] = array_merge( $this->attach( $selector, $properties ), $this->attach( $selector, $properties_hover, 'hover' ) );
 		return $css;
@@ -285,16 +285,16 @@ class DynamicCSS {
 	 *
 	 * @param string|string[] $selector CSS selector.
 	 * @param string|string[] $property CSS property.
-	 * @param array           $dimensions Saved dimensions.
-	 * @return array
+	 * @param mixed           $dimensions Saved dimensions.
+	 * @return string[]
 	 */
-	private function dimensions( $selector, $property, array $dimensions ): array {
+	private function dimensions( $selector, $property, $dimensions ) {
 		$selector = is_array( $selector ) ? implode( ',', $selector ) : $selector;
 		$property = is_array( $property ) ? $property : [ $property ];
 		$css      = '';
 		$sides    = static::SIDES;
 
-		if ( count( array_intersect( static::RADIUS_SIDES, array_keys( $dimensions ) ) ) ) {
+		if ( count( array_intersect( static::RADIUS_SIDES, array_keys( (array) $dimensions ) ) ) ) {
 			$sides = static::RADIUS_SIDES;
 		}
 
