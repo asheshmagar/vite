@@ -313,9 +313,7 @@ class Customizer {
 	 * @return array
 	 */
 	public function partial_response( array $response ): array {
-		try {
-			// $response['viteDynamicCSS'] = $this->dynamic_css->make()->get();
-		} catch ( \Exception $e ) {} // phpcs:ignore
+		$response['_VITE_DYNAMIC_CSS_'] = $this->dynamic_css->get( false );
 		return $response;
 	}
 
