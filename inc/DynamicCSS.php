@@ -86,10 +86,11 @@ class DynamicCSS {
 	/**
 	 * Get CSS.
 	 *
+	 * @param bool $cached Cached.
 	 * @return string
 	 */
-	public function get(): string {
-		$is_cached = $this->get_theme_mod( 'cache-dynamic-css', true );
+	public function get( bool $cached = true ): string {
+		$is_cached = $this->get_theme_mod( 'cache-dynamic-css', true ) && $cached;
 		if ( $is_cached ) {
 			$css = $this->get_theme_mod( 'cached-dynamic-css' );
 			if ( ! empty( $css ) ) {
