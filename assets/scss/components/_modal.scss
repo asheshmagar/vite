@@ -1,11 +1,11 @@
 .vite-modal {
 	position: fixed;
-	top: var(--admin--bar--height, 0);
+	top: var(--admin-bar-height, 0);
 	left: 0;
 	right: 0;
 	bottom: 0;
 	z-index: 999999;
-	background-color: var(--global--color--8);
+	background-color: var(--color-7);
 	opacity: 0;
 	visibility: hidden;
 	pointer-events: none;
@@ -25,7 +25,7 @@
 		pointer-events: auto;
 
 		.vite-modal__content--slide-up {
-			@include animation(modal--open--slide--up, 300ms, ease-in-out, 0s, 1, normal, both, running)
+			@include animation(modal-open-slide-up, 300ms, ease-in-out, 0s, 1, normal, both, running)
 		}
 	}
 
@@ -41,7 +41,7 @@
 
 	&__content {
 		width: 100%;
-		max-width: 80%;
+		max-width: 70%;
 		overflow: auto;
 		flex: 1;
 		display: grid;
@@ -49,6 +49,11 @@
 		margin-left: auto;
 		margin-right: auto;
 		padding-top: 34px;
+
+		.vite-search-form--modal {
+			max-width: 100%;
+			--font-size: calc(var(--font-size) * 0.5);
+		}
 	}
 
 	&__btn {
@@ -56,20 +61,21 @@
 		place-items: center;
 		width: 50px;
 		height: 50px;
+		--button-bg-color: var(--color-7);
 	}
 
 	&--stt {
 		top: auto;
-		bottom: var(--stt--bottom--offset, 30px);
+		bottom: var(--buttom-offset, 30px);
 		background-color: transparent;
 
 		&--pos-right {
 			left: auto;
-			right: var(--stt--edge--offset, 30px);
+			right: var(--edge-offset, 30px);
 		}
 
 		&--pos-left {
-			left: var(--stt--edge--offset, 30px);
+			left: var(--edge-offset, 30px);
 			right: auto;
 		}
 
@@ -82,9 +88,43 @@
 			justify-content: center;
 		}
 	}
+
+	&--mobile-menu {
+		&.vite-modal--open {
+			.vite-modal__inner {
+				transform: translateX(0);
+				max-width: 100%;
+			}
+		}
+
+		.vite-modal__inner {
+			transform: translateX(100%);
+			flex: 1;
+			display: flex;
+			flex-direction: column;
+			padding: 1em;
+			max-width: 90%;
+			width: 100%;
+			align-self: flex-end;
+			transition: transform 200ms ease-in-out;
+			overflow: auto hidden;
+			background-color: var(--color-7);
+		}
+
+		.vite-modal__content {
+			display: block !important;
+			max-width: 100%;
+		}
+
+		.vite-element,
+		.vite-nav {
+			height: initial;
+			display: initial;
+		}
+	}
 }
 
-@keyframes modal--open--slide--up {
+@keyframes modal-open-slide-up {
 	0% {
 		opacity: 0;
 		transform: translateY(50px)
