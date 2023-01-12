@@ -60,6 +60,44 @@ class TemplateHooks {
 		add_action( 'wp_footer', [ $this, 'scroll_to_top' ] );
 		add_filter( 'post_class', [ $this, 'post_class' ], 10, 3 );
 		add_filter( 'body_class', [ $this, 'body_class' ] );
+		add_filter( 'embed_oembed_html', [ $this, 'embed_oembed_html' ], 10, 2 );
+	}
+
+	/**
+	 * Wrap embed and oembed HTML with div.
+	 *
+	 * @param string|false $html   The cached HTML result, stored in post meta.
+	 * @param string       $url     The attempted embed URL.
+	 * @return false|string
+	 */
+	public function embed_oembed_html( $html, $url ) {
+		$hosts = $this->filter( 'embed/hosts', [
+			'vimeo.com',
+			'youtube.com',
+			'dailymotion.com',
+			'flickr.com',
+			'hulu.com',
+			'kickstarter.com',
+			'vine.co',
+			'soundcloud.com',
+			'youtu.be',
+			'cloudup.com',
+			'ted.com',
+			'wistia.com',
+			'wistia.net'
+		] );
+
+		if ( empty( $hosts ) ) {
+			return $html;
+		}
+
+		foreach ( $hosts as $host ) {
+			if ( str_contains( $url, $host ) ) {
+				return sprintf( '<div class="vite-iframe-embed">%s</div>', $html );
+			}
+		}
+
+		return $html;
 	}
 
 	/**
