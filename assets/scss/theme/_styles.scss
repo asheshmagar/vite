@@ -1,0 +1,94 @@
+body {
+	font-family: var(--font-family);
+	font-weight: var(--font-weight);
+	text-transform: var(--text-transform);
+	font-size: var(--font-size);
+	line-height: var(--line-height);
+	color: var(--text-color);
+	background-color: var(--color-4);
+	overflow: var(--overflow, hidden auto);
+	margin: 0;
+}
+
+:where(a) {
+	text-decoration: var(--link-text-decoration, none);
+	color: var(--link-color);
+	transition: color var(--transition);
+
+	&:hover {
+		color: var(--link-hover-color);
+	}
+}
+:where(a, button) {
+	&:focus,
+	&:active{
+		outline: none;
+	}
+
+	&:focus-visible {
+		outline: thin dotted currentColor;
+	}
+}
+
+small {
+	--font-size: 0.875em;
+}
+
+h1 {
+	--font-size: 2rem;
+	--typography-spacing-vertical: 3rem;
+}
+
+h2 {
+	--font-size: 1.75rem;
+	--typography-spacing-vertical: 2.625rem;
+}
+
+h3 {
+	--font-size: 1.5rem;
+	--typography-spacing-vertical: 2.25rem;
+}
+
+h4 {
+	--font-size: 1.25rem;
+	--typography-spacing-vertical: 1.874rem;
+}
+
+h5 {
+	--font-size: 1.125rem;
+	--typography-spacing-vertical: 1.6875rem;
+}
+
+[type="checkbox"],
+[type="radio"] {
+	--border-width: 2px;
+}
+
+[type="checkbox"][role="switch"] {
+	--border-width: 3px;
+}
+
+thead,
+tfoot {
+	th,
+	td {
+		--border-width: 3px;
+	}
+}
+
+:not(thead, tfoot) > * > td {
+	--font-size: 0.875em;
+}
+
+pre,
+code,
+kbd,
+samp {
+	--font-family: "Menlo", "Consolas", "Roboto Mono", "Ubuntu Monospace",
+	"Noto Mono", "Oxygen Mono", "Liberation Mono", monospace,
+	"Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+}
+
+kbd {
+	--font-weight: bolder;
+}
