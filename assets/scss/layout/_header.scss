@@ -1,9 +1,5 @@
 .vite-header {
-	background-color: var(--global--color--8);
-
-	p {
-		--paragraph--spacing--bottom: 0;
-	}
+	background-color: var(--color-7);
 
 	&__desktop {
 		@include media-query('tablet') {
@@ -22,17 +18,16 @@
 
 	&__row {
 		&--full-width {
-			--full--width: 100%;
-			--container--width: clamp(256px, 100%, var(--full--width));
+			--width: 100%;
 		}
 
 		&--main {
-			--container--min--height: 70px;
+			--container-min-height: 70px;
 		}
 
 		&--top,
 		&--bottom {
-			--container--min--height: 50px;
+			--container-min-height: 50px;
 		}
 	}
 
@@ -59,293 +54,13 @@
 	}
 }
 
-.vite-element {
-	display: flex;
-	height: 100%;
-	align-items: center;
-
-	&--mobile-menu {
-		width: 100%;
-	}
-}
-
-.vite-social {
-	display: flex;
-	height: inherit;
-
-	&__list {
-		margin: 0;
-		list-style-type: none;
-		display: flex;
-		flex-wrap: wrap;
-	}
-
-	&__item {
-		display: flex;
-		align-items: center;
-	}
-
-	&__link {
-		display: inline-flex;
-		padding: 5px;
-
-		span {
-			display: inline-flex;
-		}
-	}
-}
-
-.vite-brand {
-	display: flex;
-	align-items: center;
-	column-gap: 1em;
-
-	&--stacked {
-		flex-direction: column;
-		align-items: flex-start;
-	}
-
-	&__title {
-		margin: 0;
-		padding: 0;
-		font-size: 24px;
-		font-weight: bold;
-	}
-}
-
-.vite-nav {
-	display: flex;
-	height: 100%;
-
-	&__list {
-		list-style-type: none;
-		margin: 0;
-		padding: 0;
-		display: flex;
-		align-self: stretch;
-		flex-wrap: wrap;
-	}
-
-	&__link {
-		--padding--inline: 14px;
-		padding: var(--padding, 0 var( --padding--inline, 0));
-		display: flex;
-		white-space: nowrap;
-		align-items: center;
-		height: 100%;
-		gap: 4px;
-		width: 100%;
-		flex: 1;
-	}
-
-	&__item {
-		display: flex;
-		align-items: center;
-		gap: 5px;
-		position: relative;
-
-		&--active > .vite-nav__link {
-			color: var(--link--active--color);
-		}
-
-		&:hover,
-		&--expanded {
-			> ul {
-				visibility: visible;
-				pointer-events: auto;
-				opacity: 1;
-			}
-		}
-	}
-
-	&__submenu {
-		position: absolute;
-		top: var(--top, 100%);
-		left: var(--left, 0);
-		right: var(--right, auto);
-		list-style-type: none;
-		min-width: 100px;
-		margin: 0;
-		padding: 0;
-		visibility: hidden;
-		pointer-events: none;
-		opacity: 0;
-		z-index: 9;
-		width: var(--width, 250px);
-		background-color: var(--global--color--8);
-		border: 1px solid var(--global--color--5);
-
-		.vite-nav__link {
-			padding: var(--padding, 0.875em);
-			display: flex;
-			justify-content: space-between;
-		}
-
-		.vite-nav__submenu {
-			--left: 100%;
-			--top: 0;
-
-			&--left {
-				--left: auto;
-				--right: 100%;
-			}
-		}
-
-		&-icon {
-			&--right {
-				rotate: 270deg;
-			}
-			&--left {
-				rotate: 90deg;
-			}
-		}
-
-		&-toggle--hidden {
-			position: absolute !important;
-			overflow: hidden !important;
-			padding: 0 !important;
-			margin: 0 !important;
-			border: 0 !important;
-			box-shadow: none !important;
-			background: none !important;
-			border-radius: 0 !important;
-			width: 10px;
-			height: auto;
-			display: block;
-			top: 0;
-			bottom: 0;
-			left: auto;
-			right: 14px;
-			pointer-events: none;
-		}
-	}
-
-	&--3 {
-		flex: 1;
-
-		.vite-nav {
-			&__submenu {
-				all: unset;
-				margin: 0;
-				padding: 0;
-				width: 100%;
-				display: none;
-			}
-
-			&__list {
-				flex-direction: column;
-				list-style-type: none;
-				margin: 0;
-				padding: 0;
-				flex-wrap: nowrap;
-				flex: 1;
-			}
-
-			&__item {
-				flex-direction: column;
-			}
-
-			&__link {
-				width: 100%;
-				flex: 1;
-				padding: 0.5em 0;
-				text-decoration: none;
-				margin: 0 1px;
-			}
-
-			&__item-inner {
-				flex: 1;
-				display: flex;
-				width: 100%;
-				align-items: center;
-			}
-
-			&__submenu-toggle {
-				height: 40px;
-				width: 40px;
-				display: inline-grid;
-				place-items: center;
-				background-color: transparent;
-				border-width: 0;
-			}
-		}
-	}
-}
-
 .vite-nav__submenu-toggle,
 .vite-mobile-menu__btn,
 .vite-modal__btn,
 .vite-search__btn {
-	--button--padding: 0;
-	--button--bg--color: transparent;
-	--button--hover--bg--color: transparent;
-	--button--color: var(--global--color--3);
-	--button--hover--color: var(--global--color--3);
-}
-
-.vite-modal--mobile-menu {
-	background-color: rgba(0, 0, 0, 0.5);
-
-	&.vite-modal--open {
-		.vite-modal__inner {
-			transform: translateX(0);
-		}
-	}
-
-	.vite-modal__inner {
-		transform: translateX(100%);
-		flex: 1;
-		display: flex;
-		flex-direction: column;
-		padding: 1em;
-		max-width: 90%;
-		width: 100%;
-		align-self: flex-end;
-		transition: transform 200ms ease-in-out;
-		overflow: auto hidden;
-		background-color: var(--global--color--8);
-	}
-
-	.vite-modal__content {
-		display: flex !important;
-		flex-direction: column;
-		gap: 20px;
-		max-width: 100%;
-	}
-
-	.vite-element {
-		align-self: stretch;
-	}
-}
-
-.vite-search {
-	display: flex;
-	align-items: center;
-	gap: 5px;
-
-	&__label {
-		display: none;
-
-		&--pos-right {
-			order: 2;
-		}
-
-		&[class*="desktop"] {
-			@media (min-width: 1024px) {
-				display: inline-flex;
-			}
-		}
-
-		&[class*="tablet"] {
-			@media (max-width: 1023px) and (min-width: 767px) {
-				display: inline-flex;
-			}
-		}
-
-		&[class*="mobile"] {
-			@media (max-width: 768px) {
-				display: inline-flex;
-			}
-		}
-	}
+	--button-padding: 0;
+	--button-bg-color: transparent;
+	--button-hover-bg-color: transparent;
+	--button-color: var(--color-2);
+	--button-hover-color: var(--color-2);
 }
