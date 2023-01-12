@@ -4,6 +4,13 @@ import PreviewStyles from './preview-styles';
 
 $( document ).ready( () => {
 	const api = wp.customize;
+
+	api.selectiveRefresh.bind( 'render-partials-response', response => {
+		if ( response?._VITE_DYNAMIC_CSS_ ) {
+			$( 'style#vite-style-inline-css' ).text( response._VITE_DYNAMIC_CSS_ );
+		}
+	} );
+
 	api.selectiveRefresh.bind( 'partial-content-rendered', ( placement ) => {
 		if ( ! window?._VITE_ ) return;
 		if ( -1 !== placement?.partial?.id?.indexOf( 'archive' ) ) {
