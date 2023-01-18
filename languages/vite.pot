@@ -1,0 +1,1364 @@
+# Copyright (C) 2023 WPVite
+# This file is distributed under the GNU General Public License v3.0 (or later).
+msgid ""
+msgstr ""
+"Project-Id-Version: Vite x.x.x\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/theme/vite\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2023-01-18T12:26:25+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.5.0\n"
+"X-Domain: vite\n"
+
+#. Theme Name of the theme
+msgid "Vite"
+msgstr ""
+
+#. Theme URI of the theme
+#. Author URI of the theme
+msgid "http://wpvite.com"
+msgstr ""
+
+#. Description of the theme
+msgid "A WordPress theme."
+msgstr ""
+
+#. Author of the theme
+msgid "WPVite"
+msgstr ""
+
+#: header.php:58
+#: header.php:59
+msgid "Skip to content"
+msgstr ""
+
+#. translators: 1: PHP version, 2: WordPress version
+#: inc/BackCompat.php:25
+msgid "Vite requires PHP version %1$s or higher and WordPress version %2$s or higher."
+msgstr ""
+
+#. translators: 1: PHP version
+#: inc/BackCompat.php:33
+msgid "Vite requires at least PHP version %1$s. You are running PHP version %2$s."
+msgstr ""
+
+#. translators: 1: WordPress version
+#: inc/BackCompat.php:41
+msgid "Vite requires at least WordPress version %1$s. You are running WordPress version %2$s."
+msgstr ""
+
+#: inc/Breadcrumbs.php:294
+msgid "Browse:"
+msgstr ""
+
+#: inc/Breadcrumbs.php:295
+msgctxt "breadcrumbs aria label"
+msgid "Breadcrumbs"
+msgstr ""
+
+#: inc/Breadcrumbs.php:296
+msgid "Home"
+msgstr ""
+
+#: inc/Breadcrumbs.php:297
+msgid "404 Not Found"
+msgstr ""
+
+#: inc/Breadcrumbs.php:298
+msgid "Archives"
+msgstr ""
+
+#. Translators: %s is the search query.
+#: inc/Breadcrumbs.php:300
+msgid "Search results for: %s"
+msgstr ""
+
+#. Translators: %s is the page number.
+#: inc/Breadcrumbs.php:302
+msgid "Page %s"
+msgstr ""
+
+#. Translators: %s is the page number.
+#: inc/Breadcrumbs.php:304
+msgid "Comment Page %s"
+msgstr ""
+
+#. Translators: Minute archive title. %s is the minute time format.
+#: inc/Breadcrumbs.php:306
+msgid "Minute %s"
+msgstr ""
+
+#. Translators: Weekly archive title. %s is the week date format.
+#: inc/Breadcrumbs.php:308
+msgid "Week %s"
+msgstr ""
+
+#: inc/Breadcrumbs.php:747
+msgctxt "minute and hour archives time format"
+msgid "g:i a"
+msgstr ""
+
+#: inc/Breadcrumbs.php:762
+msgctxt "minute archives time format"
+msgid "i"
+msgstr ""
+
+#: inc/Breadcrumbs.php:777
+msgctxt "hour archives time format"
+msgid "g a"
+msgstr ""
+
+#: inc/Breadcrumbs.php:791
+#: inc/Breadcrumbs.php:817
+#: inc/Breadcrumbs.php:853
+#: inc/Breadcrumbs.php:877
+#: inc/Breadcrumbs.php:1207
+msgctxt "yearly archives date format"
+msgid "Y"
+msgstr ""
+
+#: inc/Breadcrumbs.php:792
+#: inc/Breadcrumbs.php:854
+#: inc/Breadcrumbs.php:1209
+msgctxt "monthly archives date format"
+msgid "F"
+msgstr ""
+
+#: inc/Breadcrumbs.php:793
+#: inc/Breadcrumbs.php:1211
+msgctxt "daily archives date format"
+msgid "j"
+msgstr ""
+
+#: inc/Breadcrumbs.php:818
+msgctxt "weekly archives date format"
+msgid "W"
+msgstr ""
+
+#. translators: %1$s: Comments count, %2$s: Post title.
+#: inc/Comments/Comments.php:80
+msgctxt "comments title"
+msgid "%1$s thought on &ldquo;%2$s&rdquo;"
+msgid_plural "%1$s thoughts on &ldquo;%2$s&rdquo;"
+msgstr[0] ""
+msgstr[1] ""
+
+#: inc/Comments/Comments.php:111
+msgid "Comments are closed."
+msgstr ""
+
+#. translators: 1: Comment date, 2: Comment time.
+#: inc/Comments/WalkerComment.php:83
+msgid "%1$s at %2$s"
+msgstr ""
+
+#: inc/Comments/WalkerComment.php:94
+msgid "Edit"
+msgstr ""
+
+#: inc/Comments/WalkerComment.php:105
+msgid "Your comment is awaiting moderation."
+msgstr ""
+
+#: inc/Customizer/Customizer.php:590
+#: inc/Customizer/Customizer.php:595
+msgid "Select logo"
+msgstr ""
+
+#: inc/Customizer/Customizer.php:591
+msgid "Change logo"
+msgstr ""
+
+#: inc/Customizer/Customizer.php:592
+msgid "Remove"
+msgstr ""
+
+#: inc/Customizer/Customizer.php:593
+#: inc/Customizer/options/footer/menu.php:12
+#: inc/Customizer/options/header/menu.php:20
+msgid "Default"
+msgstr ""
+
+#: inc/Customizer/Customizer.php:594
+msgid "No logo selected"
+msgstr ""
+
+#: inc/Customizer/Customizer.php:596
+msgid "Choose logo"
+msgstr ""
+
+#: inc/Customizer/options/archive/archive.php:42
+msgid "Title Position"
+msgstr ""
+
+#: inc/Customizer/options/archive/archive.php:45
+msgid "Outside content"
+msgstr ""
+
+#: inc/Customizer/options/archive/archive.php:46
+msgid "Inside content"
+msgstr ""
+
+#: inc/Customizer/options/archive/archive.php:53
+msgid "Title Elements"
+msgstr ""
+
+#: inc/Customizer/options/archive/archive.php:58
+#: inc/Customizer/options/archive/archive.php:160
+#: inc/Customizer/options/single/single.php:18
+msgid "Title"
+msgstr ""
+
+#: inc/Customizer/options/archive/archive.php:62
+msgid "Description"
+msgstr ""
+
+#: inc/Customizer/options/archive/archive.php:66
+#: inc/Customizer/options/single/single.php:26
+msgid "Breadcrumbs"
+msgstr ""
+
+#: inc/Customizer/options/archive/archive.php:82
+#: inc/Customizer/options/footer/footer.php:99
+#: inc/Customizer/options/footer/footer.php:142
+#: inc/Customizer/options/header/header.php:98
+#: inc/Customizer/options/header/logo.php:44
+#: inc/Customizer/panels-sections/panels-sections.php:33
+msgid "Layout"
+msgstr ""
+
+#: inc/Customizer/options/archive/archive.php:85
+msgid "Wide"
+msgstr ""
+
+#: inc/Customizer/options/archive/archive.php:86
+msgid "Narrow"
+msgstr ""
+
+#: inc/Customizer/options/archive/archive.php:87
+msgid "Fullwidth"
+msgstr ""
+
+#: inc/Customizer/options/archive/archive.php:88
+msgid "Left Sidebar"
+msgstr ""
+
+#: inc/Customizer/options/archive/archive.php:89
+msgid "Right Sidebar"
+msgstr ""
+
+#: inc/Customizer/options/archive/archive.php:99
+#: inc/Customizer/options/header/button.php:131
+msgid "Style"
+msgstr ""
+
+#: inc/Customizer/options/archive/archive.php:102
+msgid "Grid"
+msgstr ""
+
+#: inc/Customizer/options/archive/archive.php:103
+msgid "List"
+msgstr ""
+
+#: inc/Customizer/options/archive/archive.php:117
+msgid "Columns"
+msgstr ""
+
+#: inc/Customizer/options/archive/archive.php:120
+msgid "1"
+msgstr ""
+
+#: inc/Customizer/options/archive/archive.php:121
+msgid "2"
+msgstr ""
+
+#: inc/Customizer/options/archive/archive.php:122
+msgid "3"
+msgstr ""
+
+#: inc/Customizer/options/archive/archive.php:123
+msgid "4"
+msgstr ""
+
+#: inc/Customizer/options/archive/archive.php:140
+msgid "Masonry"
+msgstr ""
+
+#: inc/Customizer/options/archive/archive.php:154
+#: inc/Customizer/options/archive/archive.php:156
+msgid "Archive elements"
+msgstr ""
+
+#: inc/Customizer/options/archive/archive.php:164
+msgid "Featured Image"
+msgstr ""
+
+#: inc/Customizer/options/archive/archive.php:168
+#: inc/Customizer/options/single/single.php:22
+msgid "Meta"
+msgstr ""
+
+#: inc/Customizer/options/archive/archive.php:172
+msgid "Excerpt"
+msgstr ""
+
+#: inc/Customizer/options/archive/archive.php:176
+msgid "Read more"
+msgstr ""
+
+#: inc/Customizer/options/archive/archive.php:185
+#: inc/Customizer/options/single/single.php:35
+msgid "Author"
+msgstr ""
+
+#: inc/Customizer/options/archive/archive.php:189
+#: inc/Customizer/options/single/single.php:39
+msgid "Published Date"
+msgstr ""
+
+#: inc/Customizer/options/archive/archive.php:193
+#: inc/Customizer/options/single/single.php:43
+msgid "Updated Date"
+msgstr ""
+
+#: inc/Customizer/options/archive/archive.php:197
+#: inc/Customizer/options/single/single.php:47
+msgid "Categories"
+msgstr ""
+
+#: inc/Customizer/options/archive/archive.php:201
+#: inc/Customizer/options/single/single.php:51
+msgid "Tags"
+msgstr ""
+
+#: inc/Customizer/options/archive/archive.php:205
+msgid "Comments"
+msgstr ""
+
+#: inc/Customizer/options/archive/archive.php:221
+msgid "Pagination"
+msgstr ""
+
+#: inc/Customizer/options/archive/archive.php:224
+msgid "Numbered"
+msgstr ""
+
+#: inc/Customizer/options/archive/archive.php:225
+msgid "Infinite Scroll"
+msgstr ""
+
+#: inc/Customizer/options/footer/footer.php:11
+#: inc/Customizer/options/footer/footer.php:15
+#: inc/Customizer/options/footer/footer.php:26
+#: inc/Customizer/options/footer/footer.php:30
+#: inc/Customizer/options/footer/footer.php:42
+#: inc/Customizer/options/footer/footer.php:46
+#: inc/Customizer/options/footer/footer.php:57
+#: inc/Customizer/options/footer/footer.php:61
+#: inc/Customizer/options/footer/footer.php:70
+#: inc/Customizer/options/footer/footer.php:74
+#: inc/Customizer/options/footer/footer.php:83
+#: inc/Customizer/options/footer/footer.php:87
+#: inc/Customizer/options/footer/footer.php:150
+#: inc/Customizer/options/footer/footer.php:154
+#: inc/Customizer/options/header/logo.php:48
+msgid "Stacked"
+msgstr ""
+
+#: inc/Customizer/options/footer/footer.php:102
+#: inc/Customizer/options/header/header.php:101
+msgid "Contained"
+msgstr ""
+
+#: inc/Customizer/options/footer/footer.php:103
+#: inc/Customizer/options/header/header.php:102
+msgid "Full width"
+msgstr ""
+
+#: inc/Customizer/options/footer/footer.php:120
+msgid "Column"
+msgstr ""
+
+#: inc/Customizer/options/footer/footer.php:181
+msgid "Vertical Alignment"
+msgstr ""
+
+#: inc/Customizer/options/footer/footer.php:183
+#: inc/Customizer/options/header/header.php:198
+msgid "Top"
+msgstr ""
+
+#: inc/Customizer/options/footer/footer.php:184
+msgid "Middle"
+msgstr ""
+
+#: inc/Customizer/options/footer/footer.php:185
+#: inc/Customizer/options/header/header.php:200
+#: inc/Customizer/options/header/search.php:35
+#: inc/Customizer/panels-sections/panels-sections.php:85
+#: inc/Customizer/panels-sections/panels-sections.php:149
+msgid "Bottom"
+msgstr ""
+
+#: inc/Customizer/options/footer/footer.php:206
+#: inc/Customizer/options/header/header.php:118
+msgid "Height"
+msgstr ""
+
+#: inc/Customizer/options/footer/footer.php:225
+#: inc/Customizer/options/general/button.php:28
+#: inc/Customizer/options/general/scroll-to-top.php:270
+msgid "Border"
+msgstr ""
+
+#: inc/Customizer/options/footer/footer.php:246
+#: inc/Customizer/panels-sections/panels-sections.php:157
+#: inc/NavMenu/NavMenu.php:64
+msgid "Footer Menu"
+msgstr ""
+
+#: inc/Customizer/options/footer/footer.php:250
+#: inc/Customizer/options/header/header.php:31
+#: inc/Customizer/options/header/header.php:69
+#: inc/Customizer/panels-sections/panels-sections.php:113
+#: inc/Customizer/panels-sections/panels-sections.php:153
+msgid "Socials"
+msgstr ""
+
+#: inc/Customizer/options/footer/footer.php:254
+#: inc/Customizer/options/header/header.php:43
+#: inc/Customizer/options/header/header.php:81
+#: inc/Customizer/panels-sections/panels-sections.php:69
+#: inc/Customizer/panels-sections/panels-sections.php:133
+msgid "HTML 1"
+msgstr ""
+
+#: inc/Customizer/options/footer/footer.php:258
+#: inc/Customizer/options/header/header.php:47
+#: inc/Customizer/options/header/header.php:85
+#: inc/Customizer/panels-sections/panels-sections.php:73
+#: inc/Customizer/panels-sections/panels-sections.php:137
+msgid "HTML 2"
+msgstr ""
+
+#: inc/Customizer/options/footer/footer.php:262
+msgid "Widget 1"
+msgstr ""
+
+#: inc/Customizer/options/footer/footer.php:266
+msgid "Widget 2"
+msgstr ""
+
+#: inc/Customizer/options/footer/footer.php:270
+msgid "Widget 3"
+msgstr ""
+
+#: inc/Customizer/options/footer/footer.php:274
+msgid "Widget 4"
+msgstr ""
+
+#: inc/Customizer/options/footer/footer.php:278
+msgid "Widget 5"
+msgstr ""
+
+#: inc/Customizer/options/footer/footer.php:282
+msgid "Widget 6"
+msgstr ""
+
+#: inc/Customizer/options/footer/footer.php:293
+#: inc/Customizer/panels-sections/panels-sections.php:16
+#: inc/Customizer/panels-sections/panels-sections.php:125
+msgid "Footer"
+msgstr ""
+
+#: inc/Customizer/options/footer/footer.php:339
+#: inc/Customizer/options/header/header.php:177
+msgid "Available Components"
+msgstr ""
+
+#: inc/Customizer/options/footer/footer.php:349
+#: inc/Customizer/options/header/header.php:256
+msgid "Background"
+msgstr ""
+
+#: inc/Customizer/options/footer/html.php:14
+#: inc/Customizer/options/header/html.php:14
+msgid "HTML"
+msgstr ""
+
+#: inc/Customizer/options/footer/html.php:33
+msgid "Alignment"
+msgstr ""
+
+#: inc/Customizer/options/footer/html.php:49
+#: inc/Customizer/options/general/scroll-to-top.php:173
+#: inc/Customizer/options/header/search.php:33
+msgid "Left"
+msgstr ""
+
+#: inc/Customizer/options/footer/html.php:50
+msgid "Center"
+msgstr ""
+
+#: inc/Customizer/options/footer/html.php:51
+#: inc/Customizer/options/general/scroll-to-top.php:174
+#: inc/Customizer/options/header/search.php:34
+msgid "Right"
+msgstr ""
+
+#: inc/Customizer/options/footer/html.php:61
+#: inc/Customizer/options/header/html.php:33
+msgid "Display on"
+msgstr ""
+
+#: inc/Customizer/options/footer/html.php:77
+#: inc/Customizer/options/header/header.php:216
+#: inc/Customizer/options/header/header.php:242
+#: inc/Customizer/options/header/html.php:49
+#: inc/Customizer/options/header/search.php:53
+#: assets/dist/customizer.js:23503
+msgid "Desktop"
+msgstr ""
+
+#: inc/Customizer/options/footer/html.php:78
+#: inc/Customizer/options/header/header.php:217
+#: inc/Customizer/options/header/header.php:243
+#: inc/Customizer/options/header/html.php:50
+#: inc/Customizer/options/header/search.php:54
+msgid "Tablet"
+msgstr ""
+
+#: inc/Customizer/options/footer/html.php:79
+#: inc/Customizer/options/header/header.php:218
+#: inc/Customizer/options/header/header.php:244
+#: inc/Customizer/options/header/html.php:51
+#: inc/Customizer/options/header/search.php:55
+msgid "Mobile"
+msgstr ""
+
+#: inc/Customizer/options/footer/html.php:89
+#: inc/Customizer/options/header/html.php:61
+msgid "Text Color"
+msgstr ""
+
+#: inc/Customizer/options/footer/html.php:95
+#: inc/Customizer/options/footer/html.php:108
+#: inc/Customizer/options/footer/menu.php:39
+#: inc/Customizer/options/footer/socials.php:78
+#: inc/Customizer/options/general/colors.php:64
+#: inc/Customizer/options/general/colors.php:85
+#: inc/Customizer/options/general/colors.php:109
+#: inc/Customizer/options/general/colors.php:129
+#: inc/Customizer/options/general/scroll-to-top.php:126
+#: inc/Customizer/options/general/scroll-to-top.php:151
+#: inc/Customizer/options/header/button.php:164
+#: inc/Customizer/options/header/button.php:187
+#: inc/Customizer/options/header/html.php:67
+#: inc/Customizer/options/header/html.php:85
+#: inc/Customizer/options/header/logo.php:68
+#: inc/Customizer/options/header/logo.php:92
+#: inc/Customizer/options/header/menu.php:42
+#: inc/Customizer/options/header/socials.php:78
+#: assets/dist/customizer.js:21969
+msgid "Normal"
+msgstr ""
+
+#: inc/Customizer/options/footer/html.php:103
+#: inc/Customizer/options/header/html.php:80
+msgid "Link Colors"
+msgstr ""
+
+#: inc/Customizer/options/footer/html.php:112
+#: inc/Customizer/options/footer/menu.php:43
+#: inc/Customizer/options/footer/socials.php:82
+#: inc/Customizer/options/general/colors.php:89
+#: inc/Customizer/options/general/colors.php:133
+#: inc/Customizer/options/general/scroll-to-top.php:130
+#: inc/Customizer/options/general/scroll-to-top.php:155
+#: inc/Customizer/options/header/button.php:168
+#: inc/Customizer/options/header/button.php:191
+#: inc/Customizer/options/header/html.php:89
+#: inc/Customizer/options/header/logo.php:72
+#: inc/Customizer/options/header/menu.php:46
+#: inc/Customizer/options/header/socials.php:82
+msgid "Hover"
+msgstr ""
+
+#: inc/Customizer/options/footer/html.php:120
+#: inc/Customizer/options/footer/menu.php:77
+#: inc/Customizer/options/general/button.php:56
+#: inc/Customizer/options/header/html.php:102
+#: inc/Customizer/options/header/menu.php:84
+#: inc/Customizer/panels-sections/panels-sections.php:29
+msgid "Typography"
+msgstr ""
+
+#: inc/Customizer/options/footer/html.php:128
+#: inc/Customizer/options/footer/socials.php:111
+#: inc/Customizer/options/header/html.php:114
+#: inc/Customizer/options/header/socials.php:115
+msgid "Margin"
+msgstr ""
+
+#: inc/Customizer/options/footer/menu.php:10
+#: inc/Customizer/options/header/header.php:19
+#: inc/Customizer/options/header/menu.php:7
+#: inc/Customizer/panels-sections/panels-sections.php:89
+#: inc/NavMenu/NavMenu.php:61
+msgid "Primary Menu"
+msgstr ""
+
+#: inc/Customizer/options/footer/menu.php:33
+#: inc/Customizer/options/header/menu.php:36
+#: inc/Customizer/panels-sections/panels-sections.php:25
+msgid "Colors"
+msgstr ""
+
+#: inc/Customizer/options/footer/menu.php:47
+#: inc/Customizer/options/header/menu.php:50
+msgid "Active"
+msgstr ""
+
+#: inc/Customizer/options/footer/menu.php:60
+#: inc/Customizer/options/header/menu.php:65
+msgid "Items Spacing"
+msgstr ""
+
+#: inc/Customizer/options/footer/socials.php:12
+#: inc/Customizer/options/header/socials.php:12
+msgid "Socials Links"
+msgstr ""
+
+#: inc/Customizer/options/footer/socials.php:29
+#: inc/Customizer/options/header/socials.php:29
+msgid "Icons Size"
+msgstr ""
+
+#: inc/Customizer/options/footer/socials.php:48
+#: inc/Customizer/options/header/socials.php:48
+msgid "Icons Color Type"
+msgstr ""
+
+#: inc/Customizer/options/footer/socials.php:58
+#: inc/Customizer/options/header/socials.php:58
+msgid "Custom"
+msgstr ""
+
+#: inc/Customizer/options/footer/socials.php:59
+#: inc/Customizer/options/header/socials.php:59
+msgid "Brand"
+msgstr ""
+
+#: inc/Customizer/options/footer/socials.php:72
+#: inc/Customizer/options/header/socials.php:72
+msgid "Icons Colors"
+msgstr ""
+
+#: inc/Customizer/options/footer/socials.php:97
+#: inc/Customizer/options/header/socials.php:99
+msgid "Icons Spacing"
+msgstr ""
+
+#: inc/Customizer/options/general/button.php:14
+msgid "Padding"
+msgstr ""
+
+#: inc/Customizer/options/general/button.php:41
+#: inc/Customizer/options/general/scroll-to-top.php:287
+msgid "Border Radius"
+msgstr ""
+
+#: inc/Customizer/options/general/colors.php:10
+msgid "Global"
+msgstr ""
+
+#: inc/Customizer/options/general/colors.php:17
+msgid "Color 1"
+msgstr ""
+
+#: inc/Customizer/options/general/colors.php:21
+msgid "Color 2"
+msgstr ""
+
+#: inc/Customizer/options/general/colors.php:25
+msgid "Color 3"
+msgstr ""
+
+#: inc/Customizer/options/general/colors.php:29
+msgid "Color 4"
+msgstr ""
+
+#: inc/Customizer/options/general/colors.php:33
+#: inc/Customizer/options/general/colors.php:37
+msgid "Color 6"
+msgstr ""
+
+#: inc/Customizer/options/general/colors.php:41
+msgid "Color 7"
+msgstr ""
+
+#: inc/Customizer/options/general/colors.php:45
+msgid "Color 8"
+msgstr ""
+
+#: inc/Customizer/options/general/colors.php:58
+msgid "Text color"
+msgstr ""
+
+#: inc/Customizer/options/general/colors.php:78
+msgid "Link colors"
+msgstr ""
+
+#: inc/Customizer/options/general/colors.php:102
+msgid "Heading color"
+msgstr ""
+
+#: inc/Customizer/options/general/colors.php:122
+#: inc/Customizer/options/header/button.php:181
+msgid "Button colors"
+msgstr ""
+
+#: inc/Customizer/options/general/colors.php:137
+msgid "Normal background"
+msgstr ""
+
+#: inc/Customizer/options/general/colors.php:141
+msgid "Hover background"
+msgstr ""
+
+#: inc/Customizer/options/general/colors.php:154
+#: inc/Customizer/options/general/colors.php:161
+msgid "Border color"
+msgstr ""
+
+#: inc/Customizer/options/general/layout.php:12
+msgid "Container max width"
+msgstr ""
+
+#: inc/Customizer/options/general/layout.php:29
+msgid "Container narrow width"
+msgstr ""
+
+#: inc/Customizer/options/general/layout.php:47
+msgid "Content spacing"
+msgstr ""
+
+#: inc/Customizer/options/general/performance.php:10
+msgid "Emoji script"
+msgstr ""
+
+#: inc/Customizer/options/general/performance.php:11
+msgid "Enable/Disable the emoji script."
+msgstr ""
+
+#: inc/Customizer/options/general/performance.php:20
+msgid "Dynamic CSS Output"
+msgstr ""
+
+#: inc/Customizer/options/general/performance.php:23
+#: inc/Customizer/options/header/logo.php:47
+msgid "Inline"
+msgstr ""
+
+#: inc/Customizer/options/general/performance.php:24
+msgid "File"
+msgstr ""
+
+#: inc/Customizer/options/general/performance.php:35
+msgid "Cache dynamic CSS"
+msgstr ""
+
+#: inc/Customizer/options/general/performance.php:44
+msgid "Cache inline CSS. Improves performance if enabled."
+msgstr ""
+
+#: inc/Customizer/options/general/performance.php:50
+msgid "Local Google Fonts"
+msgstr ""
+
+#: inc/Customizer/options/general/performance.php:60
+msgid "CSS Preload"
+msgstr ""
+
+#: inc/Customizer/options/general/scroll-to-top.php:15
+msgid "Enable"
+msgstr ""
+
+#: inc/Customizer/options/general/scroll-to-top.php:28
+msgid "Icon"
+msgstr ""
+
+#: inc/Customizer/options/general/scroll-to-top.php:121
+msgid "Icon Colors"
+msgstr ""
+
+#: inc/Customizer/options/general/scroll-to-top.php:146
+msgid "Background Colors"
+msgstr ""
+
+#: inc/Customizer/options/general/scroll-to-top.php:170
+msgid "Position"
+msgstr ""
+
+#: inc/Customizer/options/general/scroll-to-top.php:194
+msgid "Edge offset"
+msgstr ""
+
+#: inc/Customizer/options/general/scroll-to-top.php:213
+msgid "Bottom offset"
+msgstr ""
+
+#: inc/Customizer/options/general/scroll-to-top.php:232
+msgid "Button Size"
+msgstr ""
+
+#: inc/Customizer/options/general/scroll-to-top.php:251
+msgid "Icon Size"
+msgstr ""
+
+#: inc/Customizer/options/general/seo.php:10
+msgid "Schema Markup"
+msgstr ""
+
+#: inc/Customizer/options/general/seo.php:19
+msgid "Schema Markup Implementation"
+msgstr ""
+
+#: inc/Customizer/options/general/seo.php:22
+msgid "JSON-LD"
+msgstr ""
+
+#: inc/Customizer/options/general/seo.php:23
+msgid "Microdata"
+msgstr ""
+
+#: inc/Customizer/options/general/seo.php:36
+msgid "Open Graph Meta Tags"
+msgstr ""
+
+#: inc/Customizer/options/general/typography.php:9
+msgid "Base"
+msgstr ""
+
+#: inc/Customizer/options/general/typography.php:10
+msgid "Headings"
+msgstr ""
+
+#: inc/Customizer/options/general/typography.php:11
+msgid "H1"
+msgstr ""
+
+#: inc/Customizer/options/general/typography.php:12
+msgid "H2"
+msgstr ""
+
+#: inc/Customizer/options/general/typography.php:13
+msgid "H3"
+msgstr ""
+
+#: inc/Customizer/options/general/typography.php:14
+msgid "H4"
+msgstr ""
+
+#: inc/Customizer/options/general/typography.php:15
+msgid "H5"
+msgstr ""
+
+#: inc/Customizer/options/general/typography.php:16
+msgid "H6"
+msgstr ""
+
+#: inc/Customizer/options/header/button.php:14
+msgid "Text"
+msgstr ""
+
+#: inc/Customizer/options/header/button.php:33
+msgid "Link"
+msgstr ""
+
+#: inc/Customizer/options/header/button.php:52
+msgid "Open in new tab"
+msgstr ""
+
+#: inc/Customizer/options/header/button.php:74
+msgid "No follow"
+msgstr ""
+
+#: inc/Customizer/options/header/button.php:93
+msgid "Sponsored"
+msgstr ""
+
+#: inc/Customizer/options/header/button.php:112
+msgid "Download"
+msgstr ""
+
+#: inc/Customizer/options/header/button.php:147
+msgid "Filled"
+msgstr ""
+
+#: inc/Customizer/options/header/button.php:148
+msgid "Outlined"
+msgstr ""
+
+#: inc/Customizer/options/header/button.php:158
+msgid "Font colors"
+msgstr ""
+
+#: inc/Customizer/options/header/button.php:203
+msgid "Button radius"
+msgstr ""
+
+#: inc/Customizer/options/header/header.php:15
+#: inc/Customizer/options/header/header.php:53
+#: inc/Customizer/options/header/logo.php:26
+#: inc/Customizer/panels-sections/panels-sections.php:65
+msgid "Logo"
+msgstr ""
+
+#: inc/Customizer/options/header/header.php:23
+#: inc/Customizer/options/header/header.php:65
+#: inc/Customizer/panels-sections/panels-sections.php:109
+#: inc/Traits/Mods.php:366
+#: searchform.php:28
+msgid "Search"
+msgstr ""
+
+#: inc/Customizer/options/header/header.php:27
+#: inc/Customizer/options/header/menu.php:8
+#: inc/Customizer/panels-sections/panels-sections.php:93
+#: inc/NavMenu/NavMenu.php:62
+msgid "Secondary Menu"
+msgstr ""
+
+#: inc/Customizer/options/header/header.php:35
+#: inc/Customizer/options/header/header.php:73
+#: inc/Customizer/panels-sections/panels-sections.php:97
+msgid "Button 1"
+msgstr ""
+
+#: inc/Customizer/options/header/header.php:39
+#: inc/Customizer/options/header/header.php:77
+#: inc/Customizer/panels-sections/panels-sections.php:101
+msgid "Button 2"
+msgstr ""
+
+#: inc/Customizer/options/header/header.php:57
+#: inc/Customizer/options/header/menu.php:9
+#: inc/Customizer/panels-sections/panels-sections.php:105
+#: inc/NavMenu/NavMenu.php:63
+msgid "Mobile Menu"
+msgstr ""
+
+#: inc/Customizer/options/header/header.php:61
+msgid "Trigger"
+msgstr ""
+
+#: inc/Customizer/options/header/header.php:141
+#: inc/Customizer/panels-sections/panels-sections.php:10
+#: inc/Customizer/panels-sections/panels-sections.php:57
+msgid "Header"
+msgstr ""
+
+#: inc/Customizer/options/header/header.php:186
+msgid "Sticky"
+msgstr ""
+
+#: inc/Customizer/options/header/header.php:195
+msgid "Sticky row"
+msgstr ""
+
+#: inc/Customizer/options/header/header.php:199
+msgid "Main"
+msgstr ""
+
+#: inc/Customizer/options/header/header.php:201
+msgid "Top + Main"
+msgstr ""
+
+#: inc/Customizer/options/header/header.php:202
+msgid "Top + Bottom"
+msgstr ""
+
+#: inc/Customizer/options/header/header.php:203
+msgid "Main + Bottom"
+msgstr ""
+
+#: inc/Customizer/options/header/header.php:204
+msgid "All"
+msgstr ""
+
+#: inc/Customizer/options/header/header.php:213
+#: inc/Customizer/options/header/header.php:239
+msgid "Enable on"
+msgstr ""
+
+#: inc/Customizer/options/header/header.php:230
+msgid "Transparent"
+msgstr ""
+
+#: inc/Customizer/options/header/logo.php:12
+msgid "Mobile Logo"
+msgstr ""
+
+#: inc/Customizer/options/header/logo.php:23
+msgid "Elements"
+msgstr ""
+
+#: inc/Customizer/options/header/logo.php:27
+msgid "Logo & Title"
+msgstr ""
+
+#: inc/Customizer/options/header/logo.php:28
+msgid "Logo & Title & Description"
+msgstr ""
+
+#: inc/Customizer/options/header/logo.php:63
+msgid "Site title colors"
+msgstr ""
+
+#: inc/Customizer/options/header/logo.php:87
+msgid "Site description color"
+msgstr ""
+
+#: inc/Customizer/options/header/logo.php:107
+msgid "Site title typography"
+msgstr ""
+
+#: inc/Customizer/options/header/logo.php:119
+msgid "Site description typography"
+msgstr ""
+
+#: inc/Customizer/options/header/search.php:12
+msgid "Label"
+msgstr ""
+
+#: inc/Customizer/options/header/search.php:24
+msgid "Label Position"
+msgstr ""
+
+#: inc/Customizer/options/header/search.php:44
+msgid "Label Visibility"
+msgstr ""
+
+#: inc/Customizer/options/header/search.php:67
+msgid "Placeholder"
+msgstr ""
+
+#: inc/Customizer/options/single/single.php:13
+msgid "Header/Title elements"
+msgstr ""
+
+#: inc/Customizer/panels-sections/panels-sections.php:7
+msgid "General"
+msgstr ""
+
+#: inc/Customizer/panels-sections/panels-sections.php:13
+msgid "Blog"
+msgstr ""
+
+#: inc/Customizer/panels-sections/panels-sections.php:37
+#: inc/Traits/Mods.php:46
+msgid "Button"
+msgstr ""
+
+#: inc/Customizer/panels-sections/panels-sections.php:41
+msgid "Scroll To Top"
+msgstr ""
+
+#: inc/Customizer/panels-sections/panels-sections.php:45
+msgid "Social Accounts Links"
+msgstr ""
+
+#: inc/Customizer/panels-sections/panels-sections.php:49
+msgid "SEO"
+msgstr ""
+
+#: inc/Customizer/panels-sections/panels-sections.php:53
+msgid "Performance"
+msgstr ""
+
+#: inc/Customizer/panels-sections/panels-sections.php:61
+msgid "Header builder settings"
+msgstr ""
+
+#: inc/Customizer/panels-sections/panels-sections.php:77
+#: inc/Customizer/panels-sections/panels-sections.php:141
+msgid "Top row"
+msgstr ""
+
+#: inc/Customizer/panels-sections/panels-sections.php:81
+#: inc/Customizer/panels-sections/panels-sections.php:145
+msgid "Main row"
+msgstr ""
+
+#: inc/Customizer/panels-sections/panels-sections.php:117
+msgid "Blog/Archive"
+msgstr ""
+
+#: inc/Customizer/panels-sections/panels-sections.php:121
+msgid "Single Post"
+msgstr ""
+
+#: inc/Customizer/panels-sections/panels-sections.php:129
+msgid "Footer builder settings"
+msgstr ""
+
+#: inc/Elements/BuilderElements.php:176
+msgid "Search modal open button"
+msgstr ""
+
+#: inc/Elements/BuilderElements.php:236
+msgid "Search modal close button"
+msgstr ""
+
+#: inc/Elements/BuilderElements.php:388
+msgid "Mobile menu modal open button"
+msgstr ""
+
+#: inc/Elements/BuilderElements.php:435
+msgid "Close mobile menu modal"
+msgstr ""
+
+#: inc/Elements/EntryElements.php:237
+msgid "Leave a comment"
+msgstr ""
+
+#: inc/Elements/EntryElements.php:237
+msgid "1 Comment"
+msgstr ""
+
+#: inc/Elements/EntryElements.php:237
+msgid "% Comments"
+msgstr ""
+
+#. translators: %s: Post title.
+#: inc/Elements/EntryElements.php:310
+msgid "Continue reading %s"
+msgstr ""
+
+#: inc/Elements/EntryElements.php:320
+msgid "Pages:"
+msgstr ""
+
+#: inc/Elements/EntryElements.php:356
+msgid "Read More"
+msgstr ""
+
+#. Translators: %s: Search query
+#: inc/Elements/PageHeaderElements.php:186
+msgid "Search Results for: %s"
+msgstr ""
+
+#: inc/Elements/PageHeaderElements.php:188
+msgid "Oops! That page can&rsquo;t be found."
+msgstr ""
+
+#: inc/NavMenu/WalkerNavMenu.php:88
+#: inc/NavMenu/WalkerPage.php:64
+msgid "Open sub menu"
+msgstr ""
+
+#: inc/Sidebar.php:30
+msgid "Sidebar 1"
+msgstr ""
+
+#: inc/Sidebar.php:31
+msgid "Sidebar 2"
+msgstr ""
+
+#: inc/Sidebar.php:32
+msgid "Header Widget 1"
+msgstr ""
+
+#: inc/Sidebar.php:33
+msgid "Header Widget 2"
+msgstr ""
+
+#: inc/Sidebar.php:34
+msgid "Footer Widget 1"
+msgstr ""
+
+#: inc/Sidebar.php:35
+msgid "Footer Widget 2"
+msgstr ""
+
+#: inc/Sidebar.php:36
+msgid "Footer Widget 3"
+msgstr ""
+
+#: inc/Sidebar.php:37
+msgid "Footer Widget 4"
+msgstr ""
+
+#: inc/Sidebar.php:38
+msgid "Footer Widget 5"
+msgstr ""
+
+#: inc/Sidebar.php:39
+msgid "Footer Widget 6"
+msgstr ""
+
+#: inc/Sidebar.php:51
+msgid "Add widgets here.."
+msgstr ""
+
+#: inc/Sidebar.php:111
+msgid "Click here to add widgets for this area"
+msgstr ""
+
+#: inc/Traits/Mods.php:150
+#: inc/Traits/Mods.php:151
+#: inc/Traits/Mods.php:467
+msgid "Enter HTML."
+msgstr ""
+
+#: inc/Traits/Mods.php:372
+#: inc/Traits/Mods.php:491
+msgid "Facebook"
+msgstr ""
+
+#: inc/Traits/Mods.php:379
+#: inc/Traits/Mods.php:498
+msgid "Twitter"
+msgstr ""
+
+#: inc/Traits/Mods.php:386
+#: inc/Traits/Mods.php:505
+msgid "Instagram"
+msgstr ""
+
+#: searchform.php:24
+msgid "Search for:"
+msgstr ""
+
+#: searchform.php:25
+msgid "Search &hellip;"
+msgstr ""
+
+#: searchform.php:27
+msgid "Search Submit"
+msgstr ""
+
+#: template-parts/content/content-404.php:24
+msgid "404"
+msgstr ""
+
+#: template-parts/content/content-404.php:27
+msgid "It looks like nothing was found at this location. Maybe try one of the links below or a search?"
+msgstr ""
+
+#. translators: %s: link to new post
+#: template-parts/content/content-none.php:32
+msgid "Ready to publish your first post? <a href=\"%s\">Get started here</a>."
+msgstr ""
+
+#: template-parts/content/content-none.php:47
+msgid "Search:"
+msgstr ""
+
+#: template-parts/content/content-none.php:48
+msgid "We could not find any results for your search. You can give it another try through the search form below."
+msgstr ""
+
+#: template-parts/content/content-page.php:53
+#: template-parts/content/content-single.php:67
+msgid "Pages"
+msgstr ""
+
+#. translators: %s: Name of current post. Only visible to screen readers
+#: template-parts/content/content-single.php:55
+msgid "Continue reading<span class=\"screen-reader-text\"> \"%s\"</span>"
+msgstr ""
+
+#: template-parts/navigation/navigation.php:28
+msgid "Previous Post"
+msgstr ""
+
+#: template-parts/navigation/navigation.php:45
+msgid "Next Post"
+msgstr ""
+
+#: template-parts/pagination/pagination.php:23
+msgid "Previous Page"
+msgstr ""
+
+#: template-parts/pagination/pagination.php:28
+msgid "Next Page"
+msgstr ""
+
+#: template-parts/pagination/pagination.php:53
+msgid "Posts"
+msgstr ""
+
+#: template-parts/pagination/pagination.php:54
+msgid "Posts navigation"
+msgstr ""
+
+#: template-parts/pagination/pagination.php:99
+msgid "No more posts to load!"
+msgstr ""
+
+#: template-parts/pagination/pagination.php:100
+msgid "Error loading posts!"
+msgstr ""
+
+#: template-parts/scroll-to-top/scroll-to-top.php:20
+msgid "Scroll to top"
+msgstr ""
+
+#: assets/dist/customizer.js:7160
+msgid "Reset Settings"
+msgstr ""
+
+#: assets/dist/customizer.js:7161
+msgid "Reset"
+msgstr ""
+
+#: assets/dist/customizer.js:7169
+msgid "Are you sure you want to reset all settings? This will reset all settings to default values."
+msgstr ""
+
+#: assets/dist/customizer.js:21962
+#: assets/dist/customizer.js:21975
+msgid "None"
+msgstr ""
+
+#: assets/dist/customizer.js:21963
+msgid "Capitalize"
+msgstr ""
+
+#: assets/dist/customizer.js:21964
+msgid "Uppercase"
+msgstr ""
+
+#: assets/dist/customizer.js:21965
+msgid "Lowercase"
+msgstr ""
+
+#: assets/dist/customizer.js:21970
+msgid "Italic"
+msgstr ""
+
+#: assets/dist/customizer.js:21971
+msgid "Oblique"
+msgstr ""
+
+#: assets/dist/customizer.js:21976
+msgid "Underline"
+msgstr ""
+
+#: assets/dist/customizer.js:21977
+msgid "Overline"
+msgstr ""
+
+#: assets/dist/customizer.js:23120
+msgid "Group"
+msgstr ""
+
+#: assets/dist/customizer.js:23506
+msgid "Tablet / Mobile"
+msgstr ""
