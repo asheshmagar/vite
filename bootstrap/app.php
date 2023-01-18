@@ -7,37 +7,21 @@
 
 defined( 'ABSPATH' ) || exit;
 
-use League\Container\Container;
-use League\Container\ReflectionContainer;
-use Psr\Container\ContainerExceptionInterface;
-use Psr\Container\NotFoundExceptionInterface;
+use League\Container\{ Container, ReflectionContainer };
 
 global $vite;
 
 $vite = new Container();
 
+// Auto-wire.
 $vite->delegate( new ReflectionContainer() );
 
-$service_providers = [
-	Vite\ServiceProvider\CoreServiceProvider::class,
-	Vite\ServiceProvider\SEOServiceProvider::class,
-	Vite\ServiceProvider\BuilderElementsServiceProvider::class,
-	Vite\ServiceProvider\EntryElementsServiceProvider::class,
-	Vite\ServiceProvider\BreadcrumbsServiceProvider::class,
-	Vite\ServiceProvider\NavMenuServiceProvider::class,
-	Vite\ServiceProvider\SidebarServiceProvider::class,
-	Vite\ServiceProvider\IconServiceProvider::class,
-	Vite\ServiceProvider\PageHeaderElementsServiceProvider::class,
-	Vite\ServiceProvider\CommentsServiceProvider::class,
-	Vite\ServiceProvider\WebFontLoaderServerProvider::class,
-	Vite\ServiceProvider\PerformanceServiceProvider::class,
-	Vite\ServiceProvider\DynamicCSSServiceProvider::class,
-	Vite\ServiceProvider\CustomizerServiceProvider::class,
-	Vite\ServiceProvider\ViteServiceProvider::class,
-];
+$configs = require_once __DIR__ . '/config.php';
 
-foreach ( $service_providers as $service_provider ) {
-	$vite->addServiceProvider( new $service_provider() );
+foreach ( $configs as $id => $config ) {
+	$vite
+		->add( $id, $config['concrete'], $config['shared'] ?? true )
+		->addArguments( $config['arguments'] ?? [] );
 }
 
 if ( ! function_exists( 'vite' ) ) {
@@ -45,22 +29,11 @@ if ( ! function_exists( 'vite' ) ) {
 	/**
 	 * Get theme container.
 	 *
-	 * @param string $class_or_alias Class name or class name alias.
-	 * @return array|mixed|object
+	 * @param string $id Identifier of the entry to look for in the container.
+	 * @return object|mixed
 	 */
-	function vite( string $class_or_alias ) {
+	function vite( string $id = null ) {
 		global $vite;
-
-		if ( ! empty( $class_or_alias ) && $vite->has( $class_or_alias ) ) {
-			try {
-				return $vite->get( $class_or_alias );
-			} catch ( NotFoundExceptionInterface | ContainerExceptionInterface $e ) {
-				return (object) [];
-			}
-		}
-
-		return $vite;
+		return empty( $id ) ? $vite : $vite->get( $id );
 	}
 }
-
-vite( 'theme' );
