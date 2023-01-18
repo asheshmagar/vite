@@ -5,6 +5,8 @@
  * @package Vite
  */
 
+defined( 'ABSPATH' ) || exit;
+
 if ( ! function_exists( 'str_starts_with' ) ) {
 
 	/**
