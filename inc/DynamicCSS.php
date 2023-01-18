@@ -289,7 +289,7 @@ class DynamicCSS {
 	 * @param mixed           $dimensions Saved dimensions.
 	 * @return string[]
 	 */
-	private function dimensions( $selector, $property, $dimensions ) {
+	private function dimensions( $selector, $property, $dimensions ): array {
 		$selector = is_array( $selector ) ? implode( ',', $selector ) : $selector;
 		$property = is_array( $property ) ? $property : [ $property ];
 		$css      = '';
@@ -717,9 +717,9 @@ class DynamicCSS {
 	 *
 	 * @param string $filename Filename.
 	 * @param mixed  $content Content.
-	 * @return mixed
+	 * @return bool
 	 */
-	private function create_file( string $filename, $content ) {
+	private function create_file( string $filename, $content ): bool {
 		global $wp_filesystem;
 		$upload_dir_url = wp_upload_dir();
 		$upload_dir     = trailingslashit( $upload_dir_url['basedir'] ) . 'vite/';
