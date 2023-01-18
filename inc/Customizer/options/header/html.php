@@ -7,15 +7,15 @@
 
 $options = array_reduce(
 	[ 1, 2 ],
-	function( $acc, $curr ) {
-		$acc[ "vite[header-html-$curr]" ]            = [
+	function ( $acc, $curr ) {
+		$acc["vite[header-html-$curr]"]            = [
 			'section' => "vite[header-html-$curr]",
 			'type'    => 'vite-editor',
 			'title'   => __( 'HTML', 'vite' ),
 			'default' => vite( 'core' )->get_theme_mod_default( "header-html-$curr" ),
 			'partial' => [
 				'selector'        => ".vite-header .vite-html--$curr",
-				'render_callback' => function() use ( $curr ) {
+				'render_callback' => function () use ( $curr ) {
 					get_template_part(
 						'template-parts/builder-elements/html',
 						'',
@@ -27,42 +27,14 @@ $options = array_reduce(
 				},
 			],
 		];
-		$acc[ "vite[header-html-$curr-alignment]" ]  = [
-			'section'     => "vite[header-html-$curr]",
-			'type'        => 'vite-buttonset',
-			'title'       => __( 'Alignment', 'vite' ),
-			'default'     => vite( 'core' )->get_theme_mod_defaults()[ "header-html-$curr-alignment" ],
-			'partial'     => [
-				'selector'        => ".vite-header .vite-html--$curr",
-				'render_callback' => function() use ( $curr ) {
-					get_template_part(
-						'template-parts/builder-elements/html',
-						'',
-						[
-							'type'    => $curr,
-							'context' => 'header',
-						]
-					);
-				},
-			],
-			'choices'     => [
-				'left'   => __( 'Left', 'vite' ),
-				'center' => __( 'Center', 'vite' ),
-				'right'  => __( 'Right', 'vite' ),
-			],
-			'input_attrs' => [
-				'responsive' => true,
-				'separator'  => true,
-			],
-		];
-		$acc[ "vite[header-html-$curr-display]" ]    = [
+		$acc["vite[header-html-$curr-display]"]    = [
 			'section'     => "vite[header-html-$curr]",
 			'type'        => 'vite-buttonset',
 			'title'       => __( 'Display on', 'vite' ),
-			'default'     => vite( 'core' )->get_theme_mod_defaults()[ "header-html-$curr-display" ],
+			'default'     => vite( 'core' )->get_theme_mod_defaults()["header-html-$curr-display"],
 			'partial'     => [
 				'selector'        => ".vite-header .vite-html--$curr",
-				'render_callback' => function() use ( $curr ) {
+				'render_callback' => function () use ( $curr ) {
 					get_template_part(
 						'template-parts/builder-elements/html',
 						'',
@@ -83,7 +55,7 @@ $options = array_reduce(
 				'separator' => true,
 			],
 		];
-		$acc[ "vite[header-html-$curr-text-color]" ] = [
+		$acc["vite[header-html-$curr-text-color]"] = [
 			'section'     => "vite[header-html-$curr]",
 			'type'        => 'vite-color',
 			'title'       => __( 'Text Color', 'vite' ),
@@ -91,38 +63,52 @@ $options = array_reduce(
 				'separator' => true,
 				'colors'    => [
 					[
-						'id'    => 'normal',
+						'id'    => '--text--color',
 						'label' => __( 'Normal', 'vite' ),
 					],
 				],
 			],
+			'css'         => [
+				'selector' => ".vite-header .vite-html--$curr",
+				'property' => 'color',
+				'context'  => 'header'
+			],
 		];
-		$acc[ "vite[header-html-$curr-link-color]" ] = [
+		$acc["vite[header-html-$curr-link-color]"] = [
 			'section'     => "vite[header-html-$curr]",
 			'type'        => 'vite-color',
 			'title'       => __( 'Link Colors', 'vite' ),
 			'input_attrs' => [
 				'colors' => [
 					[
-						'id'    => 'normal',
+						'id'    => '--link-color',
 						'label' => __( 'Normal', 'vite' ),
 					],
 					[
-						'id'    => 'hover',
+						'id'    => '--link-hover-color',
 						'label' => __( 'Hover', 'vite' ),
 					],
 				],
 			],
+			'css'         => [
+				'selector' => ".vite-header .vite-html--$curr",
+				'property' => 'color',
+				'context'  => 'header'
+			],
 		];
-		$acc[ "vite[header-html-$curr-typography]" ] = [
+		$acc["vite[header-html-$curr-typography]"] = [
 			'section'     => "vite[header-html-$curr]",
 			'type'        => 'vite-typography',
 			'title'       => __( 'Typography', 'vite' ),
 			'input_attrs' => [
 				'separator' => true,
 			],
+			'css'         => [
+				'selector' => ".vite-header .vite-html--$curr",
+				'context'  => 'header'
+			],
 		];
-		$acc[ "vite[header-html-$curr-margin]" ]     = [
+		$acc["vite[header-html-$curr-margin]"]     = [
 			'section'     => "vite[header-html-$curr]",
 			'type'        => 'vite-dimensions',
 			'title'       => __( 'Margin', 'vite' ),
@@ -130,7 +116,13 @@ $options = array_reduce(
 				'separator'  => true,
 				'responsive' => true,
 			],
+			'css'         => [
+				'selector' => ".vite-header .vite-html--$curr",
+				'property' => 'margin',
+				'context'  => 'header'
+			],
 		];
+
 		return $acc;
 	},
 	[]
