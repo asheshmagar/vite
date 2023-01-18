@@ -32,7 +32,7 @@ if ( ! function_exists( 'vite' ) ) {
 	 * @param string $id Identifier of the entry to look for in the container.
 	 * @return object|mixed
 	 */
-	function vite( string $id = null ) {
+	function vite( string $id = '' ) {
 		global $vite;
 		return empty( $id ) ? $vite : $vite->get( $id );
 	}
