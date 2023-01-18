@@ -19,45 +19,32 @@ class Vite {
 
 	use Hook;
 
-	const ALIASES = [
-		'customizer',
-		'seo',
-		'nav-menu',
-		'sidebar',
-		'comments',
-		'performance',
-	];
-
-	/**
-	 * Constructor.
-	 */
-	public function __construct() {
-		$this->init();
-		$this->action( 'loaded' );
-	}
-
 	/**
 	 * Init.
 	 *
 	 * @return void
 	 */
-	private function init() {
-		$this->init_hooks();
-		$this->init_aliases();
+	public function init() {
+		$aliases = $this->filter(
+			'aliases',
+			[
+				'customizer',
+				'seo',
+				'nav-menu',
+				'sidebar',
+				'comments',
+				'performance',
+				'scripts-styles',
+				'template-hooks'
+			]
+		);
 
-		( new TemplateHooks() )->init();
-		( new ScriptsStyles() )->init();
-	}
-
-	/**
-	 * Init aliases.
-	 *
-	 * @return void
-	 */
-	private function init_aliases() {
-		foreach ( static::ALIASES as $alias ) {
+		foreach ( $aliases as $alias ) {
 			vite( $alias )->init();
 		}
+
+		$this->init_hooks();
+		$this->action( 'loaded' );
 	}
 
 	/**
