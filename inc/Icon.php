@@ -2,8 +2,7 @@
 
 namespace Vite;
 
-use Vite\Traits\Hook;
-use Vite\Traits\JSON;
+use Vite\Traits\{ Hook, JSON };
 
 /**
  * Class Icon.

@@ -8,8 +8,7 @@
 
 namespace Vite;
 
-use Vite\Traits\JSON;
-use Vite\Traits\Mods;
+use Vite\Traits\{ JSON, Mods };
 
 /**
  * Core.
