@@ -32,6 +32,15 @@ const files = {
 	},
 };
 
+const filesToCompress = [
+	'build/**/*',
+	'!build/**/composer.lock',
+	'!build/**/composer.json',
+	'!build/**/assets/js',
+	'!build/**/assets/scss',
+	'!build/**/node_modules/**/*',
+];
+
 const copy = [
 	() => src( files.inc.src ).pipe( dest( files.inc.dest ) ),
 	() => src( files.assets.src ).pipe( dest( files.assets.dest ) ),
@@ -43,62 +52,73 @@ const copy = [
 
 const composer = () => exec( `cd build/${ pkg.name } && composer install --no-dev --optimize-autoloader` );
 
-const compressFiles = [ 'build/**/*', '!build/**/composer.lock', '!build/**/composer.json', '!build/**/assets/js', '!build/**/assets/scss', '!build/**/node_modules/**/*' ];
+const pot = () => exec( 'composer make-pot' );
 
-const compress = [
-	() => src( compressFiles ).pipe( zip( `${ pkg.name }.zip` ) ).pipe( dest( 'release' ) ),
-	() => src( compressFiles ).pipe( zip( `${ pkg.name }-${ pkg.version }.zip` ) ).pipe( dest( 'release' ) ),
-];
+const yarn = () => exec( 'yarn build' );
+
+const clean = {
+	build: () => exec( 'rm -rf build' ),
+	release: () => exec( 'rm -rf release' ),
+};
+
+const compress = parallel( [
+	() => src( filesToCompress ).pipe( zip( `${ pkg.name }.zip` ) ).pipe( dest( 'release' ) ),
+	() => src( filesToCompress ).pipe( zip( `${ pkg.name }-${ pkg.version }.zip` ) ).pipe( dest( 'release' ) ),
+] );
 
 const release = series(
-	() => exec( `rm -rf build` ),
-	() => exec( `rm -rf release` ),
-	() => exec( 'yarn build' ),
+	clean.build,
+	clean.release,
+	yarn,
+	pot,
 	copy,
 	composer,
-	parallel( ...compress ),
-	() => exec( `rm -rf build` ),
+	compress,
+	clean.build,
 );
 
-const fetchGoogleFonts = () => request( 'https://google-webfonts-helper.herokuapp.com/api/fonts', ( error, response, body ) => {
-	if ( ! error && response.statusCode === 200 ) {
-		const fonts = JSON.parse( body )
-			.sort( function( a, b ) {
-				return ( b?.popularity ?? 0 ) - ( a?.popularity ?? 0 );
-			} )
-			.map( function( a ) {
-				return {
-					...a,
-					label: a.family,
-					value: a.family,
-				};
+const fetchExternal = {
+	googleFonts: () => request( 'https://google-webfonts-helper.herokuapp.com/api/fonts', ( error, response, body ) => {
+		if ( ! error && response.statusCode === 200 ) {
+			const fonts = JSON.parse( body )
+				.sort( function( a, b ) {
+					return ( b?.popularity ?? 0 ) - ( a?.popularity ?? 0 );
+				} )
+				.map( function( a ) {
+					return {
+						...a,
+						label: a.family,
+						value: a.family,
+					};
+				} );
+			fs.writeFile( 'assets/json/google-fonts.json', JSON.stringify( fonts, null, 2 ), function( err ) {
+				if ( ! err ) {
+					// eslint-disable-next-line no-console
+					console.log( 'Google fonts updated!' );
+				}
 			} );
-		fs.writeFile( 'assets/json/google-fonts.json', JSON.stringify( fonts, null, 2 ), function( err ) {
-			if ( ! err ) {
-				// eslint-disable-next-line no-console
-				console.log( 'Google fonts updated!' );
-			}
-		} );
-	}
-} );
+		}
+	} ),
+	fontawesome: () => request( 'https://raw.githubusercontent.com/FortAwesome/Font-Awesome/6.x/metadata/icons.json', function( error, response, body ) {
+		if ( ! error && response.statusCode === 200 ) {
+			const icons = JSON.parse( body );
+			const allIcons = Object.keys( icons ).reduce( function( acc, crr ) {
+				const svg = icons[ crr ].svg?.brands || icons[ crr ].svg?.solid;
+				acc[ crr ] = `<svg class="${ crr } %s" height="%d" width="%d" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="${ svg.viewBox.join( ' ' ) }"><path fill="currentColor" d="${ svg.path }"></path></svg>`;
+				return acc;
+			}, {} );
+			fs.writeFile( 'assets/json/font-awesome.json', JSON.stringify( allIcons, null, 2 ), function( err ) {
+				if ( ! err ) {
+					// eslint-disable-next-line no-console
+					console.log( 'Fontawesome library updated!' );
+				}
+			} );
+		}
+	} ),
+};
 
-const fetchFontAwesome = () => request( 'https://raw.githubusercontent.com/FortAwesome/Font-Awesome/6.x/metadata/icons.json', function( error, response, body ) {
-	if ( ! error && response.statusCode === 200 ) {
-		const icons = JSON.parse( body );
-		const allIcons = Object.keys( icons ).reduce( function( acc, crr ) {
-			const svg = icons[ crr ].svg?.brands || icons[ crr ].svg?.solid;
-			acc[ crr ] = `<svg class="${ crr } %s" height="%d" width="%d" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="${ svg.viewBox.join( ' ' ) }"><path fill="currentColor" d="${ svg.path }"></path></svg>`;
-			return acc;
-		}, {} );
-		fs.writeFile( 'assets/json/font-awesome.json', JSON.stringify( allIcons, null, 2 ), function( err ) {
-			if ( ! err ) {
-				// eslint-disable-next-line no-console
-				console.log( 'Fontawesome library updated!' );
-			}
-		} );
-	}
-} );
-
-exports.fetchGoogleFonts = fetchGoogleFonts;
-exports.fetchFontAwesome = fetchFontAwesome;
+exports.fetchExternal = series(
+	fetchExternal.googleFonts,
+	fetchExternal.fontawesome,
+);
 exports.release = release;
