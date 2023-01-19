@@ -1,5 +1,13 @@
 <?php
+/**
+ * Page header elements.
+ *
+ * @package Vite
+ */
+
 namespace Vite\Elements;
+
+defined( 'ABSPATH' ) || exit;
 
 /**
  * Page header elements.

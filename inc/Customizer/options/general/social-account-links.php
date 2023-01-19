@@ -5,6 +5,8 @@
  * @package Vite
  */
 
+defined( 'ABSPATH' ) || exit;
+
 $options = array_reduce(
 	vite( 'core' )->get_social_networks(),
 	function( $acc, $curr ) {

@@ -7,6 +7,8 @@
 
 namespace Vite\Elements;
 
+defined( 'ABSPATH' ) || exit;
+
 use Vite\Traits\SmartTags;
 
 /**

@@ -5,6 +5,8 @@
  * @package Vite
  */
 
+defined( 'ABSPATH' ) || exit;
+
 vite( 'customizer' )->add(
 	'settings',
 	[

@@ -5,6 +5,8 @@
 
 namespace Vite\Customizer;
 
+defined( 'ABSPATH' ) || exit;
+
 use Vite\Customizer\Type\Control;
 use Vite\DynamicCSS;
 use Vite\Traits\JSON;

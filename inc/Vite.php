@@ -8,6 +8,8 @@
 
 namespace Vite;
 
+defined( 'ABSPATH' ) || exit;
+
 use Vite\Traits\Hook;
 
 defined( 'ABSPATH' ) || exit;

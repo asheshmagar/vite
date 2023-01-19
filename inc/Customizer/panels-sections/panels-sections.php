@@ -1,5 +1,13 @@
 <?php
+/**
+ * Add or register panels and sections.
+ *
+ * @package Vite
+ */
 
+defined( 'ABSPATH' ) || exit;
+
+// Add panels.
 vite( 'customizer' )->add(
 	'panels',
 	[
@@ -18,6 +26,7 @@ vite( 'customizer' )->add(
 	]
 );
 
+// Add sections.
 vite( 'customizer' )->add(
 	'sections',
 	[

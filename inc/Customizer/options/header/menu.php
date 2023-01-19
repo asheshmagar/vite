@@ -3,6 +3,8 @@
  *
  */
 
+defined( 'ABSPATH' ) || exit;
+
 $menus = [
 	'1' => __( 'Primary Menu', 'vite' ),
 	'2' => __( 'Secondary Menu', 'vite' ),

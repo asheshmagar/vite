@@ -1,4 +1,11 @@
 <?php
+/**
+ *
+ *
+ * @package Vite
+ */
+
+defined( 'ABSPATH' ) || exit;
 
 $core = vite( 'core' );
 

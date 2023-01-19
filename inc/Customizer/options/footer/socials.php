@@ -5,6 +5,8 @@
  * @package Vite
  */
 
+defined( 'ABSPATH' ) || exit;
+
 $options = [
 	'vite[footer-social-links]'            => [
 		'section'     => 'vite[footer-socials]',

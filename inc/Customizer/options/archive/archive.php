@@ -5,6 +5,8 @@
  * @package Vite
  */
 
+defined( 'ABSPATH' ) || exit;
+
 $posts_render_callback = function() {
 	$archive_style           = vite( 'core' )->get_theme_mod( 'archive-style' );
 	$archive_columns         = vite( 'core' )->get_theme_mod( 'archive-columns' );

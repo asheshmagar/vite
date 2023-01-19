@@ -5,6 +5,9 @@
  * @package Vite
  */
 
+defined( 'ABSPATH' ) || exit;
+
+
 $selector = '.button, .vite-button__link, button, input[type=submit], input[type=button], input[type=reset], .comment-reply-link, #cancel-comment-reply-link, .wp-block-button .wp-block-button__link';
 
 $options = [

@@ -3,6 +3,8 @@
 *
 */
 
+defined( 'ABSPATH' ) || exit;
+
 $options = [
 	'vite[footer-menu-4]'               => [
 		'section'     => 'vite[footer-menu-4]',

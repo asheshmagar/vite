@@ -5,6 +5,8 @@
  * @package Vite
  */
 
+defined( 'ABSPATH' ) || exit;
+
 $options = array_reduce(
 	[ 1, 2 ],
 	function ( $acc, $curr ) {

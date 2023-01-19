@@ -5,6 +5,8 @@
  * @package Vite
  */
 
+defined( 'ABSPATH' ) || exit;
+
 $options = [
 	'vite[container-wide-width]'   => [
 		'section'     => 'vite[global-layout]',

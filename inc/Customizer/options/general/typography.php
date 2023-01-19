@@ -5,6 +5,8 @@
  * @package Vite
  */
 
+defined( 'ABSPATH' ) || exit;
+
 $elements = [
 	'base'     => __( 'Base', 'vite' ),
 	'headings' => __( 'Headings', 'vite' ),

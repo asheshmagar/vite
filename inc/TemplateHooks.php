@@ -8,6 +8,8 @@
 
 namespace Vite;
 
+defined( 'ABSPATH' ) || exit;
+
 use Vite\Traits\Mods;
 
 /**
@@ -71,21 +73,24 @@ class TemplateHooks {
 	 * @return false|string
 	 */
 	public function embed_oembed_html( $html, $url ) {
-		$hosts = $this->filter( 'embed/hosts', [
-			'vimeo.com',
-			'youtube.com',
-			'dailymotion.com',
-			'flickr.com',
-			'hulu.com',
-			'kickstarter.com',
-			'vine.co',
-			'soundcloud.com',
-			'youtu.be',
-			'cloudup.com',
-			'ted.com',
-			'wistia.com',
-			'wistia.net'
-		] );
+		$hosts = $this->filter(
+			'embed/hosts',
+			[
+				'vimeo.com',
+				'youtube.com',
+				'dailymotion.com',
+				'flickr.com',
+				'hulu.com',
+				'kickstarter.com',
+				'vine.co',
+				'soundcloud.com',
+				'youtu.be',
+				'cloudup.com',
+				'ted.com',
+				'wistia.com',
+				'wistia.net',
+			]
+		);
 
 		if ( empty( $hosts ) ) {
 			return $html;

@@ -5,6 +5,8 @@
  * @package Vite
  */
 
+defined( 'ABSPATH' ) || exit;
+
 $core = vite( 'core' );
 $icon = vite( 'icon' );
 

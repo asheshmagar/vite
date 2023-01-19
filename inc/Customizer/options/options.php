@@ -5,6 +5,8 @@
  * @package Vite
  */
 
+defined( 'ABSPATH' ) || exit;
+
 $directories = [
 	__DIR__ . '/general',
 	__DIR__ . '/header',

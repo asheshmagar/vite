@@ -1,6 +1,8 @@
 <?php
 /**
+ * Elements trait.
  *
+ * @package Vite
  */
 
 namespace Vite\Elements;

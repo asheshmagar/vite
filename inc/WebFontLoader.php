@@ -5,6 +5,8 @@
 
 namespace Vite;
 
+defined( 'ABSPATH' ) || exit;
+
 use Vite\Traits\Hook;
 use WP_Filesystem_Base;
 

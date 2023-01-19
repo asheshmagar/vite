@@ -2,6 +2,8 @@
 
 namespace Vite;
 
+defined( 'ABSPATH' ) || exit;
+
 use Vite\Traits\{ Hook, JSON };
 
 /**

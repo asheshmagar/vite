@@ -5,6 +5,8 @@
  * @package Vite
  */
 
+defined( 'ABSPATH' ) || exit;
+
 $options = [
 	'vite[global-palette]' => [
 		'title'       => __( 'Global', 'vite' ),

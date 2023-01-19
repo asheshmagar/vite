@@ -8,6 +8,8 @@
 
 namespace Vite;
 
+defined( 'ABSPATH' ) || exit;
+
 use Vite\Traits\{ JSON, Mods, SmartTags };
 
 /**

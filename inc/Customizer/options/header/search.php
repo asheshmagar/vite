@@ -5,6 +5,8 @@
  * @package Vite
  */
 
+defined( 'ABSPATH' ) || exit;
+
 $options = [
 	'vite[header-search-label]'            => [
 		'section' => 'vite[header-search]',

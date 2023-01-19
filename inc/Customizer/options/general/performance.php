@@ -5,6 +5,8 @@
  * @package Vite
  */
 
+defined( 'ABSPATH' ) || exit;
+
 $options = [
 	'vite[emoji-script]'       => [
 		'title'       => __( 'Emoji script', 'vite' ),

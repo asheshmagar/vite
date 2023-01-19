@@ -5,6 +5,8 @@
  * @package Vite
  */
 
+defined( 'ABSPATH' ) || exit;
+
 $core = vite( 'core' );
 
 $header_elements = $core->filter(

@@ -5,6 +5,8 @@
  * @package Vite
  */
 
+defined( 'ABSPATH' ) || exit;
+
 $options = [
 	'vite[mobile-logo]'                        => [
 		'section'     => 'vite[header-logo]',
