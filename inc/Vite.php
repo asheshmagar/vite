@@ -35,7 +35,7 @@ class Vite {
 				'comments',
 				'performance',
 				'scripts-styles',
-				'template-hooks'
+				'template-hooks',
 			]
 		);
 
