@@ -125,11 +125,7 @@ class Breadcrumbs {
 		$breadcrumb    = '';
 		$item_count    = count( $this->items );
 		$item_position = 0;
-		$schema_type   = $this->get_theme_mod( 'schema-markup-implementation' );
-		$has_schema    = $this->get_theme_mod( 'schema-markup' );
-		$microdata     = $has_schema && 'microdata' === $schema_type;
-		$jsonld        = $has_schema && 'json-ld' === $schema_type;
-		$json          = [];
+		$microdata     = $this->get_theme_mod( 'schema-markup', false );
 
 		// Connect the breadcrumb trail if there are items in the trail.
 		if ( 0 < $item_count ) {
@@ -139,14 +135,6 @@ class Breadcrumbs {
 				tag_escape( $this->args['list_tag'] ),
 				$microdata ? 'itemscope itemtype="https://schema.org/BreadcrumbList"' : ''
 			);
-
-			if ( $jsonld ) {
-				$json = [
-					'@context'        => 'https://schema.org',
-					'@type'           => 'BreadcrumbList',
-					'itemListElement' => [],
-				];
-			}
 
 			if ( $microdata ) {
 				// Add the number of items and item list order schema.
@@ -162,15 +150,6 @@ class Breadcrumbs {
 
 				// Check if the item is linked.
 				preg_match( '/(<a.*?>)(.*?)(<\/a>)/i', $item, $matches );
-
-				if ( $jsonld ) {
-					$json['itemListElement'][] = [
-						'@type'    => 'ListItem',
-						'position' => $item_position,
-						'name'     => ! empty( $matches ) ? $matches[2] : $item,
-						'item'     => ! empty( $matches ) ? preg_replace( '/.*href="([^"]+)".*/', '$1', $matches[1] ) : '',
-					];
-				}
 
 				// Wrap the item text with appropriate itemprop.
 				$item = ! empty( $matches ) ? sprintf( '%s<span%s>%s</span>%s', $matches[1], $microdata ? ' itemprop="name"' : '', $matches[2], $matches[3] ) : sprintf( '<span>%s</span>', $item );
@@ -218,10 +197,6 @@ class Breadcrumbs {
 				$breadcrumb,
 				$this->args['after']
 			);
-		}
-
-		if ( ! empty( $json ) ) {
-			$breadcrumb = $breadcrumb . wp_print_inline_script_tag( wp_json_encode( $json ), [ 'type' => 'application/ld+json' ] ) . "\n";
 		}
 
 		/**
