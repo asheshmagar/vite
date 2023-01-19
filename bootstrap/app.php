@@ -14,7 +14,7 @@ global $vite;
 $vite = new Container();
 
 // Auto-wire.
-$vite->delegate( new ReflectionContainer() );
+$vite->delegate( ( new ReflectionContainer() )->cacheResolutions() );
 
 $configs = require_once __DIR__ . '/config.php';
 
