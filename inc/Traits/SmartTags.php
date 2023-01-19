@@ -42,4 +42,24 @@ trait SmartTags {
 	public function parse_smart_tags( string $content = '' ): string {
 		return strtr( $content, $this->get_smart_tags() ?? [] );
 	}
+
+	/**
+	 * Description of smart tags.
+	 *
+	 * @return string
+	 */
+	public function description_smart_tags(): string {
+		$smart_tags = $this->get_smart_tags();
+		array_walk(
+			$smart_tags,
+			function ( &$value, $key ) {
+				$value = "<code>$key</code> : $value";
+			}
+		);
+		return sprintf(
+			'<details><summary>%s</summary><ul>%s</ul></details>',
+			__( 'Available smart tags:' ),
+			'<li>' . implode( '</li><li>', array_values( $smart_tags ) ) . '</li>'
+		);
+	}
 }
