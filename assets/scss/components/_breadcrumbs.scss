@@ -13,6 +13,10 @@
 		--link--color: var(--color-3);
 	}
 
+	&__item {
+		list-style: none;
+	}
+
 	&__separator {
 		margin-inline: 5px;
 	}
