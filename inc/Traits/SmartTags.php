@@ -22,10 +22,10 @@ trait SmartTags {
 			[
 				'{{site-title}}'   => get_bloginfo( 'name' ),
 				'{{site-url}}'     => home_url(),
-				'{{year}}'         => date_i18n( 'Y' ),
-				'{{date}}'         => gmdate( 'Y-m-d' ),
-				'{{time}}'         => gmdate( 'H:i:s' ),
-				'{{datetime}}'     => gmdate( 'Y-m-d H:i:s' ),
+				'{{year}}'         => wp_date( 'Y' ),
+				'{{date}}'         => wp_date( 'Y-m-d' ),
+				'{{time}}'         => wp_date( 'H:i:s' ),
+				'{{datetime}}'     => wp_date( 'Y-m-d H:i:s' ),
 				'{{copyright}}'    => 'Copyright &copy;',
 				/* Translators: %s: Theme author. */
 				'{{theme-author}}' => sprintf( __( 'Powered by %s' ), '<a href="https://wpvite.com" rel="nofollow noopener" target="_blank">Vite</a>' ),
