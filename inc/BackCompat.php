@@ -18,7 +18,7 @@ function maybe_load_theme(): bool {
 	$invalid_wp_version  = version_compare( $GLOBALS['wp_version'], VITE_WP_MIN_VERSION, '<' );
 	$invalid_php_version = version_compare( phpversion(), VITE_PHP_MIN_VERSION, '<' );
 
-	switch( true ) {
+	switch ( true ) {
 		case $invalid_wp_version && $invalid_php_version:
 			$message = sprintf(
 				/* translators: 1: PHP version, 2: WordPress version */
