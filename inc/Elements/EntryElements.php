@@ -90,20 +90,14 @@ class EntryElements {
 		?>
 		<div class="vite-post__meta">
 			<?php
-				$meta_elements = array_filter(
-					$meta_elements,
-					function( $meta_element ) {
-						return $meta_element['visible'];
-					}
-				);
-				$i             = 0;
-				$meta_count    = count( $meta_elements );
-			foreach ( $meta_elements as $meta_element ) {
-				++$i;
-				get_template_part( 'template-parts/entry/entry', "meta-{$meta_element['id']}" );
-				if ( $i < $meta_count ) {
-					echo '<span class="vite-post__meta__separator">/</span>';
+			$meta_elements = array_filter(
+				$meta_elements,
+				function( $meta_element ) {
+					return $meta_element['visible'];
 				}
+			);
+			foreach ( $meta_elements as $meta_element ) {
+				get_template_part( 'template-parts/entry/entry', "meta-{$meta_element['id']}" );
 			}
 			?>
 		</div>
@@ -448,6 +442,11 @@ class EntryElements {
 	 * @return void
 	 */
 	public function meta_author( $args ) {
+		$author_id = get_the_author_meta( 'ID' );
+
+		if ( empty( $author_id ) ) {
+			return;
+		}
 
 		/**
 		 * Action: vite/entry-elements/meta/author/start.
@@ -469,14 +468,15 @@ class EntryElements {
 						]
 					);
 				?>
-				<?php
-					printf(
-					/* translators: %1$s: post link. %2$s: post author */
-						'<span class="vite-post__author"><a href="%1$s">%2$s</a></span>',
-						esc_url( get_author_posts_url( get_the_author_meta( 'ID' ) ) ),
-						esc_html( get_the_author() )
-					);
-				?>
+			</span>
+			<?php
+				printf(
+				/* translators: %1$s: post link. %2$s: post author */
+					'<span class="vite-post__author"><a href="%1$s">%2$s</a></span>',
+					esc_url( get_author_posts_url( $author_id ) ),
+					esc_html( get_the_author() )
+				);
+			?>
 		</div>
 		<?php
 		$this->action( 'entry-elements/meta/author/end' );
