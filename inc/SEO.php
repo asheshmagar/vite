@@ -7,6 +7,8 @@
 
 namespace Vite;
 
+defined( 'ABSPATH' ) || exit;
+
 use Vite\Traits\Mods;
 
 defined( 'ABSPATH' ) || exit;
@@ -28,15 +30,6 @@ class SEO {
 	public $schema_markup = false;
 
 	/**
-	 * Schema markup implementation.
-	 *
-	 * Either json-ld or microdata.
-	 *
-	 * @var string
-	 */
-	public $schema_markup_implementation = 'json-ld';
-
-	/**
 	 * Open Graph Meta Tags
 	 *
 	 * @var bool
@@ -50,7 +43,7 @@ class SEO {
 	 */
 	public function init() {
 		add_action( 'init', [ $this, 'init_props' ] );
-		$this->add_action( 'vite/head', [ $this, 'print' ] );
+		$this->add_action( 'vite/head', [ $this, 'print_og_meta_tags' ] );
 	}
 
 	/**
@@ -59,61 +52,8 @@ class SEO {
 	 * @return void
 	 */
 	public function init_props() {
-		$this->schema_markup                = $this->get_theme_mod( 'schema-markup', false );
-		$this->schema_markup_implementation = $this->get_theme_mod( 'schema-markup-implementation', 'json-ld' );
-		$this->og_meta_tags                 = $this->get_theme_mod( 'og-meta-tags', false );
-	}
-
-	/**
-	 * Print script or meta in head.
-	 *
-	 * @return void
-	 */
-	public function print() {
-		( 'json-ld' === $this->schema_markup_implementation && $this->schema_markup ) && $this->print_schema_json_ld();
-		$this->og_meta_tags && $this->print_og_meta_tags();
-	}
-
-	/**
-	 * Schema markup JSON-LD.
-	 *
-	 * @return void
-	 */
-	public function print_schema_json_ld() {
-		if ( is_single() ) {
-			$type = 'BlogPosting';
-		} elseif ( is_author() ) {
-			$type = 'ProfilePage';
-		} elseif ( is_search() ) {
-			$type = 'SearchResultsPage';
-		} else {
-			$type = 'WebPage';
-		}
-
-		$json = [
-			'@context'         => static::SCHEMA_ORG,
-			'@type'            => $type,
-			'headline'         => $this->get_title(),
-			'description'      => $this->get_description(),
-			'url'              => $this->get_url(),
-			'mainEntityOfPage' => [
-				'@type' => 'WebPage',
-				'@id'   => $this->get_url(),
-			],
-			'publisher'        => [
-				'@type' => 'Organization',
-				'name'  => $this->get_site_name(),
-				'logo'  => [
-					'@type' => 'ImageObject',
-					'url'   => $this->get_image(),
-				],
-			],
-			'image'            => $this->get_image(),
-		];
-
-		$json = $this->filter( 'seo/schema/json-ld', $json );
-
-		wp_print_inline_script_tag( wp_json_encode( $json ), [ 'type' => 'application/ld+json' ] );
+		$this->schema_markup = $this->get_theme_mod( 'schema-markup', false );
+		$this->og_meta_tags  = $this->get_theme_mod( 'og-meta-tags', false );
 	}
 
 	/**
@@ -122,6 +62,10 @@ class SEO {
 	 * @return void
 	 */
 	public function print_og_meta_tags() {
+		if ( ! $this->og_meta_tags ) {
+			return;
+		}
+
 		if ( is_single() ) {
 			$type = 'article';
 		} elseif ( is_author() ) {
@@ -156,9 +100,9 @@ class SEO {
 	/**
 	 * Get title.
 	 *
-	 * @return string|void
+	 * @return string
 	 */
-	public function get_title() {
+	public function get_title(): string {
 		$title = get_the_title();
 
 		if ( is_front_page() ) {
@@ -171,9 +115,9 @@ class SEO {
 	/**
 	 * Get description.
 	 *
-	 * @return string|void
+	 * @return string
 	 */
-	public function get_description() {
+	public function get_description(): string {
 		$description = '';
 
 		if ( is_single() ) {
@@ -192,7 +136,7 @@ class SEO {
 	/**
 	 * Get URL.
 	 *
-	 * @return false|string|void
+	 * @return false|string
 	 */
 	public function get_url() {
 		$url = get_the_permalink();
@@ -207,9 +151,9 @@ class SEO {
 	/**
 	 * Get site name.
 	 *
-	 * @return string|void
+	 * @return string
 	 */
-	public function get_site_name() {
+	public function get_site_name(): string {
 		return get_bloginfo( 'name' );
 	}
 
@@ -257,7 +201,7 @@ class SEO {
 	 * @return void
 	 */
 	public function print_schema_microdata( string $context = '' ) {
-		if ( ! $this->schema_markup || 'microdata' !== $this->schema_markup_implementation ) {
+		if ( ! $this->schema_markup ) {
 			return;
 		}
 
