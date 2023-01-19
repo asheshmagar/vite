@@ -18,9 +18,9 @@ $vite->delegate( new ReflectionContainer() );
 
 $configs = require_once __DIR__ . '/config.php';
 
-foreach ( $configs as $id => $config ) {
+foreach ( $configs as $key => $config ) {
 	$vite
-		->add( $id, $config['concrete'], $config['shared'] ?? true )
+		->add( $key, $config['concrete'], $config['shared'] ?? true )
 		->addArguments( $config['arguments'] ?? [] );
 }
 
