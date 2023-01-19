@@ -28,10 +28,10 @@ class NavMenu {
 	 */
 	protected $walker_page = null;
 
-	public const PRIMARY_MENU   = 'menu-1';
-	public const SECONDARY_MENU = 'menu-2';
-	public const MOBILE_MENU    = 'menu-3';
-	public const FOOTER_MENU    = 'menu-4';
+	const PRIMARY_MENU   = 'menu-1';
+	const SECONDARY_MENU = 'menu-2';
+	const MOBILE_MENU    = 'menu-3';
+	const FOOTER_MENU    = 'menu-4';
 
 	/**
 	 * Constructor.
