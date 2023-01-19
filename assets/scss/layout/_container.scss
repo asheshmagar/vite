@@ -17,8 +17,9 @@ $layouts: (
 .vite-container {
 	max-width: var(--container-width);
 	padding: var(--container-padding-block, 0px) var(--container-padding-inline, 1rem);
-	margin-inline: auto;
 	min-height: var(--container-min-height, auto);
+	margin-left: auto;
+	margin-right: auto;
 
 	&--grid {
 		display: grid;

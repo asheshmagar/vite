@@ -55,10 +55,7 @@ small {
 }
 
 :where(dl, ol, ul) {
-	padding-right: 0;
-	padding-left: var(--spacing);
-	padding-inline-start: var(--spacing);
-	padding-inline-end: 0;
+	padding: var(--spacing) 0 0 var(--spacing);
 
 	li {
 		margin-bottom: calc(var(--typography-spacing-vertical) * 0.25);
@@ -88,8 +85,8 @@ blockquote {
 	padding: var(--spacing);
 	border-right: none;
 	border-left: 0.25rem solid var(--border-color);
-	border-inline-start: 0.25rem solid var(--border-color);
-	border-inline-end: none;
+	border-top: 0.25rem solid var(--border-color);
+	border-bottom: none;
 
 	footer {
 		margin-top: calc(var(--typography-spacing-vertical) * 0.5);
