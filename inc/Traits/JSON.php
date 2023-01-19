@@ -13,23 +13,17 @@ namespace Vite\Traits;
 trait JSON {
 
 	/**
-	 * Holds all json data.
-	 *
-	 * @var array
-	 */
-	private $jsons = [];
-
-	/**
 	 * Get JSON to array.
 	 *
-	 * @param string $file File.
+	 * @param string      $file File.
+	 * @param null|string $key Key to hold the JSON array.
 	 * @return array|mixed
 	 */
-	public function json_to_array( string $file ) {
-		$hash = md5( $file );
+	public function json_to_array( string $file, string $key = null ) {
+		$key = $key ?? md5( $file );
 
-		if ( isset( $this->jsons[ $hash ] ) ) {
-			return $this->jsons[ $hash ];
+		if ( isset( $this->{$key} ) ) {
+			return $this->{$key};
 		}
 
 		if ( ! file_exists( $file ) ) {
@@ -38,8 +32,8 @@ trait JSON {
 
 		ob_start();
 		include $file;
-		$this->jsons[ $hash ] = json_decode( ob_get_clean(), true );
+		$this->{$key} = json_decode( ob_get_clean(), true );
 
-		return $this->jsons[ $hash ];
+		return $this->{$key};
 	}
 }
