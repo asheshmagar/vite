@@ -8,14 +8,21 @@
 
 namespace Vite;
 
-use Vite\Traits\{ JSON, Mods };
+use Vite\Traits\{ JSON, Mods, SmartTags };
 
 /**
  * Core.
  */
 class Core {
 
-	use Mods, JSON;
+	use Mods , JSON, SmartTags {
+		SmartTags::filter insteadof Mods;
+		SmartTags::action insteadof Mods;
+		SmartTags::add_action insteadof Mods;
+		SmartTags::add_filter insteadof Mods;
+		SmartTags::remove_action insteadof Mods;
+		SmartTags::remove_filter insteadof Mods;
+	}
 
 	/**
 	 * The loop.
