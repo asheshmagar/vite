@@ -8,63 +8,63 @@
 defined( 'ABSPATH' ) || exit;
 
 return [
-	'core' => [
+	'core'                 => [
 		'concrete' => 'Vite\Core',
 	],
-	'seo' => [
+	'seo'                  => [
 		'concrete' => 'Vite\SEO',
 	],
-	'builder-elements' => [
+	'builder-elements'     => [
 		'concrete' => 'Vite\Elements\BuilderElements',
 	],
-	'entry-elements' => [
+	'entry-elements'       => [
 		'concrete' => 'Vite\Elements\EntryElements',
 	],
-	'breadcrumbs' => [
+	'breadcrumbs'          => [
 		'concrete' => 'Vite\Breadcrumbs',
 	],
-	'comments' => [
-		'concrete' => 'Vite\Comments\Comments',
-		'arguments'      => [
-			'Vite\Comments\WalkerComment'
+	'comments'             => [
+		'concrete'  => 'Vite\Comments\Comments',
+		'arguments' => [
+			'Vite\Comments\WalkerComment',
 		],
 	],
-	'nav-menu' => [
-		'concrete' => 'Vite\NavMenu\NavMenu',
-		'arguments'      => [
+	'nav-menu'             => [
+		'concrete'  => 'Vite\NavMenu\NavMenu',
+		'arguments' => [
 			'Vite\NavMenu\WalkerNavMenu',
 			'Vite\NavMenu\WalkerPage',
 		],
 	],
-	'icon' => [
+	'icon'                 => [
 		'concrete' => 'Vite\Icon',
 	],
-	'sidebar' => [
+	'sidebar'              => [
 		'concrete' => 'Vite\Sidebar',
 	],
 	'page-header-elements' => [
 		'concrete' => 'Vite\Elements\PageHeaderElements',
 	],
-	'performance' => [
-		'concrete' => 'Vite\Performance',
-		'arguments'      => [
+	'performance'          => [
+		'concrete'  => 'Vite\Performance',
+		'arguments' => [
 			'Vite\WebFontLoader',
 		],
 	],
-	'customizer' => [
-		'concrete' => 'Vite\Customizer\Customizer',
-		'arguments'      => [
+	'customizer'           => [
+		'concrete'  => 'Vite\Customizer\Customizer',
+		'arguments' => [
 			'Vite\DynamicCSS',
-			'Vite\Customizer\Sanitize'
+			'Vite\Customizer\Sanitize',
 		],
 	],
-	'template-hooks' => [
+	'template-hooks'       => [
 		'concrete' => 'Vite\TemplateHooks',
 	],
-	'scripts-styles' => [
+	'scripts-styles'       => [
 		'concrete' => 'Vite\ScriptsStyles',
 	],
-	'theme' => [
+	'theme'                => [
 		'concrete' => 'Vite\Vite',
 	],
 ];
