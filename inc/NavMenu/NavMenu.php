@@ -5,6 +5,8 @@
 
 namespace Vite\NavMenu;
 
+defined( 'ABSPATH' ) || exit;
+
 use Vite\Traits\Hook;
 
 /**

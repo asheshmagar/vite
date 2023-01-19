@@ -2,6 +2,8 @@
 
 namespace Vite\NavMenu;
 
+defined( 'ABSPATH' ) || exit;
+
 use stdClass;
 use Vite\Traits\Hook;
 use Walker_Page;
