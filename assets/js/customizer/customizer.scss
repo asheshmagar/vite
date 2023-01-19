@@ -4,6 +4,12 @@
 	font-size: 13px;
 }
 
+.customize-control-description {
+	:where(summary) {
+		cursor: pointer;
+	}
+}
+
 .control-section .accordion-section-title:after,
 .customize-pane-child .accordion-section-title:after {
 	font-size: 13px;
