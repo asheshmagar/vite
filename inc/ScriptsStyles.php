@@ -85,8 +85,8 @@ class ScriptsStyles {
 	public function enqueue() {
 		$remote_google_fonts_url = $this->get_theme_mod( 'google-fonts-url', '' );
 		$is_local_google_fonts   = $this->get_theme_mod( 'local-google-fonts', false );
-		$dynamic_css             = vite( 'customizer' )->dynamic_css->get();
 		$dynamic_css_output      = $this->get_theme_mod( 'dynamic-css-output', 'inline' );
+		$dynamic_css             = vite( 'customizer' )->dynamic_css->get();
 
 		if ( ! empty( $remote_google_fonts_url ) ) {
 			if ( $is_local_google_fonts ) {
