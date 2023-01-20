@@ -1,4 +1,9 @@
 <?php
+/**
+ * Sidebar class.
+ *
+ * @package Vite
+ */
 
 namespace Vite;
 
