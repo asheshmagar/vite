@@ -111,9 +111,7 @@ class Core {
 	public function is_block_editor_active(): bool {
 		$gutenberg = ! ( false === has_filter( 'replace_editor', 'gutenberg_init' ) );
 
-		$block_editor = version_compare( $GLOBALS['wp_version'], '5.0-beta', '>' );
-
-		if ( ! $gutenberg && ! $block_editor ) {
+		if ( ! $gutenberg ) {
 			return false;
 		}
 		if ( $this->is_classic_editor_plugin_active() ) {
