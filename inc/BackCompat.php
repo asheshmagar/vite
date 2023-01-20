@@ -2,6 +2,8 @@
 /**
  * Back compat functionality.
  *
+ * Prevents Vite from running on WordPress versions prior to 5.5 and PHP versions prior to 7.0,
+ *
  * @package Vite
  */
 
