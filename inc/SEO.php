@@ -11,8 +11,6 @@ defined( 'ABSPATH' ) || exit;
 
 use Vite\Traits\Mods;
 
-defined( 'ABSPATH' ) || exit;
-
 /**
  * SEO
  */
@@ -124,9 +122,7 @@ class SEO {
 			$description = get_the_excerpt();
 		} elseif ( is_author() ) {
 			$description = get_the_author_meta( 'description' );
-		} elseif ( is_search() ) {
-			$description = get_bloginfo( 'description' );
-		} elseif ( is_front_page() ) {
+		} elseif ( is_search() || is_front_page() ) {
 			$description = get_bloginfo( 'description' );
 		}
 
@@ -169,9 +165,7 @@ class SEO {
 			$image = get_the_post_thumbnail_url();
 		} elseif ( is_author() ) {
 			$image = get_avatar_url( get_the_author_meta( 'ID' ) );
-		} elseif ( is_search() ) {
-			$image = $this->get_custom_logo_url();
-		} elseif ( is_front_page() ) {
+		} elseif ( is_search() || is_front_page() ) {
 			$image = $this->get_custom_logo_url();
 		}
 
