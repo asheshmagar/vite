@@ -1,6 +1,8 @@
 <?php
 /**
+ * Dynamic CSS class.
  *
+ * @package Vite
  */
 
 namespace Vite;
@@ -41,7 +43,7 @@ class DynamicCSS {
 	 *
 	 * @var array
 	 */
-	public $configs = [];
+	private $configs = [];
 
 	/**
 	 * Holds generated CSS.
@@ -99,7 +101,16 @@ class DynamicCSS {
 				return $css;
 			}
 		}
-		return $this->process()->make()->css;
+		return $this->process()->css;
+	}
+
+	/**
+	 * Get config.
+	 *
+	 * @return array
+	 */
+	public function get_config(): array {
+		return $this->configs;
 	}
 
 	/**
@@ -110,10 +121,8 @@ class DynamicCSS {
 	public function save() {
 		$this
 			->process()
-			->make()
-			->set_theme_mod( 'cached-dynamic-css', $this->css )
 			->save_fonts()
-			->save_to_file();
+			->create_file( 'vite-style.css', $this->css );
 	}
 
 	/**
@@ -196,6 +205,55 @@ class DynamicCSS {
 					$this->append( $this->common( $selector, $property, $value ) );
 			}
 		}
+
+		if ( ! empty( $this->google_fonts ) ) {
+			$fonts     = $this->google_fonts;
+			$families  = array_keys( $fonts );
+			$fonts_url = add_query_arg(
+				[
+					'family'  => implode(
+						'|',
+						array_map(
+							function( $f ) use ( $fonts ) {
+								return str_replace( ' ', '+', $f ) . ':' . implode( ',', array_unique( $fonts[ $f ] ) );
+							},
+							$families
+						)
+					),
+					'display' => 'swap',
+				],
+				'https://fonts.googleapis.com/css'
+			);
+			$this->set_theme_mod( 'google-fonts-url', $fonts_url ); // Save google fonts url.
+		}
+
+		foreach ( $this->css_data as $device => $css_data ) {
+			if ( ! empty( $css_data ) ) {
+				if ( 'desktop' === $device ) {
+					foreach ( $css_data as $selector => $properties ) {
+						if ( ! empty( $selector ) && ! empty( $properties ) ) {
+							$this->css .= $this->minify( $selector . '{' . $properties . '}' );
+						}
+					}
+				}
+				if ( 'tablet' === $device ) {
+					foreach ( $css_data as $selector => $properties ) {
+						if ( ! empty( $selector ) && ! empty( $properties ) ) {
+							$this->css .= '@media(max-width:1024px){' . $this->minify( $selector . '{' . $properties . '}' ) . '}';
+						}
+					}
+				}
+				if ( 'mobile' === $device ) {
+					foreach ( $css_data as $selector => $properties ) {
+						if ( ! empty( $selector ) && ! empty( $properties ) ) {
+							$this->css .= '@media(max-width:767px){' . $this->minify( $selector . '{' . $properties . '}' ) . '}';
+						}
+					}
+				}
+			}
+		}
+
+		$this->set_theme_mod( 'cached-dynamic-css', $this->css );
 
 		return $this;
 	}
@@ -617,41 +675,6 @@ class DynamicCSS {
 	}
 
 	/**
-	 * Make CSS.
-	 *
-	 * @return DynamicCSS
-	 */
-	private function make(): DynamicCSS {
-		foreach ( $this->css_data as $device => $css_data ) {
-			if ( ! empty( $css_data ) ) {
-				if ( 'desktop' === $device ) {
-					foreach ( $css_data as $selector => $properties ) {
-						if ( ! empty( $selector ) && ! empty( $properties ) ) {
-							$this->css .= $this->minify( $selector . '{' . $properties . '}' );
-						}
-					}
-				}
-				if ( 'tablet' === $device ) {
-					foreach ( $css_data as $selector => $properties ) {
-						if ( ! empty( $selector ) && ! empty( $properties ) ) {
-							$this->css .= '@media(max-width:1024px){' . $this->minify( $selector . '{' . $properties . '}' ) . '}';
-						}
-					}
-				}
-				if ( 'mobile' === $device ) {
-					foreach ( $css_data as $selector => $properties ) {
-						if ( ! empty( $selector ) && ! empty( $properties ) ) {
-							$this->css .= '@media(max-width:767px){' . $this->minify( $selector . '{' . $properties . '}' ) . '}';
-						}
-					}
-				}
-			}
-		}
-
-		return $this;
-	}
-
-	/**
 	 * Minify CSS.
 	 *
 	 * @param string $css CSS.
@@ -687,31 +710,6 @@ class DynamicCSS {
 			],
 			$css
 		);
-	}
-
-	/**
-	 * Save to file.
-	 *
-	 * @return DynamicCSS
-	 */
-	private function save_to_file(): DynamicCSS {
-		$this->create_file( 'vite-style.css', $this->css );
-		return $this;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @param string $key Theme mod key.
-	 * @param mixed  $value Theme mod value.
-	 */
-	public function set_theme_mod( string $key, $value ): DynamicCSS {
-		$mods         = get_theme_mod( 'vite' );
-		$mods[ $key ] = $value;
-
-		set_theme_mod( 'vite', $mods );
-
-		return $this;
 	}
 
 	/**
