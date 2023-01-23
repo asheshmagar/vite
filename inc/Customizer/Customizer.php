@@ -447,7 +447,7 @@ class Customizer {
 			'vite-customizer-preview',
 			'_VITE_CUSTOMIZER_PREVIEW_',
 			[
-				'configs' => $this->dynamic_css->configs,
+				'configs' => $this->dynamic_css->get_config(),
 			]
 		);
 		wp_enqueue_style( 'vite-customizer-preview' );
