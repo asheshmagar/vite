@@ -77,13 +77,12 @@ $options = [
 			'separator' => true,
 
 		],
-		'css' => [
+		'css'         => [
 			'selector' => '.vite-brand__title',
 			'property' => 'color',
-			'context' => 'header'
 		],
 	],
-	'vite[header-site-description]'           => [
+	'vite[header-site-description]'            => [
 		'section'     => 'vite[header-logo]',
 		'type'        => 'vite-color',
 		'title'       => __( 'Site description color', 'vite' ),
@@ -96,35 +95,51 @@ $options = [
 			],
 			'separator' => true,
 		],
-		'css' => [
+		'css'         => [
 			'selector' => '.vite-brand__description',
 			'property' => 'color',
-			'context' => 'header'
 		],
 	],
 	'vite[header-site-title-typography]'       => [
 		'default'     => vite( 'core' )->get_theme_mod_defaults()['header-site-title-typography'],
 		'section'     => 'vite[header-logo]',
 		'type'        => 'vite-typography',
-		'title'       => __( 'Site title typography', 'vite' ),
+		'title'       => __( 'Site title font', 'vite' ),
 		'input_attrs' => [
 			'separator' => true,
 		],
-		'css' => [
+		'css'         => [
 			'selector' => '.vite-brand__title a',
-			'context' => 'header'
 		],
 	],
 	'vite[header-site-description-typography]' => [
 		'section'     => 'vite[header-logo]',
 		'type'        => 'vite-typography',
-		'title'       => __( 'Site description typography', 'vite' ),
+		'title'       => __( 'Site description font', 'vite' ),
 		'input_attrs' => [
 			'separator' => true,
 		],
-		'css' => [
+		'css'         => [
 			'selector' => '.vite-brand__description',
-			'context' => 'header'
+		],
+	],
+	'vite[header-logo-margin]'                 => [
+		'section'     => 'vite[header-logo]',
+		'type'        => 'vite-dimensions',
+		'title'       => __( 'Margin', 'vite' ),
+		'input_attrs' => [
+			'units'      => [
+				'px',
+				'%',
+				'em',
+				'rem',
+			],
+			'responsive' => true,
+			'separator'  => true,
+		],
+		'css'         => [
+			'selector' => '.vite-brand',
+			'property' => 'margin',
 		],
 	],
 ];
