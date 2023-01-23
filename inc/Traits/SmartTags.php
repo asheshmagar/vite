@@ -17,15 +17,17 @@ trait SmartTags {
 	 * @return mixed|null
 	 */
 	public function get_smart_tags() {
+		$time_format = get_option( 'time_format', 'H:i:s' );
+		$date_format = get_option( 'date_format', 'Y-m-d' );
 		return $this->filter(
 			'smart/tags',
 			[
 				'{{site-title}}'   => get_bloginfo( 'name' ),
 				'{{site-url}}'     => home_url(),
 				'{{year}}'         => wp_date( 'Y' ),
-				'{{date}}'         => wp_date( 'Y-m-d' ),
-				'{{time}}'         => wp_date( 'H:i:s' ),
-				'{{datetime}}'     => wp_date( 'Y-m-d H:i:s' ),
+				'{{date}}'         => wp_date( $date_format ),
+				'{{time}}'         => wp_date( $time_format ),
+				'{{datetime}}'     => wp_date( "$date_format $time_format" ),
 				'{{copyright}}'    => 'Copyright &copy;',
 				/* Translators: %s: Theme author. */
 				'{{theme-author}}' => sprintf( __( 'Powered by %s' ), '<a href="https://wpvite.com" rel="nofollow noopener" target="_blank">Vite</a>' ),
