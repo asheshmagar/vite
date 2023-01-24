@@ -162,7 +162,7 @@ class TemplateHooks {
 		$classes[] = 'vite';
 
 		if ( is_archive() ) {
-			$archive_layout = $this->get_theme_mod( 'archive-layout' );
+			$archive_layout = $this->get_mod( 'archive-layout' );
 			$classes[]      = 'archive-layout-' . $archive_layout;
 		}
 
@@ -176,7 +176,7 @@ class TemplateHooks {
 	 * @return mixed
 	 */
 	public function change_logo( $attachment_id ) {
-		$mobile_logo = $this->get_theme_mod( 'mobile-logo' );
+		$mobile_logo = $this->get_mod( 'mobile-logo' );
 		if ( $mobile_logo ) {
 			return $mobile_logo;
 		}
@@ -225,10 +225,10 @@ class TemplateHooks {
 	 * @return void
 	 */
 	public function archive_wrapper_open() {
-		$archive_style           = $this->get_theme_mod( 'archive-style' );
-		$archive_columns         = $this->get_theme_mod( 'archive-columns' );
-		$is_masonry              = 'grid' === $archive_style && $this->get_theme_mod( 'archive-style-masonry' );
-		$is_infinite_scroll      = 'infinite-scroll' === $this->get_theme_mod( 'archive-pagination', 'numbered' );
+		$archive_style           = $this->get_mod( 'archive-style' );
+		$archive_columns         = $this->get_mod( 'archive-columns' );
+		$is_masonry              = 'grid' === $archive_style && $this->get_mod( 'archive-style-masonry' );
+		$is_infinite_scroll      = 'infinite-scroll' === $this->get_mod( 'archive-pagination', 'numbered' );
 		$archive_wrapper_classes = [
 			'vite-posts',
 			'vite-posts--' . $archive_style,
@@ -274,7 +274,7 @@ class TemplateHooks {
 	 * @return string[]
 	 */
 	public function post_class( array $classes, array $class, int $post_id ): array {
-		$elements         = $this->get_theme_mod( 'archive-elements' );
+		$elements         = $this->get_mod( 'archive-elements' );
 		$visible_elements = array_filter(
 			$elements,
 			function( $element ) {
@@ -335,8 +335,8 @@ class TemplateHooks {
 			return;
 		}
 
-		$archive_title_position = $this->get_theme_mod( 'archive-title-position' );
-		$archive_title_elements = $this->get_theme_mod( 'archive-title-elements' );
+		$archive_title_position = $this->get_mod( 'archive-title-position' );
+		$archive_title_elements = $this->get_mod( 'archive-title-elements' );
 
 		if ( 'inside' === $archive_title_position ) {
 			$this->add_action(
@@ -357,7 +357,7 @@ class TemplateHooks {
 	 * @return void
 	 */
 	public function content() {
-		if ( is_archive() || is_home() || is_front_page() || is_search() ) {
+		if ( is_archive() || is_home() || is_search() ) {
 			get_template_part( 'template-parts/content/content', '' );
 		} elseif ( is_page() ) {
 			get_template_part( 'template-parts/content/content', 'page' );

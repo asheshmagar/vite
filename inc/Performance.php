@@ -47,7 +47,7 @@ class Performance {
 	 * @return void
 	 */
 	public function disable_emoji_script() {
-		if ( $this->get_theme_mod( 'emoji-script', true ) ) {
+		if ( $this->get_mod( 'emoji-script', true ) ) {
 			return;
 		}
 

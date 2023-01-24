@@ -23,7 +23,7 @@ $options = [
 		'section'     => 'vite[header-logo]',
 		'type'        => 'vite-select',
 		'title'       => __( 'Elements', 'vite' ),
-		'default'     => vite( 'core' )->get_theme_mod_defaults()['header-site-branding-elements'],
+		'default'     => vite( 'core' )->get_mod_defaults()['header-site-branding-elements'],
 		'choices'     => [
 			'logo'                   => __( 'Logo', 'vite' ),
 			'logo-title'             => __( 'Logo & Title', 'vite' ),
@@ -44,7 +44,7 @@ $options = [
 		'section'   => 'vite[header-logo]',
 		'type'      => 'vite-select',
 		'title'     => __( 'Layout', 'vite' ),
-		'default'   => vite( 'core' )->get_theme_mod_defaults()['header-site-branding-layout'],
+		'default'   => vite( 'core' )->get_mod_defaults()['header-site-branding-layout'],
 		'choices'   => [
 			'inline'  => __( 'Inline', 'vite' ),
 			'stacked' => __( 'Stacked', 'vite' ),
@@ -101,7 +101,7 @@ $options = [
 		],
 	],
 	'vite[header-site-title-typography]'       => [
-		'default'     => vite( 'core' )->get_theme_mod_defaults()['header-site-title-typography'],
+		'default'     => vite( 'core' )->get_mod_defaults()['header-site-title-typography'],
 		'section'     => 'vite[header-logo]',
 		'type'        => 'vite-typography',
 		'title'       => __( 'Site title font', 'vite' ),

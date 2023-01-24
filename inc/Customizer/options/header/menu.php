@@ -36,7 +36,7 @@ $options = array_reduce(
 			'section'     => "vite[header-menu-$curr]",
 			'type'        => 'vite-color',
 			'title'       => __( 'Colors', 'vite' ),
-			'default'     => vite( 'core' )->get_theme_mod_defaults()[ "header-menu-$curr-colors" ],
+			'default'     => vite( 'core' )->get_mod_defaults()[ "header-menu-$curr-colors" ],
 			'input_attrs' => [
 				'colors'    => [
 					[
@@ -65,7 +65,7 @@ $options = array_reduce(
 				'section'     => "vite[header-menu-$curr]",
 				'type'        => 'vite-slider',
 				'title'       => __( 'Items Spacing', 'vite' ),
-				'default'     => vite( 'core' )->get_theme_mod_defaults()[ "header-menu-$curr-items-spacing" ],
+				'default'     => vite( 'core' )->get_mod_defaults()[ "header-menu-$curr-items-spacing" ],
 				'input_attrs' => [
 					'min'       => 0,
 					'max'       => 100,
@@ -76,6 +76,21 @@ $options = array_reduce(
 				'css'         => [
 					'selector' => ".vite-nav--$curr .vite-nav__link",
 					'property' => '--padding--inline',
+				],
+			];
+		}
+
+		if ( '3' === $curr ) {
+			$acc[ "vite[header-menu-$curr-style]" ] = [
+				'section'     => "vite[header-menu-$curr]",
+				'type'        => 'vite-select',
+				'title'       => __( 'Style', 'vite' ),
+				'input_attrs' => [
+					'separator' => true,
+				],
+				'choices'     => [
+					'overlay' => __( 'Overlay', 'vite' ),
+					'push'    => __( 'Push', 'vite' ),
 				],
 			];
 		}

@@ -12,7 +12,7 @@ defined( 'ABSPATH' ) || exit;
 <footer id="colophon" class="vite-footer"<?php vite( 'seo' )->print_schema_microdata( 'footer' ); ?>>
 	<?php
 	$core    = vite( 'core' );
-	$configs = $core->get_theme_mod( 'footer' )['desktop'];
+	$configs = $core->get_mod( 'footer' )['desktop'];
 
 	foreach ( $configs as $row => $cols ) {
 		$cols_with_content = array_filter(
@@ -32,8 +32,8 @@ defined( 'ABSPATH' ) || exit;
 		];
 
 		$classes    = vite( 'core' )->filter( 'footer/row/classes', $classes, $row );
-		$row_cols   = $core->get_theme_mod( "footer-$row-row-cols" );
-		$row_layout = $core->get_theme_mod( "footer-$row-row-col-layout" )[ $row_cols ] ?? null;
+		$row_cols   = $core->get_mod( "footer-$row-row-cols" );
+		$row_layout = $core->get_mod( "footer-$row-row-col-layout" )[ $row_cols ] ?? null;
 
 		$container_classes = [
 			'vite-container',

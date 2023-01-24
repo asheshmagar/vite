@@ -135,7 +135,7 @@ class NavMenu {
 			$args['depth'] = 1;
 		}
 
-		if ( vite( 'core' )->get_theme_mod( "header-menu-$type-one-line", false ) ) {
+		if ( vite( 'core' )->get_mod( "header-menu-$type-one-line", false ) ) {
 			$args['container_class'] .= ' vite-nav--one-line';
 		}
 

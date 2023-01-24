@@ -276,8 +276,8 @@ class Customizer {
 		}
 
 		// Sync google fonts.
-		if ( $this->get_theme_mod( 'local-google-fonts' ) ) {
-			$fonts_url = $this->get_theme_mod( 'google-fonts-url' );
+		if ( $this->get_mod( 'local-google-fonts' ) ) {
+			$fonts_url = $this->get_mod( 'google-fonts-url' );
 			foreach ( array_keys( $customized ) as $key ) {
 				if ( str_contains( $key, 'vite' ) && str_contains( $key, 'typography' ) ) {
 					$this->action( 'local-fonts/cleanup' ); // Delete fonts folder on customize save.
@@ -359,7 +359,7 @@ class Customizer {
 		$wp_customize->get_setting( 'custom_logo' )->transport     = 'postMessage';
 
 		$render_callback = function() {
-			get_template_part( 'template-parts/header/header', 'logo' );
+			get_template_part( 'template-parts/builder-elements/logo', '' );
 		};
 
 		$wp_customize->selective_refresh->add_partial(
@@ -375,7 +375,7 @@ class Customizer {
 		$wp_customize->selective_refresh->add_partial(
 			'blogname',
 			[
-				'selector'            => '.site-branding',
+				'selector'            => '.vite-brand',
 				'settings'            => [ 'blogname' ],
 				'container_inclusive' => true,
 				'render_callback'     => $render_callback,
@@ -385,7 +385,7 @@ class Customizer {
 		$wp_customize->selective_refresh->add_partial(
 			'blogdescription',
 			[
-				'selector'            => '.site-branding',
+				'selector'            => '.vite-brand',
 				'settings'            => [ 'blogdescription' ],
 				'container_inclusive' => true,
 				'render_callback'     => $render_callback,

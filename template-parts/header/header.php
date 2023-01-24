@@ -13,7 +13,7 @@ defined( 'ABSPATH' ) || exit;
 	$core = vite( 'core' );
 
 	foreach ( [ 'desktop', 'mobile' ] as $device ) {
-		$configs = vite( 'core' )->get_theme_mod( 'header' )[ $device ] ?? [];
+		$configs = vite( 'core' )->get_mod( 'header' )[ $device ] ?? [];
 
 		if ( empty( $configs ) ) {
 			continue;

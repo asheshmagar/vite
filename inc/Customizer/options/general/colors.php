@@ -8,10 +8,10 @@
 defined( 'ABSPATH' ) || exit;
 
 $options = [
-	'vite[global-palette]' => [
+	'vite[global-palette]'     => [
 		'title'       => __( 'Global', 'vite' ),
 		'type'        => 'vite-color',
-		'default'     => vite( 'core' )->get_theme_mod_defaults()['global-palette'],
+		'default'     => vite( 'core' )->get_mod_defaults()['global-palette'],
 		'input_attrs' => [
 			'colors' => [
 				[
@@ -51,14 +51,13 @@ $options = [
 		'section'     => 'vite[global-colors]',
 		'css'         => [
 			'selector' => ':root',
-			'context'  => 'global',
 		],
 	],
-	'vite[text-color]'     => [
+	'vite[text-color]'         => [
 		'section'     => 'vite[global-colors]',
 		'type'        => 'vite-color',
 		'title'       => __( 'Text color', 'vite' ),
-		'default'     => vite( 'core' )->get_theme_mod_defaults()['text-color'],
+		'default'     => vite( 'core' )->get_mod_defaults()['text-color'],
 		'input_attrs' => [
 			'colors'    => [
 				[
@@ -71,14 +70,13 @@ $options = [
 		'transport'   => 'postMessage',
 		'css'         => [
 			'selector' => ':root',
-			'context'  => 'global',
 		],
 	],
-	'vite[link-colors]'    => [
+	'vite[link-colors]'        => [
 		'section'     => 'vite[global-colors]',
 		'type'        => 'vite-color',
 		'title'       => __( 'Link colors', 'vite' ),
-		'default'     => vite( 'core' )->get_theme_mod_defaults()['text-color'],
+		'default'     => vite( 'core' )->get_mod_defaults()['text-color'],
 		'input_attrs' => [
 			'separator' => true,
 			'colors'    => [
@@ -95,14 +93,13 @@ $options = [
 		'transport'   => 'postMessage',
 		'css'         => [
 			'selector' => ':root',
-			'context'  => 'global',
 		],
 	],
-	'vite[heading-color]'  => [
+	'vite[heading-color]'      => [
 		'section'     => 'vite[global-colors]',
 		'type'        => 'vite-color',
 		'title'       => __( 'Heading color', 'vite' ),
-		'default'     => vite( 'core' )->get_theme_mod_defaults()['heading-color'],
+		'default'     => vite( 'core' )->get_mod_defaults()['heading-color'],
 		'input_attrs' => [
 			'separator' => true,
 			'colors'    => [
@@ -115,14 +112,13 @@ $options = [
 		'transport'   => 'postMessage',
 		'css'         => [
 			'selector' => ':root',
-			'context'  => 'global',
 		],
 	],
-	'vite[button-colors]'  => [
+	'vite[button-colors]'      => [
 		'section'     => 'vite[global-colors]',
 		'type'        => 'vite-color',
 		'title'       => __( 'Button colors', 'vite' ),
-		'default'     => vite( 'core' )->get_theme_mod_defaults()['button-colors'],
+		'default'     => vite( 'core' )->get_mod_defaults()['button-colors'],
 		'input_attrs' => [
 			'separator' => true,
 			'colors'    => [
@@ -147,14 +143,13 @@ $options = [
 		'transport'   => 'postMessage',
 		'css'         => [
 			'selector' => ':root',
-			'context'  => 'global',
 		],
 	],
-	'vite[border-color]'   => [
+	'vite[border-color]'       => [
 		'section'     => 'vite[global-colors]',
 		'type'        => 'vite-color',
 		'title'       => __( 'Border color', 'vite' ),
-		'default'     => vite( 'core' )->get_theme_mod_defaults()['border-color'],
+		'default'     => vite( 'core' )->get_mod_defaults()['border-color'],
 		'input_attrs' => [
 			'separator' => true,
 			'colors'    => [
@@ -168,6 +163,28 @@ $options = [
 		'css'         => [
 			'selector' => ':root',
 			'context'  => 'global',
+		],
+	],
+	'vite[site-background]'    => [
+		'section'     => 'vite[global-colors]',
+		'type'        => 'vite-background',
+		'title'       => __( 'Site Background', 'vite' ),
+		'css'         => [
+			'selector' => 'body',
+		],
+		'input_attrs' => [
+			'separator' => true,
+		],
+	],
+	'vite[content-background]' => [
+		'section'     => 'vite[global-colors]',
+		'type'        => 'vite-background',
+		'title'       => __( 'Content Background', 'vite' ),
+		'css'         => [
+			'selector' => '.vite-content',
+		],
+		'input_attrs' => [
+			'separator' => true,
 		],
 	],
 ];

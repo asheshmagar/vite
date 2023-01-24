@@ -31,7 +31,7 @@ $pagination_args    = $core->filter(
 		'class'     => 'vite-pagination',
 	]
 );
-$is_infinite_scroll = 'infinite-scroll' === $core->get_theme_mod( 'archive-pagination', 'numbered' );
+$is_infinite_scroll = 'infinite-scroll' === $core->get_mod( 'archive-pagination', 'numbered' );
 
 /**
  * Action: vite/pagination/start

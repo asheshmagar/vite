@@ -28,7 +28,7 @@ vite( 'customizer' )->add(
 					'label' => __( 'Breadcrumbs', 'vite' ),
 				],
 			],
-			'default'     => vite( 'core' )->get_theme_mod_defaults()['single-header-elements'],
+			'default'     => vite( 'core' )->get_mod_defaults()['single-header-elements'],
 			'input_attrs' => [
 				'idWithInnerItems' => 'meta',
 				'innerItems'       => [

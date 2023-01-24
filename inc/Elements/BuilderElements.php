@@ -33,8 +33,8 @@ class BuilderElements {
 	 * @return void
 	 */
 	public function logo( $args ) {
-		$elements = $this->get_theme_mod( 'header-site-branding-elements' );
-		$layout   = $this->get_theme_mod( 'header-site-branding-layout' );
+		$elements = $this->get_mod( 'header-site-branding-elements' );
+		$layout   = $this->get_mod( 'header-site-branding-layout' );
 
 		/**
 		 * Action: vite/header/site-branding/start
@@ -82,9 +82,9 @@ class BuilderElements {
 	 * @return void
 	 */
 	public function socials( $args ) {
-		$socials    = $this->get_theme_mod( "{$args['context']}-social-links" );
-		$size       = $this->get_theme_mod( "{$args['context']}-social-icons-size" );
-		$color_type = $this->get_theme_mod( "{$args['context']}-social-icons-color-type" );
+		$socials    = $this->get_mod( "{$args['context']}-social-links" );
+		$size       = $this->get_mod( "{$args['context']}-social-icons-size" );
+		$color_type = $this->get_mod( "{$args['context']}-social-icons-color-type" );
 
 		if ( empty( $socials ) ) {
 			return;
@@ -111,7 +111,7 @@ class BuilderElements {
 						<a <?php print( esc_attr( 'brand' === $color_type && isset( $social['color'] ) ? 'style=--link-color:' . $social['color'] : '' ) ); ?>
 							class="vite-social__link vite-social__link--<?php echo esc_attr( $social['id'] ); ?>"
 							rel="noopener"
-							href=<?php echo esc_url( $this->get_theme_mod( "{$social['id']}-link", '#' ) ); ?>>
+							href=<?php echo esc_url( $this->get_mod( "{$social['id']}-link", '#' ) ); ?>>
 							<?php isset( $social['label'] ) && printf( '<span class="screen-reader-text">%s</span>', esc_html( $social['label'] ) ); ?>
 							<span class="vite-social__icon">
 						<?php
@@ -152,9 +152,9 @@ class BuilderElements {
 	 */
 	public function search( $args ) {
 		$context               = $args['context'];
-		$label                 = $this->get_theme_mod( "$context-search-label" );
-		$label_visibility      = $this->get_theme_mod( "$context-search-label-visibility" );
-		$label_position        = $this->get_theme_mod( "$context-search-label-position" );
+		$label                 = $this->get_mod( "$context-search-label" );
+		$label_visibility      = $this->get_mod( "$context-search-label-visibility" );
+		$label_position        = $this->get_mod( "$context-search-label-position" );
 		$visibility            = 'none';
 		$in_mobile_menu_offset = $args['in_mobile_menu_offset'] ?? false;
 
@@ -279,7 +279,7 @@ class BuilderElements {
 	 */
 	public function html( $args ) {
 		$type    = $args['type'] ?? '1';
-		$content = $this->get_theme_mod( "{$args['context']}-html-$type" );
+		$content = $this->get_mod( "{$args['context']}-html-$type" );
 		$content = $this->parse_smart_tags( (string) $content );
 
 		/**
@@ -315,13 +315,13 @@ class BuilderElements {
 	 */
 	public function button( $args ) {
 		$type      = $args['type'] ?? '1';
-		$text      = $this->get_theme_mod( "{$args['context']}-button-$type-text" );
-		$url       = $this->get_theme_mod( "{$args['context']}-button-$type-url", '#' );
-		$target    = $this->get_theme_mod( "{$args['context']}-button-$type-target" );
-		$download  = $this->get_theme_mod( "{$args['context']}-button-$type-download" );
-		$sponsored = $this->get_theme_mod( "{$args['context']}-button-$type-sponsored" );
-		$nofollow  = $this->get_theme_mod( "{$args['context']}-button-$type-nofollow" );
-		$style     = $this->get_theme_mod( "{$args['context']}-button-$type-style" );
+		$text      = $this->get_mod( "{$args['context']}-button-$type-text" );
+		$url       = $this->get_mod( "{$args['context']}-button-$type-url", '#' );
+		$target    = $this->get_mod( "{$args['context']}-button-$type-target" );
+		$download  = $this->get_mod( "{$args['context']}-button-$type-download" );
+		$sponsored = $this->get_mod( "{$args['context']}-button-$type-sponsored" );
+		$nofollow  = $this->get_mod( "{$args['context']}-button-$type-nofollow" );
+		$style     = $this->get_mod( "{$args['context']}-button-$type-style" );
 
 		$rel = [];
 
@@ -412,7 +412,7 @@ class BuilderElements {
 	 * @return void
 	 */
 	public function mobile_menu_offset() {
-		$offset_config = $this->get_theme_mod( 'header' )['offset'] ?? [];
+		$offset_config = $this->get_mod( 'header' )['offset'] ?? [];
 
 		/**
 		 * Filter: vite/header/mobile-menu-offset/elements.
@@ -496,7 +496,7 @@ class BuilderElements {
 		$menu    = null;
 
 		if ( is_customize_preview() ) {
-			$menu = $this->get_theme_mod( "$context-menu-$type", '0' );
+			$menu = $this->get_mod( "$context-menu-$type", '0' );
 		}
 
 		/**

@@ -50,8 +50,8 @@ class SEO {
 	 * @return void
 	 */
 	public function init_props() {
-		$this->schema_markup = $this->get_theme_mod( 'schema-markup', false );
-		$this->og_meta_tags  = $this->get_theme_mod( 'og-meta-tags', false );
+		$this->schema_markup = $this->get_mod( 'schema-markup', false );
+		$this->og_meta_tags  = $this->get_mod( 'og-meta-tags', false );
 	}
 
 	/**

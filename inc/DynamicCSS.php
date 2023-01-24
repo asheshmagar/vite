@@ -94,9 +94,9 @@ class DynamicCSS {
 	 * @return string
 	 */
 	public function get( bool $cached = true ): string {
-		$is_cached = $this->get_theme_mod( 'cache-dynamic-css', true ) && $cached;
+		$is_cached = $this->get_mod( 'cache-dynamic-css', true ) && $cached;
 		if ( $is_cached ) {
-			$css = $this->get_theme_mod( 'cached-dynamic-css' );
+			$css = $this->get_mod( 'cached-dynamic-css' );
 			if ( ! empty( $css ) ) {
 				return $css;
 			}
@@ -149,7 +149,7 @@ class DynamicCSS {
 				],
 				'https://fonts.googleapis.com/css'
 			);
-			$this->set_theme_mod( 'google-fonts-url', $fonts_url ); // Save google fonts url.
+			$this->set_mod( 'google-fonts-url', $fonts_url ); // Save google fonts url.
 		}
 
 		return $this;
@@ -172,8 +172,8 @@ class DynamicCSS {
 			preg_match( '/\[([^]]*)]/', $key, $match );
 
 			$key     = $match[1] ?? $key;
-			$value   = $this->get_theme_mod( $key );
-			$default = $this->get_theme_mod_default( $key );
+			$value   = $this->get_mod( $key );
+			$default = $this->get_mod_default( $key );
 
 			if ( empty( $value ) || $this->is_default( $value, $default ) ) {
 				continue;
@@ -224,7 +224,7 @@ class DynamicCSS {
 				],
 				'https://fonts.googleapis.com/css'
 			);
-			$this->set_theme_mod( 'google-fonts-url', $fonts_url ); // Save google fonts url.
+			$this->set_mod( 'google-fonts-url', $fonts_url ); // Save google fonts url.
 		}
 
 		foreach ( $this->css_data as $device => $css_data ) {
@@ -253,7 +253,7 @@ class DynamicCSS {
 			}
 		}
 
-		$this->set_theme_mod( 'cached-dynamic-css', $this->css );
+		$this->set_mod( 'cached-dynamic-css', $this->css );
 
 		return $this;
 	}

@@ -8,9 +8,9 @@
 defined( 'ABSPATH' ) || exit;
 
 $posts_render_callback = function() {
-	$archive_style           = vite( 'core' )->get_theme_mod( 'archive-style' );
-	$archive_columns         = vite( 'core' )->get_theme_mod( 'archive-columns' );
-	$is_masonry              = 'grid' === $archive_style && vite( 'core' )->get_theme_mod( 'archive-style-masonry' );
+	$archive_style           = vite( 'core' )->get_mod( 'archive-style' );
+	$archive_columns         = vite( 'core' )->get_mod( 'archive-columns' );
+	$is_masonry              = 'grid' === $archive_style && vite( 'core' )->get_mod( 'archive-style-masonry' );
 	$archive_wrapper_classes = [
 		'vite-posts',
 		'vite-posts--' . $archive_style,
@@ -39,20 +39,25 @@ $posts_render_callback = function() {
 vite( 'customizer' )->add(
 	'settings',
 	[
-		'vite[archive-title-position]' => [
+		'vite[archive-title-divider]'   => [
+			'type'    => 'vite-divider',
+			'title'   => __( 'Title', 'vite' ),
+			'section' => 'vite[archive]',
+		],
+		'vite[archive-title-position]'  => [
 			'type'      => 'vite-select',
-			'title'     => __( 'Title Position', 'vite' ),
+			'title'     => __( 'Position', 'vite' ),
 			'section'   => 'vite[archive]',
 			'choices'   => [
 				'outside' => __( 'Outside content', 'vite' ),
 				'inside'  => __( 'Inside content', 'vite' ),
 			],
-			'default'   => vite( 'core' )->get_theme_mod_defaults()['archive-title-position'],
+			'default'   => vite( 'core' )->get_mod_defaults()['archive-title-position'],
 			'transport' => 'refresh',
 		],
-		'vite[archive-title-elements]' => [
+		'vite[archive-title-elements]'  => [
 			'type'    => 'vite-sortable',
-			'title'   => __( 'Title Elements', 'vite' ),
+			'title'   => __( 'Elements', 'vite' ),
 			'section' => 'vite[archive]',
 			'choices' => [
 				[
@@ -68,21 +73,41 @@ vite( 'customizer' )->add(
 					'label' => __( 'Breadcrumbs', 'vite' ),
 				],
 			],
-			'default' => vite( 'core' )->get_theme_mod_defaults()['archive-title-elements'],
+			'default' => vite( 'core' )->get_mod_defaults()['archive-title-elements'],
 			'partial' => [
 				'selector'            => '.vite-page-header',
 				'container_inclusive' => true,
 				'render_callback'     => function() {
-					$archive_title_elements = vite( 'core' )->get_theme_mod( 'archive-title-elements' );
+					$archive_title_elements = vite( 'core' )->get_mod( 'archive-title-elements' );
 					get_template_part( 'template-parts/page-header/page-header', '', [ 'elements' => $archive_title_elements ] );
 				},
 			],
 		],
-		'vite[archive-layout]'         => [
+		'vite[archive-layout-divider]'  => [
+			'type'    => 'vite-divider',
+			'title'   => __( 'Layout', 'vite' ),
+			'section' => 'vite[archive]',
+		],
+		'vite[archive-title-alignment]' => [
+			'type'    => 'vite-select',
+			'title'   => __( 'Alignment', 'vite' ),
+			'section' => 'vite[archive]',
+			'choices' => [
+				'left'   => __( 'Left', 'vite' ),
+				'center' => __( 'Center', 'vite' ),
+				'right'  => __( 'Right', 'vite' ),
+			],
+			'default' => 'left',
+			'css'     => [
+				'selector' => '.vite-page-header',
+				'property' => 'text-align',
+			],
+		],
+		'vite[archive-layout]'          => [
 			'section'     => 'vite[archive]',
 			'type'        => 'vite-select',
 			'title'       => __( 'Layout', 'vite' ),
-			'default'     => vite( 'core' )->get_theme_mod_defaults()['archive-layout'],
+			'default'     => vite( 'core' )->get_mod_defaults()['archive-layout'],
 			'choices'     => [
 				'wide'          => __( 'Wide', 'vite' ),
 				'narrow'        => __( 'Narrow', 'vite' ),
@@ -95,11 +120,11 @@ vite( 'customizer' )->add(
 				'separator' => true,
 			],
 		],
-		'vite[archive-style]'          => [
+		'vite[archive-style]'           => [
 			'section'     => 'vite[archive]',
 			'type'        => 'vite-select',
 			'title'       => __( 'Style', 'vite' ),
-			'default'     => vite( 'core' )->get_theme_mod_defaults()['archive-style'],
+			'default'     => vite( 'core' )->get_mod_defaults()['archive-style'],
 			'choices'     => [
 				'grid' => __( 'Grid', 'vite' ),
 				'list' => __( 'List', 'vite' ),
@@ -113,11 +138,11 @@ vite( 'customizer' )->add(
 				'separator' => true,
 			],
 		],
-		'vite[archive-columns]'        => [
+		'vite[archive-columns]'         => [
 			'section'     => 'vite[archive]',
 			'type'        => 'vite-buttonset',
 			'title'       => __( 'Columns', 'vite' ),
-			'default'     => vite( 'core' )->get_theme_mod_defaults()['archive-columns'],
+			'default'     => vite( 'core' )->get_mod_defaults()['archive-columns'],
 			'choices'     => [
 				'1' => __( '1', 'vite' ),
 				'2' => __( '2', 'vite' ),
@@ -136,11 +161,11 @@ vite( 'customizer' )->add(
 				'cols' => 4,
 			],
 		],
-		'vite[archive-style-masonry]'  => [
+		'vite[archive-style-masonry]'   => [
 			'section'   => 'vite[archive]',
 			'type'      => 'vite-toggle',
 			'title'     => __( 'Masonry', 'vite' ),
-			'default'   => vite( 'core' )->get_theme_mod_defaults()['archive-style-masonry'],
+			'default'   => vite( 'core' )->get_mod_defaults()['archive-style-masonry'],
 			'condition' => [
 				'vite[archive-style]'    => 'grid',
 				'vite[archive-columns]!' => '1',
@@ -151,7 +176,7 @@ vite( 'customizer' )->add(
 				'render_callback'     => $posts_render_callback,
 			],
 		],
-		'vite[archive-elements]'       => [
+		'vite[archive-elements]'        => [
 			'type'        => 'vite-sortable',
 			'control'     => __( 'Archive elements', 'vite' ),
 			'section'     => 'vite[archive]',
@@ -178,7 +203,7 @@ vite( 'customizer' )->add(
 					'label' => __( 'Read more', 'vite' ),
 				],
 			],
-			'default'     => vite( 'core' )->get_theme_mod_defaults()['archive-elements'],
+			'default'     => vite( 'core' )->get_mod_defaults()['archive-elements'],
 			'input_attrs' => [
 				'idWithInnerItems' => 'meta',
 				'innerItems'       => [
@@ -217,7 +242,7 @@ vite( 'customizer' )->add(
 				},
 			],
 		],
-		'vite[archive-pagination]'     => [
+		'vite[archive-pagination]'      => [
 			'section'     => 'vite[archive]',
 			'type'        => 'vite-buttonset',
 			'title'       => __( 'Pagination', 'vite' ),

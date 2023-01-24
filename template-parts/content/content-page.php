@@ -11,7 +11,7 @@
 // Exit if accessed directly.
 defined( 'ABSPATH' ) || exit;
 
-$elements = vite( 'core' )->get_theme_mod( 'page-header-elements' );
+$elements = vite( 'core' )->get_mod( 'page-header-elements' );
 $core     = vite( 'core' );
 
 /**

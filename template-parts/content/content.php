@@ -11,7 +11,7 @@
 // Exit if accessed directly.
 defined( 'ABSPATH' ) || exit;
 
-$elements = vite( 'core' )->get_theme_mod( 'archive-elements' );
+$elements = vite( 'core' )->get_mod( 'archive-elements' );
 
 $visible_elements = array_filter(
 	$elements,

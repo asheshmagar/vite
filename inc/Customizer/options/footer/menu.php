@@ -33,7 +33,7 @@ $options = [
 		'section'     => 'vite[footer-menu-4]',
 		'type'        => 'vite-color',
 		'title'       => __( 'Colors', 'vite' ),
-		'default'     => vite( 'core' )->get_theme_mod_defaults()['footer-menu-4-colors'],
+		'default'     => vite( 'core' )->get_mod_defaults()['footer-menu-4-colors'],
 		'input_attrs' => [
 			'colors'    => [
 				[
@@ -60,7 +60,7 @@ $options = [
 		'section'     => 'vite[footer-menu-4]',
 		'type'        => 'vite-slider',
 		'title'       => __( 'Items Spacing', 'vite' ),
-		'default'     => vite( 'core' )->get_theme_mod_defaults()['footer-menu-4-items-spacing'],
+		'default'     => vite( 'core' )->get_mod_defaults()['footer-menu-4-items-spacing'],
 		'input_attrs' => [
 			'min'       => 0,
 			'max'       => 100,

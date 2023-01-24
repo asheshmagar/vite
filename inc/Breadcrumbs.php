@@ -125,7 +125,7 @@ class Breadcrumbs {
 		$breadcrumb    = '';
 		$item_count    = count( $this->items );
 		$item_position = 0;
-		$microdata     = $this->get_theme_mod( 'schema-markup', false );
+		$microdata     = $this->get_mod( 'schema-markup', false );
 
 		// Connect the breadcrumb trail if there are items in the trail.
 		if ( 0 < $item_count ) {
