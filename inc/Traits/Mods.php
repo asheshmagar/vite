@@ -22,16 +22,14 @@ trait Mods {
 	 *
 	 * @return false|mixed|null
 	 */
-	public function get_theme_mod( string $key, $default = false ) {
+	public function get_mod( string $key, $default = false ) {
 		$mods = get_theme_mod( 'vite' );
 
 		if ( isset( $mods[ $key ] ) ) {
-			return $this->filter( "theme-mods/$key", $mods[ $key ] );
+			return $this->filter( "mod/$key", $mods[ $key ] );
 		}
 
-		$defaults = $this->get_theme_mod_defaults();
-
-		return $defaults[ $key ] ?? $default;
+		return $this->get_mod_defaults()[ $key ] ?? $default;
 	}
 
 	/**
@@ -39,7 +37,7 @@ trait Mods {
 	 *
 	 * @return mixed|null
 	 */
-	public function get_theme_mod_defaults() {
+	public function get_mod_defaults() {
 		$header_button_defaults = array_reduce(
 			[ 1, 2 ],
 			function ( $acc, $curr ) {
@@ -611,7 +609,7 @@ trait Mods {
 			[]
 		);
 
-		return $this->filter( 'theme-mods/defaults', array_merge( $defaults, $header_button_defaults, $footer_row_layout_defaults ) );
+		return $this->filter( 'mod/defaults', array_merge( $defaults, $header_button_defaults, $footer_row_layout_defaults ) );
 	}
 
 	/**
@@ -621,10 +619,8 @@ trait Mods {
 	 *
 	 * @return mixed|null
 	 */
-	public function get_theme_mod_default( string $key ) {
-		$defaults = $this->get_theme_mod_defaults();
-
-		return $defaults[ $key ] ?? null;
+	public function get_mod_default( string $key ) {
+		return $this->get_mod_defaults()[ $key ] ?? null;
 	}
 
 	/**
@@ -635,7 +631,7 @@ trait Mods {
 	 *
 	 * @return void
 	 */
-	public function set_theme_mod( string $key, $value ) {
+	public function set_mod( string $key, $value ) {
 		$mods         = get_theme_mod( 'vite' );
 		$mods[ $key ] = $value;
 
@@ -649,7 +645,7 @@ trait Mods {
 	 * @param bool|string $migrate Migration key.
 	 * @return void
 	 */
-	public function remove_theme_mod( string $key, $migrate = false ) {
+	public function remove_mod( string $key, $migrate = false ) {
 		$mods = get_theme_mod( 'vite' );
 
 		if ( $migrate && is_string( $migrate ) ) {
