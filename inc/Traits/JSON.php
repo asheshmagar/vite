@@ -16,24 +16,24 @@ trait JSON {
 	 * Get JSON to array.
 	 *
 	 * @param string      $file File.
-	 * @param null|string $key Key to hold the JSON array.
+	 * @param null|string $property Property to hold the JSON array.
 	 * @return array|mixed
 	 */
-	public function json_to_array( string $file, string $key = null ) {
-		$key = $key ?? md5( $file );
+	public function json_to_array( string $file, string $property = null ) {
+		$property = $property ?? md5( $file );
 
-		if ( isset( $this->{$key} ) ) {
-			return $this->{$key};
+		if ( isset( $this->{$property} ) ) {
+			return $this->{$property};
 		}
 
 		if ( ! file_exists( $file ) ) {
-			return [];
+			$this->{$property} = [];
+		} else {
+			ob_start();
+			include $file;
+			$this->{$property} = json_decode( ob_get_clean(), true );
 		}
 
-		ob_start();
-		include $file;
-		$this->{$key} = json_decode( ob_get_clean(), true );
-
-		return $this->{$key};
+		return $this->{$property};
 	}
 }
