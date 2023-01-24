@@ -12,8 +12,6 @@ defined( 'ABSPATH' ) || exit;
 
 use Vite\Traits\Hook;
 
-defined( 'ABSPATH' ) || exit;
-
 /**
  * Class Theme.
  */
@@ -38,6 +36,7 @@ class Vite {
 				'performance',
 				'scripts-styles',
 				'template-hooks',
+				'compatibility',
 			]
 		);
 
