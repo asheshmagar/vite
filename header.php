@@ -59,6 +59,7 @@ $core = vite( 'core' );
 			<?php esc_html_e( 'Skip to content', 'vite' ); ?>
 		</a>
 		<?php wp_body_open(); ?>
+		<?php $core->action( 'body/open' ); ?>
 		<div id="page" class="wp-site-blocks vite-site">
 			<?php
 			/**
