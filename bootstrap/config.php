@@ -64,6 +64,9 @@ return [
 	'scripts-styles'       => [
 		'concrete' => 'Vite\ScriptsStyles',
 	],
+	'compatibility'        => [
+		'concrete' => 'Vite\Compatibility\Compatibility',
+	],
 	'theme'                => [
 		'concrete' => 'Vite\Vite',
 	],
