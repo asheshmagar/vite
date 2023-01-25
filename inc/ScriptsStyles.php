@@ -63,17 +63,18 @@ class ScriptsStyles {
 		$customizer_asset         = $this->get_asset( 'customizer' );
 		$customizer_preview_asset = $this->get_asset( 'customizer-preview' );
 		$meta_asset               = $this->get_asset( 'meta' );
+		$frontend_asset           = $this->get_asset( 'frontend' );
 
-		wp_register_script( 'vite-script', VITE_ASSETS_URI . 'dist/frontend.js', [], VITE_VERSION, false );
+		wp_register_script( 'vite-script', VITE_ASSETS_URI . 'dist/frontend.js', [], $frontend_asset['version'], false );
 		wp_register_script( 'vite-customizer', VITE_ASSETS_URI . 'dist/customizer.js', $customizer_asset['dependencies'], $customizer_asset['version'], true );
 		wp_register_script( 'vite-meta', VITE_ASSETS_URI . 'dist/meta.js', $meta_asset['dependencies'], $meta_asset['version'], true );
 		wp_register_script( 'vite-meta-preview', VITE_ASSETS_URI . 'dist/meta-preview.js', [ 'wp-components' ], $meta_asset['version'], true );
 		wp_register_script( 'vite-customizer-preview', VITE_ASSETS_URI . 'dist/customizer-preview.js', array_merge( $customizer_preview_asset['dependencies'], [ 'customize-preview' ] ), $customizer_preview_asset['version'], true );
 
 		wp_register_style( 'vite-customizer', VITE_ASSETS_URI . 'dist/customizer.css', [ 'wp-components' ], $customizer_asset['version'] );
-		wp_register_style( 'vite-customizer-preview', VITE_ASSETS_URI . 'dist/customizer-preview.css', [], '1.0.0' );
+		wp_register_style( 'vite-customizer-preview', VITE_ASSETS_URI . 'dist/customizer-preview.css', [], $customizer_preview_asset['version'] );
 
-		wp_register_style( 'vite-style', VITE_ASSETS_URI . 'dist/style.css', [], VITE_VERSION );
+		wp_register_style( 'vite-style', VITE_ASSETS_URI . 'dist/style.css', [], $frontend_asset['version'] );
 		wp_style_add_data( 'vite-style', 'precache', true );
 	}
 
