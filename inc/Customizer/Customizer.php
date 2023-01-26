@@ -394,15 +394,6 @@ class Customizer {
 	}
 
 	/**
-	 * Save dynamic CSS.
-	 *
-	 * @return void
-	 */
-	private function save_dynamic_css() {
-		$this->dynamic_css->save();
-	}
-
-	/**
 	 * Enqueue control script.
 	 *
 	 * @return void
