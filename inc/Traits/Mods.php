@@ -29,7 +29,7 @@ trait Mods {
 			return $this->filter( "mod/$key", $mods[ $key ] );
 		}
 
-		return $this->get_mod_defaults()[ $key ] ?? $default;
+		return $this->get_mod_default( $key ) ?? $default;
 	}
 
 	/**
@@ -309,6 +309,7 @@ trait Mods {
 				'value' => 728,
 				'unit'  => 'px',
 			],
+			'content-layout'                 => 'default',
 			'content-spacing'                => [
 				'desktop' => [
 					'top'    => 4,
