@@ -17,7 +17,7 @@ vite( 'core' )->action( 'pwa/offline/start' );
 /**
  * Action: vite/pwa/offline.
  *
- * @see \Vite\Compatibility\PWA::offline()
+ * @see \Vite\Compatibility\Plugin\PWA::offline()
  */
 vite( 'core' )->action( 'pwa/offline' );
 
