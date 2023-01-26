@@ -1,10 +1,10 @@
 <?php
 
-namespace Vite\Compatibility;
+namespace Vite\Compatibility\Plugin;
 
 defined( 'ABSPATH' ) || exit;
 
-class EasyDigitalDownloads extends AbstractCompatibility {
+class TheEventsCalendar extends Plugin {
 
 	/**
 	 * {@inheritDoc}

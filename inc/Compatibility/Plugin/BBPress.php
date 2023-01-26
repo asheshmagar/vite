@@ -1,11 +1,14 @@
 <?php
 
-namespace Vite\Compatibility;
+namespace Vite\Compatibility\Plugin;
 
 defined( 'ABSPATH' ) || exit;
 
-class LifterLMS extends AbstractCompatibility {
+class BBPress extends Plugin {
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public function init() {
 		// TODO: Implement init() method.
 	}

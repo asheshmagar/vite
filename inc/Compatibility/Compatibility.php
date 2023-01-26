@@ -9,6 +9,19 @@ namespace Vite\Compatibility;
 
 defined( 'ABSPATH' ) || exit;
 
+use Vite\Compatibility\Plugin\{
+	Plugin,
+	BBPress,
+	Edd,
+	Elementor,
+	JetPack,
+	LifterLMS,
+	PWA,
+	StarterContent,
+	TheEventsCalendar,
+	WebStories,
+	WooCommerce
+};
 use Vite\Traits\Hook;
 
 /**
@@ -47,7 +60,7 @@ class Compatibility {
 					'should_load' => class_exists( 'LifterLMS' ),
 				],
 				'easy-digital-downloads' => [
-					'class'       => EasyDigitalDownloads::class,
+					'class'       => EDD::class,
 					'should_load' => class_exists( 'Easy_Digital_Downloads' ),
 				],
 				'woocommerce'            => [
@@ -81,7 +94,7 @@ class Compatibility {
 			if (
 				! $args['should_load'] ||
 				! $args['class'] ||
-				! is_subclass_of( $args['class'], AbstractCompatibility::class )
+				! is_subclass_of( $args['class'], Plugin::class )
 			) {
 				continue;
 			}

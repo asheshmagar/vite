@@ -9,35 +9,66 @@ import RadioImage from '../radio-image/radio-image';
 import Slider from '../slider/slider';
 import Toggle from '../toggle/toggle';
 import Gradient from '../gradient/gradient';
+import AdvSelect from '../adv-select/adv-select';
+import Select from '../select/select';
+import Input from '../input/input';
+import Border from '../border/border';
+import Checkbox from '../checkbox/checkbox';
+import Textarea from '../textarea/textarea';
 import _ from 'lodash';
 
 const SubControl = props => {
-	const { name, control: type, customizer, ...otherProps } = props;
-	const control = customizer.control( name );
-	_.extend( control.params, otherProps );
+	const { id, type, customizer, ...otherProps } = props;
+	const control = customizer.control( id );
+
+	_.extend( control?.params ?? {}, otherProps );
+
+	const controlProps = {
+		control,
+		customizer,
+	};
+
 	switch ( type ) {
 		case 'vite-color':
-			return <Color control={ control } customizer={ customizer } />;
+			return <Color { ...controlProps } />;
 		case 'vite-background':
-			return <Background control={ control } customizer={ customizer } />;
+			return <Background { ...controlProps } />;
 		case 'vite-typography':
-			return <Typography control={ control } customizer={ customizer } />;
+			return <Typography { ...controlProps } />;
 		case 'vite-dimensions':
-			return <Dimensions control={ control } customizer={ customizer } />;
+			return <Dimensions { ...controlProps } />;
 		case 'vite-buttonset':
-			return <ButtonSet control={ control } customizer={ customizer } />;
+			return <ButtonSet { ...controlProps } />;
 		case 'vite-custom':
-			return <Custom control={ control } customizer={ customizer } />;
+			return <Custom { ...controlProps } />;
 		case 'vite-navigate':
-			return <Navigate control={ control } customizer={ customizer } />;
+			return <Navigate { ...controlProps } />;
 		case 'vite-radio-image':
-			return <RadioImage control={ control } customizer={ customizer } />;
+			return <RadioImage { ...controlProps } />;
 		case 'vite-slider':
-			return <Slider control={ control } customizer={ customizer } />;
+			return <Slider { ...controlProps } />;
 		case 'vite-toggle':
-			return <Toggle control={ control } customizer={ customizer } />;
+			return <Toggle { ...controlProps } />;
 		case 'vite-gradient':
-			return <Gradient control={ control } customizer={ customizer } />;
+			return <Gradient { ...controlProps } />;
+		case 'vite-adv-select':
+			return <AdvSelect { ...controlProps } />;
+		case 'vite-sortable':
+			return <AdvSelect { ...controlProps } />;
+		case 'vite-select':
+		case 'select':
+			return <Select { ...controlProps } />;
+		case 'input':
+		case 'vite-input':
+			return <Input { ...controlProps } />;
+		case 'vite-border':
+			return <Border { ...controlProps } />;
+		case 'vite-textarea':
+		case 'textarea':
+			return <Textarea { ...controlProps } />;
+		case 'vite-checkbox':
+		case 'checkbox':
+			return <Checkbox { ...controlProps } />;
 		default:
 			return null;
 	}

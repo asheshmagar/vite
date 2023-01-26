@@ -26,6 +26,14 @@ $layouts: (
 		grid-template-columns: var(--grid-columns, 1fr);
 	}
 
+	&--full-width {
+		--container-width: 100%;
+	}
+
+	&--narrow {
+		--container-width: var(--container-narrow-width);
+	}
+
 	&--col-2 {
 		--grid-columns: repeat(2, auto);
 	}

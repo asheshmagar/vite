@@ -1,13 +1,12 @@
 <?php
 
-namespace Vite\Compatibility;
+namespace Vite\Compatibility\Plugin;
 
 use Vite\Traits\Mods;
-use Elementor as ElementorCore;
 
 defined( 'ABSPATH' ) || exit;
 
-class Elementor extends AbstractCompatibility {
+class Elementor extends Plugin {
 
 	use Mods;
 

@@ -5,15 +5,16 @@
  * @package Vite
  */
 
-namespace Vite\Compatibility;
+namespace Vite\Compatibility\Plugin;
 
-use WP_Post;
 use Vite\Traits\JSON;
+use WP_Post;
+use Vite\Compatibility\Plugin\Plugin as Base;
 
 /**
  * Class StarterContent.
  */
-class StarterContent extends AbstractCompatibility {
+class StarterContent extends Base {
 
 	use JSON;
 

@@ -253,3 +253,13 @@
 #customize-control-vite-mobile-logo {
 	margin-top: 20px;
 }
+
+.wp-block-social-links {
+	display: flex !important;
+	gap: 0.5em;
+
+	.wp-block-social-link {
+		margin-left: unset !important;
+		margin-right: unset !important;
+	}
+}

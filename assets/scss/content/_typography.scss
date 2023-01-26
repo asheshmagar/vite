@@ -84,9 +84,8 @@ blockquote {
 	margin: var(--typography-spacing-vertical) 0;
 	padding: var(--spacing);
 	border-right: none;
-	border-left: 0.25rem solid var(--border-color);
-	border-top: 0.25rem solid var(--border-color);
 	border-bottom: none;
+	border-left: 0.25rem solid;
 
 	footer {
 		margin-top: calc(var(--typography-spacing-vertical) * 0.5);

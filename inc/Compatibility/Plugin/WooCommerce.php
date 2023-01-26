@@ -5,14 +5,14 @@
  * @package Vite
  */
 
-namespace Vite\Compatibility;
+namespace Vite\Compatibility\Plugin;
 
 defined( 'ABSPATH' ) || exit;
 
 /**
  * WooCommerce's compatibility.
  */
-class WooCommerce extends AbstractCompatibility {
+class WooCommerce extends Plugin {
 
 	/**
 	 * {@inheritDoc}

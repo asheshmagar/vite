@@ -86,11 +86,11 @@
 }
 
 .comment-form {
+	--typography-spacing-vertical: 0;
+
+	.submit,
 	.form-submit {
 		margin-bottom: 0;
-	}
-
-	.submit {
 		width: auto;
 	}
 

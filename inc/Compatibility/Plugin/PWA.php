@@ -5,14 +5,14 @@
  * @package Vite
  */
 
-namespace Vite\Compatibility;
+namespace Vite\Compatibility\Plugin;
 
 defined( 'ABSPATH' ) || exit;
 
 /**
  * Class PWA.
  */
-class PWA extends AbstractCompatibility {
+class PWA extends Plugin {
 
 	/**
 	 * Init.

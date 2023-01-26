@@ -5,21 +5,21 @@
  * @package Vite
  */
 
-namespace Vite\Compatibility;
+namespace Vite\Compatibility\Plugin;
 
 defined( 'ABSPATH' ) || exit;
 
 /**
  * WebStories compatibility.
  */
-class WebStories extends AbstractCompatibility {
+class WebStories extends Plugin {
 
 	/**
 	 * {@inheritDoc}
 	 */
 	public function init() {
 		add_action( 'after_setup_theme', [ $this, 'setup' ] );
-		$this->add_action( 'vite/body/open', [ $this, 'embed' ] );
+		add_action( 'vite/body/open', [ $this, 'embed' ] );
 	}
 
 	/**

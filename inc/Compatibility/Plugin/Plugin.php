@@ -5,14 +5,14 @@
  * @package Vite
  */
 
-namespace Vite\Compatibility;
+namespace Vite\Compatibility\Plugin;
 
 use Vite\Traits\Hook;
 
 /**
  * Class AbstractCompatibility.
  */
-abstract class AbstractCompatibility {
+abstract class Plugin {
 
 	use Hook;
 

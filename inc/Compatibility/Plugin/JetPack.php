@@ -5,14 +5,14 @@
  * @package Vite
  */
 
-namespace Vite\Compatibility;
+namespace Vite\Compatibility\Plugin;
 
 defined( 'ABSPATH' ) || exit;
 
 /**
  * JetPack compatibility.
  */
-class JetPack extends AbstractCompatibility {
+class JetPack extends Plugin {
 
 	/**
 	 * {@inheritDoc}
