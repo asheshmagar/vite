@@ -8,7 +8,7 @@
     },
     "files": [
       "bootstrap/app.php",
-      "inc/Compat.php"
+      "inc/Polyfills.php"
     ]
   },
   "require": {
