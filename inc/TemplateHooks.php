@@ -58,11 +58,29 @@ class TemplateHooks {
 		$this->add_action( 'vite/single/content/content/start', [ $this, 'single_featured_image' ] );
 		$this->add_action( 'vite/single/content/header', [ $this, 'header_elements' ] );
 		$this->add_action( 'vite/page/content/header', [ $this, 'header_elements' ] );
+		$this->add_filter( 'vite/content/container/classes', [ $this, 'content_container_class' ], 10, 2 );
 
 		add_action( 'wp_footer', [ $this, 'scroll_to_top' ] );
 		add_filter( 'post_class', [ $this, 'post_class' ], 10, 3 );
 		add_filter( 'body_class', [ $this, 'body_class' ] );
-		add_filter( 'embed_oembed_html', [ $this, 'embed_oembed_html' ], 10, 2 );
+		add_filter( 'embed_oembed_html', [ $this, 'embed_oembed_html' ], 10 );
+	}
+
+	/**
+	 * Content layout classes.
+	 *
+	 * @param array $classes CSS classes.
+	 *
+	 * @return mixed
+	 */
+	public function content_container_class( array $classes ) {
+		$content_layout = $this->get_mod( 'content-layout' );
+
+		if ( 'default' !== $content_layout ) {
+			$classes[] = 'vite-container--' . $content_layout;
+		}
+
+		return $classes;
 	}
 
 	/**
