@@ -61,3 +61,25 @@ if ( ! function_exists( 'str_contains' ) ) {
 	}
 }
 
+if ( ! function_exists( 'str_contains_arr' ) ) {
+
+	/**
+	 * Performs a case-sensitive check indicating if any of the needles
+	 * are contained in haystack.
+	 *
+	 * @param string $haystack The string to search in.
+	 * @param array  $needles  The substrings to search for in the haystack.
+	 *
+	 * @return bool True if any of the `$needles` are in `$haystack`, otherwise false.
+	 */
+	function str_contains_arr( string $haystack, array $needles ): bool {
+		foreach ( $needles as $needle ) {
+			if ( str_contains( $haystack, $needle ) ) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+}
+
