@@ -23,7 +23,19 @@ $core     = vite( 'core' );
  */
 $core->action( 'single/content/start' );
 ?>
-<article id="post-<?php the_ID(); ?>" <?php post_class(); ?><?php vite( 'seo' )->print_schema_microdata( 'article' ); ?>>
+<article
+<?php
+$core->print_html_attributes(
+	'article',
+	[
+		'id'    => 'post-' . get_the_ID(),
+		'class' => get_post_class(),
+	],
+	true,
+	'single'
+);
+?>
+>
 	<header class="vite-post__header">
 		<?php
 		/**
@@ -38,7 +50,18 @@ $core->action( 'single/content/start' );
 		?>
 	</header>
 	<?php $core->action( 'single/content/content/start' ); ?>
-	<div class="vite-post__content">
+	<div
+	<?php
+	$core->print_html_attributes(
+		'article/content',
+		[
+			'class' => [ 'vite-post__content' ],
+		],
+		true,
+		get_post_type()
+	);
+	?>
+	>
 		<?php
 		/**
 		 * Action: vite/single/content/content.

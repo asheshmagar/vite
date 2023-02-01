@@ -8,10 +8,22 @@
 
 defined( 'ABSPATH' ) || exit;
 
+$core = vite( 'core' );
 ?>
-<footer id="colophon" class="vite-footer"<?php vite( 'seo' )->print_schema_microdata( 'footer' ); ?>>
+<footer
+<?php
+$core->print_html_attributes(
+	'footer',
+	[
+		'id'    => 'colophon',
+		'class' => [
+			'vite-footer',
+		],
+	]
+);
+?>
+>
 	<?php
-	$core    = vite( 'core' );
 	$configs = $core->get_mod( 'footer' )['desktop'];
 
 	foreach ( $configs as $row => $cols ) {

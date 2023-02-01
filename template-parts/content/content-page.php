@@ -23,7 +23,19 @@ $core     = vite( 'core' );
  */
 $core->action( 'page/content/start' );
 ?>
-<article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
+<article
+<?php
+$core->print_html_attributes(
+	'article',
+	[
+		'id'    => 'post-' . get_the_ID(),
+		'class' => get_post_class(),
+	],
+	true,
+	'page'
+);
+?>
+>
 	<div class="vite-post__header">
 	<?php
 	/**
@@ -37,7 +49,18 @@ $core->action( 'page/content/start' );
 	$core->action( 'page/content/header', $elements );
 	?>
 	</div>
-	<div class="vite-post__content">
+	<div
+	<?php
+	$core->print_html_attributes(
+		'article/content',
+		[
+			'class' => [ 'vite-post__content' ],
+		],
+		true,
+		get_post_type()
+	);
+	?>
+	>
 		<?php
 		/**
 		 * Action: vite/page/content/content.

@@ -13,7 +13,17 @@ $core = vite( 'core' );
 
 get_header();
 ?>
-	<main id="main" class="vite-main">
+	<main
+	<?php
+	$core->print_html_attributes(
+		'page/main',
+		[
+			'id'    => 'main',
+			'class' => [ 'vite-main' ],
+		]
+	);
+	?>
+	>
 		<?php
 			/**
 			 * Action: vite/page/start.

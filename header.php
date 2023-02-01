@@ -14,7 +14,17 @@ defined( 'ABSPATH' ) || exit;
 $core = vite( 'core' );
 ?>
 <!doctype html>
-<html class="no-js" <?php language_attributes(); ?><?php vite( 'seo' )->print_schema_microdata( 'html' ); ?>>
+<html
+<?php
+language_attributes();
+$core->print_html_attributes(
+	'html',
+	[
+		'class' => 'no-js',
+	]
+);
+?>
+>
 	<head>
 		<?php
 		/**
@@ -50,7 +60,7 @@ $core = vite( 'core' );
 		$core->action( 'head/end' );
 		?>
 	</head>
-	<body <?php body_class(); ?>>
+	<body<?php $core->print_html_attributes( 'body', [ 'class' => get_body_class() ] ); ?>>
 		<a
 			class="skip-link screen-reader-text"
 			href="#content"
@@ -60,7 +70,21 @@ $core = vite( 'core' );
 		</a>
 		<?php wp_body_open(); ?>
 		<?php $core->action( 'body/open' ); ?>
-		<div id="page" class="wp-site-blocks vite-site">
+		<div
+		<?php
+		$core->print_html_attributes(
+			'body',
+			[
+				'id'    => 'page',
+				'class' => [
+					'wp-site-blocks',
+					'vite-site',
+					'hfeed'
+				],
+			]
+		);
+		?>
+		>
 			<?php
 			/**
 			 * Action: vite/header/start.
@@ -89,7 +113,19 @@ $core = vite( 'core' );
 			 */
 			$core->action( 'header/end' );
 			?>
-			<div id="content" class="vite-content">
+			<div
+			<?php
+			$core->print_html_attributes(
+				'content',
+				[
+					'id'    => 'content',
+					'class' => [
+						'vite-content',
+					],
+				]
+			);
+			?>
+			>
 				<div class="vite-container">
 					<div id="primary" class="vite-content__area">
 						<?php

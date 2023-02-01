@@ -49,8 +49,22 @@ if ( $pagination ) {
 	$pagination = str_replace( 'class="page-numbers current"', 'class="vite-pagination__link vite-pagination__link--current"', $pagination );
 	$pagination = str_replace( 'class="next page-numbers"', 'class="vite-pagination__link vite-pagination__link--next"', $pagination );
 	$pagination = str_replace( 'class="prev page-numbers"', 'class="vite-pagination__link vite-pagination__link--prev"', $pagination );
+
 	?>
-	<nav class="vite-pagination<?php echo( esc_attr( $pagination ? ' vite-pagination--infinite-scroll' : '' ) ); ?>" aria-label="<?php esc_attr_e( 'Posts', 'vite' ); ?>">
+	<nav
+	<?php
+	$core->print_html_attributes(
+		'archive/posts-pagination',
+		[
+			'class'      => [
+				'vite-pagination',
+				$is_infinite_scroll ? 'vite-pagination--infinite-scroll' : '',
+			],
+			'aria-label' => __( 'Posts', 'vite' ),
+		]
+	);
+	?>
+	>
 		<h2 class="screen-reader-text"><?php esc_html_e( 'Posts navigation', 'vite' ); ?></h2>
 		<div class="vite-pagination__links"<?php echo( $is_infinite_scroll ? ' style=display:none' : '' ); ?>>
 			<?php

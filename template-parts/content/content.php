@@ -32,7 +32,19 @@ $core             = vite( 'core' );
  */
 $core->action( 'archive/content/start' );
 ?>
-<article id="post-<?php the_ID(); ?>" <?php post_class(); ?><?php vite( 'seo' )->print_schema_microdata( 'article' ); ?>>
+<article
+<?php
+$core->print_html_attributes(
+	'article',
+	[
+		'id'    => 'post-' . get_the_ID(),
+		'class' => get_post_class(),
+	],
+	true,
+	get_post_type()
+);
+?>
+>
 	<div class="vite-post__inner">
 		<?php
 		/**

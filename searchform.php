@@ -19,7 +19,22 @@ if ( $in_mobile_menu_offset ) {
 
 $core->action( 'search-form/start' );
 ?>
-<form role="search" method="get" class="vite-search-form vite-search-form--<?php echo esc_attr( $context ); ?>" action="<?php echo esc_url( home_url( '/' ) ); ?>">
+<form
+<?php
+$core->print_html_attributes(
+	"search/$context",
+	[
+		'role'   => 'search',
+		'method' => 'get',
+		'class'  => [
+			'vite-search-form',
+			"vite-search-form--$context",
+		],
+		'action' => esc_url( home_url( '/' ) ),
+	]
+);
+?>
+>
 	<label>
 		<span class="screen-reader-text"><?php echo esc_html__( 'Search for:', 'vite' ); ?></span>
 		<input type="search" class="vite-search-form__input" placeholder="<?php esc_html_e( 'Search &hellip;', 'vite' ); ?>" value="<?php echo esc_attr( get_search_query() ); ?>" name="s">

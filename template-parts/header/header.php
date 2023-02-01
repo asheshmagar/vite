@@ -7,11 +7,23 @@
  */
 
 defined( 'ABSPATH' ) || exit;
-?>
-<header id="mast-head" class="vite-header"<?php vite( 'seo' )->print_schema_microdata( 'header' ); ?>>
-	<?php
-	$core = vite( 'core' );
 
+$core = vite( 'core' );
+?>
+<header
+<?php
+$core->print_html_attributes(
+	'header',
+	[
+		'id'    => 'mast-head',
+		'class' => [
+			'vite-header',
+		],
+	]
+);
+?>
+>
+	<?php
 	foreach ( [ 'desktop', 'mobile' ] as $device ) {
 		$configs = vite( 'core' )->get_mod( 'header' )[ $device ] ?? [];
 

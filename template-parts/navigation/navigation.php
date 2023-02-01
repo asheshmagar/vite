@@ -22,7 +22,16 @@ $next = get_next_post();
  */
 $core->action( 'single/post-navigation/start' );
 ?>
-<div class="vite-navigation">
+<div
+<?php
+$core->print_html_attributes(
+	'single/post-navigation',
+	[
+		'class' => 'vite-navigation',
+	]
+);
+?>
+>
 	<?php if ( $prev ) : ?>
 		<a class="vite-navigation__link vite-navigation__link--prev" href="<?php echo esc_url( get_permalink( $prev->ID ) ); ?>">
 			<span class="screen-reader-text"><?php esc_html_e( 'Previous Post', 'vite' ); ?></span>

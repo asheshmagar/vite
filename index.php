@@ -20,7 +20,17 @@ $core = vite( 'core' );
 
 get_header();
 ?>
-	<main id="main" class="vite-main">
+	<main
+	<?php
+	$core->print_html_attributes(
+		'archive/main',
+		[
+			'id'    => 'main',
+			'class' => [ 'vite-main' ],
+		]
+	);
+	?>
+	>
 		<?php
 			/**
 			 * Action: vite/archive/start.
