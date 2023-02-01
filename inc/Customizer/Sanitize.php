@@ -240,6 +240,9 @@ class Sanitize {
 					case 'visible':
 						$input[ $i ][ $k ] = (bool) $input[ $i ][ $k ];
 						break;
+					case 'items':
+						$input[ $i ][ $k ] = $this->sanitize_sortable( $input[ $i ][ $k ] );
+						break;
 					default:
 						unset( $input[ $i ][ $k ] );
 						break;
