@@ -30,7 +30,7 @@ $core->action( 'sidebar/start' );
  */
 $core->action( 'sidebar' );
 
-vite( 'sidebar' )->render_sidebar( [ 'should_render' => false ] );
+vite( 'widgets' )->render_sidebar( [ 'should_render' => false ] );
 
 /**
  * Action: vite/sidebar/end.
