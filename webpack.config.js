@@ -13,6 +13,7 @@ module.exports = ( _, args ) => ( {
 		'customizer-preview': resolve( process.cwd(), 'assets/js/customizer/preview', 'index.js' ),
 		frontend: resolve( process.cwd(), 'assets/js/frontend', 'index.js' ),
 		style: resolve( process.cwd(), 'assets/scss', 'style.scss' ),
+		'editor-style': resolve( process.cwd(), 'assets/scss', 'editor-style.scss' ),
 	},
 	output: {
 		filename: '[name].js',
