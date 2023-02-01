@@ -10,14 +10,14 @@ namespace Vite;
 
 defined( 'ABSPATH' ) || exit;
 
-use Vite\Traits\Hook;
+use Vite\Traits\Mods;
 
 /**
  * Class Theme.
  */
 class Vite {
 
-	use Hook;
+	use Mods;
 
 	/**
 	 * Init.
@@ -29,14 +29,14 @@ class Vite {
 			'aliases',
 			[
 				'customizer',
-				'seo',
 				'nav-menu',
-				'sidebar',
+				'widgets',
 				'comments',
 				'performance',
 				'scripts-styles',
 				'template-hooks',
 				'compatibility',
+				'schema',
 			]
 		);
 
@@ -63,6 +63,7 @@ class Vite {
 	 * @return void
 	 */
 	public function setup() {
+		$this->set_content_width();
 		$this->load_textdomain();
 		$this->add_theme_supports();
 		$this->add_image_sizes();
@@ -81,6 +82,9 @@ class Vite {
 				'comment-list',
 				'gallery',
 				'caption',
+				'style',
+				'script',
+				'navigation-widgets',
 			],
 			'post-thumbnails'                     => true,
 			'align-wide'                          => true,
@@ -98,6 +102,16 @@ class Vite {
 			'customize-selective-refresh-widgets' => true,
 			'title-tag'                           => true,
 			'automatic-feed-links'                => true,
+			'post-formats'                        => [
+				'aside',
+				'image',
+				'video',
+				'quote',
+				'link',
+				'gallery',
+				'audio',
+				'status',
+			],
 		];
 
 		/**
@@ -117,6 +131,8 @@ class Vite {
 				add_theme_support( $feature );
 			}
 		}
+
+		add_editor_style( './assets/dist/editor-style.css' );
 	}
 
 	/**
@@ -136,5 +152,15 @@ class Vite {
 	 */
 	private function load_textdomain() {
 		load_theme_textdomain( 'vite', get_template_directory() . '/languages' );
+	}
+
+	/**
+	 * Set content width.
+	 *
+	 * @return void
+	 */
+	private function set_content_width() {
+		global $content_width;
+		$content_width = $this->get_mod( 'container-wide-width' )['value'] ?? 1200;
 	}
 }
