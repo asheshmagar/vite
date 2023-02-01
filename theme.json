@@ -1,0 +1,123 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/theme.json",
+  "version": 2,
+  "settings": {
+    "color": {
+      "palette": [
+        {
+          "name": "Vite color 1",
+          "slug": "vite-color-1",
+          "color": "var(--color-0)"
+        },
+        {
+          "name": "Vite color 2",
+          "slug": "vite-color-2",
+          "color": "var(--color-1)"
+        },
+        {
+          "name": "Vite color 3",
+          "slug": "vite-color-3",
+          "color": "var(--color-2)"
+        },
+        {
+          "name": "Vite color 4",
+          "slug": "vite-color-4",
+          "color": "var(--color-3)"
+        },
+        {
+          "name": "Vite color 5",
+          "slug": "vite-color-5",
+          "color": "var(--color-4)"
+        },
+        {
+          "name": "Vite color 6",
+          "slug": "vite-color-6",
+          "color": "var(--color-5)"
+        },
+        {
+          "name": "Vite color 7",
+          "slug": "vite-color-7",
+          "color": "var(--color-6)"
+        },
+        {
+          "name": "Vite color 8",
+          "slug": "vite-color-8",
+          "color": "var(--color-7)"
+        }
+      ]
+    },
+    "appearanceTools": true,
+    "spacing": {
+      "blockGap": true,
+      "margin": true,
+      "padding": true,
+      "units": [
+        "px",
+        "em",
+        "rem",
+        "vh",
+        "vw",
+        "ch"
+      ]
+    },
+    "typography": {
+      "customFontSize": true,
+      "dropCap": true,
+      "lineHeight": true,
+      "fontSizes": [
+        {
+          "name": "Small",
+          "slug": "small",
+          "size": "14px"
+        },
+        {
+          "name": "Normal",
+          "slug": "normal",
+          "size": "16px"
+        },
+        {
+          "name": "Large",
+          "slug": "large",
+          "size": "36px"
+        },
+        {
+          "name": "Huge",
+          "slug": "huge",
+          "size": "48px"
+        }
+      ]
+    },
+    "layout": {
+      "contentSize": "var(--narrow-width)",
+      "wideSize": "var(--container-width)"
+    }
+  },
+  "styles": {
+    "blocks": {
+      "core/button": {
+        "border": {
+          "radius": "var(--button-border-radius)"
+        },
+        "color": {
+          "background": "var(--button-bg-color)",
+          "text": "var(--button-color)"
+        },
+        "spacing": {
+          "padding": {
+            "top": "10px",
+            "bottom": "10px",
+            "left": "20px",
+            "right": "20px"
+          }
+        }
+      }
+    },
+    "elements": {
+      "link": {
+       "typography": {
+         "textDecoration": "var(--link-text-decoration, none)"
+       } 
+      }
+    }
+  }
+}
