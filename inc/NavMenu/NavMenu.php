@@ -7,14 +7,14 @@ namespace Vite\NavMenu;
 
 defined( 'ABSPATH' ) || exit;
 
-use Vite\Traits\Hook;
+use Vite\Traits\HTMLAttrs;
 
 /**
  * NavMenu.
  */
 class NavMenu {
 
-	use Hook;
+	use HTMLAttrs;
 
 	/**
 	 * Walker nav menu.
@@ -115,16 +115,14 @@ class NavMenu {
 	 */
 	public function render_menu( $type = '1', $menu = null, string $context = 'header' ) {
 		$args = [
-			'theme_location'  => "menu-$type",
-			'menu_id'         => "menu-$type",
-			'menu_class'      => 'vite-nav__list',
-			'container'       => 'nav',
-			'container_id'    => "$context-$type-menu",
-			'container_class' => "vite-nav vite-nav--$type",
-			'fallback_cb'     => function() use ( $type, $context ) {
+			'theme_location' => "menu-$type",
+			'menu_id'        => "menu-$type",
+			'menu_class'     => 'vite-nav__list',
+			'container'      => null,
+			'fallback_cb'    => function() use ( $type, $context ) {
 				$this->fallback_menu( $type, $context );
 			},
-			'walker'          => $this->walker_nav_menu,
+			'walker'         => $this->walker_nav_menu,
 		];
 
 		if ( isset( $menu ) ) {
@@ -140,8 +138,28 @@ class NavMenu {
 		}
 
 		$args = $this->filter( "menu/$type/args", $args );
-
-		wp_nav_menu( $args );
+		?>
+		<nav
+		<?php
+		$this->print_html_attributes(
+			'nav',
+			[
+				'id'         => "$context-$type-menu",
+				'class'      => [
+					'vite-nav',
+					"vite-nav--$type",
+				],
+				'aria-label' => __( 'Site navigation', 'vite' ),
+			],
+			true,
+			$context,
+			$type
+		)
+		?>
+		>
+			<?php wp_nav_menu( $args ); ?>
+		</nav>
+		<?php
 	}
 
 	/**
@@ -155,19 +173,34 @@ class NavMenu {
 		if ( '3' === (string) $type && $this->is_primary_menu_active() ) {
 			wp_nav_menu(
 				[
-					'theme_location'  => 'menu-1',
-					'menu_id'         => 'menu-3',
-					'menu_class'      => 'vite-nav__list',
-					'container'       => 'nav',
-					'container_id'    => 'header-menu-3',
-					'container_class' => 'vite-nav vite-nav--3',
-					'walker'          => $this->walker_nav_menu,
+					'theme_location'       => 'menu-1',
+					'menu_id'              => 'menu-3',
+					'menu_class'           => 'vite-nav__list',
+					'container'            => 'nav',
+					'container_id'         => 'header-menu-3',
+					'container_class'      => 'vite-nav vite-nav--3',
+					'walker'               => $this->walker_nav_menu,
+					'container_aria_label' => __( 'Site navigation', 'vite' ),
 				]
 			);
 			return;
 		}
 		?>
-		<nav id="<?php echo esc_attr( "menu-$type" ); ?>-menu" class="vite-nav vite-nav--<?php echo esc_attr( $type ); ?>"<?php vite( 'seo' )->print_schema_microdata( 'navigation' ); ?>>
+		<nav
+		<?php
+		$this->print_html_attributes(
+			'nav',
+			[
+				'id'         => "menu-$type",
+				'class'      => [ 'vite-nav', "vite-nav--$type" ],
+				'aria-label' => __( 'Site navigation', 'vite' ),
+			],
+			true,
+			$context,
+			$type
+		);
+		?>
+		>
 			<ul class="vite-nav__list">
 				<?php
 					wp_list_pages(

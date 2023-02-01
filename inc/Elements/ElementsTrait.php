@@ -7,11 +7,18 @@
 
 namespace Vite\Elements;
 
-use Vite\Traits\Mods;
+use Vite\Traits\{ Mods, HTMLAttrs };
 
 trait ElementsTrait {
 
-	use Mods;
+	use Mods , HTMLAttrs {
+		HTMLAttrs::add_action insteadof Mods;
+		HTMLAttrs::add_filter insteadof Mods;
+		HTMLAttrs::action insteadof Mods;
+		HTMLAttrs::filter insteadof Mods;
+		HTMLAttrs::remove_filter insteadof Mods;
+		HTMLAttrs::remove_action insteadof Mods;
+	}
 
 	/**
 	 * Render.

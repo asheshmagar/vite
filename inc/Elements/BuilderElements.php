@@ -9,7 +9,7 @@ namespace Vite\Elements;
 
 defined( 'ABSPATH' ) || exit;
 
-use Vite\Traits\SmartTags;
+use Vite\Traits\{ HTMLAttrs, SmartTags };
 
 /**
  * Builder Elements.
@@ -46,19 +46,66 @@ class BuilderElements {
 		$this->action( 'header/site-branding/start' );
 		?>
 		<div
-			class="vite-brand vite-brand--<?php echo esc_attr( $layout ); ?>"<?php vite( 'seo' )->print_schema_microdata( 'logo' ); ?>>
+		<?php
+		$this->print_html_attributes(
+			'header/site-branding',
+			[
+				'class' => [
+					'vite-brand',
+					"vite-brand--$layout",
+				],
+			]
+		);
+		?>
+		>
 			<?php the_custom_logo(); ?>
 			<?php if ( in_array( $elements, [ 'logo-title', 'logo-title-description' ], true ) ) : ?>
 				<?php if ( is_front_page() && is_home() ) : ?>
-					<h1 class="vite-brand__title"><a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home"><?php bloginfo( 'name' ); ?></a></h1>
+					<h1
+					<?php
+					$this->print_html_attributes(
+						'header/site-branding/title',
+						[
+							'class' => [
+								'vite-brand__title',
+							],
+						]
+					);
+					?>
+					>
+						<a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home"><?php bloginfo( 'name' ); ?></a>
+					</h1>
 				<?php else : ?>
-					<p class="vite-brand__title"><a href="<?php echo esc_url( home_url( '/' ) ); ?>"
-													rel="home"><?php bloginfo( 'name' ); ?></a></p>
+					<p
+					<?php
+					$this->print_html_attributes(
+						'header/site-branding/title',
+						[
+							'class' => [
+								'vite-brand__title',
+							],
+						]
+					);
+					?>
+					>
+						<a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home"><?php bloginfo( 'name' ); ?></a>
+					</p>
 				<?php endif; ?>
 			<?php endif; ?>
 			<?php if ( 'logo-title-description' === $elements ) : ?>
 				<?php if ( get_bloginfo( 'description', 'display' ) || is_customize_preview() ) : ?>
-					<p class="vite-brand__description"><?php bloginfo( 'description' ); ?></p>
+					<p
+					<?php
+					$this->print_html_attributes(
+						'header/site-branding/description',
+						[
+							'class' => [
+								'vite-brand__title',
+							],
+						]
+					);
+					?>
+					><?php bloginfo( 'description' ); ?></p>
 				<?php endif; ?>
 			<?php endif; ?>
 		</div>
@@ -215,7 +262,7 @@ class BuilderElements {
 		 * @since 1.0.0
 		 */
 		$this->action( "{$args['context']}/search/end" );
-		! $in_mobile_menu_offset && add_action( 'wp_footer', [ $this, 'search_modal' ], 11 );
+		! $in_mobile_menu_offset && $this->add_action( 'vite/body/close', [ $this, 'search_modal' ], 11 );
 	}
 
 	/**
@@ -316,7 +363,7 @@ class BuilderElements {
 	public function button( $args ) {
 		$type      = $args['type'] ?? '1';
 		$text      = $this->get_mod( "{$args['context']}-button-$type-text" );
-		$url       = $this->get_mod( "{$args['context']}-button-$type-url", '#' );
+		$url       = $this->get_mod( "{$args['context']}-button-$type-link", '#' );
 		$target    = $this->get_mod( "{$args['context']}-button-$type-target" );
 		$download  = $this->get_mod( "{$args['context']}-button-$type-download" );
 		$sponsored = $this->get_mod( "{$args['context']}-button-$type-sponsored" );
@@ -343,17 +390,26 @@ class BuilderElements {
 		$this->action( "{$args['context']}/button/start" );
 		?>
 		<div class="vite-button vite-button--<?php echo esc_attr( $type ); ?>">
+			<a
+			href="<?php echo esc_url( $url ); ?>"
 			<?php
-			printf(
-				'<a href="%s" role="button" class="vite-button__link vite-button__link--%s" target="%s" %s%s>%s</a>',
-				esc_url( $url ),
-				esc_attr( $style ),
-				esc_attr( $target ? '_blank' : '_self' ),
-				esc_attr( ! empty( $rel ) ? 'rel=' . implode( ' ', $rel ) : '' ),
-				esc_attr( $download ? ' download' : '' ),
-				esc_html( $text )
+			$this->print_html_attributes(
+				"builder/{$args['context']}/button/$type",
+				[
+					'role'     => 'button',
+					'class'    => [
+						'vite-button__link',
+						"vite-button__link--$style",
+					],
+					'target'   => esc_attr( $target ? '_blank' : '_self' ),
+					'rel'      => $rel,
+					'download' => $download ? 'download' : null,
+				]
 			);
 			?>
+			>
+				<?php echo esc_html( $text ); ?>
+			</a>
 		</div>
 		<?php
 
@@ -403,7 +459,7 @@ class BuilderElements {
 		 * @since 1.0.0
 		 */
 		$this->action( "{$args['context']}/mobile-menu-trigger/end" );
-		add_action( 'wp_footer', [ $this, 'mobile_menu_offset' ] );
+		$this->add_action( 'vite/body/close', [ $this, 'mobile_menu_offset' ] );
 	}
 
 	/**
@@ -430,7 +486,7 @@ class BuilderElements {
 		 */
 		$this->action( 'header/mobile-menu-offset/start' );
 		?>
-		<div data-modal class="vite-modal vite-modal--mobile-menu">
+		<div class="vite-modal vite-modal--mobile-menu">
 			<div class="vite-modal__inner">
 				<div class="vite-modal__action">
 					<button class="vite-modal__btn"

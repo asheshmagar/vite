@@ -88,7 +88,7 @@ class EntryElements {
 		 */
 		$this->action( 'entry-elements/meta/start' );
 		?>
-		<div class="vite-post__meta">
+		<div class="vite-post__meta entry-meta">
 			<?php
 			$meta_elements = array_filter(
 				$meta_elements,
@@ -130,7 +130,19 @@ class EntryElements {
 		 */
 		$this->action( 'entry-elements/excerpt/start' );
 		?>
-		<div class="vite-post__excerpt">
+		<div
+		<?php
+		$this->print_html_attributes(
+			'entry-elements/excerpt',
+			[
+				'class' => [
+					'vite-post__excerpt',
+					'entry-summary',
+				],
+			]
+		);
+		?>
+		>
 			<?php the_excerpt(); ?>
 		</div>
 		<?php
@@ -177,11 +189,11 @@ class EntryElements {
 		?>
 		<div class="vite-post__thumbnail">
 			<?php if ( is_singular( $post_type ) ) : ?>
-				<?php the_post_thumbnail( 'full' ); ?>
+				<?php the_post_thumbnail( 'full', $this->filter( 'html-attributes/entry-elements/featured-image', [] ) ); ?>
 			<?php else : ?>
 				<a class="vite-post__thumbnail-link" href="<?php the_permalink(); ?>" aria-hidden="true" tabindex="-1" aria-label="<?php esc_html( the_title() ); ?>">
 					<div class="vite-post__thumbnail-inner vite-post__thumbnail-inner--3x2">
-						<?php the_post_thumbnail( 'vite_thumbnail' ); ?>
+						<?php the_post_thumbnail( 'vite_thumbnail', $this->filter( 'html-attributes/entry-elements/featured-image', [] ) ); ?>
 					</div>
 				</a>
 			<?php endif; ?>
@@ -216,9 +228,9 @@ class EntryElements {
 		 *
 		 * @since x.x.x
 		 */
-		$this->action( 'entry-elements/meta/comments/start' );
+		$this->action( 'entry-elements/meta/comment/start' );
 		?>
-		<div class="vite-post__meta__comments">
+		<div class="vite-post__meta__comment">
 			<span class="vite-post__meta__icon">
 				<?php
 					vite( 'icon' )->get_icon(
@@ -230,7 +242,15 @@ class EntryElements {
 					);
 				?>
 			</span>
-			<?php comments_popup_link( __( 'Leave a comment', 'vite' ), __( '1 Comment', 'vite' ), __( '% Comments', 'vite' ) ); ?>
+			<?php
+			add_filter(
+				'comments_popup_link_attributes',
+				function( $attributes ) {
+					return $attributes . $this->print_html_attributes( 'entry-elements/meta/comment', [], false );
+				}
+			);
+			comments_popup_link( __( 'Leave a comment', 'vite' ), __( '1 Comment', 'vite' ), __( '% Comments', 'vite' ) );
+			?>
 		</div>
 		<?php
 
@@ -241,7 +261,7 @@ class EntryElements {
 		 *
 		 * @since x.x.x
 		 */
-		$this->action( 'entry-elements/meta/comments/end' );
+		$this->action( 'entry-elements/meta/comment/end' );
 	}
 
 	/**
@@ -261,14 +281,30 @@ class EntryElements {
 		 */
 		$this->action( 'entry-elements/title/start' );
 		?>
-		<div class="vite-post__title">
+		<div class="vite-post__title entry-title">
+			<?php if ( is_singular() ) : ?>
+			<h1
+				<?php
+				$this->print_html_attributes(
+					'entry-elements/title',
+					[]
+				);
+				?>
+			>
+				<?php the_title(); ?>
+			</h1>
+		<?php else : ?>
+			<h2
 			<?php
-			if ( is_singular() ) {
-				the_title( '<h1>', '</h1>' );
-			} else {
-				the_title( '<h2><a href="' . get_the_permalink() . '" rel="bookmark">', '</a></h2>' );
-			}
+			$this->print_html_attributes(
+				'entry-elements/title',
+				[]
+			);
 			?>
+			>
+				<a href="<?php the_permalink(); ?>" rel="bookmark"><?php the_title(); ?></a>
+			</h2>
+			<?php endif; ?>
 		</div>
 		<?php
 
@@ -347,8 +383,7 @@ class EntryElements {
 		 */
 		$this->action( 'entry-elements/button/start' );
 		?>
-		<a href="<?php the_permalink(); ?>" class="vite-post__btn" >
-			<span class="screen-reader-text"><?php the_title(); ?></span>
+		<a href="<?php the_permalink(); ?>" class="vite-post__btn" title="<?php the_title(); ?>">
 			<span class="vite-post__btn-text"><?php esc_html_e( 'Read More', 'vite' ); ?></span>
 		</a>
 		<?php
@@ -380,7 +415,7 @@ class EntryElements {
 
 		$time_string = sprintf(
 			$time_string,
-			"vite-post__meta__$type-time",
+			"vite-post__meta__$type-time" . ( 'published' === $type ? ' entry-date published' : ' updated' ),
 			esc_attr( call_user_func( $data_func, DATE_W3C ) ),
 			esc_html( call_user_func( $data_func ) )
 		);
@@ -394,7 +429,18 @@ class EntryElements {
 		 */
 		$this->action( 'entry-elements/meta/date/start' );
 		?>
-		<div class="vite-post__meta__date">
+		<div
+		<?php
+		$this->print_html_attributes(
+			'entry-elements/meta/date',
+			[
+				'class' => [ 'vite-post__meta__date' ],
+			],
+			true,
+			$type
+		);
+		?>
+		>
 			<span class="vite-post__meta__icon">
 				<?php
 					vite( 'icon' )->get_icon(
@@ -457,7 +503,16 @@ class EntryElements {
 		 */
 		$this->action( 'entry-elements/meta/author/start' );
 		?>
-		<div class="vite-post__meta__author">
+		<div
+		<?php
+		$this->print_html_attributes(
+			'entry-elements/meta/author',
+			[
+				'class' => 'vite-post__meta__author',
+			]
+		);
+		?>
+		>
 			<span class="vite-post__meta__icon">
 				<?php
 					vite( 'icon' )->get_icon(
@@ -469,14 +524,33 @@ class EntryElements {
 					);
 				?>
 			</span>
-			<?php
-				printf(
-				/* translators: %1$s: post link. %2$s: post author */
-					'<span class="vite-post__author"><a href="%1$s">%2$s</a></span>',
-					esc_url( get_author_posts_url( $author_id ) ),
-					esc_html( get_the_author() )
-				);
-			?>
+			<span class="vite-post__author author vcard">
+				<a
+				<?php
+				$this->print_html_attributes(
+					'entry-elements/meta/author/url',
+					[
+						'class' => [ 'vite-post__author__url', 'url', 'fn', 'n' ],
+						'href'  => esc_url( get_author_posts_url( $author_id ) ),
+						'rel'   => 'author',
+					]
+				)
+				?>
+				>
+					<span
+					<?php
+					$this->print_html_attributes(
+						'entry-elements/meta/author/name',
+						[
+							'class' => 'vite-post__author__name',
+						]
+					)
+					?>
+					>
+						<?php the_author(); ?>
+					</span>
+				</a>
+			</span>
 		</div>
 		<?php
 		$this->action( 'entry-elements/meta/author/end' );
@@ -504,11 +578,21 @@ class EntryElements {
 		 * @since x.x.x
 		 */
 		$this->action( "entry-elements/meta/$type/start" );
-		printf(
-		/* translators: %1$s: post link. %2$s: post categories */
-			'<span class="vite-post__meta__%1$s-links">%2$s</span>',
-			esc_attr( $type ),
-			wp_kses(
+		?>
+		<div
+		<?php
+		$this->print_html_attributes(
+			'entry-elements/meta/tax',
+			[
+				'class' => [ "vite-post__meta__$type-links", "$type-links" ],
+			],
+			true,
+			$type
+		)
+		?>
+		>
+			<?php
+			echo wp_kses(
 				$list,
 				[
 					'a' => [
@@ -518,7 +602,9 @@ class EntryElements {
 					],
 				]
 			)
-		);
+			?>
+		</div>
+		<?php
 
 		/**
 		 * Action: vite/entry-elements/meta/$type/end.
