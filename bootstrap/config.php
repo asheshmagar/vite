@@ -11,9 +11,6 @@ return [
 	'core'                 => [
 		'concrete' => 'Vite\Core',
 	],
-	'seo'                  => [
-		'concrete' => 'Vite\SEO',
-	],
 	'builder-elements'     => [
 		'concrete' => 'Vite\Elements\BuilderElements',
 	],
@@ -39,8 +36,8 @@ return [
 	'icon'                 => [
 		'concrete' => 'Vite\Icon',
 	],
-	'sidebar'              => [
-		'concrete' => 'Vite\Sidebar',
+	'widgets'              => [
+		'concrete' => 'Vite\Widgets',
 	],
 	'page-header-elements' => [
 		'concrete' => 'Vite\Elements\PageHeaderElements',
@@ -66,6 +63,9 @@ return [
 	],
 	'compatibility'        => [
 		'concrete' => 'Vite\Compatibility\Compatibility',
+	],
+	'schema'               => [
+		'concrete' => 'Vite\Schema',
 	],
 	'theme'                => [
 		'concrete' => 'Vite\Vite',
