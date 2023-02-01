@@ -40,13 +40,13 @@ class TemplateHooks {
 		$this->add_action(
 			'vite/header/mobile/start',
 			function() {
-				add_filter( 'theme_mod_custom_logo', [ $this, 'change_logo' ] );
+				$this->add_filter( 'theme_mod_custom_logo', [ $this, 'change_logo' ] );
 			}
 		);
 		$this->add_action(
 			'vite/header/mobile/end',
 			function() {
-				remove_filter( 'theme_mod_custom_logo', [ $this, 'change_logo' ] );
+				$this->remove_filter( 'theme_mod_custom_logo', [ $this, 'change_logo' ] );
 			}
 		);
 		$this->add_action(
@@ -58,36 +58,17 @@ class TemplateHooks {
 		$this->add_action( 'vite/single/content/content/start', [ $this, 'single_featured_image' ] );
 		$this->add_action( 'vite/single/content/header', [ $this, 'header_elements' ] );
 		$this->add_action( 'vite/page/content/header', [ $this, 'header_elements' ] );
-		$this->add_filter( 'vite/content/container/classes', [ $this, 'content_container_class' ], 10, 2 );
-
-		add_action( 'wp_footer', [ $this, 'scroll_to_top' ] );
-		add_filter( 'post_class', [ $this, 'post_class' ], 10, 3 );
-		add_filter( 'body_class', [ $this, 'body_class' ] );
-		add_filter( 'embed_oembed_html', [ $this, 'embed_oembed_html' ], 10 );
-	}
-
-	/**
-	 * Content layout classes.
-	 *
-	 * @param array $classes CSS classes.
-	 *
-	 * @return mixed
-	 */
-	public function content_container_class( array $classes ) {
-		$content_layout = $this->get_mod( 'content-layout' );
-
-		if ( 'default' !== $content_layout ) {
-			$classes[] = 'vite-container--' . $content_layout;
-		}
-
-		return $classes;
+		$this->add_action( 'vite/body/close', [ $this, 'scroll_to_top' ] );
+		$this->add_filter( 'post_class', [ $this, 'post_class' ], 10, 3 );
+		$this->add_filter( 'body_class', [ $this, 'body_class' ] );
+		$this->add_filter( 'embed_oembed_html', [ $this, 'embed_oembed_html' ], 10, 2 );
 	}
 
 	/**
 	 * Wrap embed and oembed HTML with div.
 	 *
 	 * @param string|false $html   The cached HTML result, stored in post meta.
-	 * @param string       $url     The attempted embed URL.
+	 * @param string|false $url    The attempted embed URL.
 	 * @return false|string
 	 */
 	public function embed_oembed_html( $html, $url ) {
@@ -114,10 +95,8 @@ class TemplateHooks {
 			return $html;
 		}
 
-		foreach ( $hosts as $host ) {
-			if ( str_contains( $url, $host ) ) {
-				return sprintf( '<div class="vite-iframe-embed">%s</div>', $html );
-			}
+		if ( str_contains_arr( $url, $hosts ) ) {
+			return sprintf( '<div class="vite-iframe-embed">%s</div>', $html );
 		}
 
 		return $html;
