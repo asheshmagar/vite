@@ -10,20 +10,20 @@ namespace Vite;
 
 defined( 'ABSPATH' ) || exit;
 
-use Vite\Traits\{ JSON, Mods, SmartTags };
+use Vite\Traits\{HTMLAttrs, JSON, Mods, SmartTags};
 
 /**
  * Core.
  */
 class Core {
 
-	use Mods , JSON, SmartTags {
-		SmartTags::filter insteadof Mods;
-		SmartTags::action insteadof Mods;
-		SmartTags::add_action insteadof Mods;
-		SmartTags::add_filter insteadof Mods;
-		SmartTags::remove_action insteadof Mods;
-		SmartTags::remove_filter insteadof Mods;
+	use Mods , JSON, SmartTags, HTMLAttrs {
+		SmartTags::filter insteadof Mods, HTMLAttrs;
+		SmartTags::action insteadof Mods, HTMLAttrs;
+		SmartTags::add_action insteadof Mods, HTMLAttrs;
+		SmartTags::add_filter insteadof Mods, HTMLAttrs;
+		SmartTags::remove_action insteadof Mods, HTMLAttrs;
+		SmartTags::remove_filter insteadof Mods, HTMLAttrs;
 	}
 
 	/**
