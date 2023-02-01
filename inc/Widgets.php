@@ -1,6 +1,6 @@
 <?php
 /**
- * Sidebar class.
+ * Widgets class.
  *
  * @package Vite
  */
@@ -14,7 +14,7 @@ use Vite\Traits\Mods;
 /**
  * Init sidebar.
  */
-class Sidebar {
+class Widgets {
 
 	use Mods;
 
@@ -95,12 +95,8 @@ class Sidebar {
 			return;
 		}
 
-		ob_start();
-		vite( 'seo' )->print_schema_microdata( 'sidebar' );
-		$schema_microdata = ob_get_clean();
-
 		printf(
-			'<%1$s id="%2$s" class="%3$s"' . esc_attr( $schema_microdata ) . '>',
+			'<%1$s id="%2$s" class="%3$s">',
 			esc_attr( $wrapper_tag ),
 			esc_attr( $wrapper_id ),
 			esc_attr( $wrapper_class )
