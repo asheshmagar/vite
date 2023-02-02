@@ -7,6 +7,8 @@
 		list-style-type: none;
 		display: flex;
 		flex-wrap: wrap;
+		--spacing: 0;
+		--typography-spacing-vertical: 0;
 	}
 
 	&__item {
