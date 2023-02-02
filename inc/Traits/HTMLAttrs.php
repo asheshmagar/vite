@@ -12,7 +12,7 @@ namespace Vite\Traits;
  */
 trait HTMLAttrs {
 
-	use Hook;
+	use Mods;
 
 	/**
 	 * Print HTML attributes.
