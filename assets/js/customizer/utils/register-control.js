@@ -6,14 +6,13 @@ const api = wp.customize;
 const registerControl = ( type, Component ) => {
 	( api.controlConstructor[ type ] = api.Control.extend( {
 		initialize( id, params ) {
-			const control = this,
-				args = params || {};
+			const args = params || {};
 
 			args.params = args?.params || {};
 			args.params.type = args.params?.type ? args.params.type : 'vite';
 
-			api.Control.prototype.initialize.call( control, id, params );
-			control.container[ 0 ].classList.remove( 'customize-control' );
+			api.Control.prototype.initialize.call( this, id, params );
+			this.container[ 0 ].classList.remove( 'customize-control' );
 
 			if ( ! args.params?.content ) {
 				args.params.content = $( '<li></li>', {
@@ -26,46 +25,41 @@ const registerControl = ( type, Component ) => {
 				args.params.content = args.params.content.replace( 'class=', 'data-separator class=' );
 			}
 
-			api.Control.prototype.initialize.call( control, id, args );
+			api.Control.prototype.initialize.call( this, id, args );
 		},
 		ready() {
-			const control = this;
-			api.Control.prototype.ready.call( control );
-			control.deferred.embedded.done();
+			api.Control.prototype.ready.call( this );
+			this.deferred.embedded.done();
 		},
 		embed() {
-			const control = this,
-				section = control.section();
+			const section = this.section();
 
 			if ( ! section ) return;
 
 			api.section( section, sec => {
-				if ( sec.expanded() || api.settings.autofocus.control === control.id ) {
-					control.actuallyEmbed();
+				if ( sec.expanded() || api.settings.autofocus.control === this.id ) {
+					this.actuallyEmbed();
 				} else {
 					sec.expanded.bind( expanded => {
-						if ( expanded ) control.actuallyEmbed();
+						if ( expanded ) this.actuallyEmbed();
 					} );
 				}
 			} );
 		},
 		actuallyEmbed() {
-			const control = this;
-			if ( 'resolved' === control.deferred.embedded.state() ) return;
-			control.renderContent();
-			control.deferred.embedded.resolve();
-			control.container.trigger( 'init' );
+			if ( 'resolved' === this.deferred.embedded.state() ) return;
+			this.renderContent();
+			this.deferred.embedded.resolve();
+			this.container.trigger( 'init' );
 		},
 		focus( args ) {
-			const control = this;
-			control.actuallyEmbed();
-			api.Control.prototype.focus.call( control, args );
+			this.actuallyEmbed();
+			api.Control.prototype.focus.call( this, args );
 		},
 		renderContent() {
-			const control = this;
 			render(
-				<Component control={ control } customizer={ wp.customize } />,
-				control.container[ 0 ]
+				<Component control={ this } customizer={ wp.customize } />,
+				this.container[ 0 ]
 			);
 		},
 	} ) );
