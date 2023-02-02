@@ -534,7 +534,11 @@ class DynamicCSS {
 		if ( is_array( $color ) ) {
 			foreach ( $color as $k => $v ) {
 				if ( ! empty( $v ) ) {
-					$attached = $this->attach( $selector, ( str_starts_with( $k, '--' ) ? $k : $property ) . ":$v;", ( str_starts_with( $k, '--' ) ? 'normal' : $k ) );
+					$attached = $this->attach(
+						$selector,
+						( str_starts_with( $k, '--' ) ? $k : $property ) . ":$v;",
+						( str_starts_with( $k, '--' ) ? 'normal' : $k )
+					);
 					foreach ( $attached as $key => $val ) {
 						if ( array_key_exists( $key, $css['desktop'] ) ) {
 							$css['desktop'][ $key ] .= $val;
