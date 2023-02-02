@@ -10,14 +10,14 @@ namespace Vite;
 
 defined( 'ABSPATH' ) || exit;
 
-use Vite\Traits\Mods;
+use Vite\Traits\HTMLAttrs;
 
 /**
  * Template hooks.
  */
 class TemplateHooks {
 
-	use Mods;
+	use HTMLAttrs;
 
 	/**
 	 * Init.
@@ -58,7 +58,7 @@ class TemplateHooks {
 		$this->add_action( 'vite/single/content/content/start', [ $this, 'single_featured_image' ] );
 		$this->add_action( 'vite/single/content/header', [ $this, 'header_elements' ] );
 		$this->add_action( 'vite/page/content/header', [ $this, 'header_elements' ] );
-		$this->add_action( 'vite/body/close', [ $this, 'scroll_to_top' ] );
+		$this->add_action( 'vite/body/end', [ $this, 'scroll_to_top' ] );
 		$this->add_filter( 'post_class', [ $this, 'post_class' ], 10, 3 );
 		$this->add_filter( 'body_class', [ $this, 'body_class' ] );
 		$this->add_filter( 'embed_oembed_html', [ $this, 'embed_oembed_html' ], 10, 2 );
@@ -78,28 +78,24 @@ class TemplateHooks {
 				'vimeo.com',
 				'youtube.com',
 				'dailymotion.com',
+				'dai.ly',
 				'flickr.com',
 				'hulu.com',
 				'kickstarter.com',
-				'vine.co',
+				'kck.st',
 				'soundcloud.com',
 				'youtu.be',
 				'cloudup.com',
 				'ted.com',
 				'wistia.com',
-				'wistia.net',
 			]
 		);
 
-		if ( empty( $hosts ) ) {
+		if ( empty( $hosts ) || ! str_contains_arr( $url, $hosts ) ) {
 			return $html;
 		}
 
-		if ( str_contains_arr( $url, $hosts ) ) {
-			return sprintf( '<div class="vite-iframe-embed">%s</div>', $html );
-		}
-
-		return $html;
+		return sprintf( '<div class="vite-iframe-embed">%s</div>', $html );
 	}
 
 	/**
@@ -222,35 +218,35 @@ class TemplateHooks {
 	 * @return void
 	 */
 	public function archive_wrapper_open() {
-		$archive_style           = $this->get_mod( 'archive-style' );
-		$archive_columns         = $this->get_mod( 'archive-columns' );
-		$is_masonry              = 'grid' === $archive_style && $this->get_mod( 'archive-style-masonry' );
-		$is_infinite_scroll      = 'infinite-scroll' === $this->get_mod( 'archive-pagination', 'numbered' );
-		$archive_wrapper_classes = [
-			'vite-posts',
-			'vite-posts--' . $archive_style,
+		$archive_style      = $this->get_mod( 'archive-style' );
+		$archive_columns    = $this->get_mod( 'archive-columns' );
+		$is_masonry         = 'grid' === $archive_style && $this->get_mod( 'archive-style-masonry' );
+		$is_infinite_scroll = 'infinite-scroll' === $this->get_mod( 'archive-pagination', 'numbered' );
+		$attributes         = [
+			'class' => [
+				'vite-posts',
+				"vite-posts--$archive_style",
+			],
 		];
 
 		if ( 'grid' === $archive_style ) {
-			$archive_wrapper_classes[] = 'vite-posts--col-' . $archive_columns;
+			$attributes['class'][] = "vite-posts--col-$archive_columns";
 		}
 
 		if ( $is_masonry ) {
-			$archive_wrapper_classes[] = 'vite-posts--masonry';
+			$attributes['class'][] = 'vite-posts--masonry';
 		}
 
 		if ( ! have_posts() ) {
-			$archive_wrapper_classes = [ 'vite-posts' ];
+			$attributes['class'][] = [ 'vite-posts' ];
 		}
 
 		if ( $is_infinite_scroll && ! is_customize_preview() ) {
-			$archive_wrapper_classes[] = 'vite-posts--infinite-scroll';
+			$attributes['class'][] = 'vite-posts--infinite-scroll';
 		}
-
-		printf(
-			'<div class="%s">',
-			esc_attr( implode( ' ', array_unique( $archive_wrapper_classes ) ) )
-		);
+		?>
+		<div<?php $this->print_html_attributes( 'archive/wrapper/open', $attributes ); ?>>
+		<?php
 	}
 
 	/**
