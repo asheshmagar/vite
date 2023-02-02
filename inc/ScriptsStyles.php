@@ -48,7 +48,10 @@ class ScriptsStyles {
 
 		$defer_scripts = $this->filter( 'defer/scripts/list', [ 'vite-script' ] );
 
-		if ( in_array( $handle, $defer_scripts, true ) && ! preg_match( '/\s+(defer|async)\s*=\s*(["\'])\s*\2\s*/', $tag ) ) {
+		if (
+			in_array( $handle, $defer_scripts, true ) &&
+			! preg_match( '/\s+(defer|async)\s*=\s*(["\'])\s*\2\s*/', $tag )
+		) {
 			return str_replace( ' src', ' defer src', $tag );
 		}
 
@@ -66,19 +69,69 @@ class ScriptsStyles {
 		$meta_asset               = $this->get_asset( 'meta' );
 		$frontend_asset           = $this->get_asset( 'frontend' );
 
-		wp_register_script( 'vite-script', VITE_ASSETS_URI . 'dist/frontend.js', [], $frontend_asset['version'], false );
-		wp_register_script( 'vite-customizer', VITE_ASSETS_URI . 'dist/customizer.js', $customizer_asset['dependencies'], $customizer_asset['version'], true );
-		wp_register_script( 'vite-meta', VITE_ASSETS_URI . 'dist/meta.js', $meta_asset['dependencies'], $meta_asset['version'], true );
-		wp_register_script( 'vite-meta-preview', VITE_ASSETS_URI . 'dist/meta-preview.js', [ 'wp-components' ], $meta_asset['version'], true );
-		wp_register_script( 'vite-customizer-preview', VITE_ASSETS_URI . 'dist/customizer-preview.js', array_merge( $customizer_preview_asset['dependencies'], [ 'customize-preview' ] ), $customizer_preview_asset['version'], true );
-
-		wp_register_style( 'vite-customizer', VITE_ASSETS_URI . 'dist/customizer.css', [ 'wp-components' ], $customizer_asset['version'] );
-		wp_register_style( 'vite-customizer-preview', VITE_ASSETS_URI . 'dist/customizer-preview.css', [], $customizer_preview_asset['version'] );
-
-		wp_register_style( 'vite-style', VITE_ASSETS_URI . 'dist/style.css', [], $frontend_asset['version'] );
-		wp_style_add_data( 'vite-style', 'precache', true );
-
-		wp_set_script_translations( 'vite-customizer', 'vite', get_theme_file_path( '/languages/' ) );
+		wp_register_script(
+			'vite-script',
+			VITE_ASSETS_URI . 'dist/frontend.js',
+			[],
+			$frontend_asset['version'],
+			false
+		);
+		wp_register_script(
+			'vite-customizer',
+			VITE_ASSETS_URI . 'dist/customizer.js',
+			$customizer_asset['dependencies'],
+			$customizer_asset['version'],
+			true
+		);
+		wp_register_script(
+			'vite-meta',
+			VITE_ASSETS_URI . 'dist/meta.js',
+			$meta_asset['dependencies'],
+			$meta_asset['version'],
+			true
+		);
+		wp_register_script(
+			'vite-meta-preview',
+			VITE_ASSETS_URI . 'dist/meta-preview.js',
+			[ 'wp-components' ],
+			$meta_asset['version'],
+			true
+		);
+		wp_register_script(
+			'vite-customizer-preview',
+			VITE_ASSETS_URI . 'dist/customizer-preview.js',
+			array_merge( $customizer_preview_asset['dependencies'], [ 'customize-preview' ] ),
+			$customizer_preview_asset['version'],
+			true
+		);
+		wp_register_style(
+			'vite-customizer',
+			VITE_ASSETS_URI . 'dist/customizer.css',
+			[ 'wp-components' ],
+			$customizer_asset['version']
+		);
+		wp_register_style(
+			'vite-customizer-preview',
+			VITE_ASSETS_URI . 'dist/customizer-preview.css',
+			[],
+			$customizer_preview_asset['version']
+		);
+		wp_register_style(
+			'vite-style',
+			VITE_ASSETS_URI . 'dist/style.css',
+			[],
+			$frontend_asset['version']
+		);
+		wp_style_add_data(
+			'vite-style',
+			'precache',
+			true
+		);
+		wp_set_script_translations(
+			'vite-customizer',
+			'vite',
+			get_theme_file_path( '/languages/' )
+		);
 	}
 
 	/**
@@ -106,7 +159,11 @@ class ScriptsStyles {
 		}
 
 		wp_enqueue_script( 'vite-script' );
-		wp_localize_script( 'vite-script', '_VITE_', [ 'publicPath' => VITE_ASSETS_URI . 'dist/' ] );
+		wp_localize_script(
+			'vite-script',
+			'_VITE_',
+			[ 'publicPath' => VITE_ASSETS_URI . 'dist/' ]
+		);
 	}
 
 	/**
@@ -114,7 +171,9 @@ class ScriptsStyles {
 	 */
 	public function remove_no_js() {
 		?>
-		<script>!function(e){e.className=e.className.replace(/\bno-js\b/,"js")}(document.documentElement);</script>
+		<script>
+			!function(e){e.className=e.className.replace(/\bno-js\b/,"js")}(document.documentElement);
+		</script>
 		<?php
 	}
 
