@@ -30,6 +30,7 @@ class ScriptsStyles {
 		add_action( 'wp_enqueue_scripts', [ $this, 'enqueue' ] );
 		add_action( 'wp_head', [ $this, 'remove_no_js' ], 2 );
 		add_filter( 'script_loader_tag', [ $this, 'defer_scripts' ], 10, 2 );
+		add_action( 'enqueue_block_editor_assets', [ $this, 'enqueue_editor' ] );
 	}
 
 	/**
@@ -76,6 +77,8 @@ class ScriptsStyles {
 
 		wp_register_style( 'vite-style', VITE_ASSETS_URI . 'dist/style.css', [], $frontend_asset['version'] );
 		wp_style_add_data( 'vite-style', 'precache', true );
+
+		wp_set_script_translations( 'vite-customizer', 'vite', get_theme_file_path( '/languages/' ) );
 	}
 
 	/**
@@ -114,6 +117,13 @@ class ScriptsStyles {
 		<script>!function(e){e.className=e.className.replace(/\bno-js\b/,"js")}(document.documentElement);</script>
 		<?php
 	}
+
+	/**
+	 * Enqueue editor scripts.
+	 *
+	 * @return void
+	 */
+	public function enqueue_editor() {}
 
 	/**
 	 * Get asset.
