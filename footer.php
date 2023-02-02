@@ -54,7 +54,7 @@ $core = vite( 'core' );
 		$core->action( 'footer/end' );
 		?>
 	</div>
-	<?php $core->action( 'body/close' ); ?>
+	<?php $core->action( 'body/end' ); ?>
 	<?php wp_footer(); ?>
 </body>
 </html>
