@@ -58,8 +58,14 @@ class Widgets {
 						'description'   => __( 'Add widgets here..', 'vite' ),
 						'before_widget' => '',
 						'after_widget'  => '',
-						'before_title'  => sprintf( '<%s class="widget-title">', $this->filter( "sidebar/$id/title/tag", $title_tag ) ),
-						'after_title'   => sprintf( '</%s>', $this->filter( "sidebar/$id/title/tag", $title_tag ) ),
+						'before_title'  => sprintf(
+							'<%s class="widget-title">',
+							$this->filter( "sidebar/$id/title/tag", $title_tag )
+						),
+						'after_title'   => sprintf(
+							'</%s>',
+							$this->filter( "sidebar/$id/title/tag", $title_tag )
+						),
 					]
 				)
 			);
@@ -111,7 +117,11 @@ class Widgets {
 			<?php elseif ( current_user_can( 'edit_theme_options' ) ) : ?>
 				<section class="widget">
 					<h2 class="widget-title"><?php echo esc_html( $this->get_sidebar_title( $id ) ); ?></h2>
-					<a href="<?php echo esc_url( admin_url( 'widgets.php' ) ); ?>"><?php esc_html_e( 'Click here to add widgets for this area', 'vite' ); ?></a>
+					<a
+						href="<?php echo esc_url( admin_url( 'widgets.php' ) ); ?>"
+					>
+						<?php esc_html_e( 'Click here to add widgets for this area', 'vite' ); ?>
+					</a>
 				</section>
 			<?php endif; ?>
 		<?php
