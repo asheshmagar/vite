@@ -12,7 +12,7 @@ defined( 'ABSPATH' ) || exit;
 /**
  * JetPack compatibility.
  */
-class JetPack extends Plugin {
+class JetPack extends Base {
 
 	/**
 	 * {@inheritDoc}

@@ -12,14 +12,14 @@ defined( 'ABSPATH' ) || exit;
 /**
  * WebStories compatibility.
  */
-class WebStories extends Plugin {
+class WebStories extends Base {
 
 	/**
 	 * {@inheritDoc}
 	 */
 	public function init() {
 		add_action( 'after_setup_theme', [ $this, 'setup' ] );
-		add_action( 'vite/body/open', [ $this, 'embed' ] );
+		add_action( 'vite/body/start', [ $this, 'embed' ] );
 	}
 
 	/**

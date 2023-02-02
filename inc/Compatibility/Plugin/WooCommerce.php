@@ -12,7 +12,7 @@ defined( 'ABSPATH' ) || exit;
 /**
  * WooCommerce's compatibility.
  */
-class WooCommerce extends Plugin {
+class WooCommerce extends Base {
 
 	/**
 	 * {@inheritDoc}

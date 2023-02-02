@@ -9,7 +9,6 @@ namespace Vite\Compatibility\Plugin;
 
 use Vite\Traits\JSON;
 use WP_Post;
-use Vite\Compatibility\Plugin\Plugin as Base;
 
 /**
  * Class StarterContent.

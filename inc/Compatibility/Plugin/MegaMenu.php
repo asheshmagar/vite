@@ -2,7 +2,7 @@
 
 namespace Vite\Compatibility\Plugin;
 
-class MegaMenu extends Plugin {
+class MegaMenu extends Base {
 
 	/**
 	 * {@inheritDoc}

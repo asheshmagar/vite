@@ -6,7 +6,7 @@ use Vite\Traits\Mods;
 
 defined( 'ABSPATH' ) || exit;
 
-class Elementor extends Plugin {
+class Elementor extends Base {
 
 	use Mods;
 

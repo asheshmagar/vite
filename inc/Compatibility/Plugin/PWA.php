@@ -12,7 +12,7 @@ defined( 'ABSPATH' ) || exit;
 /**
  * Class PWA.
  */
-class PWA extends Plugin {
+class PWA extends Base {
 
 	/**
 	 * Init.

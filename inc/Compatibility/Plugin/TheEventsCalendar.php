@@ -4,7 +4,7 @@ namespace Vite\Compatibility\Plugin;
 
 defined( 'ABSPATH' ) || exit;
 
-class TheEventsCalendar extends Plugin {
+class TheEventsCalendar extends Base {
 
 	/**
 	 * {@inheritDoc}

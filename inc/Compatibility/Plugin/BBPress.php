@@ -4,7 +4,7 @@ namespace Vite\Compatibility\Plugin;
 
 defined( 'ABSPATH' ) || exit;
 
-class BBPress extends Plugin {
+class BBPress extends Base {
 
 	/**
 	 * {@inheritDoc}

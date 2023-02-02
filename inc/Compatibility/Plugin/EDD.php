@@ -4,7 +4,7 @@ namespace Vite\Compatibility\Plugin;
 
 defined( 'ABSPATH' ) || exit;
 
-class EDD extends Plugin {
+class EDD extends Base {
 
 	/**
 	 * {@inheritDoc}

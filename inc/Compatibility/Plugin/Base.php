@@ -12,7 +12,7 @@ use Vite\Traits\Hook;
 /**
  * Class AbstractCompatibility.
  */
-abstract class Plugin {
+abstract class Base {
 
 	use Hook;
 
