@@ -262,7 +262,7 @@ class BuilderElements {
 		 * @since 1.0.0
 		 */
 		$this->action( "{$args['context']}/search/end" );
-		! $in_mobile_menu_offset && $this->add_action( 'vite/body/close', [ $this, 'search_modal' ], 11 );
+		! $in_mobile_menu_offset && $this->add_action( 'vite/body/end', [ $this, 'search_modal' ], 11 );
 	}
 
 	/**
