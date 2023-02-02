@@ -1,0 +1,25 @@
+.gallery {
+	display: grid;
+	grid-template-columns: repeat(var(--gallery-template-columns, 1), 1fr);
+
+	@for $i from 1 through 9 {
+		&:where(.gallery-columns-#{$i}) {
+			--gallery-template-columns: #{$i};
+
+			@include media-query('tablet') {
+				--gallery-template-columns: 2;
+			}
+
+			@include media-query('mobile') {
+				--gallery-template-columns: 1;
+			}
+		}
+	}
+
+	&-item {
+		display: inline-block;
+		text-align: center;
+		vertical-align: top;
+		padding: 10px;
+	}
+}
