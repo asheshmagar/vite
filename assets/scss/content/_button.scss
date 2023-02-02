@@ -5,7 +5,8 @@ button,
 	-webkit-appearance: button;
 }
 
-[role="button"] {
+[role="button"],
+.wp-element-button {
 	display: inline-block;
 	text-decoration: none;
 }
