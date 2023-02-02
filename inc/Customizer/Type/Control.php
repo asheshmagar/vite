@@ -64,7 +64,7 @@ class Control extends WP_Customize_Control {
 	/**
 	 * {@inheritDoc}
 	 *
-	 * Content will be rendered via JS.
+	 * Content will be rendered via JS - React.
 	 *
 	 * @see WP_Customize_Control::render_content()
 	 */

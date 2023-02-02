@@ -28,11 +28,9 @@ class BuilderElements {
 	/**
 	 * Site branding.
 	 *
-	 * @param mixed $args Arguments.
-	 *
 	 * @return void
 	 */
-	public function logo( $args ) {
+	public function logo() {
 		$elements = $this->get_mod( 'header-site-branding-elements' );
 		$layout   = $this->get_mod( 'header-site-branding-layout' );
 
@@ -155,22 +153,42 @@ class BuilderElements {
 					}
 					?>
 					<li class="vite-social__item">
-						<a <?php print( esc_attr( 'brand' === $color_type && isset( $social['color'] ) ? 'style=--link-color:' . $social['color'] : '' ) ); ?>
-							class="vite-social__link vite-social__link--<?php echo esc_attr( $social['id'] ); ?>"
-							rel="noopener"
-							href=<?php echo esc_url( $this->get_mod( "{$social['id']}-link", '#' ) ); ?>>
-							<?php isset( $social['label'] ) && printf( '<span class="screen-reader-text">%s</span>', esc_html( $social['label'] ) ); ?>
-							<span class="vite-social__icon">
+						<a
 						<?php
-						vite( 'icon' )->get_icon(
-							$social['id'],
-							[
-								'echo' => true,
-								'size' => $size,
-							]
-						);
+						$this->print_html_attributes(
+							'header/socials/link',
+							array_merge(
+								[
+									'class' => [
+										'vite-social__link',
+										"vite-social__link--{$social['id']}",
+									],
+									'rel'   => 'noopener',
+									'href'  => $this->get_mod( "{$social['id']}-link", '#' ),
+								],
+								'brand' === $color_type && isset( $social['color'] )
+									?
+									[ 'style' => "--link-color:{$social['color']}" ]
+									:
+									[]
+							)
+						)
 						?>
-						</span>
+						>
+							<?php if ( isset( $social['label'] ) ) : ?>
+								<span class="screen-reader-text"><?php echo esc_html( $social['label'] ); ?></span>
+							<?php endif; ?>
+							<span class="vite-social__icon">
+								<?php
+								vite( 'icon' )->get_icon(
+									$social['id'],
+									[
+										'echo' => true,
+										'size' => $size,
+									]
+								);
+								?>
+							</span>
 						</a>
 					</li>
 					<?php
@@ -224,8 +242,9 @@ class BuilderElements {
 			<?php if ( ! $in_mobile_menu_offset ) : ?>
 			<button class="vite-search__btn" aria-label="<?php esc_attr_e( 'Search modal open button', 'vite' ); ?>">
 				<?php if ( ! empty( $label ) ) : ?>
-					<span
-						class="vite-search__label vite-search__label--pos-<?php esc_attr( $label_position ); ?> vite-search__label--visibility-<?php echo esc_attr( $visibility ); ?>"><?php echo esc_html( $label ); ?></span>
+					<span class="vite-search__label vite-search__label--pos-<?php esc_attr( $label_position ); ?> vite-search__label--visibility-<?php echo esc_attr( $visibility ); ?>">
+						<?php echo esc_html( $label ); ?>
+					</span>
 				<?php endif; ?>
 				<span class="vite-search__icon">
 					<?php

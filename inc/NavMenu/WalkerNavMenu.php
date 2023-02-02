@@ -83,8 +83,14 @@ class WalkerNavMenu extends Walker_Nav_Menu {
 				in_array( 'page_item_has_children', (array) $menu_item->classes, true )
 			) {
 				$classes[]           = 'vite-nav__item--parent';
-				$icon                = $this->filter( 'submenu/icon', vite( 'icon' )->get_icon( 'chevron-down', [ 'size' => 10 ] ) );
-				$submenu_icon        = sprintf( '<span class="vite-nav__submenu-icon" role="presentation">%s</span>', $icon );
+				$icon                = $this->filter(
+					'submenu/icon',
+					vite( 'icon' )->get_icon( 'chevron-down', [ 'size' => 10 ] )
+				);
+				$submenu_icon        = sprintf(
+					'<span class="vite-nav__submenu-icon" role="presentation">%s</span>',
+					$icon
+				);
 				$submenu_icon_button = sprintf(
 					'<button aria-expanded="false" aria-label="%s" class="vite-nav__submenu-toggle%s">%s</button>',
 					esc_attr__( 'Open sub menu', 'vite' ),
@@ -120,7 +126,16 @@ class WalkerNavMenu extends Walker_Nav_Menu {
 		 * @param stdClass $args      An object of wp_nav_menu() arguments.
 		 * @param int      $depth     Depth of menu item. Used for padding.
 		 */
-		$class_names = implode( ' ', apply_filters( 'nav_menu_css_class', array_filter( $classes ), $menu_item, $args, $depth ) );
+		$class_names = implode(
+			' ',
+			apply_filters(
+				'nav_menu_css_class',
+				array_filter( $classes ),
+				$menu_item,
+				$args,
+				$depth
+			)
+		);
 		$class_names = $class_names ? ' class="' . esc_attr( $class_names ) . '"' : '';
 
 		/**

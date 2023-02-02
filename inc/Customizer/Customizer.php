@@ -221,12 +221,11 @@ class Customizer {
 	 */
 	private function sync( WP_Customize_Manager $wp_customize ) {
 		$action = 'save-customize_' . $wp_customize->get_stylesheet();
-		if ( ! check_ajax_referer( $action, 'nonce', false ) ) {
+		if (
+			! check_ajax_referer( $action, 'nonce', false ) ||
+			! isset( $_POST['customized'] )
+		) {
 			wp_send_json_error( 'invalid_nonce' );
-		}
-
-		if ( ! isset( $_POST['customized'] ) ) {
-			return;
 		}
 
 		$customized = json_decode( sanitize_textarea_field( wp_unslash( $_POST['customized'] ) ), true );
@@ -236,46 +235,37 @@ class Customizer {
 		}
 
 		// Sync menus.
-		$primary   = ( $customized['nav_menu_locations[menu-1]'] ?? ( $customized['vite[header-menu-1]'] ?? null ) );
-		$secondary = ( $customized['nav_menu_locations[menu-2]'] ?? ( $customized['vite[header-menu-2]'] ?? null ) );
-		$mobile    = ( $customized['nav_menu_locations[menu-3]'] ?? ( $customized['vite[header-menu-3]'] ?? null ) );
+		$menu1     = ( $customized['nav_menu_locations[menu-1]'] ?? ( $customized['vite[header-menu-1]'] ?? null ) );
+		$menu2     = ( $customized['nav_menu_locations[menu-2]'] ?? ( $customized['vite[header-menu-2]'] ?? null ) );
+		$menu3     = ( $customized['nav_menu_locations[menu-3]'] ?? ( $customized['vite[header-menu-3]'] ?? null ) );
 		$locations = get_theme_mod( 'nav_menu_locations' );
 		$vite_mods = get_theme_mod( 'vite' );
 
-		if ( isset( $primary ) || isset( $secondary ) || isset( $mobile ) ) {
-			$primary   = absint( $primary );
-			$secondary = absint( $secondary );
-			$mobile    = absint( $mobile );
-
-			if ( $primary ) {
-				$locations['menu-1']        = $primary;
-				$vite_mods['header-menu-1'] = $primary;
-			} else {
-				unset( $locations['menu-1'] );
-				unset( $vite_mods['header-menu-1'] );
+		if ( ! empty( array_filter( [ $menu1, $menu2, $menu3 ] ) ) ) {
+			foreach ( range( 1, 3 ) as $i ) {
+				$menu = absint( ${"menu$i"} );
+				if ( $menu ) {
+					$locations[ "menu-$i" ]        = $menu;
+					$vite_mods[ "header-menu-$i" ] = $menu;
+				} else {
+					unset( $locations[ "menu-$i" ] );
+					unset( $vite_mods[ "header-menu-$i" ] );
+				}
+				set_theme_mod( 'nav_menu_locations', $locations );
+				set_theme_mod( 'vite', $vite_mods );
 			}
-
-			if ( $secondary ) {
-				$locations['menu-2']        = $secondary;
-				$vite_mods['header-menu-2'] = $secondary;
-			} else {
-				unset( $locations['menu-2'] );
-				unset( $vite_mods['header-menu-2'] );
-			}
-
-			if ( $mobile ) {
-				$locations['menu-3']        = $mobile;
-				$vite_mods['header-menu-3'] = $mobile;
-			} else {
-				unset( $locations['menu-3'] );
-				unset( $vite_mods['header-menu-3'] );
-			}
-
-			set_theme_mod( 'nav_menu_locations', $locations );
-			set_theme_mod( 'vite', $vite_mods );
 		}
 
-		// Sync google fonts.
+		$this->sync_fonts( $customized );
+	}
+
+	/**
+	 * Sync fonts.
+	 *
+	 * @param mixed $customized Customized data.
+	 * @return void
+	 */
+	private function sync_fonts( $customized ) {
 		if ( $this->get_mod( 'local-google-fonts' ) ) {
 			$fonts_url = $this->get_mod( 'google-fonts-url' );
 			foreach ( array_keys( $customized ) as $key ) {
@@ -342,16 +332,17 @@ class Customizer {
 		$control_blogname        = $wp_customize->get_control( 'blogname' );
 		$control_blogdescription = $wp_customize->get_control( 'blogdescription' );
 		$control_custom_logo     = $wp_customize->get_control( 'custom_logo' );
+		$logo_section            = 'vite[header-logo]';
 
 		$control_custom_logo->priority = 1;
-		$control_custom_logo->section  = 'vite[header-logo]';
+		$control_custom_logo->section  = $logo_section;
 
 		$control_blogname->type     = 'vite-input';
-		$control_blogname->section  = 'vite[header-logo]';
+		$control_blogname->section  = $logo_section;
 		$control_blogname->priority = 3;
 
 		$control_blogdescription->type     = 'vite-input';
-		$control_blogdescription->section  = 'vite[header-logo]';
+		$control_blogdescription->section  = $logo_section;
 		$control_blogdescription->priority = 4;
 
 		$wp_customize->get_setting( 'blogname' )->transport        = 'postMessage';

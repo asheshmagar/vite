@@ -59,7 +59,10 @@ class WalkerPage extends Walker_Page {
 		if ( isset( $args['pages_with_children'][ $data_object->ID ] ) ) {
 			if ( in_array( $theme_location, [ 'menu-1', 'menu-2', 'menu-3' ], true ) ) {
 				$css_class[]         = 'vite-nav__item--parent';
-				$icon                = $this->filter( 'submenu/icon', vite( 'icon' )->get_icon( 'chevron-down', [ 'size' => 10 ] ) );
+				$icon                = $this->filter(
+					'submenu/icon',
+					vite( 'icon' )->get_icon( 'chevron-down', [ 'size' => 10 ] )
+				);
 				$submenu_icon        = sprintf( '<span class="vite-nav__submenu-icon" role="presentation">%s</span>', $icon );
 				$submenu_icon_button = sprintf(
 					'<button aria-expanded="false" aria-label="%s" class="vite-nav__submenu-toggle%s">%s</button>',

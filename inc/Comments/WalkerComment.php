@@ -56,7 +56,18 @@ class WalkerComment extends Walker_Comment {
 	protected function html5_comment( $comment, $depth, $args ) {
 		$tag = ( 'div' === $args['style'] ) ? 'div' : 'li';
 		?>
-		<<?php echo esc_html( $tag ); ?> id="comment-<?php comment_ID(); ?>" class="vite-comments__item <?php echo esc_attr( implode( ' ', get_comment_class( $this->has_children ? 'vite-comments__item--parent' : '', $comment ) ) ); ?>">
+		<<?php echo esc_html( $tag ); ?> id="comment-<?php comment_ID(); ?>"
+		class="vite-comments__item
+		<?php
+		echo esc_attr(
+			implode(
+				' ',
+				get_comment_class( $this->has_children ? 'vite-comments__item--parent' : '', $comment )
+			)
+		);
+		?>
+		"
+		>
 			<article
 				<?php
 				$this->print_html_attributes(
@@ -117,7 +128,11 @@ class WalkerComment extends Walker_Comment {
 						</div>
 						<?php
 						/* translators: 1: Comment date, 2: Comment time. */
-						$comment_timestamp = sprintf( __( '%1$s at %2$s', 'vite' ), get_comment_date( '', $comment ), get_comment_time() );
+						$comment_timestamp = sprintf(
+							__( '%1$s at %2$s', 'vite' ),
+							get_comment_date( '', $comment ),
+							get_comment_time()
+						);
 						?>
 						<div class="vite-comment__meta-inner">
 							<a class="vite-comment__meta-time" href="<?php echo esc_url( get_comment_link( $comment, $args ) ); ?>">
@@ -137,7 +152,12 @@ class WalkerComment extends Walker_Comment {
 							<?php
 							if ( current_user_can( 'edit_comment', $comment->comment_ID ) ) {
 								?>
-								<a class="vite-comment__meta-edit" href="<?php echo esc_url( get_edit_comment_link( $comment ) ); ?>"><?php esc_html_e( 'Edit', 'vite' ); ?></a>
+								<a
+									class="vite-comment__meta-edit"
+									href="<?php echo esc_url( get_edit_comment_link( $comment ) ); ?>"
+								>
+									<?php esc_html_e( 'Edit', 'vite' ); ?>
+								</a>
 								<?php
 							}
 							?>
@@ -157,7 +177,10 @@ class WalkerComment extends Walker_Comment {
 					<?php
 					comment_text();
 					if ( '0' === $comment->comment_approved ) {
-						printf( '<em class="vite-comment-awaiting-moderation">%s</em>', esc_html__( 'Your comment is awaiting moderation.', 'vite' ) );
+						printf(
+							'<em class="vite-comment-awaiting-moderation">%s</em>',
+							esc_html__( 'Your comment is awaiting moderation.', 'vite' )
+						);
 					}
 					?>
 				</div>
