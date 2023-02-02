@@ -19,6 +19,7 @@ body {
 		color: var(--link-hover-color);
 	}
 }
+
 :where(a, button) {
 	&:focus,
 	&:active{
