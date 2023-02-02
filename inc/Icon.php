@@ -18,7 +18,23 @@ class Icon {
 	 */
 	public function __construct() {
 		$this->json_to_array( VITE_ASSETS_DIR . '/json/font-awesome.json', 'icons' );
-		$this->icons['vite-search'] = "<svg xmlns='http://www.w3.org/2000/svg' class='search %s' width='%d' height='%d' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><circle cx='11' cy='11' r='8'></circle><line x1='21' y1='21' x2='16.65' y2='16.65'></line></svg>";
+		$this->icons['vite-search'] = <<<SVG
+<svg
+	xmlns="http://www.w3.org/2000/svg"
+	class="search %s"
+	width="%d"
+	height="%d"
+	viewBox="0 0 24 24"
+	fill="none"
+	stroke="currentColor"
+	stroke-width="2"
+	stroke-linecap="round"
+	stroke-linejoin="round"
+>
+	<circle cx="11" cy="11" r="8"></circle>
+	<line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+</svg>
+SVG;
 	}
 
 	/**
@@ -35,12 +51,9 @@ class Icon {
 	 *
 	 * @param string $icon Icon name.
 	 * @param array  $args Icon args.
-	 * @return string|void
+	 * @return string|bool
 	 */
 	public function get_icon( string $icon, array $args = [] ) {
-		if ( ! $icon ) {
-			return '';
-		}
 		$args = wp_parse_args(
 			$args,
 			[
@@ -52,8 +65,8 @@ class Icon {
 
 		$args = $this->filter( 'svg/icon/args', $args, $icon );
 
-		if ( ! isset( $this->icons[ $icon ] ) ) {
-			return;
+		if ( ! $icon || ! isset( $this->icons[ $icon ] ) ) {
+			return false;
 		}
 
 		$svg          = sprintf( $this->icons[ $icon ], $args['class'], $args['size'], $args['size'] );
@@ -104,11 +117,12 @@ class Icon {
 
 		$svg = $this->filter( 'svg/icon', $svg, $this->icons );
 
-		if ( ! $args['echo'] ) {
-			return $svg;
+		if ( $args['echo'] ) {
+			echo wp_kses( $svg, $allowed_html );
+			return true;
 		}
 
-		echo wp_kses( $svg, $allowed_html );
+		return $svg;
 	}
 }
 
