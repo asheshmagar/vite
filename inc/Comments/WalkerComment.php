@@ -57,16 +57,19 @@ class WalkerComment extends Walker_Comment {
 		$tag = ( 'div' === $args['style'] ) ? 'div' : 'li';
 		?>
 		<<?php echo esc_html( $tag ); ?> id="comment-<?php comment_ID(); ?>"
-		class="vite-comments__item
 		<?php
-		echo esc_attr(
-			implode(
-				' ',
-				get_comment_class( $this->has_children ? 'vite-comments__item--parent' : '', $comment )
-			)
-		);
+		$this->print_html_attributes(
+			'comment/item',
+			[
+				'class' => array_merge(
+					[
+						'vite-comments__item',
+					],
+					get_comment_class( $this->has_children ? 'vite-comments__item--parent' : '', $comment )
+				),
+			]
+		)
 		?>
-		"
 		>
 			<article
 				<?php
