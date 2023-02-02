@@ -44,13 +44,23 @@ class Schema {
 		$this->add_filter( "$suffix/nav", [ $this, 'site_navigation_schema' ] );
 		$this->add_filter( "$suffix/article", [ $this, 'post_schema' ] );
 		$this->add_action( "$suffix/comment", [ $this, 'comment_schema' ] );
+		$this->add_filter( "$suffix/entry-elements/meta/comment", [ $this, 'meta_comment_schema' ] );
+		$this->add_filter( "$suffix/entry-elements/featured-image", [ $this, 'thumbnail_schema' ] );
 		$this->add_filter( "$suffix/entry-elements/title", [ $this, 'title_schema' ] );
 		$this->add_filter( "$suffix/entry-elements/excerpt", [ $this, 'excerpt_schema' ] );
 		$this->add_filter( "$suffix/entry-elements/meta/author", [ $this, 'author_schema' ] );
-		$this->add_filter( "$suffix/entry-elements/meta/date", [ $this, 'date_schema' ], 10, 2 );
-		$this->add_filter( "$suffix/entry-elements/meta/tax", [ $this, 'tax_schema' ], 10, 2 );
-		$this->add_filter( "$suffix/entry-elements/meta/comment", [ $this, 'meta_comment_schema' ] );
-		$this->add_filter( "$suffix/entry-elements/featured-image", [ $this, 'thumbnail_schema' ] );
+		$this->add_filter(
+			"$suffix/entry-elements/meta/date",
+			[ $this, 'date_schema' ],
+			10,
+			2
+		);
+		$this->add_filter(
+			"$suffix/entry-elements/meta/tax",
+			[ $this, 'tax_schema' ],
+			10,
+			2
+		);
 	}
 
 	/**
