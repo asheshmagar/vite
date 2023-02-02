@@ -69,7 +69,7 @@ $core->print_html_attributes(
 			<?php esc_html_e( 'Skip to content', 'vite' ); ?>
 		</a>
 		<?php wp_body_open(); ?>
-		<?php $core->action( 'body/open' ); ?>
+		<?php $core->action( 'body/start' ); ?>
 		<div
 		<?php
 		$core->print_html_attributes(
@@ -79,7 +79,7 @@ $core->print_html_attributes(
 				'class' => [
 					'wp-site-blocks',
 					'vite-site',
-					'hfeed'
+					'hfeed',
 				],
 			]
 		);
