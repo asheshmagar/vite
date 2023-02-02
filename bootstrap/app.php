@@ -13,7 +13,7 @@ global $vite;
 
 $vite = new Container();
 
-// Auto-wire.
+// Auto-wire, resolve dependencies and cache resolutions.
 $vite->delegate( ( new ReflectionContainer() )->cacheResolutions() );
 
 $configs = require_once __DIR__ . '/config.php';
