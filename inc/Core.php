@@ -109,7 +109,7 @@ class Core {
 	 * @return bool
 	 */
 	public function is_block_editor_active(): bool {
-		$gutenberg = ! ( false === has_filter( 'replace_editor', 'gutenberg_init' ) );
+		$gutenberg = ( false !== has_filter( 'replace_editor', 'gutenberg_init' ) );
 
 		if ( ! $gutenberg ) {
 			return false;
@@ -161,7 +161,6 @@ class Core {
 	 * @return array|mixed
 	 */
 	public function get_social_networks() {
-		$social_networks = $this->json_to_array( VITE_ASSETS_DIR . 'json/social-networks.json' );
 
 		/**
 		 * Filter: vite/social-networks.
@@ -170,6 +169,9 @@ class Core {
 		 *
 		 * @since x.x.x
 		 */
-		return $this->filter( 'social-networks', $social_networks );
+		return $this->filter(
+			'social-networks',
+			$this->json_to_array( VITE_ASSETS_DIR . 'json/social-networks.json' )
+		);
 	}
 }
