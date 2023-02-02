@@ -24,7 +24,6 @@ export const handleModal = ( {
 	const openModal = ( e ) => {
 		e.preventDefault();
 		modalEl.classList.add( 'vite-modal--open' );
-		modalEl.dataset.modalOpen = '';
 		document.body.style.overflow = 'hidden';
 		onOpen.call( null, { modalEl, openModalEl, closeModalEl } );
 	};
