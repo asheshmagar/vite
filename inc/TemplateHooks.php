@@ -20,6 +20,11 @@ class TemplateHooks {
 	use HTMLAttrs;
 
 	/**
+	 * Template part content.
+	 */
+	const TEMPLATE_PART_CONTENT = 'template-parts/content/content';
+
+	/**
 	 * Init.
 	 *
 	 * @return void
@@ -52,7 +57,7 @@ class TemplateHooks {
 		$this->add_action(
 			'vite/404',
 			function() {
-				get_template_part( 'template-parts/content/content', '404' );
+				get_template_part( self::TEMPLATE_PART_CONTENT, '404' );
 			}
 		);
 		$this->add_action( 'vite/single/content/content/start', [ $this, 'single_featured_image' ] );
@@ -60,8 +65,14 @@ class TemplateHooks {
 		$this->add_action( 'vite/page/content/header', [ $this, 'header_elements' ] );
 		$this->add_action( 'vite/body/end', [ $this, 'scroll_to_top' ] );
 		$this->add_filter( 'post_class', [ $this, 'post_class' ], 10, 3 );
-		$this->add_filter( 'body_class', [ $this, 'body_class' ] );
-		$this->add_filter( 'embed_oembed_html', [ $this, 'embed_oembed_html' ], 10, 2 );
+		$this->add_filter(
+			'body_class', [ $this, 'body_class' ] );
+		$this->add_filter(
+			'embed_oembed_html',
+			[ $this, 'embed_oembed_html' ],
+			10,
+			2
+		);
 	}
 
 	/**
@@ -114,7 +125,11 @@ class TemplateHooks {
 	 * @return void
 	 */
 	public function header_elements( $elements ) {
-		get_template_part( 'template-parts/entry/entry', '', [ 'elements' => $elements ] );
+		get_template_part(
+			'template-parts/entry/entry',
+			'',
+			[ 'elements' => $elements ]
+		);
 	}
 
 	/**
@@ -133,7 +148,11 @@ class TemplateHooks {
 	 * @return void
 	 */
 	public function archive_content( $elements ) {
-		get_template_part( 'template-parts/entry/entry', '', [ 'elements' => $elements ] );
+		get_template_part(
+			'template-parts/entry/entry',
+			'',
+			[ 'elements' => $elements ]
+		);
 	}
 
 	/**
@@ -142,7 +161,7 @@ class TemplateHooks {
 	 * @return void
 	 */
 	public function content_none() {
-		get_template_part( 'template-parts/content/content', 'none' );
+		get_template_part( self::TEMPLATE_PART_CONTENT, 'none' );
 	}
 
 	/**
@@ -335,13 +354,21 @@ class TemplateHooks {
 			$this->add_action(
 				'vite/archive/start',
 				function() use ( $archive_title_elements ) {
-					get_template_part( 'template-parts/page-header/page-header', '', [ 'elements' => $archive_title_elements ] );
+					get_template_part(
+						'template-parts/page-header/page-header',
+						'',
+						[ 'elements' => $archive_title_elements ]
+					);
 				},
 				9
 			);
 			return;
 		}
-		get_template_part( 'template-parts/page-header/page-header', '', [ 'elements' => $archive_title_elements ] );
+		get_template_part(
+			'template-parts/page-header/page-header',
+			'',
+			[ 'elements' => $archive_title_elements ]
+		);
 	}
 
 	/**
@@ -351,13 +378,13 @@ class TemplateHooks {
 	 */
 	public function content() {
 		if ( is_archive() || is_home() || is_search() ) {
-			get_template_part( 'template-parts/content/content', '' );
+			get_template_part( self::TEMPLATE_PART_CONTENT, '' );
 		} elseif ( is_page() ) {
-			get_template_part( 'template-parts/content/content', 'page' );
+			get_template_part( self::TEMPLATE_PART_CONTENT, 'page' );
 		} elseif ( is_single() ) {
-			get_template_part( 'template-parts/content/content', 'single' );
+			get_template_part( self::TEMPLATE_PART_CONTENT, 'single' );
 		} else {
-			get_template_part( 'template-parts/content/content', 'none' );
+			get_template_part( self::TEMPLATE_PART_CONTENT, 'none' );
 		}
 	}
 }
