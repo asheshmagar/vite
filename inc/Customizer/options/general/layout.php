@@ -43,6 +43,35 @@ $options = [
 			'context'  => 'global',
 		],
 	],
+	'vite[content-layout]'         => [
+		'section'     => 'vite[global-layout]',
+		'type'        => 'vite-select',
+		'title'       => __( 'Content layout', 'vite' ),
+		'default'     => 'default',
+		'input_attrs' => [
+			'separator' => true,
+		],
+		'choices'     => [
+			'default'    => __( 'Default', 'vite' ),
+			'full-width' => __( 'Full Width', 'vite' ),
+			'narrow'     => __( 'Narrow', 'vite' ),
+		],
+		'transport'   => 'refresh',
+	],
+	'vite[content-style]'          => [
+		'section'     => 'vite[global-layout]',
+		'type'        => 'vite-select',
+		'title'       => __( 'Content Style', 'vite' ),
+		'default'     => 'default',
+		'input_attrs' => [
+			'separator' => true,
+		],
+		'choices'     => [
+			'boxed'  => __( 'Boxed', 'vite' ),
+			'normal' => __( 'Normal', 'vite' ),
+		],
+		'transport'   => 'refresh',
+	],
 	'vite[content-spacing]'        => [
 		'section'     => 'vite[global-layout]',
 		'type'        => 'vite-dimensions',
