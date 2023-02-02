@@ -106,6 +106,11 @@ class WebFontLoader {
 	const CLEANUP_FREQUENCY = 'monthly';
 
 	/**
+	 * Cleanup routine hook.
+	 */
+	const CLEANUP_HOOK = 'vite/local-fonts/cleanup';
+
+	/**
 	 * Constructor.
 	 *
 	 * Get a new instance of the object for a new URL.
@@ -115,7 +120,7 @@ class WebFontLoader {
 	public function __construct() {
 		// Add a cleanup routine.
 		$this->schedule_cleanup();
-		$this->add_action( 'vite/local-fonts/cleanup', [ $this, 'delete_fonts_folder' ] );
+		$this->add_action( self::CLEANUP_HOOK, [ $this, 'delete_fonts_folder' ] );
 	}
 
 	/**
@@ -578,7 +583,7 @@ class WebFontLoader {
 	 */
 	private function schedule_cleanup() {
 		if ( ! is_multisite() || ( is_multisite() && is_main_site() ) ) {
-			if ( ! wp_next_scheduled( 'vite/local-fonts/cleanup' ) && ! wp_installing() ) {
+			if ( ! wp_next_scheduled( self::CLEANUP_HOOK ) && ! wp_installing() ) {
 				wp_schedule_event( time(), self::CLEANUP_FREQUENCY, 'vite/local-fonts/cleanup' );
 			}
 		}
