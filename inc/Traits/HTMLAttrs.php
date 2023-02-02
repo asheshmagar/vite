@@ -21,13 +21,13 @@ trait HTMLAttrs {
 	 * @param array  $attributes The attributes.
 	 * @param bool   $echo Whether to echo or return.
 	 * @param mixed  ...$args Additional arguments.
-	 * @return void|string
+	 * @return bool|string
 	 */
 	public function print_html_attributes( string $context, array $attributes, bool $echo = true, ...$args ) {
 		$attributes = $this->filter( "html-attributes/$context", $attributes, ...$args );
 
 		if ( empty( $attributes ) ) {
-			return;
+			return false;
 		}
 
 		$index  = 0;
@@ -50,7 +50,9 @@ trait HTMLAttrs {
 		}
 
 		if ( ! $echo ) {
-			return $attrs;
+			return true;
 		}
+
+		return $attrs;
 	}
 }
