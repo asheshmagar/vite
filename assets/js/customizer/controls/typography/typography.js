@@ -77,7 +77,7 @@ export default memo( ( props ) => {
 					<Popover
 						popupClassName="vite-typography-popover"
 						action={ [ 'click' ] }
-						popup={
+						popup={ () => (
 							<div className="vite-typography">
 								<div className="font-family">
 									<span>{ __( 'Font Family' ) }</span>
@@ -249,7 +249,7 @@ export default memo( ( props ) => {
 									/>
 								</div>
 							</div>
-						}
+						) }
 					>
 						<span
 							style={ { width: 24, height: 24, display: 'grid', placeItems: 'center', cursor: 'pointer', border: '1px solid rgb(117, 117, 117)', borderRadius: 2 } }
