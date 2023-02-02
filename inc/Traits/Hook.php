@@ -120,7 +120,7 @@ trait Hook {
 		$handle = array_shift( $args );
 
 		if ( is_null( $handle ) ) {
-			return;
+			return false;
 		}
 
 		$action = "vite/$handle";
