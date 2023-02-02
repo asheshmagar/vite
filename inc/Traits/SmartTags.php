@@ -29,8 +29,11 @@ trait SmartTags {
 				'{{time}}'         => wp_date( $time_format ),
 				'{{datetime}}'     => wp_date( "$date_format $time_format" ),
 				'{{copyright}}'    => 'Copyright &copy;',
-				/* Translators: %s: Theme author. */
-				'{{theme-author}}' => sprintf( __( 'Powered by %s' ), '<a href="https://wpvite.com" rel="nofollow noopener" target="_blank">Vite</a>' ),
+				'{{theme-author}}' => sprintf(
+					/* Translators: %s: Theme author. */
+					__( 'Powered by %s' ),
+					'<a href="https://wpvite.com" rel="nofollow noopener" target="_blank">Vite</a>'
+				),
 			]
 		);
 	}
