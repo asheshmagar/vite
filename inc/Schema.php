@@ -18,14 +18,14 @@ class Schema {
 	 *
 	 * @var string
 	 */
-	private $base_uri = 'https://schema.org/';
+	const SCHEMA_BASE_URI = 'https://schema.org/';
 
 	/**
 	 * Hook suffix.
 	 *
 	 * @var string
 	 */
-	private $hook_suffix = 'vite/html-attributes';
+	const HOOK_SUFFIX = 'vite/html-attributes';
 
 	/**
 	 * Init schema markup.
@@ -36,7 +36,7 @@ class Schema {
 		if ( ! $this->get_mod( 'schema-markup', true ) ) {
 			return;
 		}
-		$suffix = $this->hook_suffix;
+		$suffix = self::HOOK_SUFFIX;
 		$this->add_filter( "$suffix/body", [ $this, 'body_schema' ] );
 		$this->add_filter( "$suffix/header", [ $this, 'header_schema' ] );
 		$this->add_filter( "$suffix/header/site-branding", [ $this, 'site_branding_schema' ] );
@@ -71,20 +71,20 @@ class Schema {
 	 */
 	public function comment_schema( array $attributes ): array {
 		$this->add_filter(
-			"$this->hook_suffix/comment/author",
+			self::HOOK_SUFFIX . '/comment/author',
 			function( $attrs ) {
 				return array_merge(
 					$attrs,
 					[
 						'itemscope' => '',
-						'itemtype'  => $this->base_uri . 'Person',
+						'itemtype'  => self::SCHEMA_BASE_URI . 'Person',
 						'itemprop'  => 'author',
 					]
 				);
 			}
 		);
 		$this->add_filter(
-			"$this->hook_suffix/comment/author/name",
+			self::HOOK_SUFFIX . '/comment/author/name',
 			function( $attrs ) {
 				return array_merge(
 					$attrs,
@@ -95,7 +95,7 @@ class Schema {
 			}
 		);
 		$this->add_filter(
-			"$this->hook_suffix/comment/time",
+			self::HOOK_SUFFIX . '/comment/time',
 			function( $attrs ) {
 				return array_merge(
 					$attrs,
@@ -106,7 +106,7 @@ class Schema {
 			}
 		);
 		$this->add_filter(
-			"$this->hook_suffix/comment/content",
+			self::HOOK_SUFFIX . '/comment/content',
 			function( $attrs ) {
 				return array_merge(
 					$attrs,
@@ -120,7 +120,7 @@ class Schema {
 			$attributes,
 			[
 				'itemscope' => '',
-				'itemtype'  => $this->base_uri . 'Comment',
+				'itemtype'  => self::SCHEMA_BASE_URI . 'Comment',
 			]
 		);
 	}
@@ -188,13 +188,13 @@ class Schema {
 	 */
 	public function author_schema( array $attributes ): array {
 		$this->add_filter(
-			"$this->hook_suffix/entry-elements/meta/author/url",
+			self::HOOK_SUFFIX . '/entry-elements/meta/author/url',
 			function( $attributes ) {
 				return array_merge( $attributes, [ 'itemprop' => 'url' ] );
 			}
 		);
 		$this->add_filter(
-			"$this->hook_suffix/entry-elements/meta/author/name",
+			self::HOOK_SUFFIX . '/entry-elements/meta/author/name',
 			function( $attributes ) {
 				return array_merge( $attributes, [ 'itemprop' => 'name' ] );
 			}
@@ -203,7 +203,7 @@ class Schema {
 			$attributes,
 			[
 				'itemscope' => '',
-				'itemtype'  => $this->base_uri . 'Person',
+				'itemtype'  => self::SCHEMA_BASE_URI . 'Person',
 				'itemprop'  => 'author',
 			]
 		);
@@ -250,7 +250,7 @@ class Schema {
 	 */
 	public function post_schema( array $attributes ): array {
 		$this->add_filter(
-			"$this->hook_suffix/article/content",
+			self::HOOK_SUFFIX . '/article/content',
 			function ( $attrs ) {
 				return array_merge( $attrs, [ 'itemprop' => 'text' ] );
 			}
@@ -259,7 +259,7 @@ class Schema {
 			$attributes,
 			[
 				'itemscope' => 'itemscope',
-				'itemtype'  => $this->base_uri . 'CreativeWork',
+				'itemtype'  => self::SCHEMA_BASE_URI . 'CreativeWork',
 			]
 		);
 	}
@@ -276,7 +276,7 @@ class Schema {
 			$attributes,
 			[
 				'itemscope' => 'itemscope',
-				'itemtype'  => $this->base_uri . 'SiteNavigationElement',
+				'itemtype'  => self::SCHEMA_BASE_URI . 'SiteNavigationElement',
 			]
 		);
 	}
@@ -302,7 +302,7 @@ class Schema {
 			$attributes,
 			[
 				'itemscope' => 'itemscope',
-				'itemtype'  => $this->base_uri . $type,
+				'itemtype'  => self::SCHEMA_BASE_URI . $type,
 			]
 		);
 	}
@@ -316,7 +316,7 @@ class Schema {
 	 */
 	public function site_branding_schema( array $attributes ): array {
 		$this->add_filter(
-			"$this->hook_suffix/header/site-branding/title",
+			self::HOOK_SUFFIX . '/header/site-branding/title',
 			function( array $attrs ) {
 				return array_merge(
 					$attrs,
@@ -327,7 +327,7 @@ class Schema {
 			}
 		);
 		$this->add_filter(
-			"$this->hook_suffix/header/site-branding/description",
+			self::HOOK_SUFFIX . '/header/site-branding/description',
 			function( array $attrs ) {
 				return array_merge(
 					$attrs,
@@ -341,7 +341,7 @@ class Schema {
 			$attributes,
 			[
 				'itemscope' => '',
-				'itemtype'  => $this->base_uri . 'Organization',
+				'itemtype'  => self::SCHEMA_BASE_URI . 'Organization',
 			]
 		);
 	}
@@ -358,7 +358,7 @@ class Schema {
 			$attributes,
 			[
 				'itemscope' => '',
-				'itemtype'  => $this->base_uri . 'WPHeader',
+				'itemtype'  => self::SCHEMA_BASE_URI . 'WPHeader',
 				'itemid'    => '#mast-head',
 			]
 		);
@@ -376,7 +376,7 @@ class Schema {
 			$attributes,
 			[
 				'itemscope' => '',
-				'itemtype'  => $this->base_uri . 'WPFooter',
+				'itemtype'  => self::SCHEMA_BASE_URI . 'WPFooter',
 				'itemid'    => '#colophon',
 			]
 		);
