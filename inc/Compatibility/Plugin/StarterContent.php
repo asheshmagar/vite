@@ -18,6 +18,13 @@ class StarterContent extends Base {
 	use JSON;
 
 	/**
+	 * Holds the post content.
+	 *
+	 * @var null|array
+	 */
+	private $post_content;
+
+	/**
 	 * {@inheritDoc}
 	 *
 	 * @param string $slug Plugin slug.
