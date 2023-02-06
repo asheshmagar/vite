@@ -59,9 +59,9 @@ class Customizer {
 	/**
 	 * Holds google fonts.
 	 *
-	 * @var array
+	 * @var array|null
 	 */
-	private $google_fonts = [];
+	private $google_fonts;
 
 	/**
 	 * Holds control condition.
@@ -89,7 +89,7 @@ class Customizer {
 	 *
 	 * @var null|Sanitize
 	 */
-	protected $sanitize = null;
+	private $sanitize;
 
 	/**
 	 * Constructor.
@@ -512,8 +512,8 @@ class Customizer {
 	 * @return void
 	 */
 	private function add_settings( WP_Customize_Manager $wp_customize ) {
-		$settings           = $this->filter( 'customizer/settings', $this->settings );
-		$sanitize_callbacks = $this->filter( 'customizer/sanitize/callbacks', $this->sanitize_callbacks() );
+		$settings = $this->filter( 'customizer/settings', $this->settings );
+
 		if ( ! empty( $settings ) ) {
 			foreach ( $settings as $id => $config ) {
 				if ( ! isset( $config['type'] ) ) {
@@ -547,14 +547,16 @@ class Customizer {
 					$this->condition[ $id ] = $config['condition'];
 				}
 
+				$control_setting_config = [
+					'default'           => $config['default'] ?? '',
+					'transport'         => $config['transport'] ?? static::TRANSPORT,
+					'type'              => static::STORE,
+					'sanitize_callback' => $this->get_sanitize_callback( (string) $config['type'] ),
+				];
+
 				$wp_customize->add_setting(
 					$id,
-					[
-						'default'           => $config['default'] ?? '',
-						'transport'         => $config['transport'] ?? static::TRANSPORT,
-						'type'              => static::STORE,
-						'sanitize_callback' => $sanitize_callbacks[ $config['type'] ] ?? null,
-					]
+					$control_setting_config
 				);
 
 				if ( 'image' === $config['type'] ) {
@@ -585,23 +587,25 @@ class Customizer {
 					continue;
 				}
 
+				$control_config = [
+					'label'       => $config['title'] ?? '',
+					'title'       => $config['title'] ?? '',
+					'description' => $config['description'] ?? '',
+					'section'     => $config['section'] ?? '',
+					'settings'    => $id,
+					'type'        => $config['type'],
+					'choices'     => $config['choices'] ?? [],
+					'priority'    => $config['priority'] ?? static::PRIORITY,
+					'capability'  => static::CAPABILITY,
+					'input_attrs' => $config['input_attrs'] ?? [],
+					'fonts'       => 'vite-typography' === $config['type'] ? $this->get_google_fonts() : null,
+				];
+
 				$wp_customize->add_control(
 					new Control(
 						$wp_customize,
 						$id,
-						[
-							'label'       => $config['title'] ?? '',
-							'title'       => $config['title'] ?? '',
-							'description' => $config['description'] ?? '',
-							'section'     => $config['section'] ?? '',
-							'settings'    => $id,
-							'type'        => $config['type'],
-							'choices'     => $config['choices'] ?? [],
-							'priority'    => $config['priority'] ?? static::PRIORITY,
-							'capability'  => static::CAPABILITY,
-							'input_attrs' => $config['input_attrs'] ?? [],
-							'fonts'       => 'vite-typography' === $config['type'] ? $this->get_google_fonts() : null,
-						]
+						$control_config
 					)
 				);
 
@@ -610,30 +614,18 @@ class Customizer {
 					foreach ( $sub_controls as $sub_id => $sub_control_config ) {
 						$wp_customize->add_setting(
 							$sub_id,
-							[
-								'default'           => $sub_control_config['default'] ?? '',
-								'transport'         => $sub_control_config['transport'] ?? static::TRANSPORT,
-								'type'              => static::STORE,
-								'sanitize_callback' => $sanitize_callbacks[ $sub_control_config['type'] ] ?? null,
-							]
+							$control_setting_config
 						);
 						$wp_customize->add_control(
 							new Control(
 								$wp_customize,
 								$sub_id,
-								[
-									'label'       => $sub_control_config['title'] ?? '',
-									'title'       => $sub_control_config['title'] ?? '',
-									'description' => $sub_control_config['description'] ?? '',
-									'section'     => $sub_control_config['section'] ?? ( $config['section'] ?? '' ),
-									'settings'    => $sub_id,
-									'type'        => 'vite-hidden',
-									'choices'     => $sub_control_config['choices'] ?? [],
-									'priority'    => $sub_control_config['priority'] ?? static::PRIORITY,
-									'capability'  => static::CAPABILITY,
-									'input_attrs' => $sub_control_config['input_attrs'] ?? [],
-									'fonts'       => 'vite-typography' === $sub_control_config['type'] ? $this->get_google_fonts() : null,
-								]
+								wp_parse_args(
+									[
+										'type' => 'vite-hidden',
+									],
+									$control_config
+								)
 							)
 						);
 					}
@@ -677,7 +669,7 @@ class Customizer {
 	 * @return array
 	 */
 	private function get_google_fonts(): array {
-		$fonts = $this->json_to_array( VITE_ASSETS_DIR . 'json/google-fonts.json' );
+		$fonts = $this->json_to_array( VITE_ASSETS_DIR . 'json/google-fonts.json', 'google_fonts' );
 		$fonts = array_merge(
 			[
 				[
@@ -728,41 +720,51 @@ class Customizer {
 	/**
 	 * Get control configs.
 	 *
-	 * @return array
+	 * @param string $type Type.
+	 *
+	 * @return callable|null
 	 */
-	private function sanitize_callbacks(): array {
-		return [
-			'vite-background'     => [ $this->sanitize, 'sanitize_background' ],
-			'vite-typography'     => [ $this->sanitize, 'sanitize_typography' ],
-			'vite-dimensions'     => [ $this->sanitize, 'sanitize_dimensions' ],
-			'vite-buttonset'      => [ $this->sanitize, 'sanitize_buttonset' ],
-			'vite-sortable'       => [ $this->sanitize, 'sanitize_sortable' ],
-			'vite-checkbox'       => [ $this->sanitize, 'sanitize_checkbox' ],
-			'vite-toggle'         => [ $this->sanitize, 'sanitize_checkbox' ],
-			'vite-slider'         => [ $this->sanitize, 'sanitize_slider' ],
-			'vite-color'          => [ $this->sanitize, 'sanitize_color' ],
-			'vite-radio-image'    => [ $this->sanitize, 'sanitize_radio' ],
-			'vite-select'         => [ $this->sanitize, 'sanitize_radio' ],
-			'select'              => [ $this->sanitize, 'sanitize_radio' ],
-			'vite-radio'          => [ $this->sanitize, 'sanitize_radio' ],
-			'radio'               => [ $this->sanitize, 'sanitize_radio' ],
-			'vite-input'          => [ $this->sanitize, 'sanitize_input' ],
-			'vite-border'         => [ $this->sanitize, 'sanitize_border' ],
-			'number'              => [ $this->sanitize, 'sanitize_int' ],
-			'vite-textarea'       => 'sanitize_textarea_field',
-			'textarea'            => 'sanitize_textarea_field',
-			'text'                => 'sanitize_text_field',
-			'vite-gradient'       => 'sanitize_text_field',
-			'email'               => 'sanitize_email',
-			'url'                 => 'esc_url_raw',
-			'vite-editor'         => 'wp_kses_post',
-			'vite-hidden'         => null,
-			'vite-group'          => null,
-			'vite-title'          => null,
-			'vite-builder'        => null,
-			'vite-header-builder' => null,
-			'vite-heading'        => null,
-			'vite-navigate'       => null,
-		];
+	private function get_sanitize_callback( string $type ) {
+		switch ( $type ) {
+			case 'vite-background':
+				return [ $this->sanitize, 'sanitize_background' ];
+			case 'vite-typography':
+				return [ $this->sanitize, 'sanitize_typography' ];
+			case 'vite-dimensions':
+				return [ $this->sanitize, 'sanitize_dimensions' ];
+			case 'vite-buttonset':
+				return [ $this->sanitize, 'sanitize_buttonset' ];
+			case 'vite-sortable':
+				return [ $this->sanitize, 'sanitize_sortable' ];
+			case 'vite-checkbox':
+			case 'vite-toggle':
+				return [ $this->sanitize, 'sanitize_checkbox' ];
+			case 'vite-slider':
+				return [ $this->sanitize, 'sanitize_slider' ];
+			case 'vite-color':
+				return [ $this->sanitize, 'sanitize_color' ];
+			case 'vite-radio-image':
+			case 'vite-select':
+			case 'select':
+			case 'vite-radio':
+			case 'radio':
+				return [ $this->sanitize, 'sanitize_radio' ];
+			case 'vite-input':
+			case 'vite-text':
+			case 'vite-gradient':
+			case 'text':
+				return [ $this->sanitize, 'sanitize_input' ];
+			case 'vite-textarea':
+			case 'textarea':
+				return 'sanitize_textarea_field';
+			case 'url':
+				return 'esc_url_raw';
+			case 'vite-editor':
+				return 'wp_kses_post';
+			case 'email':
+				return 'sanitize_email';
+			default:
+				return null;
+		}
 	}
 }
