@@ -27,6 +27,13 @@ class Core {
 	}
 
 	/**
+	 * Holds the social networks.
+	 *
+	 * @var array|null
+	 */
+	private $social_networks;
+
+	/**
 	 * The loop.
 	 *
 	 * @return void
@@ -171,7 +178,7 @@ class Core {
 		 */
 		return $this->filter(
 			'social-networks',
-			$this->json_to_array( VITE_ASSETS_DIR . 'json/social-networks.json' )
+			$this->json_to_array( VITE_ASSETS_DIR . 'json/social-networks.json', 'social_networks' )
 		);
 	}
 }
