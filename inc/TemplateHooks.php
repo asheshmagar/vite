@@ -248,20 +248,20 @@ class TemplateHooks {
 			],
 		];
 
-		if ( 'grid' === $archive_style ) {
-			$attributes['class'][] = "vite-posts--col-$archive_columns";
-		}
-
-		if ( $is_masonry ) {
-			$attributes['class'][] = 'vite-posts--masonry';
-		}
-
 		if ( ! have_posts() ) {
-			$attributes['class'][] = [ 'vite-posts' ];
-		}
+			$attributes['class'] = [ 'vite-posts' ];
+		} else {
+			if ( 'grid' === $archive_style ) {
+				$attributes['class'][] = "vite-posts--col-$archive_columns";
+			}
 
-		if ( $is_infinite_scroll && ! is_customize_preview() ) {
-			$attributes['class'][] = 'vite-posts--infinite-scroll';
+			if ( $is_masonry ) {
+				$attributes['class'][] = 'vite-posts--masonry';
+			}
+
+			if ( $is_infinite_scroll && ! is_customize_preview() ) {
+				$attributes['class'][] = 'vite-posts--infinite-scroll';
+			}
 		}
 		?>
 		<div<?php $this->print_html_attributes( 'archive/wrapper/open', $attributes ); ?>>
