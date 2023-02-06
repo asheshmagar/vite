@@ -14,6 +14,13 @@ class Icon {
 	use Hook, JSON;
 
 	/**
+	 * Holds icons.
+	 *
+	 * @var array|null
+	 */
+	private $icons;
+
+	/**
 	 * Icon constructor.
 	 */
 	public function __construct() {
