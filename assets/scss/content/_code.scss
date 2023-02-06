@@ -17,7 +17,16 @@ code,
 kbd {
 	border-radius: var(--border-radius, 2px);
 	background-color: var(--code-bg-color, #edf0f3);
-	color: var(--code-color, #73828c);
+	color: var(--code-color, #353f4a);
+}
+
+kbd {
+	--code-bg-color: #f9f9f9;
+	--border-radius: 5px;
+	font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
+	vertical-align: middle;
+	border: solid 1px #d8d8d8;
+	border-bottom: solid 2px #a6a5a6;
 }
 
 code,
