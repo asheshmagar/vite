@@ -93,12 +93,13 @@ blockquote {
 	}
 }
 
-abbr[title] {
+abbr[title],
+acronym[title] {
 	border-bottom: 1px dotted;
 	text-decoration: none;
 	cursor: help;
 }
 
 ins {
-	text-decoration: none;
+	text-decoration: underline;
 }
