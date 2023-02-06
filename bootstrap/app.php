@@ -8,6 +8,7 @@
 defined( 'ABSPATH' ) || exit;
 
 use League\Container\{ Container, ReflectionContainer };
+use Psr\Container\ContainerExceptionInterface;
 
 global $vite;
 
@@ -30,10 +31,14 @@ if ( ! function_exists( 'vite' ) ) {
 	 * Get theme container.
 	 *
 	 * @param string $id Identifier of the entry to look for in the container.
-	 * @return object|mixed
+	 * @return object|void
 	 */
 	function vite( string $id = '' ) {
 		global $vite;
-		return empty( $id ) ? $vite : $vite->get( $id );
+		try {
+			return empty( $id ) ? $vite : $vite->get( $id );
+		} catch ( ContainerExceptionInterface $e ) {
+			_doing_it_wrong( __FUNCTION__, esc_html( $e->getMessage() ), '1.0.0' );
+		}
 	}
 }
