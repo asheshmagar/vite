@@ -669,8 +669,10 @@ class Customizer {
 	 * @return array
 	 */
 	private function get_google_fonts(): array {
-		$fonts = $this->json_to_array( VITE_ASSETS_DIR . 'json/google-fonts.json', 'google_fonts' );
-		$fonts = array_merge(
+		if ( ! isset( $this->google_fonts ) ) {
+			$this->google_fonts = $this->json_to_array( VITE_ASSETS_DIR . 'json/google-fonts.json' );
+		}
+		$this->google_fonts = array_merge(
 			[
 				[
 					'family'     => 'Default',
@@ -711,10 +713,10 @@ class Customizer {
 					'label'      => 'Inherit',
 				],
 			],
-			$fonts
+			$this->google_fonts
 		);
 
-		return $this->filter( 'customizer/google-fonts', $fonts );
+		return $this->filter( 'customizer/google-fonts', $this->google_fonts );
 	}
 
 	/**
