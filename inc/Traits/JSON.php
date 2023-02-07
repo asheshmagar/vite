@@ -15,25 +15,15 @@ trait JSON {
 	/**
 	 * Get JSON to array.
 	 *
-	 * @param string      $file File.
-	 * @param null|string $property Property to hold the JSON array.
+	 * @param string $file File.
 	 * @return array|mixed
 	 */
-	public function json_to_array( string $file, string $property = null ) {
-		$property = $property ?? md5( $file );
-
-		if ( isset( $this->{$property} ) ) {
-			return $this->{$property};
-		}
-
+	public function json_to_array( string $file ) {
 		if ( ! file_exists( $file ) ) {
-			$this->{$property} = [];
-		} else {
-			ob_start();
-			include $file;
-			$this->{$property} = json_decode( ob_get_clean(), true );
+			return [];
 		}
-
-		return $this->{$property};
+		ob_start();
+		include $file;
+		return json_decode( ob_get_clean(), true );
 	}
 }
