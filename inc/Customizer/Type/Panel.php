@@ -37,7 +37,7 @@ class Panel extends WP_Customize_Panel {
 	 * @return array
 	 */
 	public function json(): array {
-		$array                   = wp_array_slice_assoc(
+		$json                   = wp_array_slice_assoc(
 			(array) $this,
 			array(
 				'id',
@@ -47,15 +47,15 @@ class Panel extends WP_Customize_Panel {
 				'panel',
 			)
 		);
-		$array['title']          = html_entity_decode(
+		$json['title']          = html_entity_decode(
 			$this->title,
 			ENT_QUOTES,
 			get_bloginfo( 'charset' )
 		);
-		$array['content']        = $this->get_content();
-		$array['active']         = $this->active();
-		$array['instanceNumber'] = $this->instance_number;
+		$json['content']        = $this->get_content();
+		$json['active']         = $this->active();
+		$json['instanceNumber'] = $this->instance_number;
 
-		return $array;
+		return $json;
 	}
 }

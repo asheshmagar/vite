@@ -34,7 +34,7 @@ class Section extends WP_Customize_Section {
 	 * @return array
 	 */
 	public function json(): array {
-		$array                   = wp_array_slice_assoc(
+		$json                   = wp_array_slice_assoc(
 			(array) $this,
 			array(
 				'id',
@@ -46,25 +46,25 @@ class Section extends WP_Customize_Section {
 				'section',
 			)
 		);
-		$array['title']          = html_entity_decode(
+		$json['title']          = html_entity_decode(
 			$this->title,
 			ENT_QUOTES,
 			get_bloginfo( 'charset' )
 		);
-		$array['content']        = $this->get_content();
-		$array['active']         = $this->active();
-		$array['instanceNumber'] = $this->instance_number;
+		$json['content']        = $this->get_content();
+		$json['active']         = $this->active();
+		$json['instanceNumber'] = $this->instance_number;
 
 		if ( $this->panel ) {
-			$array['customizeAction'] = sprintf(
+			$json['customizeAction'] = sprintf(
 			/* Translators: 1: Panel Title. */
 				esc_html__( 'Customizing &#9656; %s' ),
 				esc_html( $this->manager->get_panel( $this->panel )->title )
 			);
 		} else {
-			$array['customizeAction'] = esc_html__( 'Customizing' );
+			$json['customizeAction'] = esc_html__( 'Customizing' );
 		}
 
-		return $array;
+		return $json;
 	}
 }
