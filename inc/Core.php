@@ -168,6 +168,9 @@ class Core {
 	 * @return array|mixed
 	 */
 	public function get_social_networks() {
+		if ( ! isset( $this->social_networks ) ) {
+			$this->social_networks = $this->json_to_array( VITE_ASSETS_DIR . 'json/social-networks.json' );
+		}
 
 		/**
 		 * Filter: vite/social-networks.
@@ -178,7 +181,7 @@ class Core {
 		 */
 		return $this->filter(
 			'social-networks',
-			$this->json_to_array( VITE_ASSETS_DIR . 'json/social-networks.json', 'social_networks' )
+			$this->social_networks
 		);
 	}
 }
