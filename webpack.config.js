@@ -9,9 +9,9 @@ const CompressionPlugin = require( 'compression-webpack-plugin' );
 // eslint-disable-next-line no-unused-vars
 module.exports = ( _, args ) => ( {
 	entry: {
-		customizer: resolve( process.cwd(), 'assets/js/customizer', 'index.js' ),
-		'customizer-preview': resolve( process.cwd(), 'assets/js/customizer/preview', 'index.js' ),
-		frontend: resolve( process.cwd(), 'assets/js/frontend', 'index.js' ),
+		customizer: resolve( process.cwd(), 'assets/js/customizer', 'index.ts' ),
+		'customizer-preview': resolve( process.cwd(), 'assets/js/customizer/preview', 'index.ts' ),
+		frontend: resolve( process.cwd(), 'assets/js/frontend', 'index.ts' ),
 		style: resolve( process.cwd(), 'assets/scss', 'style.scss' ),
 		'editor-style': resolve( process.cwd(), 'assets/scss', 'editor-style.scss' ),
 	},
@@ -21,7 +21,7 @@ module.exports = ( _, args ) => ( {
 		clean: true,
 	},
 	resolve: {
-		extensions: [ '.js', '.jsx' ],
+		extensions: [ '.js', '.jsx', '.ts', '.tsx' ],
 	},
 	module: {
 		rules: [
@@ -104,5 +104,5 @@ module.exports = ( _, args ) => ( {
 		args.mode === 'development' ? new EslintPlugin( { extensions: [ 'js', 'jsx', 'ts', 'tsx' ] } ) : false,
 		args.mode === 'production' ? new CompressionPlugin() : false,
 	].filter( Boolean ),
-	devtool: 'source-map',
+	devtool: args.mode === 'development' ? 'source-map' : false,
 } );
