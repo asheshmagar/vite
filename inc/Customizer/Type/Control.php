@@ -18,10 +18,19 @@ use WP_Customize_Manager;
  */
 class Control extends WP_Customize_Control {
 
-	const ADDITIONAL_PROPERTIES = [
-		'css',
-		'fonts',
-	];
+	/**
+	 * Holds the Google fonts.
+	 *
+	 * @var null|array
+	 */
+	public $fonts;
+
+	/**
+	 * Holds the CSS selectors and properties.
+	 *
+	 * @var null|array
+	 */
+	public $css;
 
 	/**
 	 * {@inheritdoc}
@@ -33,32 +42,51 @@ class Control extends WP_Customize_Control {
 	public function __construct( $manager, $id, $args = [] ) {
 		parent::__construct( $manager, $id, $args );
 
-		foreach ( static::ADDITIONAL_PROPERTIES as $prop_key ) {
-			if ( isset( $args[ $prop_key ] ) ) {
-				$this->{$prop_key} = $args[ $prop_key ];
-			}
+		if ( isset( $args['fonts'] ) ) {
+			$this->fonts = $args['fonts'];
+		}
+		if ( isset( $args['css'] ) ) {
+			$this->css = $args['css'];
 		}
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public function to_json() {
-		parent::to_json();
-		$this->json['default']     = $this->default ?? $this->setting->default;
-		$this->json['value']       = $this->value();
-		$this->json['link']        = $this->get_link();
-		$this->json['id']          = $this->id;
-		$this->json['label']       = esc_html( $this->label );
-		$this->json['description'] = $this->description;
-		$this->json['inputAttrs']  = $this->input_attrs;
-		$this->json['choices']     = $this->choices;
+	public function json(): array {
+		$json            = wp_array_slice_assoc(
+			(array) $this,
+			array(
+				'type',
+				'priority',
+				'section',
+				'label',
+				'type',
+				'description',
+				'instance_number',
+				'id',
+				'choices',
+				'css',
+				'fonts',
+			)
+		);
+		$json['active']  = $this->active();
+		$json['content'] = $this->get_content();
 
-		foreach ( static::ADDITIONAL_PROPERTIES as $prop_key ) {
-			if ( isset( $this->{$prop_key} ) ) {
-				$this->json[ $prop_key ] = $this->{$prop_key};
-			}
+		foreach ( $this->settings as $key => $setting ) {
+			$json['settings'][ $key ] = $setting->id;
 		}
+
+		if ( 'dropdown-pages' === $this->type ) {
+			$json['allow_addition'] = $this->allow_addition;
+		}
+
+		$json['default']    = $this->default ?? $this->setting->default;
+		$json['inputAttrs'] = $this->input_attrs;
+		$json['value']      = $this->value();
+		$json['link']       = $this->get_link();
+
+		return $json;
 	}
 
 	/**
