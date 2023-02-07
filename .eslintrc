@@ -1,12 +1,13 @@
 {
 	"root": true,
-	"parser": "babel-eslint",
+	"parser": "@typescript-eslint/parser",
 	"extends": [
 		"wordpress",
 		"plugin:react/recommended",
 		"plugin:jsx-a11y/recommended",
 		"plugin:jest/recommended",
-		"plugin:@wordpress/eslint-plugin/recommended"
+		"plugin:@wordpress/eslint-plugin/recommended",
+		"plugin:@typescript-eslint/recommended"
 	],
 	"env": {
 		"browser": true,
@@ -39,6 +40,16 @@
 	"settings": {
 		"react": {
 			"pragma": "wp"
+		},
+		"import/resolver": {
+			"node": {
+				"extensions": [
+					".js",
+					".jsx",
+					".ts",
+					".tsx"
+				]
+			}
 		}
 	},
 	"rules": {
@@ -174,16 +185,15 @@
 			}
 		],
 		"no-shadow": "error",
-		"no-undef": "error",
 		"no-undef-init": "error",
 		"no-unreachable": "error",
 		"no-unsafe-negation": "error",
 		"no-unused-expressions": "error",
-		"no-unused-vars": "error",
 		"no-useless-computed-key": "error",
 		"no-useless-constructor": "error",
 		"no-useless-return": "error",
 		"no-var": "error",
+		"no-unused-vars": "off",
 		"no-whitespace-before-property": "error",
 		"object-curly-spacing": [
 			"error",
@@ -262,6 +272,10 @@
 		"yoda": "off",
 		"prettier/prettier": 0,
 		"quotes": [2, "single", { "avoidEscape": true, "allowTemplateLiterals": true }],
-		"@wordpress/no-global-active-element": "off"
+		"@wordpress/no-global-active-element": "off",
+		"@typescript-eslint/no-explicit-any": "off",
+		"no-undef": "off",
+		"@typescript-eslint/no-var-requires": "off",
+		"@typescript-eslint/ban-ts-comment": "off"
 	}
 }
