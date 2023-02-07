@@ -31,7 +31,9 @@ class StarterContent extends Base {
 	 */
 	public function __construct( string $slug ) {
 		parent::__construct( $slug );
-		$this->json_to_array( VITE_ASSETS_DIR . 'json/starter-post-content.json', 'post_content' );
+		if ( ! isset( $this->post_content ) ) {
+			$this->post_content = $this->json_to_array( VITE_ASSETS_DIR . 'json/starter-post-content.json' );
+		}
 	}
 
 	/**
