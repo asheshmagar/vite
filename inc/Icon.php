@@ -24,7 +24,9 @@ class Icon {
 	 * Icon constructor.
 	 */
 	public function __construct() {
-		$this->json_to_array( VITE_ASSETS_DIR . '/json/font-awesome.json', 'icons' );
+		if ( ! isset( $this->icons ) ) {
+			$this->icons = $this->json_to_array( VITE_ASSETS_DIR . '/json/font-awesome.json' );
+		}
 		$this->icons['vite-search'] = <<<SVG
 <svg
 	xmlns="http://www.w3.org/2000/svg"
