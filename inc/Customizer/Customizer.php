@@ -409,7 +409,7 @@ class Customizer {
 			[
 				'icons'      => vite( 'icon' )->get_icons(),
 				'condition'  => $this->filter( 'customizer/condition', $this->condition ),
-				'conditions' => $this->filter( 'customizer/condition', $this->conditions ),
+				'conditions' => $this->filter( 'customizer/conditions', $this->conditions ),
 				'publicPath' => VITE_ASSETS_URI . 'dist/',
 				'resetNonce' => wp_create_nonce( 'vite-reset' ),
 				'ajaxURL'    => admin_url( 'admin-ajax.php' ),
