@@ -4,6 +4,10 @@ const zip = require( 'gulp-zip' );
 const { exec } = require( 'child_process' );
 const pkg = JSON.parse( fs.readFileSync( './package.json' ) );
 const { series, dest, src, parallel } = require( 'gulp' );
+const jsonminfy = require( 'gulp-json-minify' );
+const { argv } = require( 'yargs' );
+
+/* eslint-disable no-console */
 
 const files = {
 	inc: {
@@ -41,29 +45,40 @@ const filesToCompress = [
 	'!build/**/node_modules/**/*',
 ];
 
+const log = function( error ) {
+	console.log( error.toString() );
+	this.emit( 'end' );
+};
+
+const execErrorLog = function( error ) {
+	if ( error ) console.log( error );
+};
+
 const copy = [
-	() => src( files.inc.src ).pipe( dest( files.inc.dest ) ),
-	() => src( files.assets.src ).pipe( dest( files.assets.dest ) ),
-	() => src( files.bootstrap.src ).pipe( dest( files.bootstrap.dest ) ),
-	() => src( files.templateParts.src ).pipe( dest( files.templateParts.dest ) ),
-	() => src( files.composer.src ).pipe( dest( files.composer.dest ) ),
-	() => src( files.other.src ).pipe( dest( files.other.dest ) ),
+	() => src( files.inc.src ).pipe( dest( files.inc.dest ) ).on( 'error', log ),
+	() => src( files.assets.src ).pipe( dest( files.assets.dest ) ).on( 'error', log ),
+	() => src( files.bootstrap.src ).pipe( dest( files.bootstrap.dest ) ).on( 'error', log ),
+	() => src( files.templateParts.src ).pipe( dest( files.templateParts.dest ) ).on( 'error', log ),
+	() => src( files.composer.src ).pipe( dest( files.composer.dest ) ).on( 'error', log ),
+	() => src( files.other.src ).pipe( dest( files.other.dest ) ).on( 'error', log ),
 ];
 
-const composer = () => exec( `cd build/${ pkg.name } && composer install --no-dev --optimize-autoloader` );
+const minifyJSON = () => src( `build/${ pkg.name }/assets/json/*.json` ).pipe( jsonminfy() ).pipe( dest( `build/${ pkg.name }/assets/json` ) ).on( 'error', log );
 
-const pot = () => exec( 'composer make-pot' );
+const composer = () => exec( `cd build/${ pkg.name } && composer install --no-dev --optimize-autoloader`, execErrorLog );
 
-const yarn = () => exec( 'yarn build' );
+const pot = () => exec( 'composer make-pot', execErrorLog );
+
+const yarn = () => exec( 'yarn build', execErrorLog );
 
 const clean = {
-	build: () => exec( 'rm -rf build' ),
-	release: () => exec( 'rm -rf release' ),
+	build: () => exec( 'rm -rf build', execErrorLog ),
+	release: () => exec( 'rm -rf release', execErrorLog ),
 };
 
 const compress = parallel( [
-	() => src( filesToCompress ).pipe( zip( `${ pkg.name }.zip` ) ).pipe( dest( 'release' ) ),
-	() => src( filesToCompress ).pipe( zip( `${ pkg.name }-${ pkg.version }.zip` ) ).pipe( dest( 'release' ) ),
+	() => src( filesToCompress ).pipe( zip( `${ pkg.name }.zip` ) ).pipe( dest( 'release' ) ).on( 'error', log ),
+	() => src( filesToCompress ).pipe( zip( `${ pkg.name }-${ pkg.version }.zip` ) ).pipe( dest( 'release' ) ).on( 'error', log ),
 ] );
 
 const release = series(
@@ -73,6 +88,7 @@ const release = series(
 	pot,
 	copy,
 	composer,
+	minifyJSON,
 	compress,
 	clean.build,
 );
