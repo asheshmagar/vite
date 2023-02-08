@@ -49,49 +49,49 @@ function maybe_load_theme(): bool {
 			$message = null;
 	}
 
-	if ( isset( $message ) ) {
-		add_action(
-			'after_switch_theme',
-			function () use ( $message ) {
-				switch_theme( WP_DEFAULT_THEME );
-				unset( $_GET['activated'] ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-				add_action(
-					'admin_notices',
-					function () use ( $message ) {
-						?>
-						<div class="notice notice-error is-dismissible">
-							<p><?php echo esc_html( $message ); ?></p>
-						</div>
-						<?php
-					}
-				);
-			}
-		);
-
-		add_action(
-			'load-customize.php',
-			function () use ( $message ) {
-				wp_die(
-					esc_html( $message ),
-					'',
-					[
-						'back_link' => true,
-					]
-				);
-			}
-		);
-
-		add_action(
-			'template_redirect',
-			function () use ( $message ) {
-				if ( isset( $_GET['preview'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-					wp_die( esc_html( $message ) );
-				}
-			}
-		);
-
-		return false;
+	if ( ! isset( $message ) ) {
+		return true;
 	}
 
-	return true;
+	add_action(
+		'after_switch_theme',
+		function () use ( $message ) {
+			switch_theme( WP_DEFAULT_THEME );
+			unset( $_GET['activated'] ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			add_action(
+				'admin_notices',
+				function () use ( $message ) {
+					?>
+					<div class="notice notice-error is-dismissible">
+						<p><?php echo esc_html( $message ); ?></p>
+					</div>
+					<?php
+				}
+			);
+		}
+	);
+
+	add_action(
+		'load-customize.php',
+		function () use ( $message ) {
+			wp_die(
+				esc_html( $message ),
+				'',
+				[
+					'back_link' => true,
+				]
+			);
+		}
+	);
+
+	add_action(
+		'template_redirect',
+		function () use ( $message ) {
+			if ( isset( $_GET['preview'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+				wp_die( esc_html( $message ) );
+			}
+		}
+	);
+
+	return false;
 }
