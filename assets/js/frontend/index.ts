@@ -1,4 +1,3 @@
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 __webpack_public_path__ = window._VITE_.publicPath; // eslint-disable-line camelcase,no-undef
 
