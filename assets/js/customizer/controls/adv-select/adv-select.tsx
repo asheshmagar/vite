@@ -33,7 +33,11 @@ const AdvSelect: React.FC<ControlPropsType> = ( props ) => {
 		} );
 	}, [] );
 
-	const options = useMemo( () => {
+	const options: {
+		value: string;
+		label: string;
+		disabled?: boolean;
+	}[] = useMemo( () => {
 		if ( ! Object.keys( choices )?.length ) return [];
 		let results;
 
@@ -51,7 +55,7 @@ const AdvSelect: React.FC<ControlPropsType> = ( props ) => {
 			}
 		}
 
-		return Object.entries( results ?? {} )?.map( ( [ key, val ] ) => ( {
+		return Object.entries( results ?? {} )?.map( ( [ key, val ]: any ) => ( {
 			value: key,
 			label: val,
 		} ) );
