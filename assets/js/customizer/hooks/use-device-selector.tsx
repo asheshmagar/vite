@@ -1,11 +1,36 @@
 import { useEffect, useMemo, useState } from '@wordpress/element';
 import { Button, ButtonGroup, Dropdown } from '@wordpress/components';
 
-export default () => {
-	const [ device, setDevice ] = useState( wp?.customize?.previewedDevice() || 'desktop' );
+const DeviceButtons: React.FC<{
+	device: string;
+	setDevice: ( device: string ) => void;
+	[ key: string ]: any;
+}> = ( { device, setDevice, ...props } ) => (
+	<ButtonGroup { ...props }>
+		{ [ 'desktop', 'tablet', 'mobile' ].map( d => (
+			<Button
+				key={ d }
+				className={ `vite-device ${ d }${ device === d ? ' is-primary' : '' }` }
+				onClick={ ( e: React.SyntheticEvent ) => {
+					e.stopPropagation();
+					setDevice( d );
+					wp?.customize?.previewedDevice?.set( d );
+				} }
+				icon={ 'mobile' === d ? 'smartphone' : d }
+			/>
+		) ) }
+	</ButtonGroup>
+);
+
+const useDeviceSelector = (): {
+	device: string;
+	setDevice: ( device: string ) => void;
+	DeviceSelector: ( props: { dropdown?: boolean, [key: string]: any } ) => JSX.Element;
+} => {
+	const [ device, setDevice ] = useState<string>( wp?.customize?.previewedDevice() ?? 'desktop' );
 
 	const listener = () => {
-		setDevice( wp?.customize?.previewedDevice() || 'desktop' );
+		setDevice( wp?.customize?.previewedDevice() ?? 'desktop' );
 	};
 
 	useEffect( () => {
@@ -34,37 +59,11 @@ export default () => {
 							/>
 						) }
 						renderContent={ () => (
-							<ButtonGroup>
-								{ [ 'desktop', 'tablet', 'mobile' ].map( d => (
-									<Button
-										key={ d }
-										className={ `vite-device ${ d }${ device === d ? ' is-primary' : '' }` }
-										onClick={ ( e: React.SyntheticEvent ) => {
-											e.stopPropagation();
-											setDevice( d );
-											wp?.customize?.previewedDevice?.set( d );
-										} }
-										icon={ 'mobile' === d ? 'smartphone' : d }
-									/>
-								) ) }
-							</ButtonGroup>
+							<DeviceButtons device={ device } setDevice={ setDevice } />
 						) }
 					/>
 				) : (
-					<ButtonGroup className="vite-devices">
-						{ [ 'desktop', 'tablet', 'mobile' ].map( d => (
-							<Button
-								key={ d }
-								className={ `vite-device ${ d }${ device === d ? ' is-primary' : '' }` }
-								onClick={ ( e: React.SyntheticEvent ) => {
-									e.stopPropagation();
-									setDevice( d );
-									wp?.customize?.previewedDevice?.set( d );
-								} }
-								icon={ 'mobile' === d ? 'smartphone' : d }
-							/>
-						) ) }
-					</ButtonGroup>
+					<DeviceButtons className="vite-devices" device={ device } setDevice={ setDevice } />
 				) }
 			</div>
 		);
@@ -79,3 +78,5 @@ export default () => {
 		DeviceSelector,
 	};
 };
+
+export default useDeviceSelector;
