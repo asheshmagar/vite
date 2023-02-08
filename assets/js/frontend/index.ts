@@ -10,12 +10,8 @@ import {
 	domReady,
 } from './utils';
 
-if ( ! window._VITE_ ) {
-	window._VITE_ = {};
-}
-
 window._VITE_ = {
-	...window._VITE_,
+	...( window._VITE_ ?? {} ),
 	initScrollToTop() {
 		const scrollTop = $( '.vite-modal--stt' );
 		if ( ! scrollTop?.querySelector( 'button' ) ) return;
