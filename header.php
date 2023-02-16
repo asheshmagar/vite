@@ -45,7 +45,6 @@ $core->print_html_attributes(
 		 *
 		 * Fires in the head.
 		 *
-		 * @see Vite\SEO::print();
 		 * @since x.x.x
 		 */
 		$core->action( 'head' );
