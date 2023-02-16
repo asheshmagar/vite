@@ -1,7 +1,8 @@
 import { memo } from '@wordpress/element';
-import { Button, ButtonGroup, Dashicon, Dropdown } from '@wordpress/components';
+import { Button, ButtonGroup, Dropdown } from '@wordpress/components';
 import { withInstanceId, compose } from '@wordpress/compose';
 import './customizer.scss';
+import Icon from '../icon';
 
 const SIDES = [
 	{ label: 'Top', value: 'top' },
@@ -18,7 +19,7 @@ const RADIUS_SIDES = [
 ];
 
 type PropsType = {
-	instanceId: number,
+	instanceId: string | number,
 	value: any,
 	onChange: ( value: any ) => void,
 	step?: number|undefined,
@@ -83,7 +84,7 @@ const Dimensions: React.FC<PropsType> = ( props ) => {
 					sync: ! value?.sync,
 				} );
 			} }>
-				<Dashicon icon={ value?.sync ? 'lock' : 'unlock' } />
+				<Icon icon={ value?.sync ? 'lock' : 'unlock' } size={ 12 } />
 			</span>
 			{ units?.length > 0 && (
 				<Dropdown
