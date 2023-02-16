@@ -1,9 +1,10 @@
 import $ from 'jquery';
 import { render } from '@wordpress/element';
+import { ControlPropsType } from '../controls/types';
 
 const api = wp.customize;
 
-const registerControl = ( type: string, Component: any ) => {
+const registerControl = ( type: string, Component: React.FC<ControlPropsType> ) => {
 	( api.controlConstructor[ type ] = api.Control.extend( {
 		initialize( id: string, params: any ) {
 			const args = params || {};
@@ -58,8 +59,6 @@ const registerControl = ( type: string, Component: any ) => {
 		},
 		renderContent() {
 			render(
-				// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-				// @ts-ignore
 				<Component control={ this } customizer={ api } />,
 				this.container[ 0 ]
 			);
