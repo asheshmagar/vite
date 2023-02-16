@@ -94,12 +94,9 @@ const release = series(
 );
 
 const fetchExternal = {
-	googleFonts: () => request( 'https://google-webfonts-helper.herokuapp.com/api/fonts', ( error, response, body ) => {
+	googleFonts: () => request( 'https://gwfh.mranftl.com/api/fonts', ( error, response, body ) => {
 		if ( ! error && response.statusCode === 200 ) {
 			const fonts = JSON.parse( body )
-				.sort( function( a, b ) {
-					return ( b?.popularity ?? 0 ) - ( a?.popularity ?? 0 );
-				} )
 				.map( function( a ) {
 					return {
 						...a,
@@ -107,12 +104,33 @@ const fetchExternal = {
 						value: a.family,
 					};
 				} );
-			fs.writeFile( 'assets/json/google-fonts.json', JSON.stringify( fonts, null, 2 ), function( err ) {
-				if ( ! err ) {
+			fs.writeFile(
+				'assets/json/google-fonts.json',
+				JSON.stringify(
+					[
+						{
+							family: 'Default',
+							variants: [ 'regular', '100', '200', '300', '400', '500', '600', '700', '800', '900' ],
+							value: 'default',
+							defVariant: 'regular',
+							id: 'default',
+							label: 'Default',
+						}, {
+							family: 'Inherit',
+							variants: [ 'regular', '100', '200', '300', '400', '500', '600', '700', '800', '900' ],
+							value: 'inherit',
+							defVariant: 'regular',
+							id: 'inherit',
+							label: 'Inherit',
+						}, ...fonts ],
+					null,
+					2 ),
+				function( err ) {
+					if ( ! err ) {
 					// eslint-disable-next-line no-console
-					console.log( 'Google fonts updated!' );
-				}
-			} );
+						console.log( 'Google fonts updated!' );
+					}
+				} );
 		}
 	} ),
 	fontawesome: () => request( 'https://raw.githubusercontent.com/FortAwesome/Font-Awesome/6.x/metadata/icons.json', function( error, response, body ) {
