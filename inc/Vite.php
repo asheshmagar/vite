@@ -10,14 +10,14 @@ namespace Vite;
 
 defined( 'ABSPATH' ) || exit;
 
-use Vite\Traits\Mods;
+use Vite\Traits\{Hook, Mods};
 
 /**
  * Class Theme.
  */
 class Vite {
 
-	use Mods;
+	use Mods, Hook;
 
 	/**
 	 * Init.

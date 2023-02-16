@@ -9,14 +9,14 @@ namespace Vite;
 
 defined( 'ABSPATH' ) || exit;
 
-use Vite\Traits\Mods;
+use Vite\Traits\{Hook, Mods};
 
 /**
  * Init sidebar.
  */
 class Widgets {
 
-	use Mods;
+	use Mods, Hook;
 
 	/**
 	 * Init.

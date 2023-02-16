@@ -10,14 +10,14 @@ namespace Vite;
 
 defined( 'ABSPATH' ) || exit;
 
-use Vite\Traits\HTMLAttrs;
+use Vite\Traits\{Hook, Mods, HTMLAttrs};
 
 /**
  * Template hooks.
  */
 class TemplateHooks {
 
-	use HTMLAttrs;
+	use HTMLAttrs, Hook, Mods;
 
 	/**
 	 * Template part content.
@@ -65,8 +65,7 @@ class TemplateHooks {
 		$this->add_action( 'vite/page/content/header', [ $this, 'header_elements' ] );
 		$this->add_action( 'vite/body/end', [ $this, 'scroll_to_top' ] );
 		$this->add_filter( 'post_class', [ $this, 'post_class' ], 10, 3 );
-		$this->add_filter(
-			'body_class', [ $this, 'body_class' ] );
+		$this->add_filter( 'body_class', [ $this, 'body_class' ] );
 		$this->add_filter(
 			'embed_oembed_html',
 			[ $this, 'embed_oembed_html' ],
