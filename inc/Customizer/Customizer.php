@@ -7,12 +7,9 @@ namespace Vite\Customizer;
 
 defined( 'ABSPATH' ) || exit;
 
-use Vite\Customizer\Type\Control;
 use Vite\DynamicCSS;
-use Vite\Traits\JSON;
-use Vite\Traits\Mods;
-use Vite\Customizer\Type\Panel;
-use Vite\Customizer\Type\Section;
+use Vite\Traits\{JSON, Mods, Hook};
+use Vite\Customizer\Type\{Panel, Section, Control};
 use WP_Customize_Cropped_Image_Control;
 use WP_Customize_Manager;
 
@@ -21,7 +18,7 @@ use WP_Customize_Manager;
  */
 class Customizer {
 
-	use Mods, JSON;
+	use Mods, JSON, Hook;
 
 	const STORE      = 'theme_mod';
 	const CAPABILITY = 'edit_theme_options';
@@ -672,50 +669,6 @@ class Customizer {
 		if ( ! isset( $this->google_fonts ) ) {
 			$this->google_fonts = $this->json_to_array( VITE_ASSETS_DIR . 'json/google-fonts.json' );
 		}
-		$this->google_fonts = array_merge(
-			[
-				[
-					'family'     => 'Default',
-					'variants'   => [
-						'regular',
-						'100',
-						'200',
-						'300',
-						'400',
-						'500',
-						'600',
-						'700',
-						'800',
-						'900',
-					],
-					'value'      => 'default',
-					'defVariant' => 'regular',
-					'id'         => 'default',
-					'label'      => 'Default',
-				],
-				[
-					'family'     => 'Inherit',
-					'variants'   => [
-						'regular',
-						'100',
-						'200',
-						'300',
-						'400',
-						'500',
-						'600',
-						'700',
-						'800',
-						'900',
-					],
-					'value'      => 'inherit',
-					'defVariant' => 'regular',
-					'id'         => 'inherit',
-					'label'      => 'Inherit',
-				],
-			],
-			$this->google_fonts
-		);
-
 		return $this->filter( 'customizer/google-fonts', $this->google_fonts );
 	}
 
