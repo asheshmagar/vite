@@ -1,6 +1,5 @@
 import { memo } from '@wordpress/element';
 import { sprintf } from '@wordpress/i18n';
-import meta from '../../../../json/font-awesome.json';
 import RawHTML from '../raw-html';
 
 type PropsType = {
@@ -16,9 +15,10 @@ const Icon: React.FC<PropsType> = ( props ) => {
 		className = 'vite-icon',
 	} = props;
 
-	if ( ! icon || ! meta?.[ icon ] ) return null;
+	if ( ! icon || ! _VITE_CUSTOMIZER_.icons?.[ icon ] ) return null;
 
-	const svg = sprintf( meta[ icon ], className, size, size );
+	const svg = sprintf( _VITE_CUSTOMIZER_.icons[ icon ], className, size, size );
+
 	return (
 		<RawHTML tag="span" className="vite-icon-wrap">
 			{ svg }
