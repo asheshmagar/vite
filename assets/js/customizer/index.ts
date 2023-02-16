@@ -93,6 +93,40 @@ const api = wp.customize;
 			return true;
 		};
 
+		const initCondition = ( targetControl: any, type: string, id: string ) => {
+			const control = getControl( id );
+			if ( ! control ) return;
+			const state = _VITE_CUSTOMIZER_[ type ][ id ];
+			const result = () => type === 'conditions' ? analyzeConditions( state ) : analyzeCondition( state );
+			const setActiveState = () => {
+				targetControl.active.set( result() );
+
+				if ( ! result() ) {
+					targetControl.container.addClass( 'vite-hidden-control' );
+				} else {
+					targetControl.container.removeClass( 'vite-hidden-control' );
+				}
+			};
+			control.bind( setActiveState );
+			targetControl.active.validate = result;
+			for ( const i in state ) {
+				if ( 'terms' in state ) {
+					for ( const term of state.terms ) {
+						const setting = getControl( term.name );
+						if ( setting ) {
+							setting.bind( setActiveState );
+						}
+					}
+				} else {
+					const setting = getControl( i.replace( '!', '' ) );
+					if ( setting ) {
+						setting.bind( setActiveState );
+					}
+				}
+			}
+			setActiveState();
+		};
+
 		const analyzeCondition = ( condition = {} ) => {
 			const results = Object.entries( condition ).map( ( [ key, value ] ) => {
 				const control = getControl( key.replace( '!', '' ) );
@@ -116,41 +150,9 @@ const api = wp.customize;
 		for ( const c of [ 'conditions', 'condition' ] ) {
 			if ( window._VITE_CUSTOMIZER_?.[ c ] ) {
 				for ( const id in window._VITE_CUSTOMIZER_[ c ] ) {
-					const init = ( element: any ) => {
-						const control = getControl( id );
-						if ( ! control ) return;
-						const state = _VITE_CUSTOMIZER_[ c ][ id ];
-						const result = () => c === 'conditions' ? analyzeConditions( state ) : analyzeCondition( state );
-						const setActiveState = () => {
-							element.active.set( result() );
-
-							if ( ! result() ) {
-								element.container.addClass( 'vite-hidden-control' );
-							} else {
-								element.container.removeClass( 'vite-hidden-control' );
-							}
-						};
-						control.bind( setActiveState );
-						element.active.validate = result;
-						for ( const i in state ) {
-							if ( 'terms' in state ) {
-								for ( const term of state.terms ) {
-									const setting = getControl( term.name );
-									if ( setting ) {
-										setting.bind( setActiveState );
-									}
-								}
-							} else {
-								const setting = getControl( i.replace( '!', '' ) );
-								if ( setting ) {
-									setting.bind( setActiveState );
-								}
-							}
-						}
-						setActiveState();
-					};
-
-					api.control( id, init );
+					api.control( id, ( control: any ) => {
+						initCondition( control, c, id );
+					} );
 				}
 			}
 		}
