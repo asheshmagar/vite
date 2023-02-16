@@ -12,8 +12,6 @@ namespace Vite\Traits;
  */
 trait Mods {
 
-	use Hook;
-
 	/**
 	 * Get the theme mod.
 	 *
@@ -26,7 +24,14 @@ trait Mods {
 		$mods = get_theme_mod( 'vite' );
 
 		if ( isset( $mods[ $key ] ) ) {
-			return $this->filter( "mod/$key", $mods[ $key ] );
+			$hook_handle = "vite/mod/$key";
+
+			/**
+			 * Filter the theme mod.
+			 *
+			 * @since x.x.x
+			 */
+			return apply_filters( $hook_handle, $mods[ $key ] );
 		}
 
 		return $this->get_mod_default( $key ) ?? $default;
@@ -610,7 +615,14 @@ trait Mods {
 			[]
 		);
 
-		return $this->filter( 'mod/defaults', array_merge( $defaults, $header_button_defaults, $footer_row_layout_defaults ) );
+		$hook_handle = 'vite/mod/defaults';
+
+		/**
+		 * Filter theme mod defaults.
+		 *
+		 * @since 1.0.0
+		 */
+		return apply_filters( $hook_handle, array_merge( $defaults, $header_button_defaults, $footer_row_layout_defaults ) );
 	}
 
 	/**

@@ -9,8 +9,6 @@ namespace Vite\Traits;
 
 trait SmartTags {
 
-	use Hook;
-
 	/**
 	 * Get smart tags.
 	 *
@@ -19,8 +17,16 @@ trait SmartTags {
 	public function get_smart_tags() {
 		$time_format = get_option( 'time_format', 'H:i:s' );
 		$date_format = get_option( 'date_format', 'Y-m-d' );
-		return $this->filter(
-			'smart/tags',
+		$hook_handle = 'vite/smart/tags';
+
+		/**
+		 * Filter smart tags.
+		 *
+		 * @param array $smart_tags Smart tags.
+		 * @since 1.0.0
+		 */
+		return apply_filters(
+			$hook_handle,
 			[
 				'{{site-title}}'   => get_bloginfo( 'name' ),
 				'{{site-url}}'     => home_url(),

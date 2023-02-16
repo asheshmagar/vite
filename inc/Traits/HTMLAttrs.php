@@ -12,8 +12,6 @@ namespace Vite\Traits;
  */
 trait HTMLAttrs {
 
-	use Mods;
-
 	/**
 	 * Print HTML attributes.
 	 *
@@ -24,7 +22,16 @@ trait HTMLAttrs {
 	 * @return bool|string
 	 */
 	public function print_html_attributes( string $context, array $attributes, bool $echo = true, ...$args ) {
-		$attributes = $this->filter( "html-attributes/$context", $attributes, ...$args );
+		$hook_handle = "vite/html-attributes/$context";
+
+		/**
+		 * Filter the HTML attributes.
+		 *
+		 * @param array $attributes The attributes.
+		 * @param mixed ...$args Additional arguments.
+		 * @since 1.0.0
+		 */
+		$attributes = apply_filters( $hook_handle, $attributes, ...$args );
 
 		if ( empty( $attributes ) ) {
 			return false;
@@ -49,10 +56,6 @@ trait HTMLAttrs {
 			$index++;
 		}
 
-		if ( ! $echo ) {
-			return true;
-		}
-
-		return $attrs;
+		return ! $echo ? true : $attrs;
 	}
 }
