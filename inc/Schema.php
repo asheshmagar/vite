@@ -4,14 +4,14 @@ namespace Vite;
 
 defined( 'ABSPATH' ) || exit;
 
-use Vite\Traits\Mods;
+use Vite\Traits\{Hook, Mods};
 
 /**
  * Class Schema.
  */
 class Schema {
 
-	use Mods;
+	use Mods, Hook;
 
 	/**
 	 * Base URI.
