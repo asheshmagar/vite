@@ -27,23 +27,7 @@ class Icon {
 		if ( ! isset( $this->icons ) ) {
 			$this->icons = $this->json_to_array( VITE_ASSETS_DIR . '/json/font-awesome.json' );
 		}
-		$this->icons['vite-search'] = <<<SVG
-<svg
-	xmlns="http://www.w3.org/2000/svg"
-	class="search %s"
-	width="%d"
-	height="%d"
-	viewBox="0 0 24 24"
-	fill="none"
-	stroke="currentColor"
-	stroke-width="2"
-	stroke-linecap="round"
-	stroke-linejoin="round"
->
-	<circle cx="11" cy="11" r="8"></circle>
-	<line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-</svg>
-SVG;
+		$this->icons = array_merge( $this->icons, $this->get_extra_icons() ?? [] );
 	}
 
 	/**
@@ -132,6 +116,23 @@ SVG;
 		}
 
 		return $svg;
+	}
+
+	/**
+	 * Get custom icons.
+	 *
+	 * @return string[]
+	 */
+	private function get_extra_icons(): array {
+		return $this->filter(
+			'svg/icons/extra',
+			[
+				'vite-search'  => '<svg xmlns="http://www.w3.org/2000/svg" class="search %s" width="%d" height="%d" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>',
+				'vite-desktop' => '<svg xmlns="http://www.w3.org/2000/svg" class="desktop %s" width="%s" height="%s" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>',
+				'vite-tablet'  => '<svg xmlns="http://www.w3.org/2000/svg" class="tablet %s" width="%s" height="%s" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg>',
+				'vite-mobile'  => '<svg xmlns="http://www.w3.org/2000/svg" class="mobile %s" width="%s" height="%s" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg>',
+			]
+		);
 	}
 }
 
