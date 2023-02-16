@@ -3,12 +3,6 @@ import { SelectControl, Button } from '@wordpress/components';
 import { isEqual } from 'lodash';
 import { ControlPropsType } from '../types';
 
-type ChoiceType = {
-	label: string;
-	value: string;
-	disabled?: boolean;
-}
-
 const Select: React.FC<ControlPropsType> = ( props ) => {
 	let {
 		control: {
@@ -16,7 +10,7 @@ const Select: React.FC<ControlPropsType> = ( props ) => {
 			params: {
 				label,
 				description,
-				choices = {} as ChoiceType[],
+				choices = {} as any,
 				default: defaultValue,
 				inputAttrs: {
 					allow_reset: allowReset = true,
@@ -62,9 +56,7 @@ const Select: React.FC<ControlPropsType> = ( props ) => {
 				/>
 			</div>
 			{ description && (
-				<div className="customize-control-description">
-					<RawHTML>{ description }</RawHTML>
-				</div>
+				<RawHTML className="customize-control-description">{ description }</RawHTML>
 			) }
 		</div>
 	);

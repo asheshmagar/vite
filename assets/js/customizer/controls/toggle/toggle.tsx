@@ -45,9 +45,7 @@ const Toggle: React.FC<ControlPropsType> = ( props ) => {
 				/>
 			</div>
 			{ description && (
-				<div className="customize-control-description">
-					<RawHTML>{ description }</RawHTML>
-				</div>
+				<RawHTML className="customize-control-description">{ description }</RawHTML>
 			) }
 		</div>
 	);
