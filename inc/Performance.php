@@ -72,6 +72,12 @@ class Performance {
 			'wp_resource_hints',
 			function( $urls, $relation_type ) {
 				if ( 'dns-prefetch' === $relation_type ) {
+
+					/**
+					 * Filters the URL to the emoji SVG image file.
+					 *
+					 * @since 1.0.0
+					 */
 					$emoji_svg_url = apply_filters( 'emoji_svg_url', 'https://s.w.org/images/core/emoji/2/svg/' );
 					$urls          = array_diff( $urls, array( $emoji_svg_url ) );
 				}
