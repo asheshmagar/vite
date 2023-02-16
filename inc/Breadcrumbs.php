@@ -9,14 +9,14 @@ namespace Vite;
 
 defined( 'ABSPATH' ) || exit;
 
-use Vite\Traits\Mods;
+use Vite\Traits\{Mods, Hook};
 
 /**
  * Breadcrumbs.
  */
 class Breadcrumbs {
 
-	use Mods;
+	use Mods, Hook;
 
 	/**
 	 * Array of items belonging to the current breadcrumb trail.
