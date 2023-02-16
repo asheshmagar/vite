@@ -11,20 +11,22 @@ import {
 } from './type';
 
 class PreviewStyles {
-	#devices = [ 'desktop', 'tablet', 'mobile' ];
-	#sides = [ 'top', 'right', 'bottom', 'left' ];
-	#radiusSides = [ 'top-left', 'top-right', 'bottom-right', 'bottom-left' ];
-	#fonts = {};
-	#configs;
-	#api;
+	devices = [ 'desktop', 'tablet', 'mobile' ];
+	sides = [ 'top', 'right', 'bottom', 'left' ];
+	radiusSides = [ 'top-left', 'top-right', 'bottom-right', 'bottom-left' ];
+	fonts = {};
+	configs;
+	api;
 
-	constructor( api: any, configs = [] ) {
-		this.#configs = configs;
-		this.#api = api;
-		this.#init();
+	constructor( api: any, configs: {
+		[key: string]: any
+	}[] = [] ) {
+		this.configs = configs;
+		this.api = api;
+		this.init();
 	}
 
-	#attach( selector: string|string[], properties: string|null, state = 'normal' ) {
+	attach( selector: string|string[], properties: string|null, state = 'normal' ) {
 		if ( ! properties ) return {};
 
 		state = 'normal' === state ? '' : `:${ state }`;
@@ -42,22 +44,22 @@ class PreviewStyles {
 		return { [ selector ]: properties };
 	}
 
-	#typography( selector: string|string[], typography: Typography ) {
+	typography( selector: string|string[], typography: Typography ) {
 		const css = {
 			desktop: '',
 			tablet: '',
 			mobile: '',
 		};
 		selector = Array.isArray( selector ) ? selector.join( ', ' ) : selector;
-		for ( const device of this.#devices ) {
+		for ( const device of this.devices ) {
 			if ( 'desktop' === device ) {
 				if ( typography?.family ) {
 					let family = typography.family;
 					if ( ! [ 'default', 'inherit' ].includes( family ) ) {
-						if ( ! this.#fonts?.[ family ] ) {
-							this.#fonts[ family ] = [];
+						if ( ! this.fonts?.[ family ] ) {
+							this.fonts[ family ] = [];
 						}
-						this.#fonts[ family ]?.push( typography?.weight ?? 400 );
+						this.fonts[ family ]?.push( typography?.weight ?? 400 );
 					} else if ( 'default' === family ) {
 						family = '-apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"';
 					} else if ( 'inherit' === family ) {
@@ -81,13 +83,13 @@ class PreviewStyles {
 		}
 
 		return {
-			desktop: this.#attach( selector, css.desktop ),
-			tablet: this.#attach( selector, css.tablet ),
-			mobile: this.#attach( selector, css.mobile ),
+			desktop: this.attach( selector, css.desktop ),
+			tablet: this.attach( selector, css.tablet ),
+			mobile: this.attach( selector, css.mobile ),
 		};
 	}
 
-	#border( selector: string|string[], border: Border ) {
+	border( selector: string|string[], border: Border ) {
 		const css = {
 			desktop: {},
 			tablet: {},
@@ -104,22 +106,22 @@ class PreviewStyles {
 		if ( border?.color?.hover ) propertiesHover += `border-color: ${ border.color.hover };`;
 
 		if ( border?.width ) {
-			properties += Object.values( this.#dimensions( '', 'border-width', ( border?.width ?? {} ) ) ?? {} ).join( '' );
+			properties += Object.values( this.dimensions( '', 'border-width', ( border?.width ?? {} ) ) ?? {} ).join( '' );
 		}
 		css.desktop = {
-			...( this.#attach( selector, properties ) ?? {} ), ...( this.#attach( selector, propertiesHover, 'hover' ) ?? {} ),
+			...( this.attach( selector, properties ) ?? {} ), ...( this.attach( selector, propertiesHover, 'hover' ) ?? {} ),
 		};
 
 		return css;
 	}
 
-	#dimensions( selector: string|string[], property: string|string[], dimensions: Dimensions ) {
+	dimensions( selector: string|string[], property: string|string[], dimensions: Dimensions ) {
 		selector = Array.isArray( selector ) ? selector.join( ', ' ) : selector;
 		property = Array.isArray( property ) ? property : [ property ];
-		let css = '', sides = this.#sides;
+		let css = '', sides = this.sides;
 
-		if ( Object.keys( dimensions ).some( d => this.#radiusSides.includes( d ) ) ) {
-			sides = this.#radiusSides;
+		if ( Object.keys( dimensions ).some( d => this.radiusSides.includes( d ) ) ) {
+			sides = this.radiusSides;
 		}
 
 		if	( ! Object.keys( dimensions ).some( d => sides.includes( d ) ) ) {
@@ -139,33 +141,33 @@ class PreviewStyles {
 		}
 
 		if ( css ) {
-			return this.#attach( selector, css );
+			return this.attach( selector, css );
 		}
 
 		return { '': '' };
 	}
 
-	#responsiveDimensions( selector: string|string[], property: string|string[], dimensions: ResponsiveDimensions ) {
+	responsiveDimensions( selector: string|string[], property: string|string[], dimensions: ResponsiveDimensions ) {
 		const css = {
 			desktop: {},
 			tablet: {},
 			mobile: {},
 		};
 
-		if ( Object.keys( dimensions ).some( d => this.#devices.includes( d ) ) ) {
-			for ( const device of this.#devices ) {
+		if ( Object.keys( dimensions ).some( d => this.devices.includes( d ) ) ) {
+			for ( const device of this.devices ) {
 				if ( dimensions?.[ device ] ) {
-					css[ device ] = this.#dimensions( selector, property, dimensions[ device ] );
+					css[ device ] = this.dimensions( selector, property, dimensions[ device ] );
 				}
 			}
 		} else {
-			css.desktop = this.#dimensions( selector, property, dimensions as Dimensions );
+			css.desktop = this.dimensions( selector, property, dimensions as Dimensions );
 		}
 
 		return css;
 	}
 
-	#background( selector: string|string[], background: Background ) {
+	background( selector: string|string[], background: Background ) {
 		const css = {
 			desktop: '',
 			tablet: '',
@@ -181,7 +183,7 @@ class PreviewStyles {
 		} else if ( 'image' === background.type ) {
 			if ( background?.color ) css.desktop += `background-color: ${ background.color };`;
 			if ( background?.image ) css.desktop += `background-image: url( ${ background.image } );`;
-			for ( const device of this.#devices ) {
+			for ( const device of this.devices ) {
 				if ( background?.position?.[ device ] ) css[ device ] += `background-position: ${ background.position[ device ] };`;
 				if ( background?.size?.[ device ] ) css[ device ] += `background-size: ${ background.size[ device ] };`;
 				if ( background?.repeat?.[ device ] ) css[ device ] += `background-repeat: ${ background.repeat[ device ] };`;
@@ -190,13 +192,13 @@ class PreviewStyles {
 		}
 
 		return {
-			desktop: css?.desktop ? this.#attach( selector, css.desktop ) : [],
-			tablet: css?.tablet ? this.#attach( selector, css.tablet ) : [],
-			mobile: css?.mobile ? this.#attach( selector, css.mobile ) : [],
+			desktop: css?.desktop ? this.attach( selector, css.desktop ) : [],
+			tablet: css?.tablet ? this.attach( selector, css.tablet ) : [],
+			mobile: css?.mobile ? this.attach( selector, css.mobile ) : [],
 		};
 	}
 
-	#range(
+	range(
 		selector: string|string[],
 		property: string|string[],
 		range: Range|ResponsiveRange,
@@ -210,8 +212,8 @@ class PreviewStyles {
 		if ( ! isObject( range ) || ! selector || ! property ) return css;
 		property = Array.isArray( property ) ? property : [ property ];
 
-		if ( Object.keys( range ).some( d => this.#devices.includes( d ) ) ) {
-			for ( const device of this.#devices ) {
+		if ( Object.keys( range ).some( d => this.devices.includes( d ) ) ) {
+			for ( const device of this.devices ) {
 				if ( range?.[ device ]?.value ) {
 					const props = property.reduce( ( acc, prop ) => {
 						acc += `${ prop }: ${ range[ device ].value }${ range?.[ device ]?.unit ?? 'px' };`;
@@ -231,13 +233,13 @@ class PreviewStyles {
 		}
 
 		return {
-			desktop: css?.desktop ? this.#attach( selector, css.desktop ) : {},
-			tablet: css?.tablet ? this.#attach( selector, css.tablet ) : {},
-			mobile: css?.mobile ? this.#attach( selector, css.mobile ) : {},
+			desktop: css?.desktop ? this.attach( selector, css.desktop ) : {},
+			tablet: css?.tablet ? this.attach( selector, css.tablet ) : {},
+			mobile: css?.mobile ? this.attach( selector, css.mobile ) : {},
 		};
 	}
 
-	#color( selector: string|string[], property: string|string[], color: Color ) {
+	color( selector: string|string[], property: string|string[], color: Color ) {
 		const css = {
 			desktop: {},
 			tablet: {},
@@ -250,7 +252,7 @@ class PreviewStyles {
 			for ( const key in color ) {
 				const value = color[ key.toString() ];
 				if ( value ) {
-					const attached = this.#attach( selector, ( key.startsWith( '--' ) ? key : property ) + ':' + value + ';', key.startsWith( '--' ) ? 'normal' : key );
+					const attached = this.attach( selector, ( key.startsWith( '--' ) ? key : property ) + ':' + value + ';', key.startsWith( '--' ) ? 'normal' : key );
 
 					for	( const s in attached ) {
 						if ( css.desktop[ s ] ) {
@@ -262,13 +264,13 @@ class PreviewStyles {
 				}
 			}
 		} else {
-			css.desktop = this.#attach( selector, property + ':' + color + ';' );
+			css.desktop = this.attach( selector, property + ':' + color + ';' );
 		}
 
 		return css;
 	}
 
-	#common( selector: string|string[], property: string|string[], value: Common ) {
+	common( selector: string|string[], property: string|string[], value: Common ) {
 		const css = {
 			desktop: {},
 			tablet: {},
@@ -278,10 +280,10 @@ class PreviewStyles {
 		if ( ! value ) return css;
 
 		if ( isObject( value ) ) {
-			if ( Object.keys( value ).some( d => this.#devices.includes( d ) ) ) {
-				for ( const device of this.#devices ) {
+			if ( Object.keys( value ).some( d => this.devices.includes( d ) ) ) {
+				for ( const device of this.devices ) {
 					if ( value[ device ] ) {
-						const attached = this.#attach( selector, property + ':' + value[ device ] + ';' );
+						const attached = this.attach( selector, property + ':' + value[ device ] + ';' );
 
 						for	( const s in attached ) {
 							if ( css[ device ][ s ] ) {
@@ -297,19 +299,19 @@ class PreviewStyles {
 		}
 
 		return {
-			desktop: this.#attach( selector, property + ':' + value + ';' ),
+			desktop: this.attach( selector, property + ':' + value + ';' ),
 			tablet: [],
 			mobile: [],
 		};
 	}
 
-	#fontCSS() {
-		if ( isEmpty( this.#fonts ) ) return;
+	fontCSS() {
+		if ( isEmpty( this.fonts ) ) return;
 		const $head = $( 'head' );
 		const base = 'https://fonts.googleapis.com/css';
-		for ( const family in this.#fonts ) {
+		for ( const family in this.fonts ) {
 			const fontFamily = family.replace( / /g, '+' );
-			const variants = uniq( this.#fonts[ family ] );
+			const variants = uniq( this.fonts[ family ] );
 
 			$( `link[id="vite-google-fonts-${ fontFamily }"]` ).remove();
 			const url = `${ base }?family=${ fontFamily }:${ variants.join( ',' ) }&display=swap`;
@@ -317,7 +319,7 @@ class PreviewStyles {
 		}
 	}
 
-	#makeCSS( id: string, data: any ) {
+	makeCSS( id: string, data: any ) {
 		if ( isEmpty( data ) ) return;
 		let desktop = '', tablet = '', mobile = '';
 
@@ -351,35 +353,35 @@ class PreviewStyles {
 		$head.append( $style );
 	}
 
-	#init() {
-		if ( isEmpty( this.#configs ) ) return;
-		for ( const key in this.#configs ) {
-			const { selector = '', property = '', type } = this.#configs[ key ];
-			this.#api( key ).bind( ( value: any ) => {
+	init() {
+		if ( isEmpty( this.configs ) ) return;
+		for ( const key in this.configs ) {
+			const { selector = '', property = '', type } = this.configs[ key ];
+			this.api( key ).bind( ( value: any ) => {
 				if ( isNull( value ) || isUndefined( value ) ) return;
 				switch ( type ) {
 					case 'vite-dimensions':
-						this.#makeCSS( key, this.#responsiveDimensions( selector, property, value ) );
+						this.makeCSS( key, this.responsiveDimensions( selector, property, value ) );
 						break;
 					case 'vite-border':
-						this.#makeCSS( key, this.#border( selector, value ) );
+						this.makeCSS( key, this.border( selector, value ) );
 						break;
 					case 'vite-typography':
-						this.#makeCSS( key, this.#typography( selector, value ) );
+						this.makeCSS( key, this.typography( selector, value ) );
 						break;
 					case 'vite-color':
-						this.#makeCSS( key, this.#color( selector, property, value ) );
+						this.makeCSS( key, this.color( selector, property, value ) );
 						break;
 					case 'vite-background':
-						this.#makeCSS( key, this.#background( selector, value ) );
+						this.makeCSS( key, this.background( selector, value ) );
 						break;
 					case 'vite-slider':
-						this.#makeCSS( key, this.#range( selector, property, value ) );
+						this.makeCSS( key, this.range( selector, property, value ) );
 						break;
 					default:
-						this.#makeCSS( key, this.#common( selector, property, value ) );
+						this.makeCSS( key, this.common( selector, property, value ) );
 				}
-				this.#fontCSS();
+				this.fontCSS();
 			} );
 		}
 	}
