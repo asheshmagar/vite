@@ -9,7 +9,7 @@ namespace Vite;
 
 defined( 'ABSPATH' ) || exit;
 
-use Vite\Traits\Mods;
+use Vite\Traits\{Hook, Mods};
 
 /**
  * Class Styles
@@ -18,7 +18,7 @@ use Vite\Traits\Mods;
  */
 class ScriptsStyles {
 
-	use Mods;
+	use Mods, Hook;
 
 	/**
 	 * Init.
@@ -170,11 +170,9 @@ class ScriptsStyles {
 	 * Remove no-js class from html tag.
 	 */
 	public function remove_no_js() {
-		?>
-		<script>
-			!function(e){e.className=e.className.replace(/\bno-js\b/,"js")}(document.documentElement);
-		</script>
-		<?php
+		wp_print_inline_script_tag(
+			'!function(e){e.className=e.className.replace(/\bno-js\b/,"js")}(document.documentElement);'
+		);
 	}
 
 	/**
