@@ -5,7 +5,7 @@ export const $$ = document.querySelectorAll.bind( document );
 // eslint-disable-next-line @typescript-eslint/no-empty-function
 export const noop: () => void = () => {};
 
-export const domReady = ( callback: () => void ) => {
+export const domReady: ( args: () => void ) => void = ( callback ) => {
 	if ( document.readyState === 'complete' || document.readyState === 'interactive' ) {
 		callback();
 	} else {
@@ -13,26 +13,28 @@ export const domReady = ( callback: () => void ) => {
 	}
 };
 
-export const handleModal = ( {
+type HandleModalType = ( args: {
+	modalEl: HTMLElement,
+	openModalEl: HTMLElement | NodeListOf<HTMLElement>,
+	closeModalEl: HTMLElement,
+	onOpen?: ( a: {
+		modalEl: HTMLElement,
+		closeModalEl: HTMLElement,
+		openModalEl: HTMLElement | NodeListOf<HTMLElement>,
+	} ) => void,
+	onClose?: ( a: {
+		modalEl: HTMLElement,
+		closeModalEl: HTMLElement,
+		openModalEl: HTMLElement | NodeListOf<HTMLElement>,
+	} ) => void,
+} ) => void;
+
+export const handleModal: HandleModalType = ( {
 	modalEl,
 	openModalEl,
 	closeModalEl,
 	onOpen = noop,
 	onClose = noop,
-} : {
-	modalEl: HTMLElement,
-	openModalEl: HTMLElement | NodeListOf<HTMLElement>,
-	closeModalEl: HTMLElement,
-	onOpen?: ( args: {
-		modalEl: HTMLElement,
-		closeModalEl: HTMLElement,
-		openModalEl: HTMLElement | NodeListOf<HTMLElement>,
-	} ) => void,
-	onClose?: ( args: {
-		modalEl: HTMLElement,
-		closeModalEl: HTMLElement,
-		openModalEl: HTMLElement | NodeListOf<HTMLElement>,
-	} ) => void,
 } ) => {
 	if ( ! modalEl ) return;
 
@@ -44,7 +46,7 @@ export const handleModal = ( {
 		onOpen.call( null, { modalEl, openModalEl, closeModalEl } );
 	};
 
-	const closeModal = ( e: MouseEvent ) => {
+	const closeModal = ( e: MouseEvent ): void => {
 		e.preventDefault();
 		modalEl.classList.remove( 'vite-modal--open' );
 		document.body.style.overflow = '';
@@ -61,7 +63,7 @@ export const handleModal = ( {
 	closeModalEl?.addEventListener( 'click', closeModal );
 };
 
-export const handleTrapFocus = ( parentEl: HTMLElement ) => {
+export const handleTrapFocus: ( args: HTMLElement ) => void = ( parentEl ) => {
 	if ( ! parentEl ) return;
 	const focusable: NodeListOf<HTMLElement> = parentEl.querySelectorAll( 'a, button, input, textarea, select, details, [tabindex]:not([tabindex="-1"])' );
 	const firstFocusable: HTMLElement = focusable[ 0 ];
@@ -85,26 +87,28 @@ export const handleTrapFocus = ( parentEl: HTMLElement ) => {
 	} );
 };
 
-export const handleScrollToTop = ( {
+type HandleScrollToTopType = ( args: {
+	button: HTMLButtonElement,
+	threshold?: number,
+	showButton?: ( a: {
+		button: HTMLButtonElement,
+	} ) => void,
+	hideButton?: ( a: {
+		button: HTMLButtonElement,
+	} ) => void,
+	scroll?: ( a: {
+		button: HTMLButtonElement,
+	} ) => void,
+	showOnLoad?: boolean,
+} ) => void;
+
+export const handleScrollToTop: HandleScrollToTopType = ( {
 	button,
 	threshold = 300,
 	showButton = noop,
 	hideButton = noop,
 	scroll = noop,
 	showOnLoad = false,
-} : {
-	button: HTMLButtonElement,
-	threshold?: number,
-	showButton?: ( args: {
-		button: HTMLButtonElement,
-	} ) => void,
-	hideButton?: ( args: {
-		button: HTMLButtonElement,
-	} ) => void,
-	scroll?: ( args: {
-		button: HTMLButtonElement,
-	} ) => void,
-	showOnLoad?: boolean,
 } ) => {
 	const showHideButton = () => {
 		if ( window.pageYOffset > threshold ) {
