@@ -54,13 +54,13 @@
 	.vite-devices {
 		.vite-device {
 			box-shadow: none !important;
-
-			.dashicon {
-				font-size: 16px;
-				height: 16px;
-				width: 16px;
-			}
+			border-radius: 2px;
 		}
+	}
+
+	.vite-icon-wrap {
+		width: 16px;
+		height: 16px;
 	}
 
 	.components-button {
@@ -68,6 +68,11 @@
 		padding-left: 0;
 		padding-right: 0;
 		min-width: 14px;
+		justify-content: center;
+
+		svg {
+			fill: transparent;
+		}
 	}
 }
 
