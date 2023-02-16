@@ -10,21 +10,14 @@ namespace Vite;
 
 defined( 'ABSPATH' ) || exit;
 
-use Vite\Traits\{HTMLAttrs, JSON, SmartTags};
+use Vite\Traits\{Hook, HTMLAttrs, JSON, SmartTags, Mods};
 
 /**
  * Core.
  */
 class Core {
 
-	use JSON , SmartTags , HTMLAttrs {
-		SmartTags::filter insteadof HTMLAttrs;
-		SmartTags::action insteadof HTMLAttrs;
-		SmartTags::add_action insteadof HTMLAttrs;
-		SmartTags::add_filter insteadof HTMLAttrs;
-		SmartTags::remove_action insteadof HTMLAttrs;
-		SmartTags::remove_filter insteadof HTMLAttrs;
-	}
+	use JSON, SmartTags, HTMLAttrs, Hook, Mods;
 
 	/**
 	 * Holds the social networks.
