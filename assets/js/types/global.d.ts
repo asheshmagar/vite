@@ -5,7 +5,9 @@ declare global {
 }
 
 declare var wp: any;
+
 declare var tinymce: any;
+
 declare var _VITE_: {
 	initMasonryInfiniteScroll: () => void;
 	initNavigation: () => void;
@@ -14,15 +16,17 @@ declare var _VITE_: {
 	init: () => void;
 	publicPath: string;
 };
+
 declare var _VITE_CUSTOMIZER_PREVIEW_: {
 	configs: {
 		[key: string]: any
 	}[];
 };
+
 declare var _VITE_CUSTOMIZER_: {
 	icons: {
 		[key: string]: string
-	}[];
+	};
 	condition: {
 		[key:string]: {
 			[key:string]: any
