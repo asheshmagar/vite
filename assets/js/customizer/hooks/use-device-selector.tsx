@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from '@wordpress/element';
 import { Button, ButtonGroup, Dropdown } from '@wordpress/components';
+import { Icon } from '../components';
 
 const DeviceButtons: React.FC<{
 	device: string;
@@ -16,8 +17,9 @@ const DeviceButtons: React.FC<{
 					setDevice( d );
 					wp?.customize?.previewedDevice?.set( d );
 				} }
-				icon={ 'mobile' === d ? 'smartphone' : d }
-			/>
+			>
+				<Icon icon={ 'vite-' + d } size={ 16 } />
+			</Button>
 		) ) }
 	</ButtonGroup>
 );
@@ -55,8 +57,9 @@ const useDeviceSelector = (): {
 								className="vite-device"
 								onClick={ onToggle }
 								aria-expanded={ isOpen }
-								icon={ 'mobile' === device ? 'smartphone' : device }
-							/>
+							>
+								<Icon icon={ 'vite-' + device } size={ 16 } />
+							</Button>
 						) }
 						renderContent={ () => (
 							<DeviceButtons device={ device } setDevice={ setDevice } />
