@@ -36,6 +36,22 @@ const LabelWithTooltip: React.FC<{
 	);
 };
 
+const variableToColor = ( variable: string, palette: {
+	name: string;
+	color: string;
+	value: string;
+}[] ): string|undefined => {
+	if ( variable?.startsWith( 'var(' ) ) {
+		const regex = /var\(([^)]+)\)/;
+		const match = variable.match( regex );
+		if ( match ) {
+			const variableName = match[ 1 ];
+			return palette.find( p => p.name === variableName )?.value || undefined;
+		}
+	}
+	return variable;
+};
+
 const ViteColorPicker: React.FC<PropsType> = ( props ) => {
 	const {
 		value = '',
@@ -46,23 +62,13 @@ const ViteColorPicker: React.FC<PropsType> = ( props ) => {
 		control,
 	} = props;
 
-	const palette = Object.entries( customizer( 'vite[global-palette]' ).get() ?? {} ).map( ( [ key, val ] ) => ( {
-		name: key,
-		color: `var(${ key })`,
-		value: val,
-	} ) );
-
-	const variableToColor = ( variable: string ) => {
-		if ( variable?.startsWith( 'var(' ) ) {
-			const regex = /var\(([^)]+)\)/;
-			const match = variable.match( regex );
-			if ( match ) {
-				const variableName = match[ 1 ];
-				return palette.find( p => p.name === variableName )?.value;
-			}
-		}
-		return variable;
-	};
+	const palette = Object
+		.entries( customizer( 'vite[global-palette]' ).get() ?? {} )
+		.map( ( [ key, val ] ) => ( {
+			name: key,
+			color: `var(${ key })`,
+			value: val,
+		} ) );
 
 	return (
 		<div className="vite-color-picker">
@@ -85,8 +91,7 @@ const ViteColorPicker: React.FC<PropsType> = ( props ) => {
 							) }
 							{ 'color' === type && (
 								<ColorPicker
-									// @ts-ignore
-									color={ variableToColor( value ) }
+									color={ variableToColor( value, palette as any ) }
 									onChangeComplete={ ( val: any ) => {
 										const { hex, rgb } = val;
 										let newColor = hex;
