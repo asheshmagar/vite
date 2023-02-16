@@ -108,13 +108,21 @@ class WalkerPage extends Walker_Page {
 		 * @param int      $depth        Depth of page, used for padding.
 		 * @param array    $args         An array of arguments.
 		 * @param int      $current_page ID of the current page.
+		 * @since 1.0.0
 		 */
 		$css_classes = implode( ' ', apply_filters( 'page_css_class', $css_class, $data_object, $depth, $args, $current_object_id ) );
 		if ( '' === $data_object->post_title ) {
 			/* translators: %d: ID of a post. */
 			$data_object->post_title = sprintf( __( '#%d (no title)' ), $data_object->ID );
 		}
-		/** This filter is documented in wp-includes/post-template.php */
+
+		/**
+		 * Filter the title of a menu item.
+		 *
+		 * @param string   $title     The menu item's title.
+		 * @param int      $menu_item The ID of the menu item.
+		 * @since 1.0.0
+		 */
 		$title = apply_filters( 'the_title', $data_object->post_title, $data_object->ID );
 
 		/**

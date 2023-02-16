@@ -7,14 +7,14 @@ namespace Vite\NavMenu;
 
 defined( 'ABSPATH' ) || exit;
 
-use Vite\Traits\HTMLAttrs;
+use Vite\Traits\{HTMLAttrs, Hook};
 
 /**
  * NavMenu.
  */
 class NavMenu {
 
-	use HTMLAttrs;
+	use HTMLAttrs, Hook;
 
 	/**
 	 * Walker nav menu.

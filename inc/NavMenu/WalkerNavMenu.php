@@ -115,19 +115,21 @@ class WalkerNavMenu extends Walker_Nav_Menu {
 		 * @param stdClass $args      An object of wp_nav_menu() arguments.
 		 * @param WP_Post  $menu_item Menu item data object.
 		 * @param int      $depth     Depth of menu item. Used for padding.
+		 * @since 1.0.0
 		 */
 		$args = apply_filters( 'nav_menu_item_args', $args, $menu_item, $depth );
 
-		/**
-		 * Filters the CSS classes applied to a menu item's list item element.
-		 *
-		 * @param string[] $classes   Array of the CSS classes that are applied to the menu item's `<li>` element.
-		 * @param WP_Post  $menu_item The current menu item object.
-		 * @param stdClass $args      An object of wp_nav_menu() arguments.
-		 * @param int      $depth     Depth of menu item. Used for padding.
-		 */
 		$class_names = implode(
 			' ',
+			/**
+			 * Filters the CSS classes applied to a menu item's list item element.
+			 *
+			 * @param string[] $classes   Array of the CSS classes that are applied to the menu item's `<li>` element.
+			 * @param WP_Post  $menu_item The current menu item object.
+			 * @param stdClass $args      An object of wp_nav_menu() arguments.
+			 * @param int      $depth     Depth of menu item. Used for padding.
+			 * @since 1.0.0
+			 */
 			apply_filters(
 				'nav_menu_css_class',
 				array_filter( $classes ),
@@ -145,6 +147,7 @@ class WalkerNavMenu extends Walker_Nav_Menu {
 		 * @param WP_Post  $menu_item The current menu item.
 		 * @param stdClass $args      An object of wp_nav_menu() arguments.
 		 * @param int      $depth     Depth of menu item. Used for padding.
+		 * @since 1.0.0
 		 */
 		$id = apply_filters( 'nav_menu_item_id', 'menu-item-' . $menu_item->ID, $menu_item, $args, $depth );
 		$id = $id ? ' id="' . esc_attr( $id ) . '"' : '';
@@ -178,6 +181,7 @@ class WalkerNavMenu extends Walker_Nav_Menu {
 		 * @param WP_Post  $menu_item The current menu item object.
 		 * @param stdClass $args      An object of wp_nav_menu() arguments.
 		 * @param int      $depth     Depth of menu item. Used for padding.
+		 * @since 1.0.0
 		 */
 		$atts = apply_filters( 'nav_menu_link_attributes', $atts, $menu_item, $args, $depth );
 
@@ -189,7 +193,13 @@ class WalkerNavMenu extends Walker_Nav_Menu {
 			}
 		}
 
-		/** This filter is documented in wp-includes/post-template.php */
+		/**
+		 * Filter the title of a menu item.
+		 *
+		 * @param string   $title     The menu item's title.
+		 * @param int      $menu_item The ID of the menu item.
+		 * @since 1.0.0
+		 */
 		$title = apply_filters( 'the_title', $menu_item->title, $menu_item->ID );
 
 		/**
@@ -228,6 +238,7 @@ class WalkerNavMenu extends Walker_Nav_Menu {
 		 * @param WP_Post  $menu_item   Menu item data object.
 		 * @param int      $depth       Depth of menu item. Used for padding.
 		 * @param stdClass $args        An object of wp_nav_menu() arguments.
+		 * @since 1.0.0
 		 */
 		$output .= apply_filters( 'walker_nav_menu_start_el', $item_output, $menu_item, $depth, $args );
 	}
