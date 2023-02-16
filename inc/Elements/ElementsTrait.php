@@ -7,11 +7,11 @@
 
 namespace Vite\Elements;
 
-use Vite\Traits\{ HTMLAttrs };
+use Vite\Traits\{Hook, HTMLAttrs, SmartTags, Mods};
 
 trait ElementsTrait {
 
-	use HTMLAttrs;
+	use HTMLAttrs, Hook, SmartTags, Mods;
 
 	/**
 	 * Render.

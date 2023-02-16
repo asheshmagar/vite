@@ -9,21 +9,12 @@ namespace Vite\Elements;
 
 defined( 'ABSPATH' ) || exit;
 
-use Vite\Traits\{ HTMLAttrs, SmartTags };
-
 /**
  * Builder Elements.
  */
 class BuilderElements {
 
-	use ElementsTrait , SmartTags {
-		SmartTags::filter insteadof ElementsTrait;
-		SmartTags::action insteadof ElementsTrait;
-		SmartTags::add_action insteadof ElementsTrait;
-		SmartTags::add_filter insteadof ElementsTrait;
-		SmartTags::remove_action insteadof ElementsTrait;
-		SmartTags::remove_filter insteadof ElementsTrait;
-	}
+	use ElementsTrait;
 
 	/**
 	 * Site branding.
@@ -478,7 +469,7 @@ class BuilderElements {
 		 * @since 1.0.0
 		 */
 		$this->action( "{$args['context']}/mobile-menu-trigger/end" );
-		$this->add_action( 'vite/body/close', [ $this, 'mobile_menu_offset' ] );
+		$this->add_action( 'vite/body/end', [ $this, 'mobile_menu_offset' ] );
 	}
 
 	/**
