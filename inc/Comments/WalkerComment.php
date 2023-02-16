@@ -130,8 +130,8 @@ class WalkerComment extends Walker_Comment {
 							</cite>
 						</div>
 						<?php
-						/* translators: 1: Comment date, 2: Comment time. */
 						$comment_timestamp = sprintf(
+							/* translators: 1: Comment date, 2: Comment time. */
 							__( '%1$s at %2$s', 'vite' ),
 							get_comment_date( '', $comment ),
 							get_comment_time()
