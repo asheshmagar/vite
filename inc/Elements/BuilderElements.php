@@ -12,9 +12,7 @@ defined( 'ABSPATH' ) || exit;
 /**
  * Builder Elements.
  */
-class BuilderElements {
-
-	use ElementsTrait;
+class BuilderElements extends Elements {
 
 	/**
 	 * Site branding.

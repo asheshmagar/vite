@@ -12,9 +12,7 @@ defined( 'ABSPATH' ) || exit;
 /**
  * EntryElements.
  */
-class EntryElements {
-
-	use ElementsTrait;
+class EntryElements extends Elements {
 
 	/**
 	 * Elements.

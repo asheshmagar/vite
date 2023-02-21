@@ -12,9 +12,7 @@ defined( 'ABSPATH' ) || exit;
 /**
  * Page header elements.
  */
-class PageHeaderElements {
-
-	use ElementsTrait;
+class PageHeaderElements extends Elements {
 
 	/**
 	 * Page header elements.
