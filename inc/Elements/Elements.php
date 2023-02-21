@@ -1,6 +1,6 @@
 <?php
 /**
- * Elements trait.
+ * Base element class.
  *
  * @package Vite
  */
@@ -9,7 +9,10 @@ namespace Vite\Elements;
 
 use Vite\Traits\{Hook, HTMLAttrs, SmartTags, Mods};
 
-trait ElementsTrait {
+/**
+ * Base element class.
+ */
+abstract class Elements {
 
 	use HTMLAttrs, Hook, SmartTags, Mods;
 
@@ -21,7 +24,7 @@ trait ElementsTrait {
 	 *
 	 * @return void
 	 */
-	public function render( string $element, array $args = [] ) {
+	final public function render( string $element, array $args = [] ) {
 		$element = str_replace( '-', '_', $element );
 
 		if ( method_exists( $this, $element ) ) {
