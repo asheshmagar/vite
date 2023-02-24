@@ -5,6 +5,8 @@
  * @package Vite
  */
 
+defined( 'ABSPATH' ) || exit;
+
 $core          = vite( 'core' );
 $scroll_to_top = $core->get_mod( 'scroll-to-top', true );
 
