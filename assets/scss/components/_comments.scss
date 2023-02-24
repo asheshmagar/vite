@@ -9,6 +9,12 @@
 	background-color: var(--button-bg-color);
 	font-size: var(--font-size);
 	text-transform: var(--text-transform);
+	display: inline-flex;
+	height: 30px;
+}
+
+.vite-comment-respond__title {
+	margin-bottom: 0.5em;
 }
 
 .vite-comments {
@@ -86,7 +92,8 @@
 }
 
 .comment-form {
-	--typography-spacing-vertical: 0;
+	--form-element-spacing-vertical: 0;
+	margin-bottom: 0;
 
 	.submit,
 	.form-submit {
