@@ -9,13 +9,19 @@
 // Exit if accessed directly.
 defined( 'ABSPATH' ) || exit;
 
-require_once __DIR__ . '/inc/Constants.php'; // Load theme constants.
-require_once __DIR__ . '/inc/BackCompat.php'; // Load theme back-compat.
+// Load theme constants.
+require_once __DIR__ . '/inc/Constants.php';
 
+// Load theme back-compat.
+require_once __DIR__ . '/inc/BackCompat.php';
+
+// Return early if requirements are not met.
 if ( ! call_user_func( 'Vite\maybe_load_theme' ) ) {
 	return;
 }
 
-require_once __DIR__ . '/vendor/autoload.php'; // Load composer autoloader.
+// Load composer autoloader.
+require_once __DIR__ . '/vendor/autoload.php';
 
-vite( 'theme' )->init(); // Init theme.
+// Run theme.
+vite( 'theme' )->init();
