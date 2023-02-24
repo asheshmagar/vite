@@ -140,27 +140,25 @@ class BuilderElements extends Elements {
 					if ( ! $social['visible'] || ! isset( $social['id'] ) ) {
 						continue;
 					}
+					$link = $this->get_mod( "{$social['id']}-link", '#' );
+					if ( empty( $link ) ) {
+						$link = '#';
+					}
 					?>
 					<li class="vite-social__item">
 						<a
 						<?php
 						$this->print_html_attributes(
 							'header/socials/link',
-							array_merge(
-								[
-									'class' => [
-										'vite-social__link',
-										"vite-social__link--{$social['id']}",
-									],
-									'rel'   => 'noopener',
-									'href'  => $this->get_mod( "{$social['id']}-link", '#' ),
+							[
+								'class' => [
+									'vite-social__link',
+									"vite-social__link--{$social['id']}",
 								],
-								'brand' === $color_type && isset( $social['color'] )
-									?
-									[ 'style' => "--link-color:{$social['color']}" ]
-									:
-									[]
-							)
+								'rel'   => 'noopener',
+								'href'  => $link,
+								'style' => 'brand' === $color_type && isset( $social['color'] ) ? "--link-color:{$social['color']}" : null,
+							]
 						)
 						?>
 						>
