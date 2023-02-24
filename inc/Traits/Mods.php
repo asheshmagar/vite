@@ -655,14 +655,14 @@ trait Mods {
 	 * Remove theme mod.
 	 *
 	 * @param string      $key Theme mod key.
-	 * @param bool|string $migrate Migration key.
+	 * @param bool|string $migrate_to Migration key.
 	 * @return void
 	 */
-	public function remove_mod( string $key, $migrate = false ) {
+	public function remove_mod( string $key, $migrate_to = false ) {
 		$mods = get_theme_mod( 'vite' );
 
-		if ( $migrate && is_string( $migrate ) ) {
-			$mods[ $migrate ] = $mods[ $key ];
+		if ( $migrate_to && is_string( $migrate_to ) ) {
+			$mods[ $migrate_to ] = $mods[ $key ];
 		}
 
 		unset( $mods[ $key ] );
