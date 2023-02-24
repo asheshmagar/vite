@@ -50,7 +50,7 @@ $options = [
 		],
 		'css'         => [
 			'selector' => ':root',
-			'property' => '--button--border--radius',
+			'property' => '--button-border-radius',
 		],
 	],
 	'vite[buttons-typography]'    => [
