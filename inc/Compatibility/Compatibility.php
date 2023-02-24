@@ -10,7 +10,7 @@ namespace Vite\Compatibility;
 defined( 'ABSPATH' ) || exit;
 
 use Vite\Compatibility\Plugin\{
-	Plugin,
+	Base,
 	BBPress,
 	Edd,
 	Elementor,
@@ -94,7 +94,7 @@ class Compatibility {
 			if (
 				! $args['should_load'] ||
 				! $args['class'] ||
-				! is_subclass_of( $args['class'], Plugin::class )
+				! is_subclass_of( $args['class'], Base::class )
 			) {
 				continue;
 			}
