@@ -145,7 +145,21 @@ class BuilderElements extends Elements {
 						$link = '#';
 					}
 					?>
-					<li class="vite-social__item">
+					<li
+					<?php
+					$this->print_html_attributes(
+						'header/socials/link',
+						[
+							'class' => [
+								'vite-social__item',
+							],
+							'style' => 'brand' === $color_type && isset( $social['color'] ) ?
+								"--link-color:{$social['color']};--link-hover-color:{$social['color']}" :
+								null,
+						]
+					)
+					?>
+					>
 						<a
 						<?php
 						$this->print_html_attributes(
@@ -157,7 +171,6 @@ class BuilderElements extends Elements {
 								],
 								'rel'   => 'noopener',
 								'href'  => $link,
-								'style' => 'brand' === $color_type && isset( $social['color'] ) ? "--link-color:{$social['color']}" : null,
 							]
 						)
 						?>
@@ -604,7 +617,7 @@ class BuilderElements extends Elements {
 		 */
 		$this->action( "{$context}/widget/$type/start" );
 
-		vite( 'sidebar' )->render_sidebar(
+		vite( 'widgets' )->render_sidebar(
 			[
 				'id'          => "$context-widget-$type",
 				'wrapper_id'  => "$context-widget-$type",
