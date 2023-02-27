@@ -45,4 +45,7 @@ declare var _VITE_CUSTOMIZER_: {
 	publicPath: string;
 	resetNonce: string;
 	ajaxURL: string;
+	editorStyles: {
+		[key: string]: string
+	}[];
 };
