@@ -25,3 +25,4 @@ export { default as borderControl } from './border';
 export { default as builderControl } from './builder';
 export { default as builderComponents } from './builder-components';
 export { default as dividerControl } from './divider';
+export { default as AdvancedBuilderControl } from './advanced-builder';
