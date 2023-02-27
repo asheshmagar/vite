@@ -28,3 +28,7 @@
 		--typography-spacing-vertical: 0;
 	}
 }
+
+.widget :where(*:last-child) {
+	--typography-spacing-vertical: 0;
+}
