@@ -410,6 +410,7 @@ class Customizer {
 				'publicPath' => VITE_ASSETS_URI . 'dist/',
 				'resetNonce' => wp_create_nonce( 'vite-reset' ),
 				'ajaxURL'    => admin_url( 'admin-ajax.php' ),
+				'editorStyles' => get_block_editor_theme_styles()
 			]
 		);
 		wp_set_script_translations( 'vite-customizer', 'vite', get_template_directory() . '/languages' );
