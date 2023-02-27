@@ -1,0 +1,43 @@
+// @import '~@automattic/isolated-block-editor/build-browser/core.css';
+@import 'rc-dialog/assets/index.css';
+
+.rc-dialog-body {
+    height: calc(100vh - 97px);
+
+	> div {
+		height: 100%;
+	}
+}
+
+.iso-editor {
+	height: 100%;
+	.block-editor-writing-flow {
+		padding-bottom: 40vh;
+	}
+
+	&,
+	> div,
+	.interface-interface-skeleton {
+		height: 100%;
+	}
+}
+
+.components-modal__screen-overlay {
+	z-index: 999999;
+}
+
+.vite-advanced-builder {
+	width: 100% !important;
+	height: 100% !important;
+	max-width: 100% !important;
+	max-height: 100% !important;
+	margin: 0 !important;
+}
+
+.rc-dialog-content {
+	height: 100%;
+}
+
+.rc-dialog-wrap {
+	z-index: 999999;
+}
