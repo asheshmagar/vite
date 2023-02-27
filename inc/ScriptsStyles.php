@@ -107,7 +107,7 @@ class ScriptsStyles {
 		wp_register_style(
 			'vite-customizer',
 			VITE_ASSETS_URI . 'dist/customizer.css',
-			[ 'wp-components' ],
+			[ 'wp-components', 'wp-edit-post' ],
 			$customizer_asset['version']
 		);
 		wp_register_style(
