@@ -5,6 +5,7 @@ const { resolve } = require( 'path' );
 const MiniCSSExtractPlugin = require( 'mini-css-extract-plugin' );
 const RemoveEmptyScriptsPlugin = require( 'webpack-remove-empty-scripts' );
 const CompressionPlugin = require( 'compression-webpack-plugin' );
+const { WebpackManifestPlugin } = require( 'webpack-manifest-plugin' );
 
 // eslint-disable-next-line no-unused-vars
 module.exports = ( _, args ) => ( {
@@ -16,7 +17,7 @@ module.exports = ( _, args ) => ( {
 		'editor-style': resolve( process.cwd(), 'assets/scss', 'editor-style.scss' ),
 	},
 	output: {
-		filename: '[name].js',
+		filename: '[name].[contenthash:8].js',
 		path: resolve( process.cwd(), 'assets/dist' ),
 		clean: true,
 	},
@@ -98,11 +99,49 @@ module.exports = ( _, args ) => ( {
 	},
 	plugins: [
 		new RemoveEmptyScriptsPlugin(),
-		new MiniCSSExtractPlugin( { filename: '[name].css' } ),
+		new MiniCSSExtractPlugin( { filename: '[name].[contenthash:8].css' } ),
 		new DependencyExtractionWebpackPlugin(),
 		new WebpackBar(),
 		args.mode === 'development' ? new EslintPlugin( { extensions: [ 'js', 'jsx', 'ts', 'tsx' ] } ) : false,
 		args.mode === 'production' ? new CompressionPlugin() : false,
+		new WebpackManifestPlugin( {
+			basePath: '',
+			fileName: 'manifest.json',
+			removeKeyHash: true,
+			generate: ( seed, files ) => {
+				return files.reduce( ( manifest, file ) => {
+					if ( ! file.chunk ) {
+						return manifest;
+					}
+					const entries = {};
+					file.chunk.files.forEach( ( path ) => {
+						let ext = path.split( '.' ).pop();
+						switch ( ext ) {
+							case 'js':
+								ext = 'script';
+								break;
+							case 'css':
+								ext = 'style';
+								break;
+							case 'php':
+								ext = 'asset';
+								break;
+						}
+						// else {
+						// 	if ( ! entries[ ext ] ) {
+						// 		entries[ ext ] = [];
+						// 	}
+						// 	entries[ ext ].push( path );
+						// }
+						entries[ ext ] = path;
+					} );
+					if ( file.chunk.name ) {
+						manifest[ file.chunk.name ] = entries;
+					}
+					return manifest;
+				}, seed );
+			},
+		} ),
 	].filter( Boolean ),
 	devtool: args.mode === 'development' ? 'source-map' : false,
 } );
