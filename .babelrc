@@ -1,11 +1,14 @@
 {
 	"presets": [
-		[
-			"@babel/preset-env",
-			{
-				"modules": false
+		["@babel/preset-env", {
+			"modules": false,
+			"targets": {
+				"browsers": [
+					"last 4 versions",
+					"ie >= 11"
+				]
 			}
-		],
+		}],
 		"@babel/preset-react",
 		"@babel/preset-typescript"
 	],
