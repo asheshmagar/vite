@@ -389,8 +389,8 @@ class Customizer {
 	public function enqueue_control_script() {
 		wp_enqueue_media();
 		wp_enqueue_editor();
-		wp_enqueue_script( 'vite-customizer' );
-		wp_enqueue_style( 'vite-customizer' );
+
+		vite( 'scripts-styles' )->enqueue_asset( 'vite-customizer' );
 
 		$this->condition['blogdescription'] = [
 			'vite[header-site-branding-elements]' => 'logo-title-description',
@@ -404,13 +404,13 @@ class Customizer {
 			'vite-customizer',
 			'_VITE_CUSTOMIZER_',
 			[
-				'icons'      => vite( 'icon' )->get_icons(),
-				'condition'  => $this->filter( 'customizer/condition', $this->condition ),
-				'conditions' => $this->filter( 'customizer/conditions', $this->conditions ),
-				'publicPath' => VITE_ASSETS_URI . 'dist/',
-				'resetNonce' => wp_create_nonce( 'vite-reset' ),
-				'ajaxURL'    => admin_url( 'admin-ajax.php' ),
-				'editorStyles' => get_block_editor_theme_styles()
+				'icons'        => vite( 'icon' )->get_icons(),
+				'condition'    => $this->filter( 'customizer/condition', $this->condition ),
+				'conditions'   => $this->filter( 'customizer/conditions', $this->conditions ),
+				'publicPath'   => VITE_ASSETS_URI . 'dist/',
+				'resetNonce'   => wp_create_nonce( 'vite-reset' ),
+				'ajaxURL'      => admin_url( 'admin-ajax.php' ),
+				'editorStyles' => get_block_editor_theme_styles(),
 			]
 		);
 		wp_set_script_translations( 'vite-customizer', 'vite', get_template_directory() . '/languages' );
@@ -422,7 +422,7 @@ class Customizer {
 	 * @return void
 	 */
 	public function enqueue_preview_script() {
-		wp_enqueue_script( 'vite-customizer-preview' );
+		vite( 'scripts-styles' )->enqueue_asset( 'vite-customizer-preview' );
 		wp_localize_script(
 			'vite-customizer-preview',
 			'_VITE_CUSTOMIZER_PREVIEW_',
@@ -430,7 +430,6 @@ class Customizer {
 				'configs' => $this->dynamic_css->get_config(),
 			]
 		);
-		wp_enqueue_style( 'vite-customizer-preview' );
 		wp_add_inline_style( 'vite-customizer-preview', 'html, body, .site { height: 100% } ' );
 	}
 
