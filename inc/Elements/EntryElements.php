@@ -381,8 +381,11 @@ class EntryElements extends Elements {
 		 */
 		$this->action( 'entry-elements/button/start' );
 		?>
-		<a href="<?php the_permalink(); ?>" class="vite-post__btn" title="<?php the_title(); ?>">
-			<span class="vite-post__btn-text"><?php esc_html_e( 'Read More', 'vite' ); ?></span>
+		<a href="<?php the_permalink(); ?>" class="vite-post__btn">
+			<span class="vite-post__btn-text">
+				<?php esc_html_e( 'Read More', 'vite' ); ?>
+				<span class="screen-reader-text"><?php the_title(); ?></span>
+			</span>
 		</a>
 		<?php
 
