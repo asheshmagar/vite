@@ -21,15 +21,20 @@ class ScriptsStyles {
 	use Mods, Hook;
 
 	/**
+	 * Holds the manifest.
+	 *
+	 * @var array|null
+	 */
+	private $manifest;
+
+	/**
 	 * Init.
 	 *
 	 * @since x.x.x
 	 */
 	public function init() {
-		add_action( 'init', [ $this, 'register' ], PHP_INT_MAX );
 		add_action( 'wp_enqueue_scripts', [ $this, 'enqueue' ] );
 		add_action( 'wp_head', [ $this, 'remove_no_js' ], 2 );
-		add_filter( 'script_loader_tag', [ $this, 'defer_scripts' ], 10, 2 );
 		add_action( 'enqueue_block_editor_assets', [ $this, 'enqueue_editor' ] );
 	}
 
@@ -59,82 +64,6 @@ class ScriptsStyles {
 	}
 
 	/**
-	 * Register styles.
-	 *
-	 * @return void
-	 */
-	public function register() {
-		$customizer_asset         = $this->get_asset( 'customizer' );
-		$customizer_preview_asset = $this->get_asset( 'customizer-preview' );
-		$meta_asset               = $this->get_asset( 'meta' );
-		$frontend_asset           = $this->get_asset( 'frontend' );
-
-		wp_register_script(
-			'vite-script',
-			VITE_ASSETS_URI . 'dist/frontend.js',
-			[],
-			$frontend_asset['version'],
-			false
-		);
-		wp_register_script(
-			'vite-customizer',
-			VITE_ASSETS_URI . 'dist/customizer.js',
-			$customizer_asset['dependencies'],
-			$customizer_asset['version'],
-			true
-		);
-		wp_register_script(
-			'vite-meta',
-			VITE_ASSETS_URI . 'dist/meta.js',
-			$meta_asset['dependencies'],
-			$meta_asset['version'],
-			true
-		);
-		wp_register_script(
-			'vite-meta-preview',
-			VITE_ASSETS_URI . 'dist/meta-preview.js',
-			[ 'wp-components' ],
-			$meta_asset['version'],
-			true
-		);
-		wp_register_script(
-			'vite-customizer-preview',
-			VITE_ASSETS_URI . 'dist/customizer-preview.js',
-			array_merge( $customizer_preview_asset['dependencies'], [ 'customize-preview' ] ),
-			$customizer_preview_asset['version'],
-			true
-		);
-		wp_register_style(
-			'vite-customizer',
-			VITE_ASSETS_URI . 'dist/customizer.css',
-			[ 'wp-components', 'wp-edit-post' ],
-			$customizer_asset['version']
-		);
-		wp_register_style(
-			'vite-customizer-preview',
-			VITE_ASSETS_URI . 'dist/customizer-preview.css',
-			[],
-			$customizer_preview_asset['version']
-		);
-		wp_register_style(
-			'vite-style',
-			VITE_ASSETS_URI . 'dist/style.css',
-			[],
-			$frontend_asset['version']
-		);
-		wp_style_add_data(
-			'vite-style',
-			'precache',
-			true
-		);
-		wp_set_script_translations(
-			'vite-customizer',
-			'vite',
-			get_theme_file_path( '/languages/' )
-		);
-	}
-
-	/**
 	 * Enqueue.
 	 *
 	 * @return void
@@ -152,15 +81,22 @@ class ScriptsStyles {
 			wp_enqueue_style( 'vite-google-fonts', $remote_google_fonts_url, [], VITE_VERSION );
 		}
 
-		wp_enqueue_style( 'vite-style' );
+		$this->enqueue_asset(
+			'vite-frontend',
+			[
+				'in_footer' => false,
+				'defer'     => true,
+			]
+		);
+
+		$this->enqueue_asset( 'vite-style' );
 
 		if ( ! empty( $dynamic_css ) ) {
 			'inline' === $dynamic_css_output && wp_add_inline_style( 'vite-style', $dynamic_css );
 		}
 
-		wp_enqueue_script( 'vite-script' );
 		wp_localize_script(
-			'vite-script',
+			'vite-frontend',
 			'_VITE_',
 			[ 'publicPath' => VITE_ASSETS_URI . 'dist/' ]
 		);
@@ -176,23 +112,134 @@ class ScriptsStyles {
 	}
 
 	/**
-	 * Enqueue editor scripts.
+	 * Enqueue asset.
+	 *
+	 * @param string $handle Script or style handle.
+	 * @param array  $options Options.
 	 *
 	 * @return void
 	 */
-	public function enqueue_editor() {}
+	public function enqueue_asset( string $handle, array $options = [] ) {
+		try {
+			$manifest = $this->get_manifest();
+		} catch ( \Exception $e ) {
+			return;
+		}
+		$key = str_replace( 'vite-', '', $handle );
+
+		if ( ! isset( $manifest[ $key ] ) ) {
+			return;
+		}
+
+		$asset  = $this->get_asset( $manifest[ $key ]['asset'] ?? '' );
+		$script = $manifest[ $key ]['script'] ?? '';
+		$style  = $manifest[ $key ]['style'] ?? '';
+
+		$options = wp_parse_args(
+			$options,
+			[
+				'dependencies'     => [],
+				'css-dependencies' => [],
+				'css-media'        => 'all',
+				'version'          => null,
+				'in_footer'        => true,
+				'preload'          => false,
+				'defer'            => false,
+			]
+		);
+
+		if ( ! empty( $script ) ) {
+			if ( $options['defer'] ) {
+				add_filter(
+					'script_loader_tag',
+					function( string $tag, string $target_handle ) use ( $handle ) {
+						if ( $target_handle === $handle && ! preg_match( '/\s+(defer|async)\s*=\s*(["\'])\s*\2\s*/', $tag ) ) {
+							$tag = str_replace( ' src', ' defer src', $tag );
+						}
+						return $tag;
+					},
+					10,
+					2
+				);
+			}
+			if (
+				wp_register_script(
+					$handle,
+					VITE_ASSETS_URI . 'dist/' . $script,
+					array_merge( $asset['dependencies'], $options['dependencies'] ),
+					$options['version'],
+					$options['in_footer']
+				)
+			) {
+				wp_enqueue_script( $handle );
+			}
+		}
+
+		if ( ! empty( $style ) ) {
+//			if ( $options['preload'] ) {
+//				add_filter(
+//					'style_loader_tag',
+//					function( string $tag, string $target_handle ) use ( $handle ) {
+//						if ( $target_handle === $handle ) {
+//							$tag = str_replace( ' href', ' rel="preload" as="style" href', $tag );
+//						}
+//						return $tag;
+//					},
+//					10,
+//					2
+//				);
+//			}
+			if (
+				wp_register_style(
+					$handle,
+					VITE_ASSETS_URI . 'dist/' . $style,
+					$options['css-dependencies'],
+					$options['version'],
+					$options['css-media']
+				)
+			) {
+				wp_enqueue_style( $handle );
+			}
+		}
+	}
+
+	/**
+	 * Get manifest file.
+	 *
+	 * @return false|mixed|null The manifest file.
+	 * @throws \Exception Manifest file not found.
+	 */
+	private function get_manifest() {
+		if ( ! isset( $this->manifest ) ) {
+			$manifest = VITE_ASSETS_DIR . 'dist/manifest.json';
+			if ( ! file_exists( $manifest ) ) {
+				throw new \Exception( 'Manifest file not found' );
+			}
+			ob_start();
+			try {
+				include $manifest;
+				$this->manifest = json_decode( ob_get_clean(), true );
+			} catch ( \Exception $e ) {
+				ob_end_clean();
+				throw new \Exception( $e->getMessage() );
+			}
+		}
+		return $this->filter( 'manifest', $this->manifest );
+	}
 
 	/**
 	 * Get asset.
 	 *
-	 * @param string $file_name Filename.
-	 * @return array
+	 * @param string $file PHP file name.
+	 * @return array|mixed
 	 */
-	private function get_asset( string $file_name ): array {
-		$file = VITE_ASSETS_DIR . "dist/$file_name.asset.php";
-		return file_exists( $file ) ? require $file : [
-			'dependencies' => [],
-			'version'      => VITE_VERSION,
-		];
+	private function get_asset( string $file = '' ) {
+		if ( ! file_exists( VITE_ASSETS_DIR . "dist/$file" ) || empty( $file ) ) {
+			return [
+				'dependencies' => [],
+				'version'      => VITE_VERSION,
+			];
+		}
+		return require VITE_ASSETS_DIR . "dist/$file";
 	}
 }
