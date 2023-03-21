@@ -38,6 +38,8 @@ class ScriptsStyles {
 		add_action( 'enqueue_block_editor_assets', [ $this, 'enqueue_editor' ] );
 	}
 
+	public function enqueue_editor() {}
+
 	/**
 	 * Defer scripts if not deferred.
 	 *
