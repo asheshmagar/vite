@@ -11,6 +11,8 @@ export type InputAttrsType = {
 	}[];
 	input?: boolean;
 	[key: string ]: any;
+	allowBlocks?: string[],
+	disallowBlocks?: string[],
 }
 
 export type ParamsType = {
