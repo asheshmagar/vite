@@ -13,7 +13,7 @@ module.exports = ( _, args ) => ( {
 		customizer: resolve( process.cwd(), 'assets/js/customizer', 'index.ts' ),
 		'customizer-preview': resolve( process.cwd(), 'assets/js/customizer/preview', 'index.ts' ),
 		frontend: resolve( process.cwd(), 'assets/js/frontend', 'index.ts' ),
-		style: resolve( process.cwd(), 'assets/scss', 'style.scss' ),
+		// style: resolve( process.cwd(), 'assets/scss', 'style.scss' ),
 		'editor-style': resolve( process.cwd(), 'assets/scss', 'editor-style.scss' ),
 	},
 	output: {
@@ -102,8 +102,11 @@ module.exports = ( _, args ) => ( {
 		new MiniCSSExtractPlugin( { filename: '[name].[contenthash:8].css' } ),
 		new DependencyExtractionWebpackPlugin(),
 		new WebpackBar(),
-		args.mode === 'development' ? new EslintPlugin( { extensions: [ 'js', 'jsx', 'ts', 'tsx' ] } ) : false,
-		args.mode === 'production' ? new CompressionPlugin() : false,
+		...( args.mode === 'development' ? [
+			new EslintPlugin( { extensions: [ 'js', 'jsx', 'ts', 'tsx' ] } ),
+		] : [
+			new CompressionPlugin(),
+		] ),
 		new WebpackManifestPlugin( {
 			basePath: '',
 			fileName: 'manifest.json',
