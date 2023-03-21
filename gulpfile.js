@@ -88,7 +88,6 @@ const release = series(
 	pot,
 	copy,
 	composer,
-	minifyJSON,
 	compress,
 	clean.build,
 );
