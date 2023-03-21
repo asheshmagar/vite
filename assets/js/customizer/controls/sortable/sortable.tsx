@@ -158,7 +158,7 @@ const Sortable: React.FC<ControlPropsType> = ( props ) => {
 					tag="ul"
 					className={ `vite-sortable` }
 					list={ value }
-					setList={ v => {
+					setList={ ( v: any ) => {
 						if ( JSON.stringify( value ) !== JSON.stringify( v ) ) {
 							setting.set( v );
 							setValue( v );
