@@ -9,6 +9,7 @@ import {
 	handleTrapFocus,
 	domReady,
 } from './utils';
+import '../../scss/style.scss';
 
 window._VITE_ = {
 	...( window._VITE_ ?? {} ),
