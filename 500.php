@@ -7,25 +7,27 @@
 
 defined( 'ABSPATH' ) || exit;
 
+$core = vite( 'core' );
+
 get_header();
 
 /**
  * Action: vite/pwa/500/start.
  */
 
-vite( 'core' )->action( 'pwa/500/start' );
+$core->action( 'pwa/500/start' );
 
 /**
  * Action: vite/pwa/500.
  *
  * @see \Vite\Compatibility\Plugin\PWA::error()
  */
-vite( 'core' )->action( 'pwa/500' );
+$core->action( 'pwa/500' );
 
 /**
  * Action: vite/pwa/500/end.
  */
-vite( 'core' )->action( 'pwa/500/end' );
+$core->action( 'pwa/500/end' );
 ?>
 	</div>
 <?php
