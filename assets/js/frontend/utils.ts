@@ -63,9 +63,13 @@ export const handleModal: HandleModalType = ( {
 	closeModalEl?.addEventListener( 'click', closeModal );
 };
 
-export const handleTrapFocus: ( args: HTMLElement ) => void = ( parentEl ) => {
+export const handleTrapFocus: ( parentEl: HTMLElement, excludeEl?: string[] ) => void = ( parentEl, excludeEl = undefined ) => {
 	if ( ! parentEl ) return;
-	const focusable: NodeListOf<HTMLElement> = parentEl.querySelectorAll( 'a, button, input, textarea, select, details, [tabindex]:not([tabindex="-1"])' );
+	let focusableElements = [ 'a', 'button', 'input', 'textarea', 'select', 'details', '[tabindex]:not([tabindex="-1"])' ];
+	if ( excludeEl ) {
+		focusableElements = focusableElements.filter( ( el ) => ! excludeEl.includes( el ) );
+	}
+	const focusable: NodeListOf<HTMLElement> = parentEl.querySelectorAll( focusableElements.join( ',' ) );
 	const firstFocusable: HTMLElement = focusable[ 0 ];
 	const lastFocusable: HTMLElement = focusable[ focusable.length - 1 ];
 
