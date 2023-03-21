@@ -89,10 +89,8 @@ class ScriptsStyles {
 			]
 		);
 
-		$this->enqueue_asset( 'vite-style' );
-
 		if ( ! empty( $dynamic_css ) ) {
-			'inline' === $dynamic_css_output && wp_add_inline_style( 'vite-style', $dynamic_css );
+			'inline' === $dynamic_css_output && wp_add_inline_style( 'vite-frontend', $dynamic_css );
 		}
 
 		wp_localize_script(
