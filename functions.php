@@ -3,6 +3,7 @@
  * Theme functions and definitions.
  *
  * @since x.x.x
+ *
  * @package Vite
  */
 
