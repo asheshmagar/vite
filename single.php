@@ -6,7 +6,7 @@
  * @package Vite
  */
 
-// Exit if accessed directly.
+// Exit if accessed directly testing commit.
 defined( 'ABSPATH' ) || exit;
 
 $core = vite( 'core' );
